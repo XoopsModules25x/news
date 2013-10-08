@@ -1,0 +1,4 @@
+INSTALL/UNISTALL
+=================
+
+Install News just like another module
