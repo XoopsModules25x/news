@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule	^article-([0-9]+)(-).*(\.html)$	article.php?storyid=$1	[L]

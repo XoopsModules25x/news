@@ -1,0 +1,4 @@
+Credits
+===============
+
+Originally developed by various XOOPS developers, with the latest contributions by Hervet, Trabis, and Mamba.
