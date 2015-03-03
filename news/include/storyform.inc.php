@@ -75,8 +75,6 @@ if ($approveprivilege) {
     $sform->addElement(new XoopsFormRadioYN(_AM_PUBINHOME, 'ihome', $ihome, _NO, _YES));
 }
 
-
-
 // News author
 
 if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
@@ -92,10 +90,8 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     }
 }
 
-
 $editor = news_getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
 $sform->addElement($editor, true);
-
 
 //Extra info
 //If admin -> if submit privilege
@@ -170,7 +166,6 @@ if ($allowupload) {
     $sform->addElement(new XoopsFormText(_NW_SELECT_IMAGE_DESC, 'pictureinfo', 50, 255, $pictureinfo), false);
 }
 
-
 $option_tray = new XoopsFormElementTray(_OPTIONS,'<br />');
 //Set date of publish/expiration
 if ($approveprivilege) {
@@ -209,7 +204,6 @@ if (is_object($xoopsUser)) {
 $smiley_checkbox = new XoopsFormCheckBox('', 'nosmiley', $nosmiley);
 $smiley_checkbox->addOption(1, _DISABLESMILEY);
 $option_tray->addElement($smiley_checkbox);
-
 
 $sform->addElement($option_tray);
 

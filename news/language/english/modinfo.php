@@ -173,4 +173,3 @@ define('_MI_NEWS_SHOWICONS_DSC',"Display icons for print, PDF and email at the b
 //1.67
 define('_MI_NEWS_FACEBOOKCOMMENTS',"Use Facebook comments?");
 define('_MI_NEWS_FACEBOOKCOMMENTS_DSC',"Let your users use Facebook to add comments to your articles");
-?>

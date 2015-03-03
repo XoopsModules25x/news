@@ -88,7 +88,7 @@ function b_news_archives_edit($options)
     $selemonth = $options[4];
 
     $tmpstory = new NewsStory;
-    $tmpstory->GetOlderRecentNews($older, $recent);	// We are searching for the module's older and more recent article's date
+    $tmpstory->GetOlderRecentNews($older, $recent);    // We are searching for the module's older and more recent article's date
 
     // Min and max value for the two dates selectors
     // We are going to use the older news for the starting date

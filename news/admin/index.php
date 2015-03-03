@@ -236,8 +236,6 @@ function expStories()
                 <a href='".XOOPS_URL."/modules/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $eachstory -> storyid() . "'> <img src='" . $pathIcon16."/edit.png' title="._AM_EDIT."></a>
                 <a href='".XOOPS_URL."/modules/news/admin/index.php?op=delete&amp;storyid=" . $eachstory -> storyid() . "'><img src='" . $pathIcon16."/delete.png' title='"._AM_DELETE."'></a>";
 
-
-
             echo "</td></tr>\n";
         }
         echo '</table><br />';
@@ -287,7 +285,7 @@ function PruneManager()
     $topiclist=new XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'pruned_topics','',5,true);
     $topics_arr=array();
     $xt = new NewsTopic();
-    $allTopics = $xt->getAllTopics(false);				// The webmaster can see everything
+    $allTopics = $xt->getAllTopics(false);                // The webmaster can see everything
     $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
     $topics_arr = $topic_tree->getAllChild(0);
     if (count($topics_arr)) {
@@ -383,7 +381,7 @@ function Newsletter()
     $topiclist=new XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics','',5,true);
     $topics_arr=array();
     $xt = new NewsTopic();
-    $allTopics = $xt->getAllTopics(false);				// The webmaster can see everything
+    $allTopics = $xt->getAllTopics(false);                // The webmaster can see everything
     $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
     $topics_arr = $topic_tree->getAllChild(0);
     if (count($topics_arr)) {
@@ -471,8 +469,6 @@ function LaunchNewsletter()
     }
 }
 
-
-
 /**
 * News export
 *
@@ -499,7 +495,7 @@ function NewsExport()
     $topiclist=new XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics','',5,true);
     $topics_arr=array();
     $xt = new NewsTopic();
-    $allTopics = $xt->getAllTopics(false);				// The webmaster can see everything
+    $allTopics = $xt->getAllTopics(false);                // The webmaster can see everything
     $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
     $topics_arr = $topic_tree->getAllChild(0);
     if (count($topics_arr)) {
@@ -610,8 +606,6 @@ function LaunchExport()
     }
 }
 
-
-
 /*
 * Topics manager
 *
@@ -684,10 +678,6 @@ function topicsmanager()
                 $class = ($class == 'even') ? 'odd' : 'even';
 
                 $output  = $output . "<tr class='".$class."'><td>" . $topics_arr[$tmpcpt]['topic_id'] . "</td><td align='left'>" . $topics_arr[$tmpcpt]['prefix'] . $myts->displayTarea($topics_arr[$tmpcpt]['topic_title']) . "</td><td align='left'>" . $parent . "</td><td align='center'>" . $submenu . "</td><td align='center'>" . $action_edit . $action_delete ."</td></tr>";
-
-
-
-
 
             } else {
                 $ok=false;
@@ -814,33 +804,33 @@ function topicsmanager()
     $full_list = array_keys($group_list);
 
     $groups_ids = array();
-    if ($topic_id > 0) {		// Edit mode
+    if ($topic_id > 0) {        // Edit mode
         $groups_ids = $gperm_handler->getGroupIds('news_approve', $topic_id, $xoopsModule->getVar('mid'));
         $groups_ids = array_values($groups_ids);
         $groups_news_can_approve_checkbox = new XoopsFormCheckBox(_AM_APPROVEFORM, 'groups_news_can_approve[]', $groups_ids);
-    } else {	// Creation mode
+    } else {    // Creation mode
         $groups_news_can_approve_checkbox = new XoopsFormCheckBox(_AM_APPROVEFORM, 'groups_news_can_approve[]', $full_list);
     }
     $groups_news_can_approve_checkbox->addOptionArray($group_list);
     $sform->addElement($groups_news_can_approve_checkbox);
 
     $groups_ids = array();
-    if ($topic_id > 0) {		// Edit mode
+    if ($topic_id > 0) {        // Edit mode
         $groups_ids = $gperm_handler->getGroupIds('news_submit', $topic_id, $xoopsModule->getVar('mid'));
         $groups_ids = array_values($groups_ids);
         $groups_news_can_submit_checkbox = new XoopsFormCheckBox(_AM_SUBMITFORM, 'groups_news_can_submit[]', $groups_ids);
-    } else {	// Creation mode
+    } else {    // Creation mode
         $groups_news_can_submit_checkbox = new XoopsFormCheckBox(_AM_SUBMITFORM, 'groups_news_can_submit[]', $full_list);
     }
     $groups_news_can_submit_checkbox->addOptionArray($group_list);
     $sform->addElement($groups_news_can_submit_checkbox);
 
     $groups_ids = array();
-    if ($topic_id > 0) {		// Edit mode
+    if ($topic_id > 0) {        // Edit mode
         $groups_ids = $gperm_handler->getGroupIds('news_view', $topic_id, $xoopsModule->getVar('mid'));
         $groups_ids = array_values($groups_ids);
         $groups_news_can_view_checkbox = new XoopsFormCheckBox(_AM_VIEWFORM, 'groups_news_can_view[]', $groups_ids);
-    } else {	// Creation mode
+    } else {    // Creation mode
         $groups_news_can_view_checkbox = new XoopsFormCheckBox(_AM_VIEWFORM, 'groups_news_can_view[]', $full_list);
     }
     $groups_news_can_view_checkbox->addOptionArray($group_list);
@@ -856,7 +846,6 @@ function topicsmanager()
     echo 'xoopsGetElementById("NewsColorSelect").style.backgroundColor = "#' . $topic_color .'";';
     echo "</script>\n";
 }
-
 
 // Save a topic after it has been modified
 function modTopicS()
@@ -1202,7 +1191,6 @@ function Stats()
     }
     echo '</table></div><br /><br /><br />';
 
-
     // Last part of the stats, everything about authors
     // a) Most readed authors
     $mostreadedauthors=$stats['mostreadedauthors'];
@@ -1237,7 +1225,6 @@ function Stats()
     }
     echo '</table></div><br />';
 }
-
 
 /**
  * Metagen
@@ -1322,7 +1309,6 @@ function Metagen()
     $sform->display();
 }
 
-
 /**
  * Save metagen's blacklist words
  */
@@ -1351,7 +1337,6 @@ function MetagenBlackList()
     redirect_header( 'index.php?op=metagen', 0, _AM_DBUPDATED);
 }
 
-
 /**
  * Save Metagen Options
  */
@@ -1361,8 +1346,6 @@ function MetagenSaveOptions()
     $registry->savefile(intval($_POST['keywordscount']).','.intval($_POST['keywordsorder']));
     redirect_header('index.php?op=metagen', 0, _AM_DBUPDATED);
 }
-
-
 
 // **********************************************************************************************************************************************
 // **** Main

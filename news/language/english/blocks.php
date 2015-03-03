@@ -46,4 +46,3 @@ define('_MB_NEWS_ENDING_DATE',"Ending date");
 define('_MB_NEWS_UNTIL_TODAY',"or until today");
 define('_MB_NEWS_RECENT_FIRST',"Most recent first");
 define('_MB_NEWS_OLDER_FIRST',"Older first");
-?>

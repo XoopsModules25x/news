@@ -34,11 +34,11 @@ include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
 
 class NewsStory extends MyXoopsStory
 {
-    public $newstopic;   	// XoopsTopic object
-    public $rating;		// News rating
-      public $votes;			// Number of votes
-      public $description;	// META, desciption
-      public $keywords;		// META, keywords
+    public $newstopic;    // XoopsTopic object
+    public $rating;        // News rating
+      public $votes;            // Number of votes
+      public $description;    // META, desciption
+      public $keywords;        // META, keywords
       public $picture;
       public $topic_imgurl;
       public $topic_title;
@@ -109,9 +109,9 @@ class NewsStory extends MyXoopsStory
         }
         $result = $db->query($sql);
         while ($myrow = $db->fetchArray($result)) {
-            xoops_comment_delete($mid, $myrow['storyid']);									// Delete comments
-            xoops_notification_deletebyitem($mid, 'story', $myrow['storyid']);				// Delete notifications
-            $db->queryF('DELETE FROM '.$vote_prefix.' WHERE storyid='.$myrow['storyid']);	// Delete votes
+            xoops_comment_delete($mid, $myrow['storyid']);                                    // Delete comments
+            xoops_notification_deletebyitem($mid, 'story', $myrow['storyid']);                // Delete notifications
+            $db->queryF('DELETE FROM '.$vote_prefix.' WHERE storyid='.$myrow['storyid']);    // Delete votes
             // Remove files and records related to the files
             $result2 = $db->query('SELECT * FROM '.$files_prefix.' WHERE storyid='.$myrow['storyid']);
             while ($myrow2 = $db->fetchArray($result2)) {
@@ -121,7 +121,7 @@ class NewsStory extends MyXoopsStory
                 }
                 $db->query('DELETE FROM '.$files_prefix.' WHERE fileid='.$myrow2['fileid']);
             }
-            $db->queryF('DELETE FROM '.$prefix.' WHERE storyid='.$myrow['storyid']);		// Delete the story
+            $db->queryF('DELETE FROM '.$prefix.' WHERE storyid='.$myrow['storyid']);        // Delete the story
         }
 
         return true;
@@ -321,7 +321,6 @@ class NewsStory extends MyXoopsStory
         return $ret;
     }
 
-
     /**
     * Get all articles published by an author
     *
@@ -378,7 +377,6 @@ class NewsStory extends MyXoopsStory
         return $ret;
     }
 
-
     /**
      * Get all expired stories
      */
@@ -408,8 +406,6 @@ class NewsStory extends MyXoopsStory
 
         return $ret;
     }
-
-
 
     /**
      * Returns an array of object containing all the news to be automatically published.
@@ -482,16 +478,16 @@ class NewsStory extends MyXoopsStory
         $db =& XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SELECT count(*) as cpt FROM '.$db->prefix('mod_news_stories').' WHERE ';
         switch ($storytype) {
-            case 1:	// Expired
+            case 1:    // Expired
                 $sql .='(expired <= '.time().' AND expired >0)';
                 break;
-            case 2:	// Automated
+            case 2:    // Automated
                 $sql .='(published > '.time().')';
                 break;
-            case 3:	// New submissions
+            case 3:    // New submissions
                 $sql .='(published = 0)';
                 break;
-            case 4:	// Last published stories
+            case 4:    // Last published stories
                 $sql .='(published > 0 AND published <= '.time().') AND (expired = 0 OR expired > '.time().')';
                 break;
         }
@@ -510,7 +506,6 @@ class NewsStory extends MyXoopsStory
         return $myrow['cpt'];
     }
 
-
     /**
      * Get a list of stories (as objects) related to a specific topic
      */
@@ -526,7 +521,6 @@ class NewsStory extends MyXoopsStory
 
         return $ret;
     }
-
 
     /**
      * Count the number of news published for a specific topic
@@ -555,7 +549,6 @@ class NewsStory extends MyXoopsStory
         return $count;
     }
 
-
     /**
      * Internal function
      */
@@ -568,14 +561,12 @@ class NewsStory extends MyXoopsStory
         $module          = $module_handler->getByDirname($dirname);
         $pathIcon16      = $module->getInfo('icons16');
 
-
         $ret = "&nbsp; <a href=".XOOPS_URL."/modules/news/submit.php?op=edit&amp;storyid=".$this->storyid()."><img src=" . $pathIcon16 .'/edit.png'. ' '.'title='._NW_EDIT."></a>"
         ."<a href=".XOOPS_URL."/modules/news/admin/index.php?op=delete&amp;storyid=".$this->storyid()."><img src=" . $pathIcon16."/delete.png". ' '."title="._NW_DELETE."></a> &nbsp;"
         ;
 
         return $ret;
     }
-
 
     /**
      * Get the topic image url
@@ -794,7 +785,7 @@ class NewsStory extends MyXoopsStory
         }
 
         if (is_array($tblusers) && array_key_exists($uid,$tblusers)) {
-            return 	$tblusers[$uid];
+            return    $tblusers[$uid];
         }
 
         $option = news_getmoduleoption('displayname');
@@ -803,12 +794,12 @@ class NewsStory extends MyXoopsStory
         }
 
         switch ($option) {
-            case 1:		// Username
+            case 1:        // Username
                 $tblusers[$uid]=XoopsUser::getUnameFromId($uid);
 
                 return $tblusers[$uid];
 
-            case 2:		// Display full name (if it is not empty)
+            case 2:        // Display full name (if it is not empty)
                 $member_handler =& xoops_gethandler('member');
                 $thisuser = $member_handler->getUser($uid);
                 if (is_object($thisuser)) {
@@ -823,7 +814,7 @@ class NewsStory extends MyXoopsStory
 
                 return $return;
 
-            case 3:		// Nothing
+            case 3:        // Nothing
                 $tblusers[$uid]='';
 
                 return '';
@@ -843,7 +834,7 @@ class NewsStory extends MyXoopsStory
     {
         $ret=Array();
         $myts =& MyTextSanitizer::getInstance();
-        if ($usetopicsdef) {	// We firt begin by exporting topics definitions
+        if ($usetopicsdef) {    // We firt begin by exporting topics definitions
             // Before all we must know wich topics to export
             $sql = 'SELECT distinct topicid FROM '.$this->db->prefix('mod_news_stories').' WHERE (published >=' . $fromdate . ' AND published <= ' . $todate .')';
             if (strlen(trim($topicslist))>0) {
@@ -872,7 +863,6 @@ class NewsStory extends MyXoopsStory
 
         return $ret;
     }
-
 
     /**
      * Create or update an article
@@ -966,7 +956,6 @@ class NewsStory extends MyXoopsStory
     {
         $this->subtitle = $data;
     }
-
 
     function setDescription($data)
     {
@@ -1085,8 +1074,6 @@ class NewsStory extends MyXoopsStory
 
         return $ret3;
     }
-
-
 
     /**
      * Returns statistics about the stories and topics
@@ -1213,7 +1200,6 @@ class NewsStory extends MyXoopsStory
         return $ret;
     }
 
-
     /**
      * Get the date of the older and most recent news
      */
@@ -1228,7 +1214,6 @@ class NewsStory extends MyXoopsStory
             list($older, $recent) = $this->db->fetchRow($result);
         }
     }
-
 
     /*
      * Returns the author's IDs for the Who's who page
@@ -1255,7 +1240,6 @@ class NewsStory extends MyXoopsStory
 
         return $ret;
     }
-
 
     /**
      * Returns the content of the summary and the titles requires for the list selector

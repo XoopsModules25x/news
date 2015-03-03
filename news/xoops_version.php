@@ -36,8 +36,8 @@ $modversion['credits'] = "The XOOPS Project, Christian, Pilou, Marco, <br />ALL 
 $modversion['author'] = "The XOOPS Project Module Dev Team & Hervé Thouzard";
 $modversion['nickname'] = "hervet";
 $modversion['help'] = 'page=help';
-$modversion["license"] 	= "GNU General Public License";
-$modversion["license_url"]	= "http://www.gnu.org/licenses/gpl.html";
+$modversion["license"]    = "GNU General Public License";
+$modversion["license_url"]    = "http://www.gnu.org/licenses/gpl.html";
 $modversion['official'] = 0;
 $modversion['image'] = "images/news_slogo.png";
 $modversion['dirname'] = basename(dirname(__FILE__));
@@ -166,7 +166,7 @@ $modversion['blocks'][8]['name'] = _MI_NEWS_BNAME9;
 $modversion['blocks'][8]['description'] = "Shows a block where you can see archives";
 $modversion['blocks'][8]['show_func'] = "b_news_archives_show";
 $modversion['blocks'][8]['template'] = 'news_block_archives.html';
-$modversion['blocks'][8]['options'] = "0|0|0|0|1|1";	// Starting date (year, month), ending date (year, month), until today, sort order
+$modversion['blocks'][8]['options'] = "0|0|0|0|1|1";    // Starting date (year, month), ending date (year, month), until today, sort order
 $modversion['blocks'][8]['edit_func'] = "b_news_archives_edit";
 
 // Added in v1.63
@@ -265,7 +265,6 @@ $i++;
 $modversion['sub'][$i]['name'] = _MI_NEWS_TOPICS_DIRECTORY;
 $modversion['sub'][$i]['url'] = "topics_directory.php";
 
-
 // Search
 $modversion['hasSearch'] = 1;
 $modversion['search']['file'] = "include/search.inc.php";
@@ -360,7 +359,7 @@ $modversion['config'][$i]['description'] = '_MI_ADISPLAYNAMEDSC';
 $modversion['config'][$i]['formtype'] = 'select';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = 1;
-$modversion['config'][$i]['options']	= array('_MI_DISPLAYNAME1' => 1, '_MI_DISPLAYNAME2' => 2, '_MI_DISPLAYNAME3' => 3);
+$modversion['config'][$i]['options']    = array('_MI_DISPLAYNAME1' => 1, '_MI_DISPLAYNAME2' => 2, '_MI_DISPLAYNAME3' => 3);
 
 /**
  * Number of columns to use to display news
@@ -520,7 +519,6 @@ $modversion['config'][$i]['default'] = 'dhtml';
 xoops_load('xoopseditorhandler');
 $editor_handler = XoopsEditorHandler::getInstance();
 $modversion['config'][$i]['options'] = array_flip($editor_handler->getList());
-
 
 /**
  * If you set this option to Yes then the keywords entered in the

@@ -124,8 +124,8 @@ if (!$gperm_handler->checkRight('news_view', $article->topicid(), $groups, $xoop
     exit();
 }
 
-if (!empty($_POST['submit'])) {			// The form was submited
-    $eh = new ErrorHandler; 			//ErrorHandler object
+if (!empty($_POST['submit'])) {            // The form was submited
+    $eh = new ErrorHandler;            //ErrorHandler object
     if (!is_object($xoopsUser)) {
         $ratinguser = 0;
     } else {
@@ -189,7 +189,7 @@ if (!empty($_POST['submit'])) {			// The form was submited
     $ratemessage = _NW_VOTEAPPRE.'<br />'.sprintf(_NW_THANKYOU,$xoopsConfig['sitename']);
     redirect_header(XOOPS_URL.'/modules/news/article.php?storyid='.$storyid, 4, $ratemessage);
     exit();
-} else {		// Display the form to vote
+} else {        // Display the form to vote
     $xoopsOption['template_main'] = 'news_ratenews.html';
     include_once XOOPS_ROOT_PATH.'/header.php';
     $news = null;

@@ -59,11 +59,11 @@ if (count($uid_ids) > 0) {
     foreach ($tbl_users as $one_user) {
         $uname = '';
         switch ($option) {
-            case 1:		// Username
+            case 1:        // Username
                 $uname = $one_user->getVar('uname');
                 break;
 
-            case 2:		// Display full name (if it is not empty)
+            case 2:        // Display full name (if it is not empty)
                 if (xoops_trim($one_user->getVar('name')) != '') {
                     $uname = $one_user->getVar('name');
                 } else {
@@ -87,7 +87,7 @@ $myts =& MyTextSanitizer::getInstance();
 $meta_description = _AM_NEWS_WHOS_WHO . ' - ' . $xoopsModule->name('s');
 if (isset($xoTheme) && is_object($xoTheme)) {
     $xoTheme->addMeta( 'meta', 'description', $meta_description);
-} else {	// Compatibility for old Xoops versions
+} else {    // Compatibility for old Xoops versions
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 

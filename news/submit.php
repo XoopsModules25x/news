@@ -81,7 +81,7 @@ if (isset($_POST['preview'])) {
                 redirect_header(XOOPS_URL.'/modules/news/index.php', 3, _NOPERM);
                 exit();
             }
-        } else {	// Users can't edit their articles
+        } else {    // Users can't edit their articles
             if (!news_is_admin_group()) {
                 redirect_header(XOOPS_URL.'/modules/news/index.php', 3, _NOPERM);
                 exit();
@@ -359,9 +359,9 @@ switch ($op) {
                 $story->setDescription($_POST['description']);
                 $story->Setkeywords($_POST['keywords']);
             }
-            $story->setTopicdisplay($_POST['topicdisplay']);	// Display Topic Image ? (Yes or No)
-            $story->setTopicalign($_POST['topicalign']);		// Topic Align, 'Right' or 'Left'
-               $story->setIhome($_POST['ihome']);				// Publish in home ? (Yes or No)
+            $story->setTopicdisplay($_POST['topicdisplay']);    // Display Topic Image ? (Yes or No)
+            $story->setTopicalign($_POST['topicalign']);        // Topic Align, 'Right' or 'Left'
+               $story->setIhome($_POST['ihome']);                // Publish in home ? (Yes or No)
             if (isset($_POST['bodytext'])) {
                 $story->setBodytext($_POST['bodytext']);
             } else {
@@ -412,7 +412,7 @@ switch ($op) {
         // Second case, it's not an anonymous, the story is NOT approved and it's NOT a new story (typical when someone is approving a submited story)
         if (is_object($xoopsUser) && $approve && !empty($storyid)) {
             $storytemp = new NewsStory( $storyid );
-            if (!$storytemp->published() && $storytemp->uid()>0) {	// the article has been submited but not approved
+            if (!$storytemp->published() && $storytemp->uid()>0) {    // the article has been submited but not approved
                 $tmpuser=new xoopsUser($storytemp->uid());
                 $member_handler =& xoops_gethandler('member');
                 $member_handler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
@@ -447,7 +447,7 @@ switch ($op) {
             $story->setPictureinfo('');
         }
 
-        if ($allowupload) {	// L'image
+        if ($allowupload) {    // L'image
             if (isset($_POST['xoops_upload_file'])) {
                 $fldname = $_FILES[$_POST['xoops_upload_file'][1]];
                 $fldname = (get_magic_quotes_gpc()) ? stripslashes($fldname['name']) : $fldname['name'];

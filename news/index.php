@@ -223,7 +223,7 @@ if ($showclassic) {
     if ($totalcount > $scount) {
         include_once XOOPS_ROOT_PATH.'/class/pagenav.php';
         $pagenav = new XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic='.$xoopsOption['storytopic']);
-        if (news_isbot()) { 		// A bot is reading the news, we are going to show it all the links so that he can read everything
+        if (news_isbot()) {        // A bot is reading the news, we are going to show it all the links so that he can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
         } else {
             $xoopsTpl->assign('pagenav', $pagenav->renderNav());
@@ -231,7 +231,7 @@ if ($showclassic) {
     } else {
         $xoopsTpl->assign('pagenav', '');
     }
-} else {	// Affichage par sujets
+} else {    // Affichage par sujets
     $xoopsOption['template_main'] = 'news_by_topic.html';
     include_once XOOPS_ROOT_PATH.'/header.php';
     $xoopsTpl->assign('columnwidth', intval(1/$column_count*100));

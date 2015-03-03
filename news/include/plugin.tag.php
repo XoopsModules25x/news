@@ -48,12 +48,12 @@ function news_tag_iteminfo(&$items)
             if (isset($items_obj[$item_id])) {
                 $item_obj =& $items_obj[$item_id];
                 $items[$cat_id][$item_id] = array(
-                    'title'		=> $item_obj->title(),
-                    'uid'		=> $item_obj->uid(),
-                    'link'		=> "article.php?storyid={$item_id}",
-                    'time'		=> $item_obj->published(),
-                    'tags'		=> '',		// tag_parse_tag($item_obj->getVar("item_tags", "n")), // optional
-                    'content'	=> '',
+                    'title'        => $item_obj->title(),
+                    'uid'        => $item_obj->uid(),
+                    'link'        => "article.php?storyid={$item_id}",
+                    'time'        => $item_obj->published(),
+                    'tags'        => '',        // tag_parse_tag($item_obj->getVar("item_tags", "n")), // optional
+                    'content'    => '',
                     );
                 }
             }
@@ -71,7 +71,7 @@ function news_tag_synchronization($mid)
 
     /* clear tag-item links */
     if($link_handler->mysql_major_version() >= 4):
-    $sql =	"	DELETE FROM {$link_handler->table}".
+    $sql =    "	DELETE FROM {$link_handler->table}".
             "	WHERE ".
             "		tag_modid = {$mid}".
             "		AND ".
@@ -82,7 +82,7 @@ function news_tag_synchronization($mid)
             "			) ".
             "		)";
     else:
-    $sql = 	"	DELETE {$link_handler->table} FROM {$link_handler->table}".
+    $sql =    "	DELETE {$link_handler->table} FROM {$link_handler->table}".
             "	LEFT JOIN {$item_handler_table} AS aa ON {$link_handler->table}.tag_itemid = aa.{$item_handler_keyName} ".
             "	WHERE ".
             "		tag_modid = {$mid}".

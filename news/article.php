@@ -207,7 +207,7 @@ if (xoops_trim($bodytext) != '') {
     if ($story_pages > 1) {
         include_once XOOPS_ROOT_PATH.'/modules/news/include/pagenav.php';
         $pagenav = new XoopsPageNav($story_pages, 1, $storypage, 'page', 'storyid='.$storyid);
-        if (news_isbot()) { 		// A bot is reading the articles, we are going to show him all the links to the pages
+        if (news_isbot()) {        // A bot is reading the articles, we are going to show him all the links to the pages
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($story_pages));
         } else {
             if (news_getmoduleoption('enhanced_pagenav')) {
@@ -384,7 +384,6 @@ if (news_getmoduleoption('showsummarytable')) {
 } else {
     $xoopsTpl->assign('showsummary', false);
 }
-
 
 /**
  * Show a link to go to the previous article and to the next article

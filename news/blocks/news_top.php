@@ -97,15 +97,15 @@ function b_news_top_show($options)
         $options=array_merge($before,$topics2);
     }
 
-    if ($options[8]==2) {		// Tabbed view ********************************************************************************************
-        $defcolors[1]=array('#F90','#FFFFFF','#F90','#C60','#999');		// Bar Style
-        $defcolors[2]=array('#F90','#FFFFFF','#F90','#AAA','#666');		// Beveled
-        $defcolors[3]=array('#F90','#FFFFFF','','#789','#789');			// Classic
-        $defcolors[4]=array('#F90','#FFFFFF','','','');					// Folders
-        $defcolors[5]=array('#F90','#FFFFFF','#CCC','inherit','#999');	// MacOs
-        $defcolors[6]=array('#F90','#FFFFFF','#FFF','#DDD','#999');		// Plain
-        $defcolors[7]=array('#F90','#FFFFFF','','','');					// Rounded
-        $defcolors[8]=array('#F90','#FFFFFF','#F90','#930','#C60');		// ZDnet
+    if ($options[8]==2) {        // Tabbed view ********************************************************************************************
+        $defcolors[1]=array('#F90','#FFFFFF','#F90','#C60','#999');        // Bar Style
+        $defcolors[2]=array('#F90','#FFFFFF','#F90','#AAA','#666');        // Beveled
+        $defcolors[3]=array('#F90','#FFFFFF','','#789','#789');            // Classic
+        $defcolors[4]=array('#F90','#FFFFFF','','','');                    // Folders
+        $defcolors[5]=array('#F90','#FFFFFF','#CCC','inherit','#999');    // MacOs
+        $defcolors[6]=array('#F90','#FFFFFF','#FFF','#DDD','#999');        // Plain
+        $defcolors[7]=array('#F90','#FFFFFF','','','');                    // Rounded
+        $defcolors[8]=array('#F90','#FFFFFF','#F90','#930','#C60');        // ZDnet
 
         $myurl=$_SERVER['PHP_SELF'];
         if (substr($myurl,strlen($myurl)-1,1) == '/') {
@@ -135,13 +135,13 @@ function b_news_top_show($options)
         $tmpstory = new NewsStory();
         $topic= new NewsTopic();
         $topicstitles=array();
-        if ($options[4]==1) {	// Spotlight enabled
+        if ($options[4]==1) {    // Spotlight enabled
             $topicstitles[0]=_MB_NEWS_SPOTLIGHT_TITLE;
             $tabscount++;
             $usespotlight=true;
         }
 
-        if ($options[5]==0 && $restricted) {	// Use a specific news and we are in restricted mode
+        if ($options[5]==0 && $restricted) {    // Use a specific news and we are in restricted mode
             if (!$perm_verified) {
                 $permittedtopics=news_MygetItemIds();
                 $permstory = new NewsStory($options[6]);
@@ -160,7 +160,7 @@ function b_news_top_show($options)
 
         $block['use_spotlight']=$usespotlight;
 
-        if (isset($options[14]) && $options[14] != 0) {		// Topic to use
+        if (isset($options[14]) && $options[14] != 0) {        // Topic to use
             $topics = array_slice($options, 14);
             $tabscount+=count($topics);
             $topicstitles=$topic->getTopicTitleFromId($topics,$topicstitles);
@@ -181,20 +181,19 @@ function b_news_top_show($options)
         $block['current_tab']=$currenttab;
         $block['use_rating']=$newsrating;
 
-
-        if ($currenttab==0 && $usespotlight) {	// Spotlight or not ?
+        if ($currenttab==0 && $usespotlight) {    // Spotlight or not ?
             $block['current_is_spotlight']=true;
-            if ($options[5]==0 && $options[6]==0) {	// If the story to use was no selected then we switch to the "recent news" mode.
+            if ($options[5]==0 && $options[6]==0) {    // If the story to use was no selected then we switch to the "recent news" mode.
                 $options[5]=1;
             }
 
-            if ($options[5]==0) {	// Use a specific news
+            if ($options[5]==0) {    // Use a specific news
                 if (!isset($permstory)) {
                     $tmpstory->NewsStory($options[6]);
                 } else {
                     $tmpstory = $permstory;
                 }
-            } else {				// Use the most recent news
+            } else {                // Use the most recent news
                 $stories=array();
                 $stories=$tmpstory->getAllPublished(1,0,$restricted,0,1,true,$options[0]);
                 if (count($stories)>0) {
@@ -254,9 +253,9 @@ function b_news_top_show($options)
                $spotlight['author_id'] = $tmpstory->uid();
 
             // Create the summary table under the spotlight text
-            if (isset($options[14]) && $options[14] == 0) {		// Use all topics
+            if (isset($options[14]) && $options[14] == 0) {        // Use all topics
                 $stories = $tmpstory->getAllPublished($options[1],0,$restricted,0,1,true,$options[0]);
-               } else {					// Use some topics
+               } else {                    // Use some topics
                 $topics = array_slice($options, 14);
                    $stories = $tmpstory->getAllPublished($options[1],0,$restricted,$topics,1,true,$options[0]);
                }
@@ -368,8 +367,8 @@ function b_news_top_show($options)
                 }
             }
         }
-        $block['lang_on']=_ON;							// on
-        $block['lang_reads']=_READS;					// reads
+        $block['lang_on']=_ON;                            // on
+        $block['lang_reads']=_READS;                    // reads
         // Default values
         $block['color1']=$defcolors[$tabskin][0];
         $block['color2']=$defcolors[$tabskin][1];
@@ -392,7 +391,7 @@ function b_news_top_show($options)
         if (xoops_trim($options[13])!='') {
             $block['color5']=$options[13];
         }
-    } else {		// ************************ Classical view **************************************************************************************************************
+    } else {        // ************************ Classical view **************************************************************************************************************
         $tmpstory = new NewsStory;
         if (isset($options[14]) && $options[14] == 0) {
             $stories = $tmpstory->getAllPublished($options[1],0,$restricted,0,1,true,$options[0]);
@@ -499,7 +498,7 @@ function b_news_top_show($options)
         if (!isset($spotlight) && $options[4]) {
             $block['use_spotlight']=true;
             $visible=true;
-            if ($options[5]==0 && $restricted) {	// Use a specific news and we are in restricted mode
+            if ($options[5]==0 && $restricted) {    // Use a specific news and we are in restricted mode
                    $permittedtopics=news_MygetItemIds();
                    $permstory = new NewsStory($options[6]);
                    if (!in_array($permstory->topicid(),$permittedtopics)) {
@@ -508,13 +507,13 @@ function b_news_top_show($options)
                    unset($permstory);
                }
 
-            if ($options[5]==0) {	// Use a specific news
+            if ($options[5]==0) {    // Use a specific news
                 if ($visible) {
                     $spotlightArticle = new NewsStory($options[6]);
                 } else {
                     $block['use_spotlight']=false;
                 }
-            } else {				// Use the most recent news
+            } else {                // Use the most recent news
                 $stories=array();
                 $stories=$tmpstory->getAllPublished(1,0,$restricted,0,1,true,$options[0]);
                 if (count($stories)>0) {
@@ -566,12 +565,12 @@ function b_news_top_show($options)
     if (isset($permstory)) {
         unset($permstory);
     }
-       $block['lang_read_more'] = $myts->htmlSpecialChars(_MB_READMORE);			// Read More...
-       $block['lang_orderby'] = $myts->htmlSpecialChars(_MB_NEWS_ORDER);			// "Order By"
-       $block['lang_orderby_date'] = $myts->htmlSpecialChars(_MB_NEWS_DATE);		// Published date
-       $block['lang_orderby_hits'] = $myts->htmlSpecialChars(_MB_NEWS_HITS);		// Number of Hits
-       $block['lang_orderby_rating'] = $myts->htmlSpecialChars(_MB_NEWS_RATE);	// Rating
-       $block['sort'] = $options[0];						// "published" or "counter" or "rating"
+       $block['lang_read_more'] = $myts->htmlSpecialChars(_MB_READMORE);            // Read More...
+       $block['lang_orderby'] = $myts->htmlSpecialChars(_MB_NEWS_ORDER);            // "Order By"
+       $block['lang_orderby_date'] = $myts->htmlSpecialChars(_MB_NEWS_DATE);        // Published date
+       $block['lang_orderby_hits'] = $myts->htmlSpecialChars(_MB_NEWS_HITS);        // Number of Hits
+       $block['lang_orderby_rating'] = $myts->htmlSpecialChars(_MB_NEWS_RATE);    // Rating
+       $block['sort'] = $options[0];                        // "published" or "counter" or "rating"
 
     return $block;
 }
@@ -631,7 +630,7 @@ function b_news_top_edit($options)
     $form .= ' />'._MB_NEWS_RECENT_SPECIFIC.'</option></select>';
 
     $form .= '<br /><br />'._MB_NEWS_SPOTLIGHT_ARTICLE.'<br />';
-    $articles = $tmpstory->getAllPublished(200,0,false,0,0,false);		// I have limited the listbox to the last 200 articles
+    $articles = $tmpstory->getAllPublished(200,0,false,0,0,false);        // I have limited the listbox to the last 200 articles
     $form .= "<select name ='options[]'>";
     $form .= "<option value='0'>"._MB_NEWS_FIRST.'</option>';
     foreach ($articles as $storyid => $storytitle) {

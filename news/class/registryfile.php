@@ -28,7 +28,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 
 class news_registryfile
 {
-    var $filename;	// filename to manage
+    var $filename;    // filename to manage
 
     function news_registryfile($fichier = null)
     {
