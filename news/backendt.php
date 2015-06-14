@@ -67,7 +67,7 @@ header ('Content-Type:text/xml; charset='.$charset);
 $story = new NewsStory();
 $tpl = new XoopsTpl();
 $tpl->caching=2;
-$tpl->xoops_setCacheTime(3600);								// Change this to the value you want
+$tpl->xoops_setCacheTime(3600);                                // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.html', $topicid)) {
     $xt = new NewsTopic($topicid);
     $sarray = $story->getAllPublished($newsnumber, 0, $restricted, $topicid);
@@ -78,8 +78,8 @@ if (!$tpl->is_cached('db:news_rss.html', $topicid)) {
         $tpl->assign('channel_link', XOOPS_URL.'/');
         $tpl->assign('channel_desc', xoops_utf8_encode($slogan));
         $tpl->assign('channel_lastbuild', formatTimestamp(time(), 'rss'));
-        $tpl->assign('channel_webmaster', checkEmail($xoopsConfig['adminmail'],true));	// Fed up with spam
-        $tpl->assign('channel_editor', checkEmail($xoopsConfig['adminmail'],true));	// Fed up with spam
+        $tpl->assign('channel_webmaster', checkEmail($xoopsConfig['adminmail'],true));    // Fed up with spam
+        $tpl->assign('channel_editor', checkEmail($xoopsConfig['adminmail'],true));    // Fed up with spam
         $tpl->assign('channel_category', $xt->topic_title());
         $tpl->assign('channel_generator', 'XOOPS');
         $tpl->assign('channel_language', _LANGCODE);

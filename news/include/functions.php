@@ -257,7 +257,6 @@ function DublinQuotes($text)
     return str_replace("\"", ' ',$text);
 }
 
-
 /**
  * Creates all the meta datas :
  * - For Mozilla/Netscape and Opera the site navigation's bar
@@ -319,7 +318,7 @@ function news_CreateMetaDatas($story = null)
         if (isset($xoTheme) && is_object($xoTheme)) {
             $xoTheme->addMeta( 'meta', 'keywords', $meta_keywords);
             $xoTheme->addMeta( 'meta', 'description', $meta_description);
-        } elseif (isset($xoopsTpl) && is_object($xoopsTpl)) {	// Compatibility for old Xoops versions
+        } elseif (isset($xoopsTpl) && is_object($xoopsTpl)) {    // Compatibility for old Xoops versions
             $xoopsTpl->assign('xoops_meta_keywords', $meta_keywords);
             $xoopsTpl->assign('xoops_meta_description', $meta_description);
         }
@@ -405,15 +404,15 @@ function news_createmeta_keywords($content)
     $content = str_replace($search_pattern, $replace_pattern, $content);
     $keywords = explode(' ',$content);
     switch ($keywordsorder) {
-        case 0:	// Ordre d'apparition dans le texte
+        case 0:    // Ordre d'apparition dans le texte
             $keywords = array_unique($keywords);
             break;
-        case 1:	// Ordre de fréquence des mots
+        case 1:    // Ordre de fréquence des mots
             $keywords = array_count_values($keywords);
             asort($keywords);
             $keywords = array_keys($keywords);
             break;
-        case 2:	// Ordre inverse de la fréquence des mots
+        case 2:    // Ordre inverse de la fréquence des mots
             $keywords = array_count_values($keywords);
             arsort($keywords);
             $keywords = array_keys($keywords);
@@ -445,7 +444,6 @@ function news_createmeta_keywords($content)
     }
 }
 
-
 /**
  * Remove module's cache
  *
@@ -463,7 +461,7 @@ function news_updateCache()
     $tplfile_handler =& xoops_gethandler('tplfile');
     $tpllist = $tplfile_handler->find(null, null, null, $folder);
     $xoopsTpl = new XoopsTpl();
-    xoops_template_clear_module_cache($xoopsModule->getVar('mid'));			// Clear module's blocks cache
+    xoops_template_clear_module_cache($xoopsModule->getVar('mid'));            // Clear module's blocks cache
 
     // Remove cache for each page.
     foreach ($tpllist as $onetemplate) {
@@ -545,7 +543,6 @@ function news_is_admin_group()
         return false;
     }
 }
-
 
 /**
  * Verify if the current "user" is a bot or not

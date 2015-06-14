@@ -175,8 +175,8 @@ class MyXoopsObjectTree
     /**
      * Make options for a select box from
      *
-     * @param string $fieldName Name of the member variable from the
-     *  node objects that should be used as the title for the options.
+     * @param string $fieldName   Name of the member variable from the
+     *                            node objects that should be used as the title for the options.
      * @param string $selected    Value to display as selected
      * @param int    $key         ID of the object to display as the root of select options
      * @param string $ret         (reference to a string when called from outside) Result from previous recursions

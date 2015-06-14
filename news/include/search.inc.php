@@ -34,7 +34,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
     $restricted=news_getmoduleoption('restrictindex');
     $highlight = false;
-    $highlight=news_getmoduleoption('keywordshighlight');	// keywords highlighting
+    $highlight=news_getmoduleoption('keywordshighlight');    // keywords highlighting
 
     $module_handler =& xoops_gethandler('module');
     $module =& $module_handler->getByDirname('news');

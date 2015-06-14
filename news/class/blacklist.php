@@ -28,7 +28,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 
 class news_blacklist
 {
-    var $keywords;	// Holds keywords
+    var $keywords;    // Holds keywords
 
     /**
        * Get all the keywords

@@ -196,7 +196,7 @@ define('_AM_NEWS_ABOUT_DESCRIPTION',"Description: ");
 // Configuration check
 define('_AM_NEWS_CONFIG_CHECK',"Configuration Check");
 define('_AM_NEWS_CONFIG_PHP',"Minimum PHP required: %s (your version is %s)");
-define('_AM_NEWS_CONFIG_XOOPS',"Minimum XOOPS required:  %s (your version is %s)"); 
+define('_AM_NEWS_CONFIG_XOOPS',"Minimum XOOPS required:  %s (your version is %s)");
 define('_AM_NEWS_STATISTICS',"News Statistics");
 define('_AM_NEWS_THEREARE_STORIES',"There are <span class='red bold'>%s</span> News in the database");
 define('_AM_NEWS_THEREARE_STORIES_ONLINE',"There are <span class='red bold'>%s</span> News published in Home");

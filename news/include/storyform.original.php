@@ -158,7 +158,6 @@ if ($allowupload) {
     $sform->addElement(new XoopsFormText(_NW_SELECT_IMAGE_DESC, 'pictureinfo', 50, 255, $pictureinfo), false);
 }
 
-
 $option_tray = new XoopsFormElementTray(_OPTIONS,'<br />');
 //Set date of publish/expiration
 if ($approveprivilege) {
@@ -197,7 +196,6 @@ if (is_object($xoopsUser)) {
 $smiley_checkbox = new XoopsFormCheckBox('', 'nosmiley', $nosmiley);
 $smiley_checkbox->addOption(1, _DISABLESMILEY);
 $option_tray->addElement($smiley_checkbox);
-
 
 $sform->addElement($option_tray);
 

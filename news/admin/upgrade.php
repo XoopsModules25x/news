@@ -121,7 +121,6 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     $sql=sprintf('ALTER TABLE ' . $xoopsDB->prefix('mod_news_topics') . " ADD INDEX ( `menu` );");
     $result=$xoopsDB->queryF($sql);
 
-
     // At the end, if there was errors, show them or redirect user to the module's upgrade page
     if ($errors) {
         echo '<H1>' . _AM_NEWS_UPGRADEFAILED . '</H1>';

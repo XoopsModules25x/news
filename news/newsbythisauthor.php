@@ -106,11 +106,11 @@ $infotips=news_getmoduleoption('infotips');
 $thisuser = new XoopsUser($uid);
 
 switch ($xoopsModuleConfig['displayname']) {
-    case 1:		// Username
+    case 1:        // Username
         $authname=$thisuser->getVar('uname');
         break;
 
-    case 2:		// Display full name (if it is not empty)
+    case 2:        // Display full name (if it is not empty)
         if (xoops_trim($thisuser->getVar('name')) == '') {
             $authname=$thisuser->getVar('uname');
         } else {
@@ -118,7 +118,7 @@ switch ($xoopsModuleConfig['displayname']) {
         }
         break;
 
-    case 3:		// Nothing
+    case 3:        // Nothing
         $authname='';
         break;
 }
@@ -187,7 +187,7 @@ news_CreateMetaDatas();
 $meta_description = _MI_NEWSBYTHISAUTHOR . ' - ' .$authname . ' - ' . $xoopsModule->name('s');
 if (isset($xoTheme) && is_object($xoTheme)) {
     $xoTheme->addMeta( 'meta', 'description', $meta_description);
-} else {	// Compatibility for old Xoops versions
+} else {    // Compatibility for old Xoops versions
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 

@@ -62,13 +62,13 @@ define('_NW_NORATING',"No rating selected.");
 define('_NW_USERAVG',"Average user rating");
 define('_NW_DLRATINGS',"News rating (total votes: %s)");
 define('_NW_ONEVOTE',"1 vote");
-define('_NW_NUMVOTES',"%u votes");		// Warning
+define('_NW_NUMVOTES',"%u votes");        // Warning
 define('_NW_CANTVOTEOWN',"You cannot vote on the resource you submitted.<br />All votes are logged and reviewed.");
 define('_NW_VOTEDELETED',"Vote data deleted.");
 define('_NW_VOTEONCE',"Please do not vote for the same resource more than once.");
 define('_NW_VOTEAPPRE',"Your vote is appreciated.");
 define('_NW_THANKYOU',"Thank you for taking the time to vote here at %s"); // %s is your site name
-define('_NW_RSSFEED',"RSS feed");	// Warning, this text is included insided an Alt attribut (for a picture), so take care to the quotes
+define('_NW_RSSFEED',"RSS feed");    // Warning, this text is included insided an Alt attribut (for a picture), so take care to the quotes
 define('_NW_AUTHOR',"Author");
 define('_NW_META_DESCRIPTION',"Meta description");
 define('_NW_META_KEYWORDS',"Meta keywords");

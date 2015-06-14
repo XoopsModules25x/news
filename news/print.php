@@ -64,7 +64,6 @@ if ( $story->expired() != 0 && $story->expired() < time() ) {
     exit();
 }
 
-
 // Verify permissions
 $gperm_handler =& xoops_gethandler('groupperm');
 if (is_object($xoopsUser)) {
@@ -80,7 +79,6 @@ if (!$gperm_handler->checkRight('news_view', $story->topicid(), $groups, $xoopsM
 $xoops_meta_keywords='';
 $xoops_meta_description='';
 
-
 if (trim($story->keywords()) != '') {
     $xoops_meta_keywords = $story->keywords();
 } else {
@@ -92,7 +90,6 @@ if (trim($story->description())!='') {
 } else {
     $xoops_meta_description=strip_tags($story->title());
 }
-
 
 function PrintPage()
 {

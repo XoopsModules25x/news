@@ -67,8 +67,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         }
         $db =& XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
-        $use_forum 		= (isset($_POST['useforum']) && $_POST['useforum']==1) ? 1 : 0;
-        $use_extlinks 	= (isset($_POST['useextlinks']) && $_POST['useextlinks']==1) ? 1 : 0;
+        $use_forum        = (isset($_POST['useforum']) && $_POST['useforum']==1) ? 1 : 0;
+        $use_extlinks    = (isset($_POST['useextlinks']) && $_POST['useextlinks']==1) ? 1 : 0;
         // Retreive News module's ID
         $module_handler =& xoops_gethandler('module');
            $newsModule =& $module_handler->getByDirname('news');
@@ -78,18 +78,18 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $ams_mid = $AmsModule->getVar('mid');
 
         // Retreive AMS tables names
-        $ams_topics		= $xoopsDB->prefix('ams_topics');
-        $ams_articles	= $xoopsDB->prefix('ams_article');
-        $ams_text		= $xoopsDB->prefix('ams_text');
-        $ams_files		= $xoopsDB->prefix('ams_files');
-        $ams_links		= $xoopsDB->prefix('ams_link');
-        $ams_rating		= $xoopsDB->prefix('ams_rating');
+        $ams_topics        = $xoopsDB->prefix('ams_topics');
+        $ams_articles    = $xoopsDB->prefix('ams_article');
+        $ams_text        = $xoopsDB->prefix('ams_text');
+        $ams_files        = $xoopsDB->prefix('ams_files');
+        $ams_links        = $xoopsDB->prefix('ams_link');
+        $ams_rating        = $xoopsDB->prefix('ams_rating');
         // Retreive News tables names
         $news_stories_votedata = $xoopsDB->prefix('mod_news_stories_votedata');
         // Misc
         $comment_handler =& xoops_gethandler('comment');
         $notification_handler =& xoops_gethandler('notification');
-        $ams_news_topics=array();	// Key => AMS Id,  Value => News ID
+        $ams_news_topics=array();    // Key => AMS Id,  Value => News ID
 
         // The import by itself
         // Read topics by their order
@@ -177,7 +177,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                   $news->approved=$approved;
                   $news->store($approved);
                   echo '<br>&nbsp;&nbsp;This story was imported : '.$news->title();
-                  $news_newsid=$news->storyid();	// ********************
+                  $news_newsid=$news->storyid();    // ********************
 
                   // The files
                 $result4 = $db->query('SELECT * FROM '.$ams_files.' WHERE storyid='.$ams_newsid);
