@@ -1,9 +1,9 @@
 <?php
-// $Id: news_topics.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -24,36 +24,37 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-if (!defined('XOOPS_ROOT_PATH')) {
-    die('XOOPS root path not defined');
-}
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 function b_news_topics_show()
 {
-    global $storytopic;    // Don't know why this is used and where it's coming from ....
-    include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
-    include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newstopic.php';
-    include_once XOOPS_ROOT_PATH."/modules/news/class/tree.php";
+    global $storytopic; // Don't know why this is used and where it's coming from ....
+    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    include_once XOOPS_ROOT_PATH . "/modules/news/class/tree.php";
 
-    $jump = XOOPS_URL.'/modules/news/index.php?storytopic=';
-    $storytopic = !empty($storytopic) ? intval($storytopic) : 0;
+    $jump       = XOOPS_URL . '/modules/news/index.php?storytopic=';
+    $storytopic = !empty($storytopic) ? (int)($storytopic) : 0;
     $restricted = news_getmoduleoption('restrictindex');
 
-    $xt = new NewsTopic();
-    $allTopics = $xt->getAllTopics($restricted);
-    $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
-    $additional = " onchange='location=\"".$jump."\"+this.options[this.selectedIndex].value'";
+    $xt                 = new NewsTopic();
+    $allTopics          = $xt->getAllTopics($restricted);
+    $topic_tree         = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+    $additional         = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";
     $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
 
     return $block;
 }
 
+/**
+ * @param $options
+ */
 function b_news_topics_onthefly($options)
 {
-    $options = explode('|',$options);
-    $block = & b_news_topics_show($options);
+    $options = explode('|', $options);
+    $block   = & b_news_topics_show($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);
-    $tpl->display('db:news_block_topics.html');
+    $tpl->display('db:news_block_topics.tpl');
 }

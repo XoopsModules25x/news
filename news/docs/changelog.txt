@@ -1,11 +1,35 @@
 ======================
-1.70 Beta1 2 2013-09-26
+1.71 Beta 1 2015-07-01
+======================
+- moved all images, CSS, and JS files to /assets (mamba)
+- renamed .html Smarty templates to .tpl (mamba)
+- reversed "mod_" prefix on tables (mamba)
+- moved WideImage library to 257BasicPack's /xoops_lib/vendor/wideimage
+- added option to display PDF icon for each article (mamba)
+
+======================
+1.70 Beta 2 2013-09-26
 ======================
 - changed version to 1.70 to avoid confusion with xNews 1.68 (mamba)
 - removed languages other than English (cesag)
 - removed news.php plugin for Tag module (it is now /include/plugin.tag.php and will be picked by Tag directly) (mamba)
 - removed all closing PHP tags and did some PSR formatting (mamba)
 - removed Firefox 2 microformats (cesag)
+
+- changed / renamed define constants to be more XOOPS standard (zyspec)
+- changed template HTML rendering to be more XHTML compliant both templates and admin side (zyspec)
+- changed access method for newsBlacklist (previously news_blacklist) class to utilize xoops_load (zyspec)
+- changed some hard coded language strings to language files (zyspec)
+- updated WideImage class to version 11.02.19 (zyspec)
+- general code cleanup (spacing, indenting, comments, etc) (zyspec)
+- general HTML cleanup ('\n', styles, etc) (zyspec)
+- corrected multiple calls to 'newsStory' class with wrong case (zyspec)
+- changed loading method for registryfile, mimetype and blacklist classes (zyspec)
+- changed to use newsPageNav (extends core XoopsPageNav) and removed ./include/pagenav.php (zyspec)
+- changed from using custom mimetype definition to using XOOPS standard definitions (zyspec)
+- removed dependency on XoopsTopic and XoopsStory classes (zyspec)
+- removed defines for constants no longer used (zyspec)
+- removed editor support for older XOOPS versions (zyspec)
 
 
 ======================
@@ -244,7 +268,7 @@ Changelog
 > In your articles, you can now replace the syntax used to separate pages with
   a new one (thanks Bender)
   To be able to use it, you must, in the modules option, select the suitable
-  option ("Use enhanced page navigator ?")
+  option ("Use enhanced page navigator?")
   Then, to use it, inside your articles, you can separate pages like this
   (imagine this is the content or your article) :
 	Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
@@ -360,9 +384,9 @@ Corrections :
 > A constant was visible in the PDF's footer
 
 
-==================================================================*****
+==================================================================
 1.31 Final version
-==================================================================*****
+==================================================================
 Corrections :
 > A correction in the automatic generation of keywords and description has been made.
 > The generation of PDFs was updated with the CBB's code.
@@ -370,13 +394,13 @@ Corrections :
 > A bug in the topics permissions has been corrected
 > The module's seach was also corrected
 
-Finally, the module was succesfully tested with Php 5.0.4
+Finally, the module was successfully tested with Php 5.0.4
 Many tests were made with phpcoverage and xdebug to be sure that early all the code was treated by Php that's why I can affirm that the module is Php 5 compatible.
 
 
-======================*****
+======================
 1.31 RC2
-======================*****
+======================
 Corrections :
 > There was a bug int the "randon news" block when you was selecting to use only one or zero stories (thank you domifara)
 > I have, again, corrected a bug in the comments links (thank you mczolton)
@@ -406,9 +430,9 @@ Additions/Changes :
 > In the topics manager, by default the topics was created as a submenu of the "News" item, that's not the case anymore
 
 
-======================*****
+======================
 1.31 RC1
-======================*****
+======================
 Corrections :
 > News by this author, it was possible to call this page even if the module's option was desactivated
 > It was not possible to join zip files to the news
@@ -450,9 +474,9 @@ Additions/Changes :
   same number of news that the module's option called "Select the number of news items to display on top page"
 
 
-============================================**
+============================================
 1.3 Final
-============================================**
+============================================
 > Relative paths was changed to absolute paths inside the scripts
 > I have added a lang.diff file for the translators
 > The spotlight available in the "recent articles" and "top news" blocks can now use up to 8 different skins :
@@ -472,9 +496,9 @@ Additions/Changes :
 > A bug has been corrected for the htmlarea editor
 
 
-======================*****
+======================
 1.3 RC2
-======================*****
+======================
 Bugs corrections in :
 	- The form used to submit news
 		The article's title was limited to 80 characters whereas the db define 255 characters
@@ -500,12 +524,12 @@ Modifications :
 	- The spotlight look and feel has been modified (looks like "better").
 
 
-======================*****
+======================
 1.3 RC1
-======================*****
+======================
 > New module's options :
 	- New page and link and option "News by the same author"
-	- Two new options are availables for the article's page, "Show Previous and Next link ?" and "Show summary table ?"
+	- Two new options are availables for the article's page, "Show Previous and Next link?" and "Show summary table?"
 	  The summary table is linking recent published articles
 	- You can rate news
 	- Enable authors to edit their posts
@@ -575,9 +599,9 @@ Modifications :
 > For the Top articles and Recent News blocks, you can select between a classical view and a tabbed view. You can also use a Spotlight.
 
 
-======================**
+======================
 1.2.1
-======================**
+======================
 > Some important security holes have been corrected. That's why this version exists. Thanks goes to onokazu
 > The possibility to upload excel and word files have been removed.
   If you still need this "option", edit the file named :
@@ -601,23 +625,23 @@ Modifications :
   http://www.xoops.org/modules/newbb/viewtopic.php?topic_id=22849&forum=11
 
 
-======================*****
+======================
 1.2 Final
-======================*****
+======================
 > Added Spotlight Feature to Recent/Top News block
 > Added an icon below the article's title to show articles with attached files
 
-======================*****
+======================
 1.2 RC2
-======================*****
+======================
 > Fixed topic image alignment not saving
 > Fixed NewsStory::getAllPublished to work with backend.php
 > Fixed new topics navigation block to work properly with restricting topics
 
 
-======================*****
+======================
 1.2 RC1
-======================*****
+======================
 > Added ALT+S as submit option (include/storyform.inc.php, admin/storyform.inc.php)
 > Fixed warning about invalid index "anonpost" in submit form (include/storyform.inc.php)
 > Changed $_GET to $_GET and $_POST to $_POST

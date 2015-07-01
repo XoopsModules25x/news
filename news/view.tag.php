@@ -1,7 +1,7 @@
 <?php
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2005-2006 Hervé Thouzard                     //
+//                  Copyright (c) 2005-2006 Herve Thouzard                     //
 //                     <http://www.herve-thouzard.com/>                      //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -30,14 +30,14 @@
  * This page will display a list of articles which belong to a tag
  *
  * @package News
- * @author Hervé Thouzard of Hervé Thouzard
- * @copyright (c) Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author Herve Thouzard of Herve Thouzard
+ * @copyright (c) Herve Thouzard (http://www.herve-thouzard.com)
  */
-require_once 'header.php';
-require_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
+require_once __DIR__ . '/header.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 if (!news_getmoduleoption('tags')) {
     redirect_header('index.php', 2, _ERRORS);
-    exit();
+
 }
-require XOOPS_ROOT_PATH.'/modules/tag/view.tag.php';
+require XOOPS_ROOT_PATH . '/modules/tag/view.tag.php';

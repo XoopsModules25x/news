@@ -1,9 +1,9 @@
 <?php
-// $Id: pagenav.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -25,28 +25,29 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 // Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.myweb.ne.jp/, http://www.xoops.org/, http://jp.xoops.org/ //
-// Project: The XOOPS Project                                                //
+// URL: http://www.myweb.ne.jp/, http://xoops.org/, http://jp.xoops.org/ //
+// Project: XOOPS Project                                                    //
 // ------------------------------------------------------------------------- //
 
 /**
  * Class to facilitate navigation in a multi page document/list
  *
- * @package		kernel
- * @subpackage	util
+ * @package          kernel
+ * @subpackage       util
  *
- * @author		Kazumi Ono 	<onokazu@xoops.org>
- * @copyright	(c) 2000-2003 The Xoops Project - www.xoops.org
+ * @author           Kazumi Ono    <onokazu@xoops.org>
+ * @copyright        (c) XOOPS Project (http://xoops.org)
  */
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    die("XOOPS root path not defined");
-}
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
+/**
+ * Class XoopsPageNav
+ */
 class XoopsPageNav
 {
     /**#@+
-     * @access	private
+     * @access    private
      */
     var $total;
     var $perpage;
@@ -63,21 +64,22 @@ class XoopsPageNav
      * @param string $start_name    Name for "start" or "offset"
      * @param string $extra_arg     Additional arguments to pass in the URL
      **/
-    function XoopsPageNav($total_items, $items_perpage, $current_start, $start_name="start", $extra_arg="")
+    function XoopsPageNav($total_items, $items_perpage, $current_start, $start_name = "start", $extra_arg = "")
     {
-        $this->total = intval($total_items);
-        $this->perpage = intval($items_perpage);
-        $this->current = intval($current_start);
-        if ( $extra_arg != '' && ( substr($extra_arg, -5) != '&amp;' || substr($extra_arg, -1) != '&' ) ) {
+        $this->total   = (int)($total_items);
+        $this->perpage = (int)($items_perpage);
+        $this->current = (int)($current_start);
+        if ($extra_arg != '' && (substr($extra_arg, -5) != '&amp;' || substr($extra_arg, -1) != '&')) {
             $extra_arg .= '&amp;';
         }
-        $this->url = $_SERVER['PHP_SELF'].'?'.$extra_arg.trim($start_name).'=';
+        $this->url = $_SERVER['PHP_SELF'] . '?' . $extra_arg . trim($start_name) . '=';
     }
 
     /**
      * Create text navigation
      *
-     * @param  integer $offset
+     * @param integer $offset
+     *
      * @return string
      **/
     function renderNav($offset = 4)
@@ -90,27 +92,27 @@ class XoopsPageNav
         if ($total_pages > 1) {
             $prev = $this->current - $this->perpage;
             if ($prev >= 0) {
-                $ret .= '<a href="'.$this->url.$prev.'"><u>&laquo;</u></a> ';
+                $ret .= '<a href="' . $this->url . $prev . '"><u>&laquo;</u></a> ';
             }
-            $counter = 1;
-            $current_page = intval(floor(($this->current + $this->perpage) / $this->perpage));
+            $counter      = 1;
+            $current_page = (int)(floor(($this->current + $this->perpage) / $this->perpage));
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
-                    $ret .= '<b>('.$counter.')</b> ';
-                } elseif ( ($counter > $current_page-$offset && $counter < $current_page + $offset ) || $counter == 1 || $counter == $total_pages ) {
+                    $ret .= '<b>(' . $counter . ')</b> ';
+                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1 || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '... ';
                     }
-                    $ret .= '<a href="'.$this->url.(($counter - 1) * $this->perpage).'">'.$counter.'</a> ';
+                    $ret .= '<a href="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</a> ';
                     if ($counter == 1 && $current_page > 1 + $offset) {
                         $ret .= '... ';
                     }
                 }
-                $counter++;
+                ++$counter;
             }
             $next = $this->current + $this->perpage;
             if ($this->total > $next) {
-                $ret .= '<a href="'.$this->url.$next.'"><u>&raquo;</u></a> ';
+                $ret .= '<a href="' . $this->url . $next . '"><u>&raquo;</u></a> ';
             }
         }
 
@@ -120,32 +122,33 @@ class XoopsPageNav
     /**
      * Create a navigational dropdown list
      *
-     * @param  boolean $showbutton Show the "Go" button?
+     * @param boolean $showbutton Show the "Go" button?
+     *
      * @return string
      **/
     function renderSelect($showbutton = false)
     {
         if ($this->total < $this->perpage) {
-            return;
+            return null;
         }
         $total_pages = ceil($this->total / $this->perpage);
-        $ret = '';
+        $ret         = '';
         if ($total_pages > 1) {
-               $ret = '<form name="pagenavform">';
+            $ret = '<form name="pagenavform">';
             $ret .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
-            $counter = 1;
-            $current_page = intval(floor(($this->current + $this->perpage) / $this->perpage));
+            $counter      = 1;
+            $current_page = (int)(floor(($this->current + $this->perpage) / $this->perpage));
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
-                    $ret .= '<option value="'.$this->url.(($counter - 1) * $this->perpage).'" selected="selected">'.$counter.'</option>';
+                    $ret .= '<option value="' . $this->url . (($counter - 1) * $this->perpage) . '" selected="selected">' . $counter . '</option>';
                 } else {
-                    $ret .= '<option value="'.$this->url.(($counter - 1) * $this->perpage).'">'.$counter.'</option>';
+                    $ret .= '<option value="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</option>';
                 }
-                $counter++;
+                ++$counter;
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="'._GO.'" />';
+                $ret .= '&nbsp;<input type="submit" value="' . _GO . '" />';
             }
             $ret .= '</form>';
         }
@@ -156,37 +159,39 @@ class XoopsPageNav
     /**
      * Create an enhanced navigational dropdown list
      *
-     * @param  boolean $showbutton Show the "Go" button?
+     * @param boolean $showbutton Show the "Go" button?
+     * @param null    $titles
+     *
      * @return string
-     **/
+     */
     function renderEnhancedSelect($showbutton = false, $titles = null)
     {
         if ($this->total < $this->perpage) {
-            return;
+            return null;
         }
         $total_pages = ceil($this->total / $this->perpage);
-        $ret = '';
+        $ret         = '';
         if ($total_pages > 1) {
-               $ret = '<form name="pagenavform">';
+            $ret = '<form name="pagenavform">';
             $ret .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
-            $counter = 1;
-            $current_page = intval(floor(($this->current + $this->perpage) / $this->perpage));
+            $counter      = 1;
+            $current_page = (int)(floor(($this->current + $this->perpage) / $this->perpage));
             while ($counter <= $total_pages) {
-                if (isset($titles[$counter-1])) {
-                    $title = $titles[$counter-1];
+                if (isset($titles[$counter - 1])) {
+                    $title = $titles[$counter - 1];
                 } else {
                     $title = $counter;
                 }
                 if ($counter == $current_page) {
-                    $ret .= '<option value="'.$this->url.(($counter - 1) * $this->perpage).'" selected="selected">'.$title.'</option>';
+                    $ret .= '<option value="' . $this->url . (($counter - 1) * $this->perpage) . '" selected="selected">' . $title . '</option>';
                 } else {
-                    $ret .= '<option value="'.$this->url.(($counter - 1) * $this->perpage).'">'.$title.'</option>';
+                    $ret .= '<option value="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $title . '</option>';
                 }
-                $counter++;
+                ++$counter;
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="'._GO.'" />';
+                $ret .= '&nbsp;<input type="submit" value="' . _GO . '" />';
             }
             $ret .= '</form>';
         }
@@ -197,41 +202,42 @@ class XoopsPageNav
     /**
      * Create navigation with images
      *
-     * @param  integer $offset
+     * @param integer $offset
+     *
      * @return string
      **/
     function renderImageNav($offset = 4)
     {
         if ($this->total < $this->perpage) {
-            return;
+            return null;
         }
         $total_pages = ceil($this->total / $this->perpage);
-        $ret = '';
+        $ret         = '';
         if ($total_pages > 1) {
-               $ret = '<table><tr>';
+            $ret  = '<table><tr>';
             $prev = $this->current - $this->perpage;
             if ($prev >= 0) {
-                $ret .= '<td class="pagneutral"><a href="'.$this->url.$prev.'">&lt;</a></td><td><img src="'.XOOPS_URL.'/images/blank.gif" width="6" alt="" /></td>';
+                $ret .= '<td class="pagneutral"><a href="' . $this->url . $prev . '">&lt;</a></td><td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt="" /></td>';
             }
-            $counter = 1;
-            $current_page = intval(floor(($this->current + $this->perpage) / $this->perpage));
+            $counter      = 1;
+            $current_page = (int)(floor(($this->current + $this->perpage) / $this->perpage));
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
-                    $ret .= '<td class="pagact"><b>'.$counter.'</b></td>';
-                } elseif ( ($counter > $current_page-$offset && $counter < $current_page + $offset ) || $counter == 1 || $counter == $total_pages ) {
+                    $ret .= '<td class="pagact"><b>' . $counter . '</b></td>';
+                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1 || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
-                    $ret .= '<td class="paginact"><a href="'.$this->url.(($counter - 1) * $this->perpage).'">'.$counter.'</a></td>';
+                    $ret .= '<td class="paginact"><a href="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</a></td>';
                     if ($counter == 1 && $current_page > 1 + $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
                 }
-                $counter++;
+                ++$counter;
             }
             $next = $this->current + $this->perpage;
             if ($this->total > $next) {
-                $ret .= '<td><img src="'.XOOPS_URL.'/images/blank.gif" width="6" alt="" /></td><td class="pagneutral"><a href="'.$this->url.$next.'">&gt;</a></td>';
+                $ret .= '<td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt="" /></td><td class="pagneutral"><a href="' . $this->url . $next . '">&gt;</a></td>';
             }
             $ret .= '</tr></table>';
         }

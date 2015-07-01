@@ -1,9 +1,9 @@
 <?php
-// $Id: amsimport.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id: amsimport.php 9767 2012-07-02 06:02:52Z beckmi $
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -29,22 +29,22 @@
  *
  * This script will import topics, articles, files, links, ratings, comments and notifications from AMS 2.41
  *
- * @package News
- * @author Hervé Thouzard (http://www.herve-thouzard.com)
- * @copyright 2005, 2006 - Hervé Thouzard
- * @version 1.0
+ * @package   News
+ * @author    Herve Thouzard (http://www.herve-thouzard.com)
+ * @copyright 2005, 2006 - Herve Thouzard
+ * @version   1.0
  */
 
-include_once '../../../include/cp_header.php';
+include_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 xoops_cp_header();
-include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH.'/class/xoopstree.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
 
 if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
-    if (!isset($_POST['go']) ) {
+    if (!isset($_POST['go'])) {
         echo '<h1>Welcome to the AMS 2.41 import script</h1>';
         echo '<br /><br />Select the import options you wan to use :';
         echo "<form method='post' action='amsimport.php'>";
@@ -55,52 +55,52 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         echo "<br /><br />If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
     } else {
         // Launch the import
-        if (file_exists(XOOPS_ROOT_PATH.'/modules/AMS/language/'.$xoopsConfig['language'].'/main.php')) {
-            include_once XOOPS_ROOT_PATH.'/modules/AMS/language/'.$xoopsConfig['language'].'/main.php';
+        if (file_exists(XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/main.php')) {
+            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/main.php';
         } else {
-            include_once XOOPS_ROOT_PATH.'/modules/AMS/language/english/main.php';
+            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/main.php';
         }
-        if (file_exists(XOOPS_ROOT_PATH.'/modules/AMS/language/'.$xoopsConfig['language'].'/admin.php')) {
-            include_once XOOPS_ROOT_PATH.'/modules/AMS/language/'.$xoopsConfig['language'].'/admin.php';
+        if (file_exists(XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/admin.php')) {
+            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/admin.php';
         } else {
-            include_once XOOPS_ROOT_PATH.'/modules/AMS/language/english/admin.php';
+            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/admin.php';
         }
         $db =& XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
-        $use_forum        = (isset($_POST['useforum']) && $_POST['useforum']==1) ? 1 : 0;
-        $use_extlinks    = (isset($_POST['useextlinks']) && $_POST['useextlinks']==1) ? 1 : 0;
+        $use_forum    = (isset($_POST['useforum']) && $_POST['useforum'] == 1) ? 1 : 0;
+        $use_extlinks = (isset($_POST['useextlinks']) && $_POST['useextlinks'] == 1) ? 1 : 0;
         // Retreive News module's ID
         $module_handler =& xoops_gethandler('module');
-           $newsModule =& $module_handler->getByDirname('news');
-        $news_mid = $newsModule->getVar('mid');
+        $newsModule     =& $module_handler->getByDirname('news');
+        $news_mid       = $newsModule->getVar('mid');
         // Retreive AMS module's ID
-           $AmsModule =& $module_handler->getByDirname('AMS');
-        $ams_mid = $AmsModule->getVar('mid');
+        $AmsModule =& $module_handler->getByDirname('AMS');
+        $ams_mid   = $AmsModule->getVar('mid');
 
         // Retreive AMS tables names
-        $ams_topics        = $xoopsDB->prefix('ams_topics');
-        $ams_articles    = $xoopsDB->prefix('ams_article');
-        $ams_text        = $xoopsDB->prefix('ams_text');
-        $ams_files        = $xoopsDB->prefix('ams_files');
-        $ams_links        = $xoopsDB->prefix('ams_link');
-        $ams_rating        = $xoopsDB->prefix('ams_rating');
+        $ams_topics   = $xoopsDB->prefix('ams_topics');
+        $ams_articles = $xoopsDB->prefix('ams_article');
+        $ams_text     = $xoopsDB->prefix('ams_text');
+        $ams_files    = $xoopsDB->prefix('ams_files');
+        $ams_links    = $xoopsDB->prefix('ams_link');
+        $ams_rating   = $xoopsDB->prefix('ams_rating');
         // Retreive News tables names
-        $news_stories_votedata = $xoopsDB->prefix('mod_news_stories_votedata');
+        $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
-        $comment_handler =& xoops_gethandler('comment');
+        $comment_handler      =& xoops_gethandler('comment');
         $notification_handler =& xoops_gethandler('notification');
-        $ams_news_topics=array();    // Key => AMS Id,  Value => News ID
+        $ams_news_topics      = array(); // Key => AMS Id,  Value => News ID
 
         // The import by itself
         // Read topics by their order
-        $mytree = new XoopsTree($ams_topics,'topic_id','topic_pid');
-        $ams_topics = $mytree->getChildTreeArray(0,'weight');
+        $mytree     = new XoopsTree($ams_topics, 'topic_id', 'topic_pid');
+        $ams_topics = $mytree->getChildTreeArray(0, 'weight');
         foreach ($ams_topics as $one_amstopic) {
             // First we create the topic
-            $topicpid=0;
-            if ($one_amstopic['topic_pid']!=0) { // Search for its the parent
-                if (array_key_exists($one_amstopic['topic_pid'],$ams_news_topics)) {
-                    $topicpid=$ams_news_topics[$one_amstopic['topic_pid']];
+            $topicpid = 0;
+            if ($one_amstopic['topic_pid'] != 0) { // Search for its the parent
+                if (array_key_exists($one_amstopic['topic_pid'], $ams_news_topics)) {
+                    $topicpid = $ams_news_topics[$one_amstopic['topic_pid']];
                 }
             }
             $news_topic = new NewsTopic();
@@ -113,100 +113,103 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
             $news_topic->setTopicDescription('');
             $news_topic->setTopic_color('000000');
             $news_topic->store();
-            echo '<br>- The following topic was imported : '.$news_topic->topic_title();
-            $ams_topicid = $one_amstopic['topic_id'];
-            $news_topicid = $news_topic->topic_id();
+            echo '<br>- The following topic was imported : ' . $news_topic->topic_title();
+            $ams_topicid                   = $one_amstopic['topic_id'];
+            $news_topicid                  = $news_topic->topic_id();
             $ams_news_topics[$ams_topicid] = $news_topicid;
 
             // Then we insert all its articles
-            $result = $db->query('SELECT * FROM '.$ams_articles.' WHERE topicid='.$ams_topicid.' ORDER BY created');
-            while ( $article = $db->fetchArray($result) ) {
+            $result = $db->query('SELECT * FROM ' . $ams_articles . ' WHERE topicid=' . $ams_topicid . ' ORDER BY created');
+            while ($article = $db->fetchArray($result)) {
                 $ams_newsid = $article['storyid'];
 
                 // We search for the last version
-                $result2 = $db->query('SELECT * FROM '.$ams_text.' WHERE storyid='.$ams_newsid.' AND current=1');
+                $result2          = $db->query('SELECT * FROM ' . $ams_text . ' WHERE storyid=' . $ams_newsid . ' AND current=1');
                 $text_lastversion = $db->fetchArray($result2);
 
                 // We search for the number of votes
-                $result3 = $db->query('SELECT count(*) as cpt FROM '.$ams_rating.' WHERE storyid='.$ams_newsid);
-                $votes = $db->fetchArray($result3);
+                $result3 = $db->query('SELECT count(*) as cpt FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
+                $votes   = $db->fetchArray($result3);
 
                 // The links
-                $links='';
+                $links = '';
                 if ($use_extlinks) {
-                    $result7 = $db->query('SELECT * FROM '.$ams_links.' WHERE storyid='.$ams_newsid.' ORDER BY linkid');
-                    while ( $link = $db->fetchArray($result7) ) {
-                        if (trim($links)=='') {
-                            $links="\n\n"._AMS_NW_RELATEDARTICLES."\n\n";
+                    $result7 = $db->query('SELECT * FROM ' . $ams_links . ' WHERE storyid=' . $ams_newsid . ' ORDER BY linkid');
+                    while ($link = $db->fetchArray($result7)) {
+                        if (trim($links) == '') {
+                            $links = "\n\n" . _AMS_NW_RELATEDARTICLES . "\n\n";
                         }
-                        $links .= _AMS_NW_EXTERNALLINK.' [url='.$link['link_link'].']'.$link['link_title'].'[/url]'."\n";
+                        $links .= _AMS_NW_EXTERNALLINK . ' [url=' . $link['link_link'] . ']' . $link['link_title'] . '[/url]' . "\n";
                     }
                 }
 
                 // The forum
-                $forum='';
-                if ($use_forum && $one_amstopic['forum_id']!=0) {
-                    $forum = "\n\n".'[url='.XOOPS_URL.'/modules/newbb/viewforum.php?forum='.$one_amstopic['forum_id'].']'._AMS_AM_LINKEDFORUM.'[/url]'."\n";
+                $forum = '';
+                if ($use_forum && $one_amstopic['forum_id'] != 0) {
+                    $forum = "\n\n" . '[url=' . XOOPS_URL . '/modules/newbb/viewforum.php?forum=' . $one_amstopic['forum_id'] . ']' . _AMS_AM_LINKEDFORUM . '[/url]' . "\n";
                 }
 
                 // We create the story
                 $news = new NewsStory();
-                  $news->setUid($text_lastversion['uid']);
-                  $news->setTitle($article['title']);
-                  $news->created=$article['created'];
-                  $news->setPublished($article['published']);
-                  $news->setExpired($article['expired']);
-                  $news->setHostname($article['hostname']);
-                  $news->setNohtml($article['nohtml']);
-                  $news->setNosmiley($article['nosmiley']);
-                  $news->setHometext($text_lastversion['hometext']);
-                  $news->setBodytext($text_lastversion['bodytext'].$links.$forum);
-                  $news->setKeywords('');
-                  $news->setDescription('');
-                  $news->counter=$article['counter'];
-                  $news->setTopicId($news_topicid);
-                  $news->setIhome($article['ihome']);
-                  $news->setNotifyPub($article['notifypub']);
-                  $news->story_type=$article['story_type'];
-                  $news->setTopicdisplay($article['topicdisplay']);
-                  $news->setTopicalign($article['topicalign']);
-                  $news->setComments($article['comments']);
-                  $news->rating=$article['rating'];
-                  $news->votes=$votes['cpt'];
-                  $approved = $article['published']>0 ? true : false;
-                  $news->approved=$approved;
-                  $news->store($approved);
-                  echo '<br>&nbsp;&nbsp;This story was imported : '.$news->title();
-                  $news_newsid=$news->storyid();    // ********************
+                $news->setUid($text_lastversion['uid']);
+                $news->setTitle($article['title']);
+                $news->created = $article['created'];
+                $news->setPublished($article['published']);
+                $news->setExpired($article['expired']);
+                $news->setHostname($article['hostname']);
+                $news->setNohtml($article['nohtml']);
+                $news->setNosmiley($article['nosmiley']);
+                $news->setHometext($text_lastversion['hometext']);
+                $news->setBodytext($text_lastversion['bodytext'] . $links . $forum);
+                $news->setKeywords('');
+                $news->setDescription('');
+                $news->counter = $article['counter'];
+                $news->setTopicId($news_topicid);
+                $news->setIhome($article['ihome']);
+                $news->setNotifyPub($article['notifypub']);
+                $news->story_type = $article['story_type'];
+                $news->setTopicdisplay($article['topicdisplay']);
+                $news->setTopicalign($article['topicalign']);
+                $news->setComments($article['comments']);
+                $news->rating   = $article['rating'];
+                $news->votes    = $votes['cpt'];
+                $approved       = $article['published'] > 0 ? true : false;
+                $news->approved = $approved;
+                $news->store($approved);
+                echo '<br>&nbsp;&nbsp;This story was imported : ' . $news->title();
+                $news_newsid = $news->storyid(); // ********************
 
-                  // The files
-                $result4 = $db->query('SELECT * FROM '.$ams_files.' WHERE storyid='.$ams_newsid);
-                while ( $file = $db->fetchArray($result4) ) {
+                // The files
+                $result4 = $db->query('SELECT * FROM ' . $ams_files . ' WHERE storyid=' . $ams_newsid);
+                while ($file = $db->fetchArray($result4)) {
                     $sfile = new sFiles();
-                      $sfile->setFileRealName($file['filerealname']);
-                      $sfile->setStoryid($news_newsid);
-                      $sfile->date=$file['date'];
-                      $sfile->setMimetype($file['mimetype']);
-                      $sfile->setDownloadname($file['downloadname']);
-                      $sfile->counter=$file['counter'];
-                      $sfile->store();
-                      echo '<br>&nbsp;&nbsp;&nbsp;&nbsp;This file was imported : '.$sfile->getDownloadname();
-                      $news_fileid=$sfile->fileid;
+                    $sfile->setFileRealName($file['filerealname']);
+                    $sfile->setStoryid($news_newsid);
+                    $sfile->date = $file['date'];
+                    $sfile->setMimetype($file['mimetype']);
+                    $sfile->setDownloadname($file['downloadname']);
+                    $sfile->counter = $file['counter'];
+                    $sfile->store();
+                    echo '<br>&nbsp;&nbsp;&nbsp;&nbsp;This file was imported : ' . $sfile->getDownloadname();
+                    $news_fileid = $sfile->fileid;
                 }
 
                 // The ratings
-                $result5 = $db->query('SELECT * FROM '.$ams_rating.' WHERE storyid='.$ams_newsid);
-                while ( $ratings = $db->fetchArray($result5) ) {
-                    $result6 = $db->queryF('INSERT INTO '.$news_stories_votedata." (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (".$news_newsid.','.$ratings['ratinguser'].','.$ratings['rating'].','.$ratings['ratinghostname'].','.$ratings['ratingtimestamp'].')');
+                $result5 = $db->query('SELECT * FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
+                while ($ratings = $db->fetchArray($result5)) {
+                    $result6 = $db->queryF(
+                        'INSERT INTO ' . $news_stories_votedata . " (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (" . $news_newsid . ',' . $ratings['ratinguser'] . ','
+                        . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')'
+                    );
                 }
 
                 // The comments
                 $comments =& $comment_handler->getByItemId($ams_mid, $ams_newsid, 'ASC');
-                if (is_array($comments) && count($comments)>0) {
+                if (is_array($comments) && count($comments) > 0) {
                     foreach ($comments as $onecomment) {
                         $onecomment->setNew();
-                        $onecomment->setVar('com_modid',$news_mid);
-                        $onecomment->setVar('com_itemid',$news_newsid);
+                        $onecomment->setVar('com_modid', $news_mid);
+                        $onecomment->setVar('com_itemid', $news_newsid);
                         $comment_handler->insert($onecomment);
                     }
                 }
@@ -218,11 +221,11 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $criteria->add(new Criteria('not_itemid', $ams_newsid));
                 $criteria->setOrder('ASC');
                 $notifications = $notification_handler->getObjects($criteria);
-                if (is_array($notifications) && count($notifications)>0) {
+                if (is_array($notifications) && count($notifications) > 0) {
                     foreach ($notifications as $onenotification) {
                         $onenotification->setNew();
-                        $onenotification->setVar('not_modid',$news_mid);
-                        $onenotification->setVar('not_itemid',$news_newsid);
+                        $onenotification->setVar('not_modid', $news_mid);
+                        $onenotification->setVar('not_itemid', $news_newsid);
                         $notification_handler->insert($onenotification);
                     }
                 }
@@ -230,23 +233,23 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
             }
         }
         // Finally, import all the globals notifications
-           $criteria = new CriteriaCompo(new Criteria('not_modid', $ams_mid));
+        $criteria = new CriteriaCompo(new Criteria('not_modid', $ams_mid));
         $criteria->add(new Criteria('not_category', 'global'));
-           $criteria->setOrder('ASC');
-           $notifications = $notification_handler->getObjects($criteria);
-        if (is_array($notifications) && count($notifications)>0) {
+        $criteria->setOrder('ASC');
+        $notifications = $notification_handler->getObjects($criteria);
+        if (is_array($notifications) && count($notifications) > 0) {
             foreach ($notifications as $onenotification) {
                 $onenotification->setNew();
-                $onenotification->setVar('not_modid',$news_mid);
-                $onenotification->setVar('not_itemid',$news_newsid);
+                $onenotification->setVar('not_modid', $news_mid);
+                $onenotification->setVar('not_itemid', $news_newsid);
                 $notification_handler->insert($onenotification);
             }
         }
         unset($notifications);
-        echo "<p><a href='".XOOPS_URL."/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
+        echo "<p><a href='" . XOOPS_URL . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
     }
 } else {
-    redirect_header(XOOPS_URL.'/modules/news/index.php', 3, _NOPERM);
-    exit();
+    redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
+
 }
 xoops_cp_footer();

@@ -2,7 +2,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -24,43 +24,61 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    die('XOOPS root path not defined');
-}
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-if (file_exists(XOOPS_ROOT_PATH.'/modules/tag/blocks/block.php')) {
+if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
 
-function news_tag_block_cloud_show($options)
-{
-    require_once XOOPS_ROOT_PATH.'/modules/tag/blocks/block.php';
-    if (!isset($moduleDirName)) {
-        $moduleDirName = 'news';
+    /**
+     * @param $options
+     *
+     * @return array
+     */
+    function news_tag_block_cloud_show($options)
+    {
+        require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
+        if (!isset($moduleDirName)) {
+            $moduleDirName = 'news';
+        }
+
+        return tag_block_cloud_show($options, $moduleDirName);
     }
 
-    return tag_block_cloud_show($options, $moduleDirName);
-}
+    /**
+     * @param $options
+     *
+     * @return string
+     */
+    function news_tag_block_cloud_edit($options)
+    {
+        require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
 
-function news_tag_block_cloud_edit($options)
-{
-    require_once XOOPS_ROOT_PATH.'/modules/tag/blocks/block.php';
-
-    return tag_block_cloud_edit($options);
-}
-
-function news_tag_block_top_show($options)
-{
-    require_once XOOPS_ROOT_PATH.'/modules/tag/blocks/block.php';
-    if (!isset($moduleDirName)) {
-        $moduleDirName = 'news';
+        return tag_block_cloud_edit($options);
     }
 
-    return tag_block_top_show($options, $moduleDirName);
-}
+    /**
+     * @param $options
+     *
+     * @return array
+     */
+    function news_tag_block_top_show($options)
+    {
+        require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
+        if (!isset($moduleDirName)) {
+            $moduleDirName = 'news';
+        }
 
-function news_tag_block_top_edit($options)
-{
-    require_once XOOPS_ROOT_PATH.'/modules/tag/blocks/block.php';
+        return tag_block_top_show($options, $moduleDirName);
+    }
 
-    return tag_block_top_edit($options);
-}
+    /**
+     * @param $options
+     *
+     * @return string
+     */
+    function news_tag_block_top_edit($options)
+    {
+        require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
+
+        return tag_block_top_edit($options);
+    }
 }

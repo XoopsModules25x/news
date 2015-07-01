@@ -1,9 +1,9 @@
 <?php
-// $Id: makepdf.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -25,37 +25,37 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 // Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.myweb.ne.jp/, http://www.xoops.org/, http://jp.xoops.org/ //
-// Project: The XOOPS Project                                                //
+// URL: http://www.myweb.ne.jp/, http://xoops.org/, http://jp.xoops.org/ //
+// Project: XOOPS Project                                                    //
 // ------------------------------------------------------------------------- //
 
 error_reporting(0);
 
-include_once 'header.php';
-if (!is_file(XOOPS_ROOT_PATH.'/Frameworks/tcpdf/tcpdf.php')) {
+include_once __DIR__ . '/header.php';
+if (!is_file(XOOPS_PATH.'/vendor/tcpdf/tcpdf.php')) {
     redirect_header(XOOPS_URL.'/modules/news/index.php',3,'tcpdf_for_xoops not installed');
 }
 $myts =& MyTextSanitizer::getInstance();
 include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
-$storyid = isset($_GET['storyid']) ? intval($_GET['storyid']) : 0;
+$storyid = isset($_GET['storyid']) ? (int)($_GET['storyid']) : 0;
 
-if (empty($storyid)) {
+if (empty($storyid))  {
     redirect_header(XOOPS_URL.'/modules/news/index.php',2,_NW_NOSTORY);
-    exit();
+
 }
 
 $article = new NewsStory($storyid);
 // Not yet published
 if ( $article->published() == 0 || $article->published() > time() ) {
     redirect_header(XOOPS_URL.'/modules/news/index.php', 2, _NW_NOSTORY);
-    exit();
+
 }
 
 // Expired
 if ( $article->expired() != 0 && $article->expired() < time() ) {
     redirect_header(XOOPS_URL.'/modules/news/index.php', 2, _NW_NOSTORY);
-    exit();
+
 }
 
 $gperm_handler =& xoops_gethandler('groupperm');
@@ -66,7 +66,7 @@ if (is_object($xoopsUser)) {
 }
 if (!$gperm_handler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL.'/modules/news/index.php', 3, _NOPERM);
-    exit();
+
 }
 
 $dateformat = news_getmoduleoption('dateformat');
@@ -95,13 +95,16 @@ $puffer='<br /><br />';
 
 //create the A4-PDF...
 $pdf_config['slogan'] = XOOPS_URL.' - '.$xoopsConfig['sitename'].' - '.$xoopsConfig['slogan'];
-require_once (XOOPS_ROOT_PATH.'/Frameworks/tcpdf/tcpdf.php');
-if (is_file(XOOPS_ROOT_PATH.'/Frameworks/tcpdf/config/lang/'.$xoopsConfig['language'].'.php')) {
-    require_once( XOOPS_ROOT_PATH.'/Frameworks/tcpdf/config/lang/'.$xoopsConfig['language'].'.php');
+require_once (XOOPS_PATH.'/vendor/tcpdf/tcpdf.php');
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
+// load $localLanguageOptions array with language specific definitions and apply
+if (is_file(XOOPS_PATH.'/vendor/tcpdf/config/lang/'.$xoopsConfig['language'].'.php')) {
+    require_once( XOOPS_PATH.'/vendor/tcpdf/config/lang/'.$xoopsConfig['language'].'.php');
 } else {
-    require_once( XOOPS_ROOT_PATH.'/Frameworks/tcpdf/config/lang/english.php');
+    require_once( XOOPS_PATH.'/vendor/tcpdf/config/lang/english.php');
 }
-$pdf=new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
+$pdf->setLanguageArray($localLanguageOptions);
+
 $pdf->SetCreator(PDF_CREATOR);
 
 $pdf->SetTitle($pdf_data['title']);
@@ -115,19 +118,25 @@ $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_SUB, '', PDF_FONT_SIZE_SUB));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->setFooterData($tc=array(0,64,0), $lc=array(0,64,128));
-$pdf->SetHeaderData('','5',$pdf_config['slogan']);
+//$pdf->SetHeaderData('','5',$pdf_config['slogan']);
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $pdf_config['slogan'], array(0,64,255), array(0,64,128));
+//set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
 $pdf->Open();
 //First page
 $pdf->AddPage();
-$pdf->SetXY(24,15);
+$pdf->SetXY(24,25);
 $pdf->SetTextColor(10,60,160);
 $pdf->SetFont(PDF_FONT_NAME_TITLE,PDF_FONT_STYLE_TITLE,PDF_FONT_SIZE_TITLE);
 $pdf->WriteHTML($pdf_data['title'].' - '.$pdf_data['subtitle'],K_TITLE_MAGNIFICATION);
-$pdf->Line(25,20,190,20);
+//$pdf->Line(25,20,190,20);
 if ($pdf_data['subsubtitle'] != '') {
-    $pdf->WriteHTML($puff,K_XSMALL_RATIO);
-    $pdf->SetFont(PDF_FONT_NAME_SUBSUB,PDF_FONT_STYLE_SUBSUB,PDF_FONT_SIZE_SUBSUB);
-    $pdf->WriteHTML($pdf_data['subsubtitle'],'1');
+    $pdf->WriteHTML($puff, K_XSMALL_RATIO);
+    $pdf->SetFont(PDF_FONT_NAME_SUBSUB, PDF_FONT_STYLE_SUBSUB, PDF_FONT_SIZE_SUBSUB);
+    $pdf->WriteHTML($pdf_data['subsubtitle'], '1');
 }
 $pdf->WriteHTML($puff,'0.2');
 $pdf->SetFont(PDF_FONT_NAME_DATA,PDF_FONT_STYLE_DATA,PDF_FONT_SIZE_DATA);

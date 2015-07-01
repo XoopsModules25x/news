@@ -1,7 +1,7 @@
 <?php
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2005-2006 Hervé Thouzard                     //
+//                  Copyright (c) 2005-2006 Herve Thouzard                     //
 //                     <http://www.herve-thouzard.com/>                      //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -30,52 +30,57 @@
  * This page is used to display a maps of the topics (with articles count)
  *
  * @package News
- * @author Hervé Thouzard
- * @copyright (c) Hervé Thouzard - http://www.herve-thouzard.com
+ * @author Herve Thouzard
+ * @copyright (c) Herve Thouzard - http://www.herve-thouzard.com
  */
-include_once '../../mainfile.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
+include dirname(dirname(__DIR__)) . '/mainfile.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
-$xoopsOption['template_main'] = 'news_topics_directory.html';
-include_once XOOPS_ROOT_PATH.'/header.php';
+$xoopsOption['template_main'] = 'news_topics_directory.tpl';
+include_once XOOPS_ROOT_PATH . '/header.php';
 
 $myts =& MyTextSanitizer::getInstance();
 
 $newscountbytopic = $tbl_topics = array();
-$perms = '';
-$xt = new NewsTopic();
-$restricted = news_getmoduleoption('restrictindex');
+$perms            = '';
+$xt               = new NewsTopic();
+$restricted       = news_getmoduleoption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
     $module_handler =& xoops_gethandler('module');
-    $newsModule =& $module_handler->getByDirname('news');
-    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler =& xoops_gethandler('groupperm');
-    $topics = $gperm_handler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
-    if (count($topics) >0 ) {
-           $topics = implode(',', $topics);
-           $perms = ' AND topic_id IN ('.$topics.') ';
+    $newsModule     =& $module_handler->getByDirname('news');
+    $groups         = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $gperm_handler  =& xoops_gethandler('groupperm');
+    $topics         = $gperm_handler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+    if (count($topics) > 0) {
+        $topics = implode(',', $topics);
+        $perms  = ' AND topic_id IN (' . $topics . ') ';
     } else {
         return '';
     }
 }
-$topics_arr = $xt->getChildTreeArray(0, 'topic_title', $perms);
+$topics_arr       = $xt->getChildTreeArray(0, 'topic_title', $perms);
 $newscountbytopic = $xt->getNewsCountByTopic();
 if (is_array($topics_arr) && count($topics_arr)) {
     foreach ($topics_arr as $onetopic) {
         $count = 0;
-        if (array_key_exists($onetopic['topic_id'],$newscountbytopic)) {
+        if (array_key_exists($onetopic['topic_id'], $newscountbytopic)) {
             $count = $newscountbytopic[$onetopic['topic_id']];
         }
         if ($onetopic['topic_pid'] != 0) {
-            $onetopic['prefix'] = str_replace('.','-',$onetopic['prefix']) . '&nbsp;';
+            $onetopic['prefix'] = str_replace('.', '-', $onetopic['prefix']) . '&nbsp;';
         } else {
-            $onetopic['prefix'] = str_replace('.','',$onetopic['prefix']);
+            $onetopic['prefix'] = str_replace('.', '', $onetopic['prefix']);
         }
 
-        $tbl_topics[] = array('id'=>$onetopic['topic_id'], 'news_count'=>$count, 'topic_color'=>'#'.$onetopic['topic_color'], 'prefix'=>$onetopic['prefix'], 'title'=>$myts->displayTarea($onetopic['topic_title']));
+        $tbl_topics[] = array('id'          => $onetopic['topic_id'],
+                              'news_count'  => $count,
+                              'topic_color' => '#' . $onetopic['topic_color'],
+                              'prefix'      => $onetopic['prefix'],
+                              'title'       => $myts->displayTarea($onetopic['topic_title'])
+        );
     }
 }
 $xoopsTpl->assign('topics', $tbl_topics);
@@ -90,9 +95,9 @@ news_CreateMetaDatas();
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_TOPICS_DIRECTORY);
 $meta_description = _AM_NEWS_TOPICS_DIRECTORY . ' - ' . $xoopsModule->name('s');
 if (isset($xoTheme) && is_object($xoTheme)) {
-    $xoTheme->addMeta( 'meta', 'description', $meta_description);
-} else {    // Compatibility for old Xoops versions
+    $xoTheme->addMeta('meta', 'description', $meta_description);
+} else { // Compatibility for old Xoops versions
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 
-include_once XOOPS_ROOT_PATH.'/footer.php';
+include_once XOOPS_ROOT_PATH . '/footer.php';

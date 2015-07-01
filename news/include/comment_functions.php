@@ -1,9 +1,9 @@
 <?php
-// $Id: comment_functions.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -26,17 +26,21 @@
 //  ------------------------------------------------------------------------ //
 
 // comment callback functions
-if (!defined('XOOPS_ROOT_PATH')) {
-    die("XOOPS root path not defined");
-}
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
+/**
+ * @param $story_id
+ * @param $total_num
+ *
+ * @return bool
+ */
 function news_com_update($story_id, $total_num)
 {
-    $story_id = intval($story_id);
-    $total_num = intval($total_num);
-    $article = new NewsStory($story_id);
+    $story_id  = (int)($story_id);
+    $total_num = (int)($total_num);
+    $article   = new NewsStory($story_id);
     if (!$article->updateComments($total_num)) {
         return false;
     }
@@ -44,6 +48,9 @@ function news_com_update($story_id, $total_num)
     return true;
 }
 
+/**
+ * @param $comment
+ */
 function news_com_approve(&$comment)
 {
     // notification mail here

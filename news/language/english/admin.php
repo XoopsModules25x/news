@@ -162,7 +162,7 @@ define('_AM_NEWS_TOPIC_COLOR',"Topics's color");
 define('_AM_NEWS_COLOR',"Color");
 define('_AM_NEWS_REMOVE_BR',"Convert the html &lt;br&gt; tag to a new line?");
 // Added in 1.3 RC2
-define('_AM_NEWS_PLEASE_UPGRADE',"<a href='upgrade.php'><font color='#FF0000'>Please upgrade the module!</font></a>");
+define('_AM_NEWS_PLEASE_UPGRADE',"<a href='upgrade.php'><span style='color:#FF0000'>Please upgrade the module!</span></a>");
 // Added in version 1.50
 define('_AM_NEWS_NEWSLETTER_HEADER',"Header");
 define('_AM_NEWS_NEWSLETTER_FOOTER',"Footer");

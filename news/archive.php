@@ -1,9 +1,9 @@
 <?php
-// $Id: archive.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id: archive.php 9572 2012-05-22 11:13:40Z beckmi $
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -34,7 +34,7 @@
  *
  * @package News
  * @author Xoops Modules Dev Team
- * @copyright	(c) The Xoops Project - www.xoops.org
+ * @copyright	(c) XOOPS Project (http://xoops.org)
  *
  * Parameters received by this page :
  * @page_param 	int		year	Optional, the starting year
@@ -75,29 +75,42 @@
 # [11-may-2001] Kenneth Lee - http://www.nexgear.com/
 ######################################################################
 
-include_once '../../mainfile.php';
-$xoopsOption['template_main'] = 'news_archive.html';
-include_once XOOPS_ROOT_PATH.'/header.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH.'/language/'.$xoopsConfig['language'].'/calendar.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
-$lastyear = 0;
+include dirname(dirname(__DIR__)) . '/mainfile.php';
+$xoopsOption['template_main'] = 'news_archive.tpl';
+include_once XOOPS_ROOT_PATH . '/header.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+include_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+$lastyear  = 0;
 $lastmonth = 0;
 
-$months_arr = array(1 => _CAL_JANUARY, 2 => _CAL_FEBRUARY, 3 => _CAL_MARCH, 4 => _CAL_APRIL, 5 => _CAL_MAY, 6 => _CAL_JUNE, 7 => _CAL_JULY, 8 => _CAL_AUGUST, 9 => _CAL_SEPTEMBER, 10 => _CAL_OCTOBER, 11 => _CAL_NOVEMBER, 12 => _CAL_DECEMBER);
+$months_arr = array(
+    1  => _CAL_JANUARY,
+    2  => _CAL_FEBRUARY,
+    3  => _CAL_MARCH,
+    4  => _CAL_APRIL,
+    5  => _CAL_MAY,
+    6  => _CAL_JUNE,
+    7  => _CAL_JULY,
+    8  => _CAL_AUGUST,
+    9  => _CAL_SEPTEMBER,
+    10 => _CAL_OCTOBER,
+    11 => _CAL_NOVEMBER,
+    12 => _CAL_DECEMBER
+);
 
-$fromyear = (isset($_GET['year'])) ? intval ($_GET['year']): 0;
-$frommonth = (isset($_GET['month'])) ? intval($_GET['month']) : 0;
+$fromyear  = (isset($_GET['year'])) ? (int)($_GET['year']) : 0;
+$frommonth = (isset($_GET['month'])) ? (int)($_GET['month']) : 0;
 
-$pgtitle='';
+$pgtitle = '';
 if ($fromyear && $frommonth) {
-    $pgtitle=sprintf(" - %d - %d",$fromyear,$frommonth);
+    $pgtitle = sprintf(" - %d - %d", $fromyear, $frommonth);
 }
-$infotips=news_getmoduleoption('infotips');
-$restricted=news_getmoduleoption('restrictindex');
-$dateformat=news_getmoduleoption('dateformat');
+$infotips   = news_getmoduleoption('infotips');
+$restricted = news_getmoduleoption('restrictindex');
+$dateformat = news_getmoduleoption('dateformat');
 if ($dateformat == '') {
-    $dateformat='m';
+    $dateformat = 'm';
 }
 $myts =& MyTextSanitizer::getInstance();
 $xoopsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars(_NW_NEWSARCHIVES) . $pgtitle . ' - ' . $xoopsModule->name('s'));
@@ -111,37 +124,39 @@ if (is_object($xoopsUser)) {
         $useroffset = $xoopsConfig['default_TZ'];
     }
 }
-$result = $xoopsDB->query('SELECT published FROM '.$xoopsDB->prefix('mod_news_stories').' WHERE (published>0 AND published<='.time().') AND (expired = 0 OR expired <= '.time().') ORDER BY published DESC');
+$result = $xoopsDB->query(
+    'SELECT published FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired <= ' . time() . ') ORDER BY published DESC'
+);
 if (!$result) {
     echo _ERRORS;
     exit();
 } else {
-    $years = array();
+    $years  = array();
     $months = array();
-    $i = 0;
+    $i      = 0;
     while (list($time) = $xoopsDB->fetchRow($result)) {
         $time = formatTimestamp($time, 'mysql', $useroffset);
-            if (preg_match("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/", $time, $datetime)) {
-                $this_year  = intval($datetime[1]);
-                $this_month = intval($datetime[2]);
+        if (preg_match("/([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/", $time, $datetime)) {
+            $this_year  = (int)($datetime[1]);
+            $this_month = (int)($datetime[2]);
             if (empty($lastyear)) {
                 $lastyear = $this_year;
             }
             if ($lastmonth == 0) {
-                $lastmonth = $this_month;
+                $lastmonth                    = $this_month;
                 $months[$lastmonth]['string'] = $months_arr[$lastmonth];
                 $months[$lastmonth]['number'] = $lastmonth;
             }
             if ($lastyear != $this_year) {
                 $years[$i]['number'] = $lastyear;
                 $years[$i]['months'] = $months;
-                $months = array();
-                $lastmonth = 0;
-                $lastyear = $this_year;
-                $i++;
+                $months              = array();
+                $lastmonth           = 0;
+                $lastyear            = $this_year;
+                ++$i;
             }
             if ($lastmonth != $this_month) {
-                $lastmonth = $this_month;
+                $lastmonth                    = $this_month;
                 $months[$lastmonth]['string'] = $months_arr[$lastmonth];
                 $months[$lastmonth]['number'] = $lastmonth;
             }
@@ -164,26 +179,30 @@ if ($fromyear != 0 && $frommonth != 0) {
     // must adjust the selected time to server timestamp
     $timeoffset = $useroffset - $xoopsConfig['server_TZ'];
     $monthstart = mktime(0 - $timeoffset, 0, 0, $frommonth, 1, $fromyear);
-    $monthend = mktime(23 - $timeoffset, 59, 59, $frommonth + 1, 0, $fromyear);
-    $monthend = ($monthend > time()) ? time() : $monthend;
+    $monthend   = mktime(23 - $timeoffset, 59, 59, $frommonth + 1, 0, $fromyear);
+    $monthend   = ($monthend > time()) ? time() : $monthend;
 
-    $count=0;
-    $news = new NewsStory();
+    $count      = 0;
+    $news       = new NewsStory();
     $storyarray = $news->getArchive($monthstart, $monthend, $restricted);
-    $count=count($storyarray);
-    if (is_array($storyarray) && $count>0) {
+    $count      = count($storyarray);
+    if (is_array($storyarray) && $count > 0) {
         foreach ($storyarray as $article) {
-            $story = array();
-            $htmltitle='';
-            if ($infotips>0) {
+            $story     = array();
+            $htmltitle = '';
+            if ($infotips > 0) {
                 $story['infotips'] = news_make_infotips($article->hometext());
-                $htmltitle=' title="'.$story['infotips'].'"';
+                $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
-            $story['title'] = "<a href='".XOOPS_URL.'/modules/news/index.php?storytopic='.$article->topicid()."'>".$article->topic_title()."</a>: <a href='".XOOPS_URL."/modules/news/article.php?storyid=".$article->storyid()."'".$htmltitle.">".$article->title()."</a>";
-            $story['counter'] = $article->counter();
-            $story['date'] = formatTimestamp($article->published(),$dateformat,$useroffset);
-            $story['print_link'] = XOOPS_URL.'/modules/news/print.php?storyid='.$article->storyid();
-            $story['mail_link'] = 'mailto:?subject='.sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']).'&amp;body='.sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']).':  '.XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/article.php?storyid='.$article->storyid();
+            $story['title']      = "<a href='" . XOOPS_URL . '/modules/news/index.php?storytopic=' . $article->topicid() . "'>" . $article->topic_title() . "</a>: <a href='" . XOOPS_URL
+                . "/modules/news/article.php?storyid=" . $article->storyid() . "'" . $htmltitle . ">" . $article->title() . "</a>";
+            $story['counter']    = $article->counter();
+            $story['date']       = formatTimestamp($article->published(), $dateformat, $useroffset);
+            $story['print_link'] = XOOPS_URL . '/modules/news/print.php?storyid=' . $article->storyid();
+            $story['mail_link']
+                                 =
+                'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/'
+                . $xoopsModule->dirname() . '/article.php?storyid=' . $article->storyid();
             $xoopsTpl->append('stories', $story);
         }
     }
@@ -197,8 +216,8 @@ if ($fromyear != 0 && $frommonth != 0) {
 $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 
 /**
-* Create the meta datas
-*/
+ * Create the meta datas
+ */
 news_CreateMetaDatas();
 
-include_once XOOPS_ROOT_PATH.'/footer.php';
+include_once XOOPS_ROOT_PATH . '/footer.php';

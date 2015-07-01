@@ -169,7 +169,10 @@ With a very powerful permissions management, you can create groups authorized to
 define('_MI_NEWS_SHARE_ME',"Display share icons?");
 define('_MI_NEWS_SHARE_ME_DSC',"Share icons to Facebook, Twitter, Google Plus");
 define('_MI_NEWS_SHOWICONS',"Display item icons?");
-define('_MI_NEWS_SHOWICONS_DSC',"Display icons for print, PDF and email at the bottom of each article");
+define('_MI_NEWS_SHOWICONS_DSC',"Display icons for print and email at the bottom of each article");
 //1.67
 define('_MI_NEWS_FACEBOOKCOMMENTS',"Use Facebook comments?");
 define('_MI_NEWS_FACEBOOKCOMMENTS_DSC',"Let your users use Facebook to add comments to your articles");
+
+define('_MI_NEWS_SHOWICONS_PDF',"Display PDF icon for non-registered users?");
+define('_MI_NEWS_SHOWICONS_PDF_DSC',"Display PDF icon at the bottom of each article for Anonymous users");

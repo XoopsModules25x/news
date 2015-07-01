@@ -1,6 +1,6 @@
 <?php
 //  ------------------------------------------------------------------------ //
-//                  Copyright (c) 2005-2006 Hervé Thouzard                     //
+//                  Copyright (c) 2005-2006 Herve Thouzard                     //
 //                     <http://www.herve-thouzard.com/>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -22,27 +22,28 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-if (!defined('XOOPS_ROOT_PATH')) {
-    die('XOOPS root path not defined');
-}
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
+/**
+ * Class news_blacklist
+ */
 class news_blacklist
 {
-    var $keywords;    // Holds keywords
+    var $keywords; // Holds keywords
 
     /**
-       * Get all the keywords
-      */
+     * Get all the keywords
+     */
     function getAllKeywords()
     {
-        $ret = $tbl_black_list = array();
-        $myts =& MyTextSanitizer::getInstance();
-        $filename = XOOPS_UPLOAD_PATH.'/news_black_list.php';
+        $ret      = $tbl_black_list = array();
+        $myts     =& MyTextSanitizer::getInstance();
+        $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
             include_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
                 if (xoops_trim($onekeyword) != '') {
-                    $onekeyword = $myts->htmlSpecialChars($onekeyword);
+                    $onekeyword       = $myts->htmlSpecialChars($onekeyword);
                     $ret[$onekeyword] = $onekeyword;
                 }
             }
@@ -54,8 +55,8 @@ class news_blacklist
     }
 
     /**
-      * Remove one or many keywords from the list
-      */
+     * Remove one or many keywords from the list
+     */
     function delete($keyword)
     {
         if (is_array($keyword)) {
@@ -72,8 +73,8 @@ class news_blacklist
     }
 
     /**
-      * Add one or many keywords
-      */
+     * Add one or many keywords
+     */
     function addkeywords($keyword)
     {
         $myts =& MyTextSanitizer::getInstance();
@@ -93,43 +94,45 @@ class news_blacklist
     }
 
     /**
-      * Remove, from a list, all the blacklisted words
-      */
+     * Remove, from a list, all the blacklisted words
+     */
     function remove_blacklisted($keywords)
     {
-        $ret = array();
+        $ret       = array();
         $tmp_array = array_values($this->keywords);
         foreach ($keywords as $onekeyword) {
             $add = true;
             foreach ($tmp_array as $onebanned) {
-                if (preg_match("/".$onebanned."/i", $onekeyword)) {
+                if (preg_match("/" . $onebanned . "/i", $onekeyword)) {
                     $add = false;
                     break;
                 }
             }
-            if($add) $ret[] = $onekeyword;
+            if ($add) {
+                $ret[] = $onekeyword;
+            }
         }
 
         return $ret;
     }
 
     /**
-      * Save keywords
-      */
+     * Save keywords
+     */
     function store()
     {
-        $filename = XOOPS_UPLOAD_PATH.'/news_black_list.php';
+        $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
             unlink($filename);
         }
-        $fd = fopen($filename,'w') or die('Error unable to create the blacklist file');
-        fputs($fd,"<?php\n");
-        fputs($fd,'$tbl_black_list=array('."\n");
+        $fd = fopen($filename, 'w') || die('Error unable to create the blacklist file');
+        fputs($fd, "<?php\n");
+        fputs($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {
-            fputs($fd,"\"".$onekeyword."\",\n");
+            fputs($fd, "\"" . $onekeyword . "\",\n");
         }
-        fputs($fd,"'');\n");
-        fputs($fd,"?>\n");
+        fputs($fd, "'');\n");
+        fputs($fd, "?>\n");
         fclose($fd);
     }
 }

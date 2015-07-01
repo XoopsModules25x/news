@@ -1,9 +1,9 @@
 <?php
-// $Id: notification.inc.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -24,29 +24,33 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-if (!defined('XOOPS_ROOT_PATH')) {
-    die("XOOPS root path not defined");
-}
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
+/**
+ * @param $category
+ * @param $item_id
+ *
+ * @return null
+ */
 function news_notify_iteminfo($category, $item_id)
 {
     if ($category == 'global') {
         $item['name'] = '';
-        $item['url'] = '';
+        $item['url']  = '';
 
         return $item;
     }
 
     global $xoopsDB;
 
-    if ($category=='story') {
+    if ($category == 'story') {
         // Assume we have a valid story id
-        $sql = 'SELECT title FROM '.$xoopsDB->prefix('mod_news_stories') . ' WHERE storyid = ' . intval($item_id);
+        $sql    = 'SELECT title FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE storyid = ' . (int)($item_id);
         $result = $xoopsDB->query($sql);
         if ($result) {
             $result_array = $xoopsDB->fetchArray($result);
             $item['name'] = $result_array['title'];
-            $item['url'] = XOOPS_URL . '/modules/news/article.php?storyid=' . intval($item_id);
+            $item['url']  = XOOPS_URL . '/modules/news/article.php?storyid=' . (int)($item_id);
 
             return $item;
         } else {
@@ -55,17 +59,19 @@ function news_notify_iteminfo($category, $item_id)
     }
 
     // Added by Lankford on 2007/3/23
-    if ($category=='category') {
-        $sql = 'SELECT title FROM ' . $xoopsDB->prefix('mod_news_topics') . ' WHERE topic_id = '.intval($item_id);
+    if ($category == 'category') {
+        $sql    = 'SELECT title FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE topic_id = ' . (int)($item_id);
         $result = $xoopsDB->query($sql);
         if ($result) {
             $result_array = $xoopsDB->fetchArray($result);
             $item['name'] = $result_array['topic_id'];
-            $item['url'] = XOOPS_URL . '/modules/news/index.php?storytopic=' . intval($item_id);
+            $item['url']  = XOOPS_URL . '/modules/news/index.php?storytopic=' . (int)($item_id);
 
             return $item;
         } else {
             return null;
         }
     }
+
+    return null;
 }

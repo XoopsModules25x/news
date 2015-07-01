@@ -1,8 +1,8 @@
 #
-# Table structure for table `mod_news_stories`
+# Table structure for table `news_stories`
 #
 
-CREATE TABLE mod_news_stories (
+CREATE TABLE news_stories (
   storyid int(8) unsigned NOT NULL auto_increment,
   uid int(5) unsigned NOT NULL default '0',
   title varchar(255) NOT NULL default '',
@@ -40,10 +40,10 @@ CREATE TABLE mod_news_stories (
 ) ENGINE=MyISAM;
 
 #
-# Table structure for table `mod_news_stories_files`
+# Table structure for table `news_stories_files`
 #
 
-CREATE TABLE mod_news_stories_files (
+CREATE TABLE news_stories_files (
   fileid int(8) unsigned NOT NULL auto_increment,
   filerealname varchar(255) NOT NULL default '',
   storyid int(8) unsigned NOT NULL default '0',
@@ -56,10 +56,10 @@ CREATE TABLE mod_news_stories_files (
 ) ENGINE=MyISAM;
 
 #
-# Table structure for table `mod_news_topics`
+# Table structure for table `news_topics`
 #
 
-CREATE TABLE mod_news_topics (
+CREATE TABLE news_topics (
   topic_id smallint(4) unsigned NOT NULL auto_increment,
   topic_pid smallint(4) unsigned NOT NULL default '0',
   topic_imgurl varchar(20) NOT NULL default '',
@@ -77,10 +77,10 @@ CREATE TABLE mod_news_topics (
 
 
 #
-# Table structure for table `mod_news_stories_votedata`
+# Table structure for table `news_stories_votedata`
 #
 
-CREATE TABLE mod_news_stories_votedata (
+CREATE TABLE news_stories_votedata (
   ratingid int(11) unsigned NOT NULL auto_increment,
   storyid int(8) unsigned NOT NULL default '0',
   ratinguser int(11) NOT NULL default '0',

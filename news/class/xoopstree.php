@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright       XOOPS Project (http://xoops.org)
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
@@ -17,17 +17,17 @@
  * @version         $Id: xoopstree.php 8066 2011-11-06 05:09:33Z beckmi $
  */
 
-defined('XOOPS_ROOT_PATH') or die('Restricted access');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * Abstract base class for forms
  *
- * @author Kazumi Ono <onokazu@xoops.org>
- * @author John Neill <catzwolf@xoops.org>
- * @copyright copyright (c) XOOPS.org
- * @package kernel
+ * @author     Kazumi Ono <onokazu@xoops.org>
+ * @author     John Neill <catzwolf@xoops.org>
+ * @copyright  copyright (c) XOOPS.org
+ * @package    kernel
  * @subpackage XoopsTree
- * @access public
+ * @access     public
  */
 class MyXoopsTree
 {
@@ -40,26 +40,37 @@ class MyXoopsTree
 
     //constructor of class XoopsTree
     //sets the names of table, unique id, and parend id
+    /**
+     * @param $table_name
+     * @param $id_name
+     * @param $pid_name
+     */
     function MyXoopsTree($table_name, $id_name, $pid_name)
     {
         $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php");
-        $this->db = &XoopsDatabaseFactory::getDatabaseConnection();;
+        $this->db = & XoopsDatabaseFactory::getDatabaseConnection();;
         $this->table = $table_name;
-        $this->id = $id_name;
-        $this->pid = $pid_name;
+        $this->id    = $id_name;
+        $this->pid   = $pid_name;
     }
 
     // returns an array of first child objects for a given id($sel_id)
+    /**
+     * @param        $sel_id
+     * @param string $order
+     *
+     * @return array
+     */
     function getFirstChild($sel_id, $order = "")
     {
-        $sel_id = intval($sel_id);
-        $arr = array();
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
+        $sel_id = (int)($sel_id);
+        $arr    = array();
+        $sql    = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
         if ($order != "") {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
-        $count = $this->db->getRowsNum($result);
+        $count  = $this->db->getRowsNum($result);
         if ($count == 0) {
             return $arr;
         }
@@ -71,12 +82,17 @@ class MyXoopsTree
     }
 
     // returns an array of all FIRST child ids of a given id($sel_id)
+    /**
+     * @param $sel_id
+     *
+     * @return array
+     */
     function getFirstChildId($sel_id)
     {
-        $sel_id = intval($sel_id);
+        $sel_id  = (int)($sel_id);
         $idarray = array();
-        $result = $this->db->query("SELECT " . $this->id . " FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "");
-        $count = $this->db->getRowsNum($result);
+        $result  = $this->db->query("SELECT " . $this->id . " FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "");
+        $count   = $this->db->getRowsNum($result);
         if ($count == 0) {
             return $idarray;
         }
@@ -88,15 +104,22 @@ class MyXoopsTree
     }
 
     //returns an array of ALL child ids for a given id($sel_id)
+    /**
+     * @param        $sel_id
+     * @param string $order
+     * @param array  $idarray
+     *
+     * @return array
+     */
     function getAllChildId($sel_id, $order = "", $idarray = array())
     {
-        $sel_id = intval($sel_id);
-        $sql = "SELECT " . $this->id . " FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
+        $sel_id = (int)($sel_id);
+        $sql    = "SELECT " . $this->id . " FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
         if ($order != "") {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
-        $count = $this->db->getRowsNum($result);
+        $count  = $this->db->getRowsNum($result);
         if ($count == 0) {
             return $idarray;
         }
@@ -109,10 +132,17 @@ class MyXoopsTree
     }
 
     //returns an array of ALL parent ids for a given id($sel_id)
+    /**
+     * @param        $sel_id
+     * @param string $order
+     * @param array  $idarray
+     *
+     * @return array
+     */
     function getAllParentId($sel_id, $order = "", $idarray = array())
     {
-        $sel_id = intval($sel_id);
-        $sql = "SELECT " . $this->pid . " FROM " . $this->table . " WHERE " . $this->id . "=" . $sel_id . "";
+        $sel_id = (int)($sel_id);
+        $sql    = "SELECT " . $this->pid . " FROM " . $this->table . " WHERE " . $this->id . "=" . $sel_id . "";
         if ($order != "") {
             $sql .= " ORDER BY $order";
         }
@@ -129,9 +159,16 @@ class MyXoopsTree
 
     //generates path from the root id to a given id($sel_id)
     // the path is delimetered with "/"
+    /**
+     * @param        $sel_id
+     * @param        $title
+     * @param string $path
+     *
+     * @return string
+     */
     function getPathFromId($sel_id, $title, $path = "")
     {
-        $sel_id = intval($sel_id);
+        $sel_id = (int)($sel_id);
         $result = $this->db->query("SELECT " . $this->pid . ", " . $title . " FROM " . $this->table . " WHERE " . $this->id . "=$sel_id");
         if ($this->db->getRowsNum($result) == 0) {
             return $path;
@@ -151,6 +188,14 @@ class MyXoopsTree
     //makes a nicely ordered selection box
     //$preset_id is used to specify a preselected item
     //set $none to 1 to add a option with value 0
+    /**
+     * @param        $title
+     * @param string $order
+     * @param int    $preset_id
+     * @param int    $none
+     * @param string $sel_name
+     * @param string $onchange
+     */
     function makeMySelBox($title, $order = "", $preset_id = 0, $none = 0, $sel_name = "", $onchange = "")
     {
         if ($sel_name == "") {
@@ -180,7 +225,7 @@ class MyXoopsTree
             $arr = $this->getChildTreeArray($catid, $order);
             foreach ($arr as $option) {
                 $option['prefix'] = str_replace(".", "--", $option['prefix']);
-                $catpath = $option['prefix'] . "&nbsp;" . $myts->htmlspecialchars($option[$title]);
+                $catpath          = $option['prefix'] . "&nbsp;" . $myts->htmlspecialchars($option[$title]);
                 if ($option[$this->id] == $preset_id) {
                     $sel = " selected='selected'";
                 }
@@ -192,11 +237,19 @@ class MyXoopsTree
     }
 
     //generates nicely formatted linked path from the root id to a given id
+    /**
+     * @param        $sel_id
+     * @param        $title
+     * @param        $funcURL
+     * @param string $path
+     *
+     * @return string
+     */
     function getNicePathFromId($sel_id, $title, $funcURL, $path = "")
     {
-        $path = ! empty($path) ? "&nbsp;:&nbsp;" . $path : $path;
-        $sel_id = intval($sel_id);
-        $sql = "SELECT " . $this->pid . ", " . $title . " FROM " . $this->table . " WHERE " . $this->id . "=$sel_id";
+        $path   = !empty($path) ? "&nbsp;:&nbsp;" . $path : $path;
+        $sel_id = (int)($sel_id);
+        $sql    = "SELECT " . $this->pid . ", " . $title . " FROM " . $this->table . " WHERE " . $this->id . "=$sel_id";
         $result = $this->db->query($sql);
         if ($this->db->getRowsNum($result) == 0) {
             return $path;
@@ -215,9 +268,15 @@ class MyXoopsTree
 
     //generates id path from the root id to a given id
     // the path is delimetered with "/"
+    /**
+     * @param        $sel_id
+     * @param string $path
+     *
+     * @return string
+     */
     function getIdPathFromId($sel_id, $path = "")
     {
-        $sel_id = intval($sel_id);
+        $sel_id = (int)($sel_id);
         $result = $this->db->query("SELECT " . $this->pid . " FROM " . $this->table . " WHERE " . $this->id . "=$sel_id");
         if ($this->db->getRowsNum($result) == 0) {
             return $path;
@@ -235,20 +294,21 @@ class MyXoopsTree
     /**
      * Enter description here...
      *
-     * @param  unknown_type $sel_id
-     * @param  unknown_type $order
-     * @param  unknown_type $parray
+     * @param int|\unknown_type    $sel_id
+     * @param string|\unknown_type $order
+     * @param array|\unknown_type  $parray
+     *
      * @return unknown
      */
     function getAllChild($sel_id = 0, $order = "", $parray = array())
     {
-        $sel_id = intval($sel_id);
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
+        $sel_id = (int)($sel_id);
+        $sql    = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
         if ($order != "") {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
-        $count = $this->db->getRowsNum($result);
+        $count  = $this->db->getRowsNum($result);
         if ($count == 0) {
             return $parray;
         }
@@ -259,24 +319,26 @@ class MyXoopsTree
 
         return $parray;
     }
+
     /**
      * Enter description here...
      *
-     * @param  unknown_type $sel_id
-     * @param  unknown_type $order
-     * @param  unknown_type $parray
-     * @param  unknown_type $r_prefix
+     * @param int|\unknown_type    $sel_id
+     * @param string|\unknown_type $order
+     * @param array|\unknown_type  $parray
+     * @param string|\unknown_type $r_prefix
+     *
      * @return unknown
      */
     function getChildTreeArray($sel_id = 0, $order = "", $parray = array(), $r_prefix = "")
     {
-        $sel_id = intval($sel_id);
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
+        $sel_id = (int)($sel_id);
+        $sql    = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
         if ($order != "") {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
-        $count = $this->db->getRowsNum($result);
+        $count  = $this->db->getRowsNum($result);
         if ($count == 0) {
             return $parray;
         }

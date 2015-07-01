@@ -1,9 +1,9 @@
 <?php
-// $Id: comment_new.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -24,35 +24,37 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-include_once '../../mainfile.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
+include dirname(dirname(__DIR__)) . '/mainfile.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 // We verify that the user can post comments **********************************
 if (!isset($xoopsModuleConfig)) {
     die();
 }
 
-if ($xoopsModuleConfig['com_rule'] == 0) {    // Comments are deactivate
+if ($xoopsModuleConfig['com_rule'] == 0) { // Comments are deactivate
     die();
 }
 
-if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) {    // Anonymous users can't post
+if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) { // Anonymous users can't post
     die();
 }
 // ****************************************************************************
 
-$com_itemid = isset($_GET['com_itemid']) ? intval($_GET['com_itemid']) : 0;
+$com_itemid = isset($_GET['com_itemid']) ? (int)($_GET['com_itemid']) : 0;
 if ($com_itemid > 0) {
     $article = new NewsStory($com_itemid);
-    if ($article->storyid>0) {
-        $com_replytext = _POSTEDBY.'&nbsp;<b>'.$article->uname().'</b>&nbsp;'._DATE.'&nbsp;<b>'.formatTimestamp($article->published(),news_getmoduleoption('dateformat')).'</b><br /><br />'.$article->hometext();
+    if ($article->storyid > 0) {
+        $com_replytext
+                  = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), news_getmoduleoption('dateformat')) . '</b><br /><br />'
+            . $article->hometext();
         $bodytext = $article->bodytext();
         if ($bodytext != '') {
-            $com_replytext .= '<br /><br />'.$bodytext.'';
+            $com_replytext .= '<br /><br />' . $bodytext . '';
         }
         $com_replytitle = $article->title();
-        include_once XOOPS_ROOT_PATH.'/include/comment_new.php';
+        include_once XOOPS_ROOT_PATH . '/include/comment_new.php';
     } else {
         exit;
     }

@@ -1,9 +1,9 @@
 <?php
-// $Id: tree.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -25,23 +25,23 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 // Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.xoops.org/ http://jp.xoops.org/  http://www.myweb.ne.jp/  //
-// Project: The XOOPS Project (http://www.xoops.org/)                        //
+// URL: http://xoops.org/ http://jp.xoops.org/  http://www.myweb.ne.jp/  //
+// Project: XOOPS Project (http://xoops.org/)                            //
 // ------------------------------------------------------------------------- //
 
 /**
  * A tree structures with {@link XoopsObject}s as nodes
  *
- * @package		kernel
- * @subpackage	core
+ * @package          kernel
+ * @subpackage       core
  *
- * @author		Kazumi Ono 	<onokazu@xoops.org>
- * @copyright	(c) 2000-2003 The Xoops Project - www.xoops.org
+ * @author           Kazumi Ono    <onokazu@xoops.org>
+ * @copyright        (c) XOOPS Project (http://xoops.org)
  */
 class MyXoopsObjectTree
 {
     /**#@+
-     * @access	private
+     * @access    private
      */
     var $_parentId;
     var $_myId;
@@ -61,8 +61,8 @@ class MyXoopsObjectTree
     function __construct(&$objectArr, $myId, $parentId, $rootId = null)
     {
         //$this->db = &XoopsDatabaseFactory::getDatabaseConnection();
-        $this->_objects =& $objectArr;
-        $this->_myId = $myId;
+        $this->_objects  =& $objectArr;
+        $this->_myId     = $myId;
         $this->_parentId = $parentId;
         if (isset($rootId)) {
             $this->_rootId = $rootId;
@@ -73,15 +73,15 @@ class MyXoopsObjectTree
     /**
      * Initialize the object
      *
-     * @access	private
+     * @access    private
      **/
     function _initialize()
     {
         foreach (array_keys($this->_objects) as $i) {
-            $key1 = $this->_objects[$i]->getVar($this->_myId);
-            $this->_tree[$key1]['obj'] =& $this->_objects[$i];
-            $key2 = $this->_objects[$i]->getVar($this->_parentId);
-            $this->_tree[$key1]['parent'] = $key2;
+            $key1                          = $this->_objects[$i]->getVar($this->_myId);
+            $this->_tree[$key1]['obj']     =& $this->_objects[$i];
+            $key2                          = $this->_objects[$i]->getVar($this->_parentId);
+            $this->_tree[$key1]['parent']  = $key2;
             $this->_tree[$key2]['child'][] = $key1;
             if (isset($this->_rootId)) {
                 $this->_tree[$key1]['root'] = $this->_objects[$i]->getVar($this->_rootId);
@@ -102,7 +102,8 @@ class MyXoopsObjectTree
     /**
      * returns an object from the tree specified by its id
      *
-     * @param  string $key ID of the object to retrieve
+     * @param string $key ID of the object to retrieve
+     *
      * @return object Object within the tree
      **/
     function &getByKey($key)
@@ -113,8 +114,9 @@ class MyXoopsObjectTree
     /**
      * returns an array of all the first child object of an object specified by its id
      *
-     * @param  string $key ID of the parent object
-     * @return array  Array of children of the parent
+     * @param string $key ID of the parent object
+     *
+     * @return array Array of children of the parent
      **/
     function getFirstChild($key)
     {
@@ -131,16 +133,17 @@ class MyXoopsObjectTree
     /**
      * returns an array of all child objects of an object specified by its id
      *
-     * @param  string $key ID of the parent
-     * @param  array  $ret (Empty when called from client) Array of children from previous recursions.
-     * @return array  Array of child nodes.
+     * @param string $key ID of the parent
+     * @param array  $ret (Empty when called from client) Array of children from previous recursions.
+     *
+     * @return array Array of child nodes.
      **/
     function getAllChild($key, $ret = array())
     {
         if (isset($this->_tree[$key]['child'])) {
             foreach ($this->_tree[$key]['child'] as $childkey) {
                 $ret[$childkey] =& $this->_tree[$childkey]['obj'];
-                $children =& $this->getAllChild($childkey, $ret);
+                $children       =& $this->getAllChild($childkey, $ret);
                 foreach (array_keys($children) as $newkey) {
                     $ret[$newkey] =& $children[$newkey];
                 }
@@ -154,16 +157,17 @@ class MyXoopsObjectTree
      * returns an array of all parent objects.
      * the key of returned array represents how many levels up from the specified object
      *
-     * @param  string $key     ID of the child object
-     * @param  array  $ret     (empty when called from outside) Result from previous recursions
-     * @param  int    $uplevel (empty when called from outside) level of recursion
-     * @return array  Array of parent nodes.
+     * @param string $key     ID of the child object
+     * @param array  $ret     (empty when called from outside) Result from previous recursions
+     * @param int    $uplevel (empty when called from outside) level of recursion
+     *
+     * @return array Array of parent nodes.
      **/
     function getAllParent($key, $ret = array(), $uplevel = 1)
     {
         if (isset($this->_tree[$key]['parent']) && isset($this->_tree[$this->_tree[$key]['parent']]['obj'])) {
             $ret[$uplevel] =& $this->_tree[$this->_tree[$key]['parent']]['obj'];
-            $parents =& $this->getAllParent($this->_tree[$key]['parent'], $ret, $uplevel+1);
+            $parents       =& $this->getAllParent($this->_tree[$key]['parent'], $ret, $uplevel + 1);
             foreach (array_keys($parents) as $newkey) {
                 $ret[$newkey] =& $parents[$newkey];
             }
@@ -182,19 +186,19 @@ class MyXoopsObjectTree
      * @param string $ret         (reference to a string when called from outside) Result from previous recursions
      * @param string $prefix_orig String to indent items at deeper levels
      * @param string $prefix_curr String to indent the current item
-     * @return
      *
-     * @access	private
-     **/
+     * @return void
+    @access	private
+     */
     function _makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
             $value = $this->_tree[$key]['obj']->getVar($this->_myId);
-            $ret .= '<option value=\''.$value.'\'';
+            $ret .= '<option value=\'' . $value . '\'';
             if ($value == $selected) {
                 $ret .= ' selected="selected"';
             }
-            $ret .= '>'.$prefix_curr.$this->_tree[$key]['obj']->getVar($fieldName).'</option>';
+            $ret .= '>' . $prefix_curr . $this->_tree[$key]['obj']->getVar($fieldName) . '</option>';
             $prefix_curr .= $prefix_orig;
         }
         if (isset($this->_tree[$key]['child']) && !empty($this->_tree[$key]['child'])) {
@@ -207,27 +211,29 @@ class MyXoopsObjectTree
     /**
      * Make a select box with options from the tree
      *
-     * @param  string  $name           Name of the select box
-     * @param  string  $fieldName      Name of the member variable from the node objects that should be used as the title for the options.
-     * @param  string  $prefix         String to indent deeper levels
-     * @param  string  $selected       Value to display as selected
-     * @param  bool    $addEmptyOption Set TRUE to add an empty option with value "0" at the top of the hierarchy
-     * @param  integer $key            ID of the object to display as the root of select options
-     * @return string  HTML select box
-     **/
-    function makeSelBox($name, $fieldName, $prefix='-', $selected='', $addEmptyOption = false, $key=0, $additional='')
+     * @param string  $name           Name of the select box
+     * @param string  $fieldName      Name of the member variable from the node objects that should be used as the title for the options.
+     * @param string  $prefix         String to indent deeper levels
+     * @param string  $selected       Value to display as selected
+     * @param bool    $addEmptyOption Set TRUE to add an empty option with value "0" at the top of the hierarchy
+     * @param integer $key            ID of the object to display as the root of select options
+     * @param string  $additional
+     *
+     * @return string HTML select box
+     */
+    function makeSelBox($name, $fieldName, $prefix = '-', $selected = '', $addEmptyOption = false, $key = 0, $additional = '')
     {
-        $ret = "<select id='".$name."' name='".$name."'";
+        $ret = "<select id='" . $name . "' name='" . $name . "'";
         if ($additional != '') {
             $ret .= $additional;
         }
-        $ret  .= ">";
+        $ret .= ">";
         if (false != $addEmptyOption) {
             $ret .= '<option value=\'0\'>----</option>';
         }
         $this->_makeSelBoxOptions($fieldName, $selected, $key, $ret, $prefix);
 
-        return $ret.'</select>';
+        return $ret . '</select>';
     }
 
     /**
@@ -236,8 +242,8 @@ class MyXoopsObjectTree
     function _recursiveMakeTreeAsArray($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
-            $value = $this->_tree[$key]['obj']->getVar($this->_myId);
-            $ret[$value] = $prefix_curr.$this->_tree[$key]['obj']->getVar($fieldName);
+            $value       = $this->_tree[$key]['obj']->getVar($this->_myId);
+            $ret[$value] = $prefix_curr . $this->_tree[$key]['obj']->getVar($fieldName);
             $prefix_curr .= $prefix_orig;
         }
         if (isset($this->_tree[$key]['child']) && !empty($this->_tree[$key]['child'])) {
@@ -250,12 +256,14 @@ class MyXoopsObjectTree
     /**
      * Identical function as makeSelBox but returns an array
      *
-     * @param  string  $fieldName Name of the member variable from the node objects that should be used as the title for the options.
-     * @param  string  $prefix    String to indent deeper levels
-     * @param  integer $key       ID of the object to display as the root of select options
-     * @return array   key = object ID, value = $fieldName
+     * @param string  $fieldName Name of the member variable from the node objects that should be used as the title for the options.
+     * @param string  $prefix    String to indent deeper levels
+     * @param integer $key       ID of the object to display as the root of select options
+     * @param null    $empty
+     *
+     * @return array key = object ID, value = $fieldName
      */
-    function makeTreeAsArray($fieldName, $prefix='-', $key = 0, $empty = null)
+    function makeTreeAsArray($fieldName, $prefix = '-', $key = 0, $empty = null)
     {
         $ret = array();
         if ($empty != null) {
@@ -267,17 +275,18 @@ class MyXoopsObjectTree
     }
 
     /**
-       * Enter description here...
-       *
-       * @param unknown_type $sel_id
-       * @param unknown_type $order
-       * @param unknown_type $parray
-       * @param unknown_type $r_prefix
-       * @return unknown
-       */
+     * Enter description here...
+     *
+     * @param unknown_type $sel_id
+     * @param unknown_type $order
+     * @param unknown_type $parray
+     * @param unknown_type $r_prefix
+     *
+     * @return unknown
+     */
 //      function getChildTreeArray($sel_id = 0, $order = "", $parray = array(), $r_prefix = "")
 //      {
-//          $sel_id = intval($sel_id);
+//          $sel_id = (int)($sel_id);
 //          $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
 //          if ($order != "") {
 //              $sql .= " ORDER BY $order";

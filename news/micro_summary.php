@@ -1,7 +1,7 @@
 <?php
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2005-2006 Hervé Thouzard                     //
+//                  Copyright (c) 2005-2006 Herve Thouzard                     //
 //                     <http://www.herve-thouzard.com/>                      //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -31,28 +31,28 @@
  * For more information, see this page : http://wiki.mozilla.org/Microsummaries
  *
  * @package News
- * @author Hervé Thouzard (http://www.herve-thouzard.com)
- * @copyright (c) Hervé Thouzard
+ * @author Herve Thouzard (http://www.herve-thouzard.com)
+ * @copyright (c) Herve Thouzard
  *
  * NOTE : If you use this code, please make credit.
  *
  */
-include_once '../../mainfile.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH.'/modules/news/include/functions.php';
+include dirname(dirname(__DIR__)) . '/mainfile.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 if (!news_getmoduleoption('firefox_microsummaries')) {
     exit();
 }
-$story = new NewsStory();
+$story      = new NewsStory();
 $restricted = news_getmoduleoption('restrictindex');
-$sarray = array();
+$sarray     = array();
 // Get the last news from all topics according to the module's restrictions
 $sarray = $story->getAllPublished(1, 0, $restricted, 0);
-if (count($sarray)>0) {
+if (count($sarray) > 0) {
     $laststory = null;
     $laststory = $sarray[0];
     if (is_object($laststory)) {
-        header ('Content-Type:text;');
-        echo $laststory->title(). ' - '.$xoopsConfig['sitename'];
+        header('Content-Type:text;');
+        echo $laststory->title() . ' - ' . $xoopsConfig['sitename'];
     }
 }

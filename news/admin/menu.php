@@ -1,9 +1,9 @@
 <?php
-// $Id: menu.php 12097 2013-09-26 15:56:34Z beckmi $
+// $Id: menu.php 9767 2012-07-02 06:02:52Z beckmi $
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -25,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-defined("XOOPS_ROOT_PATH") or die("XOOPS root path not defined");
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$path = dirname(dirname(dirname(dirname(__FILE__))));
+$path = dirname(dirname(dirname(__DIR__)));
 include_once $path . '/mainfile.php';
 
-$dirname         = basename(dirname(dirname(__FILE__)));
+$dirname         = basename(dirname(__DIR__));
 $module_handler  = xoops_gethandler('module');
 $module          = $module_handler->getByDirname($dirname);
 $pathIcon32      = $module->getInfo('icons32');
@@ -43,52 +43,71 @@ if (!file_exists($fileinc = $pathLanguage . '/language/' . $GLOBALS['xoopsConfig
 
 include_once $fileinc;
 
-$adminmenu = array();
+$adminmenu   = array();
+$adminmenu[] = array(
+    'title' => _MI_NEWS_HOME,
+    'link'  => "admin/index.php",
+    'icon'  => $pathIcon32 . '/home.png'
+);
 
-$i = 1;
-$adminmenu[$i]["title"] = _MI_NEWS_HOME;
-$adminmenu[$i]["link"]  = "admin/index.php";
-$adminmenu[$i]["icon"] = $pathIcon32.'/home.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_ADMENU2;
-$adminmenu[$i]['link'] = 'admin/index.php?op=topicsmanager';
-$adminmenu[$i]['icon'] = $pathIcon32.'/category.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_ADMENU3;
-$adminmenu[$i]['link'] = 'admin/index.php?op=newarticle';
-$adminmenu[$i]['icon'] = $pathIcon32.'/content.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_GROUPPERMS;
-$adminmenu[$i]['link'] = 'admin/groupperms.php';
-$adminmenu[$i]['icon'] = $pathIcon32.'/permissions.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_PRUNENEWS;
-$adminmenu[$i]['link'] = 'admin/index.php?op=prune';
-$adminmenu[$i]['icon'] = $pathIcon32.'/prune.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_EXPORT;
-$adminmenu[$i]['link'] = 'admin/index.php?op=export';
-$adminmenu[$i]['icon'] = $pathIcon32.'/export.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_NEWSLETTER;
-$adminmenu[$i]['link'] = 'admin/index.php?op=configurenewsletter';
-$adminmenu[$i]['icon'] = $pathIcon32.'/newsletter.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_STATS;
-$adminmenu[$i]['link'] = 'admin/index.php?op=stats';
-$adminmenu[$i]['icon'] = $pathIcon32.'/stats.png';
+$adminmenu[] = array(
+    'title' => _MI_NEWS_ADMENU2,
+    'link'  => 'admin/index.php?op=topicsmanager',
+    'icon'  => $pathIcon32 . '/category.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_ADMENU3,
+    'link'  => 'admin/index.php?op=newarticle',
+    'icon'  => $pathIcon32 . '/content.png'
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_GROUPPERMS,
+    'link'  => 'admin/groupperms.php',
+    'icon'  => $pathIcon32 . '/permissions.png',
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_PRUNENEWS,
+    'link'  => 'admin/index.php?op=prune',
+    'icon'  => $pathIcon32 . '/prune.png',
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_EXPORT,
+    'link'  => 'admin/index.php?op=export',
+    'icon'  => $pathIcon32 . '/export.png',
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_NEWSLETTER,
+    'link'  => 'admin/index.php?op=configurenewsletter',
+    'icon'  => $pathIcon32 . '/newsletter.png',
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_STATS,
+    'link'  => 'admin/index.php?op=stats',
+    'icon'  => $pathIcon32 . '/stats.png',
+);
 
 if (isset($xoopsModule) && $xoopsModule->getVar('version') != 167) {
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_UPGRADE;
-$adminmenu[$i]['link'] = "admin/upgrade.php";
-$adminmenu[$i]['icon'] = $pathIcon32.'/update.png';
+    $adminmenu[] = array(
+        'title' => _MI_NEWS_UPGRADE,
+        'link'  => 'admin/upgrade.php',
+        'icon'  => $pathIcon32 . '/update.png',
+    );
 }
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_METAGEN;
-$adminmenu[$i]['link'] = "admin/index.php?op=metagen";
-$adminmenu[$i]['icon'] = $pathIcon32.'/metagen.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_NEWS_ABOUT;
-$adminmenu[$i]['link'] = 'admin/about.php';
-$adminmenu[$i]['icon'] = $pathIcon32.'/about.png';
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_METAGEN,
+    'link'  => 'admin/index.php?op=metagen',
+    'icon'  => $pathIcon32 . '/metagen.png',
+);
+
+$adminmenu[] = array(
+    'title' => _MI_NEWS_ABOUT,
+    'link'  => 'admin/about.php',
+    'icon'  => $pathIcon32 . '/about.png',
+);
