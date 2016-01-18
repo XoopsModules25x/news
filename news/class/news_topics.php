@@ -49,7 +49,7 @@ class news_topics extends XoopsObject
      */
     function __construct()
     {
-        $this->XoopsObject();
+        parent::__construct();
         $this->initVar("topic_id", XOBJ_DTYPE_INT, null, false, 4);
         $this->initVar("topic_pid", XOBJ_DTYPE_INT, null, false, 4);
         $this->initVar("topic_title", XOBJ_DTYPE_TXTBOX, null, false);

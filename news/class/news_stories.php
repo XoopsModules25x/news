@@ -49,7 +49,7 @@ class news_stories extends XoopsObject
      */
     function __construct()
     {
-        $this->XoopsObject();
+        parent::__construct();
         $this->initVar("storyid", XOBJ_DTYPE_INT, null, false, 8);
         $this->initVar("uid", XOBJ_DTYPE_INT, null, false, 5);
         $this->initVar("title", XOBJ_DTYPE_TXTBOX, null, false);
