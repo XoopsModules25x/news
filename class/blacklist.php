@@ -29,15 +29,15 @@
  */
 class news_blacklist
 {
-    var $keywords; // Holds keywords
+    public $keywords; // Holds keywords
 
     /**
      * Get all the keywords
      */
-    function getAllKeywords()
+    public function getAllKeywords()
     {
         $ret      = $tbl_black_list = array();
-        $myts     =& MyTextSanitizer::getInstance();
+        $myts     = MyTextSanitizer::getInstance();
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
             include_once $filename;
@@ -56,8 +56,9 @@ class news_blacklist
 
     /**
      * Remove one or many keywords from the list
+     * @param $keyword
      */
-    function delete($keyword)
+    public function delete($keyword)
     {
         if (is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
@@ -74,10 +75,11 @@ class news_blacklist
 
     /**
      * Add one or many keywords
+     * @param $keyword
      */
-    function addkeywords($keyword)
+    public function addkeywords($keyword)
     {
-        $myts =& MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         if (is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
                 $onekeyword = xoops_trim($myts->htmlSpecialChars($onekeyword));
@@ -95,15 +97,17 @@ class news_blacklist
 
     /**
      * Remove, from a list, all the blacklisted words
+     * @param $keywords
+     * @return array
      */
-    function remove_blacklisted($keywords)
+    public function remove_blacklisted($keywords)
     {
         $ret       = array();
         $tmp_array = array_values($this->keywords);
         foreach ($keywords as $onekeyword) {
             $add = true;
             foreach ($tmp_array as $onebanned) {
-                if (preg_match("/" . $onebanned . "/i", $onekeyword)) {
+                if (preg_match('/' . $onebanned . '/i', $onekeyword)) {
                     $add = false;
                     break;
                 }
@@ -119,20 +123,20 @@ class news_blacklist
     /**
      * Save keywords
      */
-    function store()
+    public function store()
     {
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
             unlink($filename);
         }
         $fd = fopen($filename, 'w') || die('Error unable to create the blacklist file');
-        fputs($fd, "<?php\n");
-        fputs($fd, '$tbl_black_list=array(' . "\n");
+        fwrite($fd, "<?php\n");
+        fwrite($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {
-            fputs($fd, "\"" . $onekeyword . "\",\n");
+            fwrite($fd, "\"" . $onekeyword . "\",\n");
         }
-        fputs($fd, "'');\n");
-        fputs($fd, "?>\n");
+        fwrite($fd, "'');\n");
+        fwrite($fd, "?>\n");
         fclose($fd);
     }
 }

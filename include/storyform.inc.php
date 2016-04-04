@@ -1,8 +1,8 @@
 <?php
-// $Id: storyform.inc.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -39,7 +39,7 @@ if (!isset($subtitle)) {
     $subtitle = '';
 }
 
-$sform = new XoopsThemeForm(_NW_SUBMITNEWS, "storyform", XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/submit.php');
+$sform = new XoopsThemeForm(_NW_SUBMITNEWS, 'storyform', XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/submit.php');
 $sform->setExtra('enctype="multipart/form-data"');
 $sform->addElement(new XoopsFormText(_NW_TITLE, 'title', 50, 255, $title), true);
 $sform->addElement(new XoopsFormText(_NW_SUBTITLE, 'subtitle', 50, 255, $subtitle), false);
@@ -49,11 +49,10 @@ if (!isset($xt)) {
     $xt = new NewsTopic();
 }
 if ($xt->getAllTopicsCount() == 0) {
-    redirect_header("index.php", 4, _NW_POST_SORRY);
-
+    redirect_header('index.php', 4, _NW_POST_SORRY);
 }
 
-include_once XOOPS_ROOT_PATH . "/class/tree.php";
+include_once XOOPS_ROOT_PATH . '/class/tree.php';
 $allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
 $topic_tree   = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
@@ -81,7 +80,7 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     if (!isset($newsauthor)) {
         $newsauthor = $xoopsUser->getVar('uid');
     }
-    $member_handler = & xoops_gethandler('member');
+    $member_handler = xoops_getHandler('member');
     $usercount      = $member_handler->getUserCount();
     if ($usercount < $cfg['config_max_users_list']) {
         $sform->addElement(new XoopsFormSelectUser(_NW_AUTHOR, 'author', true, $newsauthor), false);
@@ -103,7 +102,7 @@ if ($approveprivilege) {
     if (news_getmoduleoption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new XoopsFormTag('item_tag', 60, 255, $itemIdForTag, 0));
+        $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
     if (news_getmoduleoption('metadata')) {
@@ -114,7 +113,7 @@ if ($approveprivilege) {
     if (news_getmoduleoption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new XoopsFormTag('item_tag', 60, 255, $itemIdForTag, 0));
+        $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 }
 // Manage upload(s)
@@ -132,7 +131,7 @@ switch ($xoopsModuleConfig['uploadgroups']) {
 }
 
 if ($allowupload) {
-    if ($op == 'edit') {
+    if ($op === 'edit') {
         $sfiles   = new sFiles();
         $filesarr = array();
         $filesarr = $sfiles->getAllbyStory($storyid);
@@ -151,7 +150,7 @@ if ($allowupload) {
         }
     }
     $sform->addElement(new XoopsFormFile(_AM_SELFILE, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
-    if ($op == 'edit') {
+    if ($op === 'edit') {
         if (isset($picture) && xoops_trim($picture) != '') {
             $pictureTray = new XoopsFormElementTray(_NW_CURENT_PICTURE, '<br />');
             $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "' />"));
@@ -225,9 +224,9 @@ if (isset($storyid)) {
 }
 
 if (!isset($returnside)) {
-    $returnside = isset($_POST['returnside']) ? (int)($_POST['returnside']) : 0;
+    $returnside = isset($_POST['returnside']) ? (int)$_POST['returnside'] : 0;
     if (empty($returnside)) {
-        $returnside = isset($_GET['returnside']) ? (int)($_GET['returnside']) : 0;
+        $returnside = isset($_GET['returnside']) ? (int)$_GET['returnside'] : 0;
     }
 }
 
@@ -238,9 +237,9 @@ $sform->addElement(new XoopsFormHidden('returnside', $returnside), false);
 
 if (!isset($type)) {
     if ($approveprivilege) {
-        $type = "admin";
+        $type = 'admin';
     } else {
-        $type = "user";
+        $type = 'user';
     }
 }
 $type_hidden = new XoopsFormHidden('type', $type);
@@ -248,7 +247,7 @@ $sform->addElement($type_hidden);
 
 echo '<h1>' . _NW_SUBMITNEWS . '</h1>';
 if (xoops_trim(news_getmoduleoption('submitintromsg')) != '') {
-    echo "<div class='infotext'><br /><br />" . nl2br(news_getmoduleoption('submitintromsg')) . "<br /><br /></div>";
+    echo "<div class='infotext'><br /><br />" . nl2br(news_getmoduleoption('submitintromsg')) . '<br /><br /></div>';
 }
 
 $sform->display();

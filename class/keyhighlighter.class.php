@@ -14,7 +14,6 @@
  *
  * @package   keyhighlighter
  * @author    Setec Astronomy
- * @version   1.0
  * @abstract  Highlight specific keywords.
  * @copyright 2004
  * @example   sample.php A sample code.
@@ -25,21 +24,21 @@ class keyhighlighter
     /**
      * @access private
      */
-    var $preg_keywords = '';
+    public $preg_keywords = '';
     /**
      * @access private
      */
-    var $keywords = '';
+    public $keywords = '';
     /**
      * @access private
      */
-    var $singlewords = false;
+    public $singlewords = false;
     /**
      * @access private
      */
-    var $replace_callback = null;
+    public $replace_callback = null;
 
-    var $content;
+    public $content;
 
     /**
      * Main constructor
@@ -64,7 +63,7 @@ class keyhighlighter
      * </code>
      */
     // public function __construct ()
-    function keyhighlighter($keywords, $singlewords = false, $replace_callback = null)
+    public function __construct($keywords, $singlewords = false, $replace_callback = null)
     {
         $this->keywords         = $keywords;
         $this->singlewords      = $singlewords;
@@ -73,8 +72,10 @@ class keyhighlighter
 
     /**
      * @access private
+     * @param $replace_matches
+     * @return mixed
      */
-    function replace($replace_matches)
+    public function replace($replace_matches)
     {
         $patterns = array();
         if ($this->singlewords) {
@@ -101,8 +102,10 @@ class keyhighlighter
 
     /**
      * @access private
+     * @param $buffer
+     * @return mixed|string
      */
-    function highlight($buffer)
+    public function highlight($buffer)
     {
         $buffer              = '>' . $buffer . '<';
         $this->preg_keywords = preg_replace('/[^\w ]/si', '', $this->keywords);

@@ -15,21 +15,21 @@
         list-style: none outside none;
         color: inherit;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     html #tabNavigation/* */  {
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     html > body #tabNavigation {
         margin: 0;
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     #tabNavigation li {
         display: inline;
-        line-height: 1em
+        line-height: 1em;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -41,33 +41,33 @@
         height: 1em;
         margin: -1px 0 -1px 0;
         padding: 3px 6px 3px 6px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html #tabNavigation a/* */, html #tabNavigation a:link/* */, html #tabNavigation a:visited/* */  {
         border-bottom: none;
         height: auto;
-        margin: 0
+        margin: 0;
     }
 
     html > body #tabNavigation a, html > body #tabNavigation a:link, html > body #tabNavigation a:visited {
         border-bottom: none;
-        padding: 4px 6px 4px 6px
+        padding: 4px 6px 4px 6px;
     }
 
     \head + body #tabNavigation a, \head + body #tabNavigation a:link, \head + body #tabNavigation a:visited {
-        padding: 3px 6px 3px 6px
+        padding: 3px 6px 3px 6px;
     }
 
     #tabNavigation a:hover {
         background: <{$block.color5}>;
-        color: inherit
+        color: inherit;
     }
 
     #tabNavigation a:active {
         background: #CCC;
         border-right: 1px solid #000;
-        color: inherit
+        color: inherit;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited, #tabNavigation .selectedTab a:hover {
@@ -77,19 +77,19 @@
         border-top: 1px solid #000;
         color: #000;
         cursor: text;
-        padding: 3px 5px 4px 5px
+        padding: 3px 5px 4px 5px;
     }
 
     html > body #tabNavigation .selectedTab a, html > body #tabNavigation .selectedTab a:link, html > body #tabNavigation .selectedTab a:visited {
-        padding: 4px 5px 5px 5px
+        padding: 4px 5px 5px 5px;
     }
 
     \head + body #tabNavigation .selectedTab a, \head + body #tabNavigation .selectedTab a:link, \head + body #tabNavigation .selectedTab a:visited, \head + body #tabNavigation .selectedTab a:hover {
-        padding: 3px 5px 4px 5px
+        padding: 3px 5px 4px 5px;
     }
 
     .fixTabsIE {
-        visibility: hidden
+        visibility: hidden;
     }
 
     <{elseif $block.tabskin==2}>
@@ -98,19 +98,19 @@
         border-bottom: 1px solid #000;
         list-style: none outside none;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     html #tabNavigation/* */  {
-        padding: 4px 0 2px 0
+        padding: 4px 0 2px 0;
     }
 
     html > body #tabNavigation {
-        padding: 3px 0 1px 0
+        padding: 3px 0 1px 0;
     }
 
     head + body #tabNavigation {
-        padding: 4px 0 2px 0
+        padding: 4px 0 2px 0;
     }
 
     #tabNavigation li {
@@ -121,22 +121,22 @@
         height: 1em;
         margin: 0 0 0 3px;
         padding: 0;
-        z-index: 1000
+        z-index: 1000;
     }
 
     html #tabNavigation li/* */  {
-        height: auto
+        height: auto;
     }
 
     html > body #tabNavigation li {
         height: auto;
         margin: 0 -5px 0 -3px;
-        padding: 3px 5px 2px 5px
+        padding: 3px 5px 2px 5px;
     }
 
     html > body ul[id]#tabNavigation li {
         margin: 0 0 0 3px;
-        padding: 3px 0 2px 0
+        padding: 3px 0 2px 0;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -147,11 +147,11 @@
         color: #FFF;
         height: 1em;
         padding: 2px 4px 2px 4px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html #tabNavigation a/* */, html #tabNavigation a:link/* */, html #tabNavigation a:visited/* */  {
-        height: auto
+        height: auto;
     }
 
     #tabNavigation a:hover {
@@ -159,7 +159,7 @@
         border-left: 1px solid #888;
         border-right: 1px solid #888;
         border-top: 1px solid #888;
-        color: #FFF
+        color: #FFF;
     }
 
     #tabNavigation a:active {
@@ -167,17 +167,17 @@
         border-left: 1px solid #E80;
         border-right: 1px solid #E80;
         border-top: 1px solid #E80;
-        color: #FFF
+        color: #FFF;
     }
 
     html > body #tabNavigation li.selectedTab {
         margin: 0 -5px 0 -3px;
-        padding: 3px 5px 2px 5px
+        padding: 3px 5px 2px 5px;
     }
 
     html > body ul[id]#tabNavigation li.selectedTab {
         margin: 0 0 0 3px;
-        padding: 3px 0 2px 0
+        padding: 3px 0 2px 0;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited, #tabNavigation .selectedTab a:hover {
@@ -189,39 +189,39 @@
         margin: -2px 0 0 0;
         padding: 3px 4px 3px 4px;
         position: relative;
-        top: 2px
+        top: 2px;
     }
 
     html #tabNavigation .selectedTab a/* */, html #tabNavigation .selectedTab a:link/* */, html #tabNavigation .selectedTab a:visited/* */, html #tabNavigation .selectedTab a:hover/* */  {
         margin: -1px 0 0 0;
-        top: 1px
+        top: 1px;
     }
 
     html > body #tabNavigation .selectedTab a, html > body #tabNavigation .selectedTab a:link, html > body #tabNavigation .selectedTab a:visited, html > body #tabNavigation .selectedTab a:hover {
         padding: 2px 4px 2px 4px;
-        top: 0
+        top: 0;
     }
 
     head:first-child + body #tabNavigation .selectedTab a, head:first-child + body #tabNavigation .selectedTab a:link, head:first-child + body #tabNavigation .selectedTab a:visited, head:first-child + body #tabNavigation .selectedTab a:hover {
         margin: -1px 0 0 0;
         padding: 2px 4px 4px 4px;
-        top: 0
+        top: 0;
     }
 
     head:first-child + body ul[id]#tabNavigation .selectedTab a, head:first-child + body ul[id]#tabNavigation .selectedTab a:link, head:first-child + body ul[id]#tabNavigation .selectedTab a:visited, head:first-child + body ul[id]#tabNavigation .selectedTab a:hover {
         padding: 3px 4px 3px 4px;
-        top: 1px
+        top: 1px;
     }
 
     .fixTabsIE {
-        visibility: hidden
+        visibility: hidden;
     }
 
     <{elseif $block.tabskin==3}>
     <{* Classic *}>
     ul, li {
         list-style: disc;
-        margin: 0 10px 0 10px
+        margin: 0 10px 0 10px;
     }
 
     #tabNavigation {
@@ -229,11 +229,11 @@
         color: inherit;
         list-style: none outside none;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     html #tabNavigation/* */  {
-        padding: 6px 0 6px 1px
+        padding: 6px 0 6px 1px;
     }
 
     html > body #tabNavigation {
@@ -245,7 +245,7 @@
         display: inline;
         line-height: 1em;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -255,46 +255,46 @@
         height: 1em;
         padding: 5px 21px 5px 2px;
         text-decoration: none;
-        z-index: 1000
+        z-index: 1000;
     }
 
     html #tabNavigation a/* */, html #tabNavigation a:link/* */, html #tabNavigation a:visited/* */  {
         height: auto;
         margin: 0;
-        padding: 5px 21px 5px 2px
+        padding: 5px 21px 5px 2px;
     }
 
     #tabNavigation a:hover {
         background: url(<{$block.imagesurl}>unselectedEnd.gif) <{$block.color5}> no-repeat scroll top right;
         color: #FFF;
-        text-decoration: underline
+        text-decoration: underline;
     }
 
     #tabNavigation a:active {
         background: url(<{$block.imagesurl}>unselectedEnd.gif) #789 no-repeat scroll top right;
         color: #567;
-        text-decoration: none
+        text-decoration: none;
     }
 
     #tabNavigation li.selectedTab {
         background: url(<{$block.imagesurl}>selectedStart.gif) #FFF no-repeat scroll top left;
         color: inherit;
         margin: 0 0 0 -22px;
-        padding: 0 0 0 23px
+        padding: 0 0 0 23px;
     }
 
     html > body #tabNavigation li.selectedTab {
         background: url(<{$block.imagesurl}>selectedStart.gif) #FFF no-repeat scroll top left;
         color: inherit;
         margin: 0 0 0 -22px;
-        padding: 5px 1px 5px 22px
+        padding: 5px 1px 5px 22px;
     }
 
     html > body ul[id]#tabNavigation li.selectedTab {
         background: url(<{$block.imagesurl}>selectedStart.gif) #FFF no-repeat scroll top left;
         color: inherit;
         margin: 0 0 0 -22px;
-        padding: 5px 0 5px 23px
+        padding: 5px 0 5px 23px;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited, #tabNavigation .selectedTab a:hover {
@@ -303,11 +303,11 @@
         color: #000;
         cursor: text;
         padding: 5px 21px 5px 2px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html #tabNavigation .selectedTab a/* */, html #tabNavigation .selectedTab a:link/* */, html #tabNavigation .selectedTab a:visited/* */, html #tabNavigation .selectedTab a:hover/* */  {
-        padding: 5px 21px 5px 1px
+        padding: 5px 21px 5px 1px;
     }
 
     #tabNavigation .fixTabsIE a, #tabNavigation .fixTabsIE a:link, #tabNavigation .fixTabsIE a:visited, #tabNavigation .fixTabsIE a:hover {
@@ -320,30 +320,30 @@
         border-bottom: 1px solid #C60;
         list-style: none outside none;
         margin: 0;
-        padding: 0 0 0 20px
+        padding: 0 0 0 20px;
     }
 
     \html #tabNavigation/* */  {
         margin: 0;
-        padding: 3px 0 3px 20px
+        padding: 3px 0 3px 20px;
     }
 
     html > body #tabNavigation {
         margin: 0;
-        padding: 0 0 1px 20px
+        padding: 0 0 1px 20px;
     }
 
     \head + body #tabNavigation {
-        padding: 0 0 3px 20px
+        padding: 0 0 3px 20px;
     }
 
     html > body ul[id] #tabNavigation {
-        padding: 0 0 0 20px
+        padding: 0 0 0 20px;
     }
 
     #tabNavigation li, #subNavigation li {
         display: inline;
-        list-style: none outside none
+        list-style: none outside none;
     }
 
     #tabNavigation .preloadUnselected {
@@ -369,7 +369,7 @@
         float: left;
         height: 1em;
         margin: 3px 5px 3px -15px;
-        padding: 3px 5px 5px 27px
+        padding: 3px 5px 5px 27px;
     }
 
     head:first-child + body #tabNavigation li {
@@ -378,7 +378,7 @@
         display: inline;
         float: none;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -389,13 +389,13 @@
         height: 1em;
         margin: 0 0 0 -15px;
         padding: 3px 5px 3px 27px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html > body #tabNavigation a, html > body #tabNavigation a:link, html > body #tabNavigation a:visited {
         border-right: none;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     head:first-child + body #tabNavigation a, head:first-child + body #tabNavigation a:link, head:first-child + body #tabNavigation a:visited {
@@ -403,19 +403,19 @@
         margin: 0 0 0 -15px;
         padding: 3px 5px 3px 27px;
         position: relative;
-        z-index: 50
+        z-index: 50;
     }
 
     #tabNavigation a:hover {
         background: transparent url(<{$block.imagesurl}>hover.gif) no-repeat top left;
         border-right: 1px solid #333;
         color: #FFF;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html > body #tabNavigation a:hover {
         border-right: none;
-        text-decoration: underline
+        text-decoration: underline;
     }
 
     head:first-child + body #tabNavigation a:hover {
@@ -423,21 +423,21 @@
         padding: 4px 5px 3px 27px;
         position: relative;
         text-decoration: none;
-        z-index: 5000
+        z-index: 5000;
     }
 
     #tabNavigation a:active {
         background: transparent url(<{$block.imagesurl}>active.gif) no-repeat top left;
         color: #FFF;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html > body #tabNavigation a:active {
-        text-decoration: underline
+        text-decoration: underline;
     }
 
     head:first-child + body #tabNavigation a:active {
-        text-decoration: none
+        text-decoration: none;
     }
 
     html > body #tabNavigation li.selectedTab {
@@ -447,7 +447,7 @@
         float: left;
         height: 1em;
         margin: 3px 5px 5px -15px;
-        padding: 3px 5px 5px 27px
+        padding: 3px 5px 5px 27px;
     }
 
     head:first-child + body #tabNavigation li.selectedTab {
@@ -456,7 +456,7 @@
         display: inline;
         float: none;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited {
@@ -467,13 +467,13 @@
         display: inline;
         height: 1em;
         margin: 0 0 0 -15px;
-        padding: 3px 5px 3px 27px
+        padding: 3px 5px 3px 27px;
     }
 
     html > body #tabNavigation .selectedTab a, html > body #tabNavigation .selectedTab a:link, html > body #tabNavigation .selectedTab a:visited {
         border-right: none;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
     head:first-child + body #tabNavigation .selectedTab a, head:first-child + body #tabNavigation .selectedTab a:link, head:first-child + body #tabNavigation .selectedTab a:visited, head:first-child + body #tabNavigation .selectedTab a:hover {
@@ -482,15 +482,15 @@
         margin: 0 0 0 -15px;
         padding: 3px 5px 3px 27px;
         position: relative;
-        z-index: 10000
+        z-index: 10000;
     }
 
     \html head:first-child + body #tabNavigation .selectedTab a, \html head:first-child + body #tabNavigation .selectedTab a:link, \html head:first-child + body #tabNavigation .selectedTab a:visited, \html head:first-child + body #tabNavigation .selectedTab a:hover {
-        padding: 4px 5px 5px 27px
+        padding: 4px 5px 5px 27px;
     }
 
     .fixTabsIE {
-        visibility: hidden
+        visibility: hidden;
     }
 
     <{elseif $block.tabskin==5}>
@@ -506,17 +506,17 @@
     }
 
     html #tabNavigation/* */  {
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     html > body #tabNavigation {
         margin: 0;
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     #tabNavigation li {
         display: inline;
-        line-height: 1em
+        line-height: 1em;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -535,15 +535,15 @@
 
     html #tabNavigation a/* */, html #tabNavigation a:link/* */, html #tabNavigation a:visited/* */  {
         height: auto;
-        margin: 0
+        margin: 0;
     }
 
     html > body #tabNavigation a, html > body #tabNavigation a:link, html > body #tabNavigation a:visited {
-        padding: 4px 6px 4px 6px
+        padding: 4px 6px 4px 6px;
     }
 
     \head + body #tabNavigation a, \head + body #tabNavigation a:link, \head + body #tabNavigation a:visited {
-        padding: 3px 6px 3px 6px
+        padding: 3px 6px 3px 6px;
     }
 
     #tabNavigation a:hover {
@@ -551,7 +551,7 @@
         border: 1px solid #CCC;
         border-right-color: #666;
         border-bottom-color: #666;
-        color: inherit
+        color: inherit;
     }
 
     #tabNavigation a:active {
@@ -559,7 +559,7 @@
         border: 1px solid #999;
         border-right-color: #FFF;
         border-bottom-color: #FFF;
-        color: inherit
+        color: inherit;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited, #tabNavigation .selectedTab a:hover {
@@ -569,11 +569,11 @@
         border-bottom-color: #999;
         color: #000;
         cursor: text;
-        font-weight: bold
+        font-weight: bold;
     }
 
     #tabNavigation .fixTabsIE a, #tabNavigation .fixTabsIE a:link, #tabNavigation .fixTabsIE a:visited {
-        visibility: hidden
+        visibility: hidden;
     }
 
     html #tabNavigation .fixTabsIE a/* */, html #tabNavigation .fixTabsIE a:link/* */, html #tabNavigation .fixTabsIE a:visited/* */  {
@@ -586,7 +586,7 @@
         cursor: text;
         margin: 0;
         padding: 3px 6px 3px 6px;
-        visibility: visible
+        visibility: visible;
     }
 
     <{elseif $block.tabskin==6}>
@@ -610,7 +610,7 @@
         float: left;
         margin: 0 0 0 5px;
         padding: 2px 6px 2px 6px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     ul#tabNavigation a:hover, ul#tabNavigation a:focus {
@@ -625,7 +625,7 @@
         border-right: 1px solid #000;
         border-top: 1px solid #000;
         color: #00F;
-        padding: 2px 6px 3px 6px
+        padding: 2px 6px 3px 6px;
     }
 
     ul#tabNavigation li.selectedTab a, ul#tabNavigation li.selectedTab a:link, ul#tabNavigation li.selectedTab a:visited {
@@ -637,12 +637,12 @@
         color: #000;
         cursor: text;
         margin: 0 0 0 5px;
-        padding: 2px 6px 3px 6px
+        padding: 2px 6px 3px 6px;
     }
 
     ul#tabNavigation li.fixTabsIE {
         display: none;
-        visibility: hidden
+        visibility: hidden;
     }
 
     <{elseif $block.tabskin==7}>
@@ -657,12 +657,12 @@
     }
 
     html #tabNavigation/* */  {
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     html > body #tabNavigation {
         margin: 0;
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     #tabNavigation li {
@@ -671,17 +671,17 @@
         display: inline;
         line-height: 1em;
         margin: 0 0 0 2px;
-        padding: 0
+        padding: 0;
     }
 
     html > body #tabNavigation li {
         margin: 0 0 0 -6px;
-        padding: 3px 0 3px 8px
+        padding: 3px 0 3px 8px;
     }
 
     html > body ul[id]#tabNavigation li {
         margin: 0 0 0 2px;
-        padding: 3px 0 3px 0
+        padding: 3px 0 3px 0;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -692,42 +692,42 @@
         height: 1em;
         margin: -1px 0 -1px 0;
         padding: 3px 8px 3px 8px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html #tabNavigation a/* */, html #tabNavigation a:link/* */, html #tabNavigation a:visited/* */  {
         border-bottom: none;
         height: auto;
         margin: 0 0 0 4px;
-        padding: 3px 8px 3px 4px
+        padding: 3px 8px 3px 4px;
     }
 
     #tabNavigation a:hover {
         background: transparent url(<{$block.imagesurl}>unselected_right.gif) no-repeat scroll top right;
         color: #FFF;
-        text-decoration: underline
+        text-decoration: underline;
     }
 
     #tabNavigation a:active {
         background: transparent url(<{$block.imagesurl}>unselected_right.gif) no-repeat scroll top right;
         color: #000;
-        text-decoration: underline
+        text-decoration: underline;
     }
 
     #tabNavigation li.selectedTab {
         background: transparent url(<{$block.imagesurl}>selected_left_F90.gif) no-repeat scroll top left;
         color: inherit;
-        padding: 0
+        padding: 0;
     }
 
     html > body #tabNavigation li.selectedTab {
         margin: 0 0 0 -6px;
-        padding: 4px 0 4px 8px
+        padding: 4px 0 4px 8px;
     }
 
     html > body ul[id]#tabNavigation li.selectedTab {
         margin: 0 0 0 2px;
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited, #tabNavigation .selectedTab a:hover {
@@ -736,15 +736,15 @@
         color: #000;
         cursor: text;
         padding: 4px 8px 4px 8px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html #tabNavigation .selectedTab a/* */, html #tabNavigation .selectedTab a:link/* */, html #tabNavigation .selectedTab a:visited/* */, html #tabNavigation .selectedTab a:hover/* */  {
-        padding: 4px 8px 4px 4px
+        padding: 4px 8px 4px 4px;
     }
 
     .fixTabsIE {
-        visibility: hidden
+        visibility: hidden;
     }
 
     <{elseif $block.tabskin==8}>
@@ -752,12 +752,12 @@
     #tabNavigation {
         list-style: none outside none;
         margin: 0;
-        padding: 4px 0 3px 0
+        padding: 4px 0 3px 0;
     }
 
     @media all {
         #tabNavigation {
-            text-align: center
+            text-align: center;
         }
     }
 
@@ -768,17 +768,17 @@
         margin: 0 4px 0 4px;
         padding: 0;
         position: relative;
-        top: 10px
+        top: 10px;
     }
 
     html #tabNavigation li/* */  {
         line-height: 1.2em;
-        top: 6px
+        top: 6px;
     }
 
     html > body #tabNavigation li {
         margin: 0 2px 0 4px;
-        padding: 4px 0 4px 0
+        padding: 4px 0 4px 0;
     }
 
     #tabNavigation a, #tabNavigation a:link, #tabNavigation a:visited {
@@ -793,16 +793,16 @@
         padding: 3px 5px 3px 5px;
         position: relative;
         right: 2px;
-        text-decoration: none
+        text-decoration: none;
     }
 
     html #tabNavigation a/* */, html #tabNavigation a:link/* */, html #tabNavigation a:visited/* */  {
         height: auto;
-        margin: 0 -4px 0 0
+        margin: 0 -4px 0 0;
     }
 
     html > body #tabNavigation a, html > body #tabNavigation a:link, html > body #tabNavigation a:visited {
-        margin: 0
+        margin: 0;
     }
 
     #tabNavigation a:hover {
@@ -812,7 +812,7 @@
         color: #FFF;
         padding: 3px 5px 3px 5px;
         position: relative;
-        right: 1px
+        right: 1px;
     }
 
     #tabNavigation a:active {
@@ -822,7 +822,7 @@
         color: #FFF;
         padding: 3px 5px 3px 5px;
         position: relative;
-        right: 0
+        right: 0;
     }
 
     #tabNavigation li.selectedTab {
@@ -830,7 +830,7 @@
         display: inline;
         margin: 0 4px 0 4px;
         position: relative;
-        top: 4px
+        top: 4px;
     }
 
     #tabNavigation .selectedTab a, #tabNavigation .selectedTab a:link, #tabNavigation .selectedTab a:visited, #tabNavigation .selectedTab a:hover {
@@ -845,15 +845,15 @@
         margin: 0 5px 0 0;
         padding: 3px 5px 0 5px;
         position: relative;
-        right: 0
+        right: 0;
     }
 
     html #tabNavigation .selectedTab a/* */, html #tabNavigation .selectedTab a:link/* */, html #tabNavigation .selectedTab a:visited/* */, html #tabNavigation .selectedTab a:hover/* */  {
-        margin: 0 -2px 0 0
+        margin: 0 -2px 0 0;
     }
 
     .fixTabsIE {
-        visibility: hidden
+        visibility: hidden;
     }
 
     <{/if}>
@@ -977,15 +977,15 @@
                 <{foreach item=news from=$block.stories}>
                     <{if $news.id != $block.spotlight.id}>
                         <h2>
-						   <span>
-							<{if $block.sort=='counter'}>
+                           <span>
+                            <{if $block.sort=='counter'}>
                                 [<{$news.hits}>]
                             <{elseif $block.sort=='published'}>
                                 [<{$news.date}>]
                             <{else}>
                                 [<{$news.rating}>]
                             <{/if}>
-							</span>
+                            </span>
                             <a href="<{$xoops_url}>/modules/news/article.php?storyid=<{$news.id}>" <{$news.infotips}> ><{$news.title}></a>
                         </h2>
                         <{if $news.teaser}><p><{$news.teaser}></p><{/if}>

@@ -1,20 +1,21 @@
 ======================
-1.71 Beta 1 2015-07-01
+1.71 Beta 2 (NOT RELEASED)
 ======================
 - moved all images, CSS, and JS files to /assets (mamba)
 - renamed .html Smarty templates to .tpl (mamba)
 - reversed "mod_" prefix on tables (mamba)
-- moved WideImage library to 257BasicPack's /xoops_lib/vendor/wideimage
+- moved WideImage library to XOOPS 2.5.8 /class/libraries/
 - added option to display PDF icon for each article (mamba)
+- 
 
 ======================
 1.70 Beta 2 2013-09-26
 ======================
 - changed version to 1.70 to avoid confusion with xNews 1.68 (mamba)
-- removed languages other than English (cesag)
+- removed languages other than English (cesagonchu)
 - removed news.php plugin for Tag module (it is now /include/plugin.tag.php and will be picked by Tag directly) (mamba)
 - removed all closing PHP tags and did some PSR formatting (mamba)
-- removed Firefox 2 microformats (cesag)
+- removed Firefox 2 microformats (cesagonchu)
 
 - changed / renamed define constants to be more XOOPS standard (zyspec)
 - changed template HTML rendering to be more XHTML compliant both templates and admin side (zyspec)
@@ -58,7 +59,7 @@
 - Improve templates (voltan)
 - Add local Stylesheet support in print page (voltan)
 - Add two new fields photoinfo and subtitle (voltan)
-- bunch of small fixes, reported by Cesag, Mazarin, Renetjuh, and others
+- bunch of small fixes, reported by cesagonchu, Mazarin, Renetjuh, and others
 
 ======================
 1.66
@@ -157,9 +158,9 @@ Changelog
 > I have added the Fisheye effect to the module.
   By default it is deactivated. If you want to use it, edit the file config.php
   at the module's root and replace :
-  	$cfg['use_fun_menu'] = false;
+    $cfg['use_fun_menu'] = false;
   with :
-  	$cfg['use_fun_menu'] = true;
+    $cfg['use_fun_menu'] = true;
 > We have added the French documentation inside the module
 
 ======================
@@ -183,8 +184,8 @@ Changelog
 > Addition of on the fly blocks (all the blocks are coming with a "on_the_fly"
   function). For example, if you create a custom PHP block with the following
   content, you will see the "Archives" block :
-  	include_once(XOOPS_ROOT_PATH . '/modules/news/blocks/news_archives.php');
-	b_news_archives_onthefly('1|2004|4|2006|8|1');
+    include_once(XOOPS_ROOT_PATH . '/modules/news/blocks/news_archives.php');
+    b_news_archives_onthefly('1|2004|4|2006|8|1');
 > Added support for Xoops 2.0.14 (and up) in the meta informations (the module
   is still compatible with older versions)
 > Added some defines(...) in the translation files (see lang.diff)
@@ -203,8 +204,8 @@ Changelog
   This option is used for printable versions of your articles.
   When activated, you can see, in the page's footer a table with links from
   your document. For more information, see this links :
-  	http://www.alistapart.com/articles/improvingprint/
-  	http://www.easy-designs.net/code/footnoteLinks/
+    http://www.alistapart.com/articles/improvingprint/
+    http://www.easy-designs.net/code/footnoteLinks/
   Don't forget to print or to preview your document to be able to see the links !
 > A </head> tag was missing in the printable version of an article
 > In print.php, the document's type was changed from Html 4 to xHtml
@@ -215,11 +216,11 @@ Changelog
 > I have removed the static word "Page" from the templates (and added it to the
   translations).
 > Inside article.php, you can now use the following Smarty variables :
-	<{$story.poster_avatar}>
-	<{$story.poster_signature}>
-	<{$story.poster_email}>
-	<{$story.poster_url}>
-	<{$story.poster_from}>
+    <{$story.poster_avatar}>
+    <{$story.poster_signature}>
+    <{$story.poster_email}>
+    <{$story.poster_url}>
+    <{$story.poster_from}>
 > I have added a link, in the module's administration, to maintain the module's
   tables. This will optimize, check and analyze the tables in the database.
 > I have added a new option to activate Dublin Core Metadata in the article's
@@ -228,10 +229,10 @@ Changelog
   describe your documents.
   If you are a Firefox user, you can use this extension to visualize the Dublin
   Meta Datas :
-  	https://addons.mozilla.org/firefox/528/
+    https://addons.mozilla.org/firefox/528/
 > You can display a "Bookmark this article at these sites" on the article's page
-	To see an example, look at the bottom of this article :
-	http://ajax.phpmagazine.net/2006/11/ajaxcore_new_php_framework_rel.html
+    To see an example, look at the bottom of this article :
+    http://ajax.phpmagazine.net/2006/11/ajaxcore_new_php_framework_rel.html
 > You can use Firefox 2 Micro summaries : http://wiki.mozilla.org/Microsummaries
   If someone bookmark your page with Firefox 2 he can choose to see the last
   title of your last news instead of the current page's title.
@@ -241,7 +242,7 @@ Changelog
   but you can also add it in your theme so that when someone bookmark your site
   from any page he can get your micro summary.
   With FireFox 2, you can use this extension :
-	  https://addons.mozilla.org/firefox/3639/
+      https://addons.mozilla.org/firefox/3639/
 > You have a new page called "Who's who" showing your visitors a list or the
   authors of the site (this page is only visible if you have activated the
   "news by this author" option)
@@ -271,22 +272,22 @@ Changelog
   option ("Use enhanced page navigator?")
   Then, to use it, inside your articles, you can separate pages like this
   (imagine this is the content or your article) :
-	Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-	[pagebreak: Here is my page 2]
-	sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam.
-	Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-	nisl ut aliquip ex ea commodo consequat.
-	[pagebreak: This is the development]
-	Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse,
-	vel illum dolore eu feugiat nulla facilisis at vero eros et
-	[pagebreak: Conclusion]
-	accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
-	delenit augue duis dolore te feugait nulla facilisi.
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+    [pagebreak: Here is my page 2]
+    sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam.
+    Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+    nisl ut aliquip ex ea commodo consequat.
+    [pagebreak: This is the development]
+    Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse,
+    vel illum dolore eu feugiat nulla facilisis at vero eros et
+    [pagebreak: Conclusion]
+    accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
+    delenit augue duis dolore te feugait nulla facilisi.
 
   Notes :
-	- The old syntax ([pagebreak]) is still available
-	- Your text inside the brackets DOES NOT HAVE TO CONTAIN [ or ]
-	- The syntax is not case sensitive
+    - The old syntax ([pagebreak]) is still available
+    - Your text inside the brackets DOES NOT HAVE TO CONTAIN [ or ]
+    - The syntax is not case sensitive
 
   You can also, now, use, inside your articles, the new "meta variable" [summary].
   This will automatically create a summary by using the pages titles you gave in
@@ -354,8 +355,8 @@ Additions, modifications & bugs corrections :
 > I have added rel="nofollow" to the link to email the article to a friend
 > There was a bug in the "prune manager" when you was selecting to use only expired articles (thanks to alain01)
 > The number of meta keywords automatically created by the News module is now limited to 20 keywords (thanks to tl for the remark)
-	If you want to change this limit, edit the file /xoops/modules/news/include/functions.php and find this line :
-	$tmp=array_slice($tmp,0,20);	// If you want to change the limit of keywords, change this number from 20 to what you want
+    If you want to change this limit, edit the file /xoops/modules/news/include/functions.php and find this line :
+    $tmp=array_slice($tmp,0,20);    // If you want to change the limit of keywords, change this number from 20 to what you want
 > You can import your articles from AMS 2.41.
   To do it, launch http://www.example.com/modules/news/admin/amsimport.php
   You must be a module's administrator to launch this script.
@@ -418,8 +419,8 @@ Corrections :
 
 Additions/Changes :
 > I have added, in the module's index page and in the article's page, two new Smarty vars :
-       	topic_title - Wich will only contains the news topic (with a ilnk)
-       	news_title - Wich will only contains the news title (with a link)
+        topic_title - Wich will only contains the news topic (with a ilnk)
+        news_title - Wich will only contains the news title (with a link)
  This will respond to the often asked question, "how to remove the topic's title from the news title.
  It's available in the module's index page and in the article's page.
  Suggestion made by ralf57
@@ -457,8 +458,8 @@ Additions/Changes :
 > The fields keywords and description, of the 'stories' table are now used in the module's search
 > The number of sql queries used everywhere in the module was really *greatly* reduced
 > In the recent news and top news blocks, you can now use the folowing smarty variables to see your topic's description and picture
-		<{$block.topic_description}>   			<{$block.topic_image}>
-		<{$block.spotlight.topic_description}>	<{$block.spotlight.topic_image}>
+        <{$block.topic_description}>            <{$block.topic_image}>
+        <{$block.spotlight.topic_description}>  <{$block.spotlight.topic_image}>
   Still in those blocks, the "read more" link is not anymore visible if there's nothing more to see/read.
 > If you have NOT selected to enter the meta description and keywords or if you have selected to enter them but did not made it for the current article
   then the module will generate them automatically (like smartsection but with my own "engine" ;-) ).
@@ -467,9 +468,9 @@ Additions/Changes :
   Idea suggested by xoops-tips and multimenu from Solo71, thank you both !
 > The module can search inside the articles comments (and it respects the permissions).
   If you don't want to use this feature, edit the file called /xoops/modules/news/include/search.inc.php and replace this line :
-  	$searchincomments=true;
+    $searchincomments=true;
   with :
-  	$searchincomments=false;
+    $searchincomments=false;
 > I have modified the files called /xoops/pda.php and /xoops/backend.php. They will now respect the permissions and will display the
   same number of news that the module's option called "Select the number of news items to display on top page"
 
@@ -480,14 +481,14 @@ Additions/Changes :
 > Relative paths was changed to absolute paths inside the scripts
 > I have added a lang.diff file for the translators
 > The spotlight available in the "recent articles" and "top news" blocks can now use up to 8 different skins :
-	Bar Style
-	Beveled
-	Classic
-	Folders
-	MacOs
-	Plain
-	Rounded
-	ZDnet style
+    Bar Style
+    Beveled
+    Classic
+    Folders
+    MacOs
+    Plain
+    Rounded
+    ZDnet style
 > Some bugs where corrected in the top news and recent news blocks.
   Now, if you have set the option "Restrict Topics on Index Page?" to Yes and if a tab
   does not contains anything visible for a user then the tab is not visible (it includes the
@@ -500,14 +501,14 @@ Additions/Changes :
 1.3 RC2
 ======================
 Bugs corrections in :
-	- The form used to submit news
-		The article's title was limited to 80 characters whereas the db define 255 characters
-		There was an error message when yo was submiting a news as an anonymous
-	- The test used to verify that you can post in a topic has been corrected.
-	- The admin's menu ("Statistics" was repeated two times)
-	- The spotlight. Many bugs were corrected.
-		Note : If you have selected a specific news but that can't be viewed by some groups,
-		then the spotlight is not visible !
+    - The form used to submit news
+        The article's title was limited to 80 characters whereas the db define 255 characters
+        There was an error message when yo was submiting a news as an anonymous
+    - The test used to verify that you can post in a topic has been corrected.
+    - The admin's menu ("Statistics" was repeated two times)
+    - The spotlight. Many bugs were corrected.
+        Note : If you have selected a specific news but that can't be viewed by some groups,
+        then the spotlight is not visible !
 List of the submited and corrected bugs :
 1981 - (mariuss) - non-XHTML code in news_index.html
 2093 - (none) - Blanck Article in Spotlight
@@ -519,23 +520,23 @@ List of the submited and corrected bugs :
 2142 - (Brash) - Navigate Thru Topics block blank page bug
 
 Modifications :
-	- In the admin panel, odds lines and evens lines are differents (just a visual effect)
-	- Still in the admin panel, when you are on the index page, the script verifies that you are up to date.
-	- The spotlight look and feel has been modified (looks like "better").
+    - In the admin panel, odds lines and evens lines are differents (just a visual effect)
+    - Still in the admin panel, when you are on the index page, the script verifies that you are up to date.
+    - The spotlight look and feel has been modified (looks like "better").
 
 
 ======================
 1.3 RC1
 ======================
 > New module's options :
-	- New page and link and option "News by the same author"
-	- Two new options are availables for the article's page, "Show Previous and Next link?" and "Show summary table?"
-	  The summary table is linking recent published articles
-	- You can rate news
-	- Enable authors to edit their posts
-	- New RSS feeds per topic and an option to select if you want to activate RSS or not. You can call http://www.example.com/modules/news/backendt.php?topicid=Number. Those feeds respects permissions and they use the module's option "Restrict Topics on Index Page?"
+    - New page and link and option "News by the same author"
+    - Two new options are availables for the article's page, "Show Previous and Next link?" and "Show summary table?"
+      The summary table is linking recent published articles
+    - You can rate news
+    - Enable authors to edit their posts
+    - New RSS feeds per topic and an option to select if you want to activate RSS or not. You can call http://www.example.com/modules/news/backendt.php?topicid=Number. Those feeds respects permissions and they use the module's option "Restrict Topics on Index Page?"
       A link to the RSS feed is available on each topic's page.
-	- Select the date's format to use. If you don't select anything then the default Xoops date's format will be used
+    - Select the date's format to use. If you don't select anything then the default Xoops date's format will be used
 > The topics manager has been completly rewrited, it uses the same screen to list, modify and add topics
 > It was possible to add two identicals topics and a topic with an empty name (some spaces)
 > The topic's name is visible when you are deleting it
@@ -547,8 +548,8 @@ Modifications :
 > Module's code is a little bit more documented. Some of the pages accessibles to the visitors are now documented.
 > The module's search has been modified to use permissions.
 > In the block "Top News" :
-	- Minor bug corrected for the option "Length of the title"
-	- The block now uses permissions
+    - Minor bug corrected for the option "Length of the title"
+    - The block now uses permissions
 > Corrected a typo in the english language file and in the file admin/function.php
 > In the admin panel, after the table containing the Last x Articles, there is a textbox used to edit and delete a story.
   It was not possible any more to edit stories
@@ -605,14 +606,14 @@ Modifications :
 > Some important security holes have been corrected. That's why this version exists. Thanks goes to onokazu
 > The possibility to upload excel and word files have been removed.
   If you still need this "option", edit the file named :
-  	/xoops/modules/news/submit.php
+    /xoops/modules/news/submit.php
   Find the line :
   $permittedtypes=array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png' ,'application/x-zip-compressed', 'application/pdf', 'application/x-gtar', 'application/x-tar');
   and replace it with :
   $permittedtypes=array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png' ,'application/x-zip-compressed','application/msword', 'application/vnd.ms-excel', 'application/pdf', 'application/x-gtar', 'application/x-tar');
 > Some problems related to the files uploaded with topics and news have been corrected
 > The upgrade script has been changed and the file :
-	/xoops/modules/news/sql/upgrade.sql
+    /xoops/modules/news/sql/upgrade.sql
   has been removed.
 > The link to delete a story in the "Moderation block" has been corrected
 > A bug in the blocks "Top news" and "Recent news" has been corrected (problem with the counter and the date)

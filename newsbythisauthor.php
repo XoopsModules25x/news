@@ -34,43 +34,43 @@
  *
  * @package News
  * @author Xoops Modules Dev Team
- * @copyright	(c) XOOPS Project (http://xoops.org)
+ * @copyright   (c) XOOPS Project (http://xoops.org)
  *
  * Parameters received by this page :
- * @page_param 	int		uid 					Id of the user you want to treat
+ * @page_param  int     uid                     Id of the user you want to treat
  *
- * @page_title			"News by the same author" - Author's name - Module's name
+ * @page_title          "News by the same author" - Author's name - Module's name
  *
- * @template_name		news_by_this_author.html
+ * @template_name       news_by_this_author.html
  *
  * Template's variables :
- * @template_var 	string 	lang_page_title			contains "News by the same author"
- * @template_var 	int 	author_id				contains the user ID
- * @template_var 	string	author_name				Name of the author (according to the user preferences (username or full name or nothing))
- * @template_var 	string	author_name_with_link	Name of the author with an hyperlink pointing to userinfo.php (to see his "identity")
- * @template_var	int		articles_count			Total number of visibles articles (for the current user and according to the permissions)
- * @template_var	string	lang_date				Fixed string, "Date"
- * @template_var	string	lang_hits				Fixed string, 'Views'
- * @template_var	string	lang_title				Fixed string, 'Title'
- * @template_var	int		articles_count			Total number of articles by this author (permissions are used)
- * @template_var	boolean	news_rating				News are rated ?
- * @template_var	string	lang_rating				Fixed text "Rating"
- * @template_var	array	topics					Contains all the topics where the author have written some articles.
- *													Structure :
- *													topic_id	int		Topic's ID
- *													topic_title	string	Topic's title
- *													topic_color string	Topic's color
- *													topic_link	string	Link to see all the articles in this topic + topic's title
- *													news		array	List of all the articles from this author for this topic
- *														Structure :
- *															int		id				Article's Id
- *															string	hometext		The scoop
- *															string	title			Article's title
- *															int		hits			Counter of visits
- *															string	created			Date of creation formated (according to user's prefs)
- *															string	article_link	Link to see the article + article's title
- *															string	published		Date of publication formated (according to user's prefs)
- *															int		rating			Rating for this news
+ * @template_var    string  lang_page_title         contains "News by the same author"
+ * @template_var    int     author_id               contains the user ID
+ * @template_var    string  author_name             Name of the author (according to the user preferences (username or full name or nothing))
+ * @template_var    string  author_name_with_link   Name of the author with an hyperlink pointing to userinfo.php (to see his "identity")
+ * @template_var    int     articles_count          Total number of visibles articles (for the current user and according to the permissions)
+ * @template_var    string  lang_date               Fixed string, "Date"
+ * @template_var    string  lang_hits               Fixed string, 'Views'
+ * @template_var    string  lang_title              Fixed string, 'Title'
+ * @template_var    int     articles_count          Total number of articles by this author (permissions are used)
+ * @template_var    boolean news_rating             News are rated ?
+ * @template_var    string  lang_rating             Fixed text "Rating"
+ * @template_var    array   topics                  Contains all the topics where the author have written some articles.
+ *                                                  Structure :
+ *                                                  topic_id    int     Topic's ID
+ *                                                  topic_title string  Topic's title
+ *                                                  topic_color string  Topic's color
+ *                                                  topic_link  string  Link to see all the articles in this topic + topic's title
+ *                                                  news        array   List of all the articles from this author for this topic
+ *                                                      Structure :
+ *                                                          int     id              Article's Id
+ *                                                          string  hometext        The scoop
+ *                                                          string  title           Article's title
+ *                                                          int     hits            Counter of visits
+ *                                                          string  created         Date of creation formated (according to user's prefs)
+ *                                                          string  article_link    Link to see the article + article's title
+ *                                                          string  published       Date of publication formated (according to user's prefs)
+ *                                                          int     rating          Rating for this news
  */
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -85,18 +85,16 @@ if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['lang
     include_once XOOPS_ROOT_PATH . '/modules/news/language/english/modinfo.php';
 }
 
-$uid = (isset($_GET['uid'])) ? (int)($_GET['uid']) : 0;
+$uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 if (empty($uid)) {
     redirect_header('index.php', 2, _ERRORS);
-
 }
 
 if (!news_getmoduleoption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
-
 }
 
-$myts                         =& MyTextSanitizer::getInstance();
+$myts                         = MyTextSanitizer::getInstance();
 $articles                     = new NewsStory();
 $xoopsOption['template_main'] = 'news_by_this_author.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
@@ -149,18 +147,14 @@ if ($articlescount > 0) {
         if ($oldtopic != $article['topicid']) {
             if (count($articlestpl) > 0) {
                 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-                $xoopsTpl->append(
-                    'topics',
-                    array(
-                        'topic_id'             => $oldtopic,
-                        'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
-                        'topic_count_reads'    => $count_reads,
-                        'topic_color'          => $oldtopiccolor,
-                        'topic_title'          => $oldtopictitle,
-                        'topic_link'           => $topic_link,
-                        'news'                 => $articlestpl
-                    )
-                );
+                $xoopsTpl->append('topics', array(
+                    'topic_id'             => $oldtopic,
+                    'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
+                    'topic_count_reads'    => $count_reads,
+                    'topic_color'          => $oldtopiccolor,
+                    'topic_title'          => $oldtopictitle,
+                    'topic_link'           => $topic_link,
+                    'news'                 => $articlestpl));
             }
             $oldtopic       = $article['topicid'];
             $oldtopictitle  = $article['topic_title'];
@@ -182,8 +176,7 @@ if ($articlescount > 0) {
             'created'      => formatTimestamp($article['created'], $dateformat),
             'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle, $article['title']),
             'published'    => formatTimestamp($article['published'], $dateformat),
-            'rating'       => $article['rating']
-        );
+            'rating'       => $article['rating']);
     }
 }
 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);

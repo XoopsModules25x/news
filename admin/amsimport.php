@@ -1,8 +1,8 @@
 <?php
-// $Id: amsimport.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -32,7 +32,6 @@
  * @package   News
  * @author    Herve Thouzard (http://www.herve-thouzard.com)
  * @copyright 2005, 2006 - Herve Thouzard
- * @version   1.0
  */
 
 include_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
@@ -65,16 +64,16 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         } else {
             include_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/admin.php';
         }
-        $db =& XoopsDatabaseFactory::getDatabaseConnection();
+        $db = XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
         $use_forum    = (isset($_POST['useforum']) && $_POST['useforum'] == 1) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && $_POST['useextlinks'] == 1) ? 1 : 0;
         // Retreive News module's ID
-        $module_handler =& xoops_gethandler('module');
-        $newsModule     =& $module_handler->getByDirname('news');
+        $module_handler = xoops_getHandler('module');
+        $newsModule     = $module_handler->getByDirname('news');
         $news_mid       = $newsModule->getVar('mid');
         // Retreive AMS module's ID
-        $AmsModule =& $module_handler->getByDirname('AMS');
+        $AmsModule = $module_handler->getByDirname('AMS');
         $ams_mid   = $AmsModule->getVar('mid');
 
         // Retreive AMS tables names
@@ -87,8 +86,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // Retreive News tables names
         $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
-        $comment_handler      =& xoops_gethandler('comment');
-        $notification_handler =& xoops_gethandler('notification');
+        $comment_handler      = xoops_getHandler('comment');
+        $notification_handler = xoops_getHandler('notification');
         $ams_news_topics      = array(); // Key => AMS Id,  Value => News ID
 
         // The import by itself
@@ -197,10 +196,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 // The ratings
                 $result5 = $db->query('SELECT * FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
                 while ($ratings = $db->fetchArray($result5)) {
-                    $result6 = $db->queryF(
-                        'INSERT INTO ' . $news_stories_votedata . " (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (" . $news_newsid . ',' . $ratings['ratinguser'] . ','
-                        . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')'
-                    );
+                    $result6 = $db->queryF('INSERT INTO ' . $news_stories_votedata . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (' . $news_newsid . ',' . $ratings['ratinguser'] . ',' . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')');
                 }
 
                 // The comments
@@ -250,6 +246,5 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     }
 } else {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
 }
 xoops_cp_footer();

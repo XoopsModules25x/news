@@ -1,8 +1,8 @@
 <?php
-// $Id: xoops_version.php 9847 2012-07-11 17:58:36Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -30,14 +30,14 @@ $moduleDirName = basename(__DIR__);
 $modversion['name']           = _MI_NEWS_NAME;
 $modversion['version']        = 1.71;
 $modversion['description']    = _MI_NEWS_DESC;
-$modversion['credits']        = "XOOPS Project, Christian, Pilou, Marco, <br />ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br />Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno";
-$modversion['author']         = "XOOPS Project Module Dev Team & Hervé Thouzard";
-$modversion['nickname']       = "hervet";
+$modversion['credits']        = 'XOOPS Project, Christian, Pilou, Marco, <br />ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br />Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
+$modversion['author']         = 'XOOPS Project Module Dev Team & Hervé Thouzard';
+$modversion['nickname']       = 'hervet';
 $modversion['help']           = 'page=help';
-$modversion["license"]        = "GNU General Public License";
-$modversion["license_url"]    = "http://www.gnu.org/licenses/gpl.html";
+$modversion['license']        = 'GNU General Public License';
+$modversion['license_url']    = 'http://www.gnu.org/licenses/gpl.html';
 $modversion['official']       = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
-$modversion['image']          = "assets/images/news_slogo.png";
+$modversion['image']          = 'assets/images/logo_module.png';
 $modversion['dirname']        = $moduleDirName;
 $modversion['dirmoduleadmin'] = '/Frameworks/moduleclasses/moduleadmin';
 $modversion['icons16']        = '../../Frameworks/moduleclasses/icons/16';
@@ -46,18 +46,18 @@ $modversion['onInstall']      = 'include/install_function.php';
 $modversion['onUpdate']       = 'include/update_function.php';
 
 //about
-$modversion["module_status"]       = "Beta 1";
-$modversion['release_date']        = "2015/07/01";
-$modversion["module_website_url"]  = "www.xoops.org/";
-$modversion["module_website_name"] = "XOOPS";
-$modversion["author_website_url"]  = "http://xoops.org/";
-$modversion["author_website_name"] = "XOOPS";
+$modversion['module_status']       = 'Beta 2';
+$modversion['release_date']        = '2016/04/02';
+$modversion['module_website_url']  = 'www.xoops.org/';
+$modversion['module_website_name'] = 'XOOPS';
+$modversion['author_website_url']  = 'http://xoops.org/';
+$modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = "2.5.7.2";
-$modversion['min_admin']           = "1.1";
+$modversion['min_xoops']           = '2.5.8';
+$modversion['min_admin']           = '1.1';
 $modversion['min_db']              = array('mysql' => '5.0.7', 'mysqli' => '5.0.7');
 
-$modversion['sqlfile']['mysql'] = "sql/mysql.sql";
+$modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
 // Tables created by sql file (without prefix!)
 $modversion['tables'][0] = 'news_stories';
@@ -73,8 +73,8 @@ $modversion['tables'][3] = 'news_stories_votedata';
 // Admin things
 $modversion['hasAdmin']    = 1;
 $modversion['system_menu'] = 1;
-$modversion['adminindex']  = "admin/index.php";
-$modversion['adminmenu']   = "admin/menu.php";
+$modversion['adminindex']  = 'admin/index.php';
+$modversion['adminmenu']   = 'admin/menu.php';
 
 // Templates
 $i                                          = 1;
@@ -106,82 +106,82 @@ $modversion['templates'][$i]['file']        = 'news_whos_who.tpl';
 $modversion['templates'][$i]['description'] = "Who's who";
 ++$i;
 $modversion['templates'][$i]['file']        = 'news_topics_directory.tpl';
-$modversion['templates'][$i]['description'] = "Topics Directory";
+$modversion['templates'][$i]['description'] = 'Topics Directory';
 
 // Blocks
-$modversion['blocks'][1]['file']        = "news_topics.php";
+$modversion['blocks'][1]['file']        = 'news_topics.php';
 $modversion['blocks'][1]['name']        = _MI_NEWS_BNAME1;
-$modversion['blocks'][1]['description'] = "Shows news topics";
-$modversion['blocks'][1]['show_func']   = "b_news_topics_show";
+$modversion['blocks'][1]['description'] = 'Shows news topics';
+$modversion['blocks'][1]['show_func']   = 'b_news_topics_show';
 $modversion['blocks'][1]['template']    = 'news_block_topics.tpl';
 
-$modversion['blocks'][2]['file']        = "news_bigstory.php";
+$modversion['blocks'][2]['file']        = 'news_bigstory.php';
 $modversion['blocks'][2]['name']        = _MI_NEWS_BNAME3;
-$modversion['blocks'][2]['description'] = "Shows most read story of the day";
-$modversion['blocks'][2]['show_func']   = "b_news_bigstory_show";
+$modversion['blocks'][2]['description'] = 'Shows most read story of the day';
+$modversion['blocks'][2]['show_func']   = 'b_news_bigstory_show';
 $modversion['blocks'][2]['template']    = 'news_block_bigstory.tpl';
 
-$modversion['blocks'][3]['file']        = "news_top.php";
+$modversion['blocks'][3]['file']        = 'news_top.php';
 $modversion['blocks'][3]['name']        = _MI_NEWS_BNAME4;
-$modversion['blocks'][3]['description'] = "Shows top read news articles";
-$modversion['blocks'][3]['show_func']   = "b_news_top_show";
-$modversion['blocks'][3]['edit_func']   = "b_news_top_edit";
-$modversion['blocks'][3]['options']     = "counter|10|25|0|0|0|0||1||||||";
+$modversion['blocks'][3]['description'] = 'Shows top read news articles';
+$modversion['blocks'][3]['show_func']   = 'b_news_top_show';
+$modversion['blocks'][3]['edit_func']   = 'b_news_top_edit';
+$modversion['blocks'][3]['options']     = 'counter|10|25|0|0|0|0||1||||||';
 $modversion['blocks'][3]['template']    = 'news_block_top.tpl';
 
-$modversion['blocks'][4]['file']        = "news_top.php";
+$modversion['blocks'][4]['file']        = 'news_top.php';
 $modversion['blocks'][4]['name']        = _MI_NEWS_BNAME5;
-$modversion['blocks'][4]['description'] = "Shows recent articles";
-$modversion['blocks'][4]['show_func']   = "b_news_top_show";
-$modversion['blocks'][4]['edit_func']   = "b_news_top_edit";
-$modversion['blocks'][4]['options']     = "published|10|25|0|0|0|0||1||||||";
+$modversion['blocks'][4]['description'] = 'Shows recent articles';
+$modversion['blocks'][4]['show_func']   = 'b_news_top_show';
+$modversion['blocks'][4]['edit_func']   = 'b_news_top_edit';
+$modversion['blocks'][4]['options']     = 'published|10|25|0|0|0|0||1||||||';
 $modversion['blocks'][4]['template']    = 'news_block_top.tpl';
 
-$modversion['blocks'][5]['file']        = "news_moderate.php";
+$modversion['blocks'][5]['file']        = 'news_moderate.php';
 $modversion['blocks'][5]['name']        = _MI_NEWS_BNAME6;
-$modversion['blocks'][5]['description'] = "Shows a block to moderate articles";
-$modversion['blocks'][5]['show_func']   = "b_news_topics_moderate";
+$modversion['blocks'][5]['description'] = 'Shows a block to moderate articles';
+$modversion['blocks'][5]['show_func']   = 'b_news_topics_moderate';
 $modversion['blocks'][5]['template']    = 'news_block_moderate.tpl';
 
-$modversion['blocks'][6]['file']        = "news_topicsnav.php";
+$modversion['blocks'][6]['file']        = 'news_topicsnav.php';
 $modversion['blocks'][6]['name']        = _MI_NEWS_BNAME7;
-$modversion['blocks'][6]['description'] = "Shows a block to navigate topics";
-$modversion['blocks'][6]['show_func']   = "b_news_topicsnav_show";
+$modversion['blocks'][6]['description'] = 'Shows a block to navigate topics';
+$modversion['blocks'][6]['show_func']   = 'b_news_topicsnav_show';
 $modversion['blocks'][6]['template']    = 'news_block_topicnav.tpl';
-$modversion['blocks'][6]['options']     = "0";
-$modversion['blocks'][6]['edit_func']   = "b_news_topicsnav_edit";
+$modversion['blocks'][6]['options']     = '0';
+$modversion['blocks'][6]['edit_func']   = 'b_news_topicsnav_edit';
 
-$modversion['blocks'][7]['file']        = "news_randomnews.php";
+$modversion['blocks'][7]['file']        = 'news_randomnews.php';
 $modversion['blocks'][7]['name']        = _MI_NEWS_BNAME8;
-$modversion['blocks'][7]['description'] = "Shows a block where news appears randomly";
-$modversion['blocks'][7]['show_func']   = "b_news_randomnews_show";
+$modversion['blocks'][7]['description'] = 'Shows a block where news appears randomly';
+$modversion['blocks'][7]['show_func']   = 'b_news_randomnews_show';
 $modversion['blocks'][7]['template']    = 'news_block_randomnews.tpl';
-$modversion['blocks'][7]['options']     = "published|10|25|0|0";
-$modversion['blocks'][7]['edit_func']   = "b_news_randomnews_edit";
+$modversion['blocks'][7]['options']     = 'published|10|25|0|0';
+$modversion['blocks'][7]['edit_func']   = 'b_news_randomnews_edit';
 
-$modversion['blocks'][8]['file']        = "news_archives.php";
+$modversion['blocks'][8]['file']        = 'news_archives.php';
 $modversion['blocks'][8]['name']        = _MI_NEWS_BNAME9;
-$modversion['blocks'][8]['description'] = "Shows a block where you can see archives";
-$modversion['blocks'][8]['show_func']   = "b_news_archives_show";
+$modversion['blocks'][8]['description'] = 'Shows a block where you can see archives';
+$modversion['blocks'][8]['show_func']   = 'b_news_archives_show';
 $modversion['blocks'][8]['template']    = 'news_block_archives.tpl';
-$modversion['blocks'][8]['options']     = "0|0|0|0|1|1"; // Starting date (year, month), ending date (year, month), until today, sort order
-$modversion['blocks'][8]['edit_func']   = "b_news_archives_edit";
+$modversion['blocks'][8]['options']     = '0|0|0|0|1|1'; // Starting date (year, month), ending date (year, month), until today, sort order
+$modversion['blocks'][8]['edit_func']   = 'b_news_archives_edit';
 
 // Added in v1.63
-$modversion['blocks'][9]['file']        = "news_block_tag.php";
+$modversion['blocks'][9]['file']        = 'news_block_tag.php';
 $modversion['blocks'][9]['name']        = _MI_NEWS_BNAME10;
-$modversion['blocks'][9]['description'] = "Show tag cloud";
-$modversion['blocks'][9]['show_func']   = "news_tag_block_cloud_show";
-$modversion['blocks'][9]['edit_func']   = "news_tag_block_cloud_edit";
-$modversion['blocks'][9]['options']     = "100|0|150|80";
+$modversion['blocks'][9]['description'] = 'Show tag cloud';
+$modversion['blocks'][9]['show_func']   = 'news_tag_block_cloud_show';
+$modversion['blocks'][9]['edit_func']   = 'news_tag_block_cloud_edit';
+$modversion['blocks'][9]['options']     = '100|0|150|80';
 $modversion['blocks'][9]['template']    = 'news_tag_block_cloud.tpl';
 
-$modversion['blocks'][10]['file']        = "news_block_tag.php";
+$modversion['blocks'][10]['file']        = 'news_block_tag.php';
 $modversion['blocks'][10]['name']        = _MI_NEWS_BNAME11;
-$modversion['blocks'][10]['description'] = "Show top tags";
-$modversion['blocks'][10]['show_func']   = "news_tag_block_top_show";
-$modversion['blocks'][10]['edit_func']   = "news_tag_block_top_edit";
-$modversion['blocks'][10]['options']     = "50|30|c";
+$modversion['blocks'][10]['description'] = 'Show top tags';
+$modversion['blocks'][10]['show_func']   = 'news_tag_block_top_show';
+$modversion['blocks'][10]['edit_func']   = 'news_tag_block_top_edit';
+$modversion['blocks'][10]['options']     = '50|30|c';
 $modversion['blocks'][10]['template']    = 'news_tag_block_top.tpl';
 
 // Menu
@@ -192,8 +192,8 @@ $cansubmit = 0;
 /**
  * This part inserts the selected topics as sub items in the Xoops main menu
  */
-$module_handler =& xoops_gethandler('module');
-$module         =& $module_handler->getByDirname($modversion['dirname']);
+$module_handler = xoops_getHandler('module');
+$module         = $module_handler->getByDirname($modversion['dirname']);
 if ($module) {
     global $xoopsUser;
     if (is_object($xoopsUser)) {
@@ -201,8 +201,8 @@ if ($module) {
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
-    $gperm_handler =& xoops_gethandler('groupperm');
-    if ($gperm_handler->checkRight("news_submit", 0, $groups, $module->getVar('mid'))) {
+    $gperm_handler = xoops_getHandler('groupperm');
+    if ($gperm_handler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
         $cansubmit = 1;
     }
 }
@@ -215,7 +215,7 @@ global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
 if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['dirname'] && $xoopsModule->getVar('isactive')) {
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || $_SESSION['items_count'] == -1) {
-        $sql    = "SELECT COUNT(*) as cpt FROM " . $xoopsDB->prefix("news_topics") . " WHERE menu=1";
+        $sql    = 'SELECT COUNT(*) as cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
         $result = $xoopsDB->query($sql);
         list($count) = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
@@ -234,7 +234,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
             foreach ($topics_arr as $onetopic) {
                 if ($gperm_handler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid')) && $onetopic->menu()) {
                     $modversion['sub'][$i]['name'] = $onetopic->topic_title();
-                    $modversion['sub'][$i]['url']  = "index.php?storytopic=" . $onetopic->topic_id();
+                    $modversion['sub'][$i]['url']  = 'index.php?storytopic=' . $onetopic->topic_id();
                 }
                 ++$i;
             }
@@ -244,11 +244,11 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
 }
 
 $modversion['sub'][$i]['name'] = _MI_NEWS_SMNAME2;
-$modversion['sub'][$i]['url']  = "archive.php";
+$modversion['sub'][$i]['url']  = 'archive.php';
 if ($cansubmit) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_SMNAME1;
-    $modversion['sub'][$i]['url']  = "submit.php";
+    $modversion['sub'][$i]['url']  = 'submit.php';
 }
 unset($cansubmit);
 
@@ -256,17 +256,17 @@ include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 if (news_getmoduleoption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;
-    $modversion['sub'][$i]['url']  = "whoswho.php";
+    $modversion['sub'][$i]['url']  = 'whoswho.php';
 }
 
 ++$i;
 $modversion['sub'][$i]['name'] = _MI_NEWS_TOPICS_DIRECTORY;
-$modversion['sub'][$i]['url']  = "topics_directory.php";
+$modversion['sub'][$i]['url']  = 'topics_directory.php';
 
 // Search
 $modversion['hasSearch']      = 1;
-$modversion['search']['file'] = "include/search.inc.php";
-$modversion['search']['func'] = "news_search";
+$modversion['search']['file'] = 'include/search.inc.php';
+$modversion['search']['func'] = 'news_search';
 
 // Comments
 $modversion['hasComments']          = 1;
@@ -300,7 +300,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_DATEFORMAT';
 $modversion['config'][$i]['description'] = '_MI_NEWS_DATEFORMAT_DESC';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = "";
+$modversion['config'][$i]['default']     = '';
 
 /**
  * Display a navigation's box on the pages ?
@@ -344,7 +344,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWSDISPLAY';
 $modversion['config'][$i]['description'] = '_MI_NEWSDISPLAYDESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = "Classic";
+$modversion['config'][$i]['default']     = 'Classic';
 $modversion['config'][$i]['options']     = array('_MI_NEWSCLASSIC' => 'Classic', '_MI_NEWSBYTOPIC' => 'Bytopic');
 
 /**
@@ -475,8 +475,8 @@ $modversion['config'][$i]['default']     = 1;
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'ratenews';
-$modversion['config'][$i]['title']       = "_MI_NEWS_RATE_NEWS";
-$modversion['config'][$i]['description'] = "";
+$modversion['config'][$i]['title']       = '_MI_NEWS_RATE_NEWS';
+$modversion['config'][$i]['description'] = '';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
@@ -486,8 +486,8 @@ $modversion['config'][$i]['default']     = 0;
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'topicsrss';
-$modversion['config'][$i]['title']       = "_MI_NEWS_TOPICS_RSS";
-$modversion['config'][$i]['description'] = "_MI_NEWS_TOPICS_RSS_DESC";
+$modversion['config'][$i]['title']       = '_MI_NEWS_TOPICS_RSS';
+$modversion['config'][$i]['description'] = '_MI_NEWS_TOPICS_RSS_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
@@ -498,8 +498,8 @@ $modversion['config'][$i]['default']     = 0;
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'metadata';
-$modversion['config'][$i]['title']       = "_MI_NEWS_META_DATA";
-$modversion['config'][$i]['description'] = "_MI_NEWS_META_DATA_DESC";
+$modversion['config'][$i]['title']       = '_MI_NEWS_META_DATA';
+$modversion['config'][$i]['description'] = '_MI_NEWS_META_DATA_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
@@ -509,7 +509,7 @@ $modversion['config'][$i]['default']     = 0;
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'form_options';
-$modversion['config'][$i]['title']       = "_MI_NEWS_FORM_OPTIONS";
+$modversion['config'][$i]['title']       = '_MI_NEWS_FORM_OPTIONS';
 $modversion['config'][$i]['description'] = '_MI_NEWS_FORM_OPTIONS_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
@@ -524,8 +524,8 @@ $modversion['config'][$i]['options'] = array_flip($editor_handler->getList());
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'keywordshighlight';
-$modversion['config'][$i]['title']       = "_MI_NEWS_KEYWORDS_HIGH";
-$modversion['config'][$i]['description'] = "_MI_NEWS_KEYWORDS_HIGH_DESC";
+$modversion['config'][$i]['title']       = '_MI_NEWS_KEYWORDS_HIGH';
+$modversion['config'][$i]['description'] = '_MI_NEWS_KEYWORDS_HIGH_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
@@ -540,7 +540,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_HIGH_COLOR';
 $modversion['config'][$i]['description'] = '_MI_NEWS_HIGH_COLOR_DES';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = "#FFFF80";
+$modversion['config'][$i]['default']     = '#FFFF80';
 
 /**
  * Tooltips, or infotips are some small textes you can see when you
@@ -553,7 +553,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_INFOTIPS';
 $modversion['config'][$i]['description'] = '_MI_NEWS_INFOTIPS_DES';
 $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = "0";
+$modversion['config'][$i]['default']     = '0';
 
 /**
  * This option is specific to Mozilla/Firefox and Opera
@@ -562,8 +562,8 @@ $modversion['config'][$i]['default']     = "0";
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'sitenavbar';
-$modversion['config'][$i]['title']       = "_MI_NEWS_SITE_NAVBAR";
-$modversion['config'][$i]['description'] = "_MI_NEWS_SITE_NAVBAR_DESC";
+$modversion['config'][$i]['title']       = '_MI_NEWS_SITE_NAVBAR';
+$modversion['config'][$i]['description'] = '_MI_NEWS_SITE_NAVBAR_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
@@ -573,8 +573,8 @@ $modversion['config'][$i]['default']     = 0;
  */
 ++$i;
 $modversion['config'][$i]['name']        = 'tabskin';
-$modversion['config'][$i]['title']       = "_MI_NEWS_TABS_SKIN";
-$modversion['config'][$i]['description'] = "_MI_NEWS_TABS_SKIN_DESC";
+$modversion['config'][$i]['title']       = '_MI_NEWS_TABS_SKIN';
+$modversion['config'][$i]['description'] = '_MI_NEWS_TABS_SKIN_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['options']     = array(
@@ -585,8 +585,7 @@ $modversion['config'][$i]['options']     = array(
     _MI_NEWS_SKIN_5 => 5,
     _MI_NEWS_SKIN_6 => 6,
     _MI_NEWS_SKIN_7 => 7,
-    _MI_NEWS_SKIN_8 => 8
-);
+    _MI_NEWS_SKIN_8 => 8);
 $modversion['config'][$i]['default']     = 6;
 
 /**
@@ -624,7 +623,7 @@ $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
 
 /**
- * Activate Firefox 2 microformats ? //obsolete, see here : http://wiki.mozilla.org/Microsummaries (cesag)
+ * Activate Firefox 2 microformats ? //obsolete, see here : http://wiki.mozilla.org/Microsummaries (cesagonchu)
  * ++$i;
  * $modversion['config'][$i]['name'] = 'firefox_microsummaries';
  * $modversion['config'][$i]['title'] = '_MI_NEWS_FF_MICROFORMAT';
@@ -656,8 +655,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_MIME_TYPES';
 $modversion['config'][$i]['description'] = '';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']
-                                         = "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
+$modversion['config'][$i]['default']     = "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
 
 /**
  * Use enhanced page separator ?

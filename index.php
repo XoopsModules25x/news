@@ -1,8 +1,8 @@
 <?php
-// $Id: index.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -82,7 +82,7 @@ include dirname(dirname(__DIR__)) . '/mainfile.php';
 
 //$XOOPS_URL = XOOPS_URL;
 //$u=$XOOPS_URL.'/uploads/news_xml.php';
-//	$x = file_get_contents($u);
+//  $x = file_get_contents($u);
 
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
@@ -92,26 +92,25 @@ include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
 $storytopic = 0;
 if (isset($_GET['storytopic'])) {
-    $storytopic = (int)($_GET['storytopic']);
+    $storytopic = (int)$_GET['storytopic'];
 } else {
     if (isset($_GET['topic_id'])) {
-        $storytopic = (int)($_GET['topic_id']);
+        $storytopic = (int)$_GET['topic_id'];
     }
 }
 
 if ($storytopic) {
     $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler =& xoops_gethandler('groupperm');
+    $gperm_handler = xoops_getHandler('groupperm');
     if (!$gperm_handler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
     }
     $xoopsOption['storytopic'] = $storytopic;
 } else {
     $xoopsOption['storytopic'] = 0;
 }
 if (isset($_GET['storynum'])) {
-    $xoopsOption['storynum'] = (int)($_GET['storynum']);
+    $xoopsOption['storynum'] = (int)$_GET['storynum'];
     if ($xoopsOption['storynum'] > 30) {
         $xoopsOption['storynum'] = $xoopsModuleConfig['storyhome'];
     }
@@ -120,19 +119,19 @@ if (isset($_GET['storynum'])) {
 }
 
 if (isset($_GET['start'])) {
-    $start = (int)($_GET['start']);
+    $start = (int)$_GET['start'];
 } else {
     $start = 0;
 }
 
-if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] == 'Classic' || $xoopsOption['storytopic'] > 0) {
+if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] === 'Classic' || $xoopsOption['storytopic'] > 0) {
     $showclassic = 1;
 } else {
     $showclassic = 0;
 }
 $firsttitle = '';
 $topictitle = '';
-$myts       =& MyTextSanitizer::getInstance();
+$myts       = MyTextSanitizer::getInstance();
 $sfiles     = new sFiles();
 
 $column_count = $xoopsModuleConfig['columnmode'];
@@ -167,7 +166,7 @@ if ($showclassic) {
 
         $xoopsTpl->assign('topic_select', $topic_select);
         $storynum_options = '';
-        for ($i = 5; $i <= 30; $i = $i + 5) {
+        for ($i = 5; $i <= 30; $i += 5) {
             $sel = '';
             if ($i == $xoopsOption['storynum']) {
                 $sel = ' selected="selected"';
@@ -303,15 +302,9 @@ if ($xoopsOption['storytopic']) {
 /**
  * Create a link for the RSS feed (if the module's option is activated)
  */
-$moduleInfo =& $module_handler->get($xoopsModule->getVar('mid'));
+$moduleInfo = $module_handler->get($xoopsModule->getVar('mid'));
 if ($xoopsModuleConfig['topicsrss'] && $xoopsOption['storytopic']) {
-    $link = sprintf(
-        "<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>",
-        XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'],
-        _NW_RSSFEED,
-        XOOPS_URL . "/" . $moduleInfo->getInfo('icons16') . '/rss.gif',
-        _NW_RSSFEED
-    );
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, XOOPS_URL . '/' . $moduleInfo->getInfo('icons16') . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }
 

@@ -1,8 +1,8 @@
 <?php
-// $Id: news_bigstory.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -33,7 +33,7 @@ function b_news_bigstory_show()
 {
     include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    $myts       =& MyTextSanitizer::getInstance();
+    $myts       = MyTextSanitizer::getInstance();
     $restricted = news_getmoduleoption('restrictindex');
     $dateformat = news_getmoduleoption('dateformat');
     $infotips   = news_getmoduleoption('infotips');
@@ -78,7 +78,7 @@ function b_news_bigstory_show()
 function b_news_bigstory_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = & b_news_bigstory_show($options);
+    $block   = &b_news_bigstory_show($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);

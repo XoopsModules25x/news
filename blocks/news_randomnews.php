@@ -1,8 +1,8 @@
 <?php
-// $Id: news_randomnews.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -36,7 +36,7 @@ include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 function b_news_randomnews_show($options)
 {
     include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-    $myts          =& MyTextSanitizer::getInstance();
+    $myts          = MyTextSanitizer::getInstance();
     $block         = array();
     $block['sort'] = $options[0];
 
@@ -69,7 +69,7 @@ function b_news_randomnews_show($options)
         $news['hits']        = $story->counter();
         $news['rating']      = $story->rating();
         $news['votes']       = $story->votes();
-        $news['author']      = sprintf("%s %s", _POSTEDBY, $story->uname());
+        $news['author']      = sprintf('%s %s', _POSTEDBY, $story->uname());
         $news['topic_title'] = $story->topic_title();
         $news['topic_color'] = '#' . $myts->displayTarea($story->topic_color);
         $news['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
@@ -104,19 +104,19 @@ function b_news_randomnews_edit($options)
     global $xoopsDB;
     $form = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";
     $form .= "<option value='published'";
-    if ($options[0] == "published") {
+    if ($options[0] === 'published') {
         $form .= " selected='selected'";
     }
     $form .= '>' . _MB_NEWS_DATE . "</option>\n";
 
     $form .= "<option value='counter'";
-    if ($options[0] == 'counter') {
+    if ($options[0] === 'counter') {
         $form .= " selected='selected'";
     }
     $form .= '>' . _MB_NEWS_HITS . '</option>';
 
     $form .= "<option value='rating'";
-    if ($options[0] == 'rating') {
+    if ($options[0] === 'rating') {
         $form .= " selected='selected'";
     }
     $form .= '>' . _MB_NEWS_RATE . '</option>';
@@ -154,7 +154,7 @@ function b_news_randomnews_edit($options)
 function b_news_randomnews_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = & b_news_randomnews_show($options);
+    $block   = &b_news_randomnews_show($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);

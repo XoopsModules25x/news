@@ -1,8 +1,8 @@
 <?php
-// $Id: article.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -127,28 +127,25 @@ include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/keyhighlighter.class.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
-$storyid = (isset($_GET['storyid'])) ? (int)($_GET['storyid']) : 0;
+$storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
-
 }
 
-$myts =& MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 
 // Not yet published
 $article = new NewsStory($storyid);
 if ($article->published() == 0 || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOTYETSTORY);
-
 }
 // Expired
 if ($article->expired() != 0 && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
-
 }
 
-$gperm_handler =& xoops_gethandler('groupperm');
+$gperm_handler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
@@ -156,10 +153,9 @@ if (is_object($xoopsUser)) {
 }
 if (!$gperm_handler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
 }
 
-$storypage  = isset($_GET['page']) ? (int)($_GET['page']) : 0;
+$storypage  = isset($_GET['page']) ? (int)$_GET['page'] : 0;
 $dateformat = news_getmoduleoption('dateformat');
 $hcontent   = '';
 
@@ -239,7 +235,7 @@ $xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
 function my_highlighter($matches)
 {
     $color = news_getmoduleoption('highlightcolor');
-    if (substr($color, 0, 1) != '#') {
+    if (substr($color, 0, 1) !== '#') {
         $color = '#' . $color;
     }
 
@@ -251,7 +247,7 @@ $highlight = news_getmoduleoption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
     $keywords      = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
-    $h             = new keyhighlighter ($keywords, true, 'my_highlighter');
+    $h             = new keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }
 // ****************************************************************************************************************
@@ -286,7 +282,7 @@ unset($isadmin);
 if (is_object($xoopsUser)) {
     if ($xoopsUser->isAdmin($xoopsModule->getVar('mid')) || (news_getmoduleoption('authoredit') && $article->uid() == $xoopsUser->getVar('uid'))) {
         $isadmin = true;
-//    	$story['adminlink'] = $article->adminlink();
+        //      $story['adminlink'] = $article->adminlink();
     }
 }
 $story['topicid']     = $article->topicid();
@@ -299,19 +295,14 @@ if ($article->topicdisplay()) {
     $story['align']   = $article->topicalign();
 }
 $story['hits']      = $article->counter();
-$story['mail_link'] = 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL
-    . '/modules/news/article.php?storyid=' . $article->storyid();
+$story['mail_link'] = 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/news/article.php?storyid=' . $article->storyid();
 $xoopsTpl->assign('lang_printerpage', _NW_PRINTERFRIENDLY);
 $xoopsTpl->assign('lang_sendstory', _NW_SENDSTORY);
 $xoopsTpl->assign('lang_pdfstory', _NW_MAKEPDF);
 $xoopsTpl->assign('lang_on', _ON);
 $xoopsTpl->assign('lang_postedby', _POSTEDBY);
 $xoopsTpl->assign('lang_reads', _READS);
-$xoopsTpl->assign(
-    'mail_link',
-    'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL
-    . '/modules/news/article.php?storyid=' . $article->storyid()
-);
+$xoopsTpl->assign('mail_link', 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/news/article.php?storyid=' . $article->storyid());
 
 if (xoops_trim($article->picture()) != '') {
     $story['picture']     = XOOPS_URL . '/uploads/news/image/' . $article->picture();
@@ -329,14 +320,13 @@ $filescount = count($filesarr);
 $xoopsTpl->assign('attached_files_count', $filescount);
 if ($filescount > 0) {
     foreach ($filesarr as $onefile) {
-        $newsfiles[] = Array(
+        $newsfiles[] = array(
             'file_id'           => $onefile->getFileid(),
             'visitlink'         => XOOPS_URL . '/modules/news/visit.php?fileid=' . $onefile->getFileid(),
             'file_realname'     => $onefile->getFileRealName(),
             'file_attacheddate' => formatTimestamp($onefile->getDate(), $dateformat),
             'file_mimetype'     => $onefile->getMimetype(),
-            'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname()
-        );
+            'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname());
     }
     $xoopsTpl->assign('attached_files', $newsfiles);
 }
@@ -383,7 +373,7 @@ if (news_getmoduleoption('showsummarytable')) {
     $count      = 0;
     $tmparticle = new NewsStory();
     $infotips   = news_getmoduleoption('infotips');
-    $sarray     = $tmparticle->getAllPublished($cfg['article_summary_items_count'], 0, $xoopsModuleConfig['restrictindex']);
+    $sarray     = NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $xoopsModuleConfig['restrictindex']);
     if (count($sarray) > 0) {
         foreach ($sarray as $onearticle) {
             ++$count;
@@ -394,17 +384,13 @@ if (news_getmoduleoption('showsummarytable')) {
                 $tooltips  = news_make_infotips($onearticle->hometext());
                 $htmltitle = ' title="' . $tooltips . '"';
             }
-            $xoopsTpl->append(
-                'summary',
-                array(
-                    'story_id'        => $onearticle->storyid(),
-                    'htmltitle'       => $htmltitle,
-                    'infotips'        => $tooltips,
-                    'story_title'     => $onearticle->title(),
-                    'story_hits'      => $onearticle->counter(),
-                    'story_published' => formatTimestamp($onearticle->published, $dateformat)
-                )
-            );
+            $xoopsTpl->append('summary', array(
+                'story_id'        => $onearticle->storyid(),
+                'htmltitle'       => $htmltitle,
+                'infotips'        => $tooltips,
+                'story_title'     => $onearticle->title(),
+                'story_hits'      => $onearticle->counter(),
+                'story_published' => formatTimestamp($onearticle->published, $dateformat)));
         }
     }
     $xoopsTpl->assign('summary_count', $count);
@@ -527,7 +513,7 @@ $xoopsTpl->assign('share', $xoopsModuleConfig['share']);
 $xoopsTpl->assign('showicons', $xoopsModuleConfig['showicons']);
 
 $canPdf = 1;
-if (!is_object($GLOBALS["xoopsUser"]) && $xoopsModuleConfig['show_pdficon'] == 0) {
+if (!is_object($GLOBALS['xoopsUser']) && $xoopsModuleConfig['show_pdficon'] == 0) {
     $canPdf = 0;
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);

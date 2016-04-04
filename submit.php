@@ -1,8 +1,8 @@
 <?php
-// $Id: submit.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -41,7 +41,7 @@ if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['lang
 } else {
     include_once XOOPS_ROOT_PATH . '/modules/news/language/english/admin.php';
 }
-$myts      =& MyTextSanitizer::getInstance();
+$myts      = MyTextSanitizer::getInstance();
 $module_id = $xoopsModule->getVar('mid');
 $storyid   = 0;
 
@@ -51,17 +51,16 @@ if (is_object($xoopsUser)) {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
 
-$gperm_handler =& xoops_gethandler('groupperm');
+$gperm_handler = xoops_getHandler('groupperm');
 
 if (isset($_POST['topic_id'])) {
-    $perm_itemid = (int)($_POST['topic_id']);
+    $perm_itemid = (int)$_POST['topic_id'];
 } else {
     $perm_itemid = 0;
 }
 //If no access
 if (!$gperm_handler->checkRight('news_submit', $perm_itemid, $groups, $module_id)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
 }
 $op = 'form';
 
@@ -77,31 +76,29 @@ if (isset($_POST['preview'])) {
     $op = 'post';
 } elseif (isset($_GET['op']) && isset($_GET['storyid'])) {
     // Verify that the user can edit or delete an article
-    if ($_GET['op'] == 'edit' || $_GET['op'] == 'delete') {
+    if ($_GET['op'] === 'edit' || $_GET['op'] === 'delete') {
         if ($xoopsModuleConfig['authoredit'] == 1) {
-            $tmpstory = new NewsStory((int)($_GET['storyid']));
+            $tmpstory = new NewsStory((int)$_GET['storyid']);
             if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !news_is_admin_group()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
             }
         } else { // Users can't edit their articles
             if (!news_is_admin_group()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
             }
         }
     }
 
-    if ($approveprivilege && $_GET['op'] == 'edit') {
+    if ($approveprivilege && $_GET['op'] === 'edit') {
         $op      = 'edit';
-        $storyid = (int)($_GET['storyid']);
-    } elseif ($approveprivilege && $_GET['op'] == 'delete') {
+        $storyid = (int)$_GET['storyid'];
+    } elseif ($approveprivilege && $_GET['op'] === 'delete') {
         $op      = 'delete';
-        $storyid = (int)($_GET['storyid']);
+        $storyid = (int)$_GET['storyid'];
     } else {
-        if (news_getmoduleoption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid']) && ($_GET['op'] == 'edit' || $_POST['op'] == 'preview' || $_POST['op'] == 'post')) {
+        if (news_getmoduleoption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid']) && ($_GET['op'] === 'edit' || $_POST['op'] === 'preview' || $_POST['op'] === 'post')) {
             $storyid = 0;
-            $storyid = isset($_GET['storyid']) ? (int)($_GET['storyid']) : (int)($_POST['storyid']);
+            $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : (int)$_POST['storyid'];
             if (!empty($storyid)) {
                 $tmpstory = new NewsStory($storyid);
                 if ($tmpstory->uid() == $xoopsUser->getVar('uid')) {
@@ -112,7 +109,6 @@ if (isset($_POST['preview'])) {
                     unset($tmpstory);
                     if (!news_is_admin_group()) {
                         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
                     } else {
                         $approveprivilege = 1;
                     }
@@ -122,7 +118,6 @@ if (isset($_POST['preview'])) {
             if (!news_is_admin_group()) {
                 unset($tmpstory);
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
             } else {
                 $approveprivilege = 1;
             }
@@ -143,7 +138,6 @@ switch ($op) {
         $story = new NewsStory($storyid);
         if (!$gperm_handler->checkRight('news_view', $story->topicid(), $groups, $module_id)) {
             redirect_header(XOOPS_URL . '/modules/news/index.php', 0, _NOPERM);
-
         }
         echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td class=\"odd\">";
         echo '<h4>' . _AM_EDITARTICLE . '</h4>';
@@ -166,17 +160,17 @@ switch ($op) {
         if (isset($published) && $published > 0) {
             $approve = 1;
         }
-        if ($story ->published() != 0) {
+        if ($story->published() != 0) {
             $published = $story->published();
         }
-        if ($story ->expired() != 0) {
+        if ($story->expired() != 0) {
             $expired = $story->expired();
         } else {
             $expired = 0;
         }
-        $type         = $story ->type();
-        $topicdisplay = $story ->topicdisplay();
-        $topicalign   = $story ->topicalign(false);
+        $type         = $story->type();
+        $topicdisplay = $story->topicdisplay();
+        $topicalign   = $story->topicalign(false);
         if (!news_is_admin_group()) {
             include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         } else {
@@ -186,13 +180,13 @@ switch ($op) {
         break;
 
     case 'preview':
-        $topic_id = (int)($_POST['topic_id']);
+        $topic_id = (int)$_POST['topic_id'];
         $xt       = new NewsTopic($topic_id);
         if (isset($_GET['storyid'])) {
-            $storyid = (int)($_GET['storyid']);
+            $storyid = (int)$_GET['storyid'];
         } else {
             if (isset($_POST['storyid'])) {
-                $storyid = (int)($_POST['storyid']);
+                $storyid = (int)$_POST['storyid'];
             } else {
                 $storyid = 0;
             }
@@ -219,12 +213,12 @@ switch ($op) {
         }
         $topicid = $topic_id;
         if (isset($_POST['topicdisplay'])) {
-            $topicdisplay = (int)($_POST['topicdisplay']);
+            $topicdisplay = (int)$_POST['topicdisplay'];
         } else {
             $topicdisplay = 1;
         }
 
-        $approve    = isset($_POST['approve']) ? (int)($_POST['approve']) : 0;
+        $approve    = isset($_POST['approve']) ? (int)$_POST['approve'] : 0;
         $topicalign = 'R';
         if (isset($_POST['topicalign'])) {
             $topicalign = $_POST['topicalign'];
@@ -237,29 +231,29 @@ switch ($op) {
             $story->setTopicalign($topicalign);
             $story->setBodytext($_POST['bodytext']);
             if (news_getmoduleoption('metadata')) {
-                $story->Setkeywords($_POST['keywords']);
+                $story->setKeywords($_POST['keywords']);
                 $story->setDescription($_POST['description']);
-                $story->setIhome((int)($_POST['ihome']));
+                $story->setIhome((int)$_POST['ihome']);
             }
         } else {
-            $noname = isset($_POST['noname']) ? (int)($_POST['noname']) : 0;
+            $noname = isset($_POST['noname']) ? (int)$_POST['noname'] : 0;
         }
 
         if ($approveprivilege || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid()))) {
             if (isset($_POST['author'])) {
-                $story->setUid((int)($_POST['author']));
+                $story->setUid((int)$_POST['author']);
             }
         }
 
-        $notifypub = isset($_POST['notifypub']) ? (int)($_POST['notifypub']) : 0;
-        $nosmiley  = isset($_POST['nosmiley']) ? (int)($_POST['nosmiley']) : 0;
+        $notifypub = isset($_POST['notifypub']) ? (int)$_POST['notifypub'] : 0;
+        $nosmiley  = isset($_POST['nosmiley']) ? (int)$_POST['nosmiley'] : 0;
         if (isset($nosmiley) && ($nosmiley == 0 || $nosmiley == 1)) {
-            $story ->setNosmiley($nosmiley);
+            $story->setNosmiley($nosmiley);
         } else {
             $nosmiley = 0;
         }
         if ($approveprivilege) {
-            $nohtml = isset($_POST['nohtml']) ? (int)($_POST['nohtml']) : 0;
+            $nohtml = isset($_POST['nohtml']) ? (int)$_POST['nohtml'] : 0;
             $story->setNohtml($nohtml);
             if (!isset($_POST['approve'])) {
                 $approve = 0;
@@ -273,7 +267,7 @@ switch ($op) {
         $hometext = $story->hometext('InForm');
         if ($approveprivilege) {
             $bodytext    = $story->bodytext('InForm');
-            $ihome       = $story ->ihome();
+            $ihome       = $story->ihome();
             $description = $story->description('E');
             $keywords    = $story->keywords('E');
         }
@@ -292,7 +286,7 @@ switch ($op) {
         themecenterposts($p_title, $p_hometext);
 
         //Display post edit form
-        $returnside = (int)($_POST['returnside']);
+        $returnside = (int)$_POST['returnside'];
         include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         break;
 
@@ -304,17 +298,17 @@ switch ($op) {
                 $nohtml_db = empty($_POST['nohtml']) ? 0 : 1;
             }
             if (isset($_POST['author']) && ($approveprivilege || $xoopsUser->isAdmin($xoopsModule->mid()))) {
-                $uid = (int)($_POST['author']);
+                $uid = (int)$_POST['author'];
             }
         } else {
             $uid = 0;
         }
 
         if (isset($_GET['storyid'])) {
-            $storyid = (int)($_GET['storyid']);
+            $storyid = (int)$_GET['storyid'];
         } else {
             if (isset($_POST['storyid'])) {
-                $storyid = (int)($_POST['storyid']);
+                $storyid = (int)$_POST['storyid'];
             } else {
                 $storyid = 0;
             }
@@ -331,12 +325,12 @@ switch ($op) {
         $story->setTitle($_POST['title']);
         $story->setSubtitle($_POST['subtitle']);
         $story->setHometext($_POST['hometext']);
-        $story->setTopicId((int)($_POST['topic_id']));
+        $story->setTopicId((int)$_POST['topic_id']);
         $story->setHostname(xoops_getenv('REMOTE_ADDR'));
         $story->setNohtml($nohtml_db);
-        $nosmiley = isset($_POST['nosmiley']) ? (int)($_POST['nosmiley']) : 0;
+        $nosmiley = isset($_POST['nosmiley']) ? (int)$_POST['nosmiley'] : 0;
         $story->setNosmiley($nosmiley);
-        $notifypub = isset($_POST['notifypub']) ? (int)($_POST['notifypub']) : 0;
+        $notifypub = isset($_POST['notifypub']) ? (int)$_POST['notifypub'] : 0;
         $story->setNotifyPub($notifypub);
         $story->setType($_POST['type']);
 
@@ -345,22 +339,22 @@ switch ($op) {
             $pubdate      = strtotime($publish_date['date']) + $publish_date['time'];
             //$offset = $xoopsUser -> timezone() - $xoopsConfig['server_TZ'];
             //$pubdate = $pubdate - ( $offset * 3600 );
-            $story ->setPublished($pubdate);
+            $story->setPublished($pubdate);
         }
         if (!empty($_POST['autoexpdate']) && $approveprivilege) {
             $expiry_date = $_POST['expiry_date'];
             $expiry_date = strtotime($expiry_date['date']) + $expiry_date['time'];
-            $offset      = $xoopsUser ->timezone() - $xoopsConfig['server_TZ'];
+            $offset      = $xoopsUser->timezone() - $xoopsConfig['server_TZ'];
             $expiry_date = $expiry_date - ($offset * 3600);
-            $story ->setExpired($expiry_date);
+            $story->setExpired($expiry_date);
         } else {
-            $story ->setExpired(0);
+            $story->setExpired(0);
         }
 
         if ($approveprivilege) {
             if (news_getmoduleoption('metadata')) {
                 $story->setDescription($_POST['description']);
-                $story->Setkeywords($_POST['keywords']);
+                $story->setKeywords($_POST['keywords']);
             }
             $story->setTopicdisplay($_POST['topicdisplay']); // Display Topic Image ? (Yes or No)
             $story->setTopicalign($_POST['topicalign']); // Topic Align, 'Right' or 'Left'
@@ -370,7 +364,7 @@ switch ($op) {
             } else {
                 $story->setBodytext(' ');
             }
-            $approve = isset($_POST['approve']) ? (int)($_POST['approve']) : 0;
+            $approve = isset($_POST['approve']) ? (int)$_POST['approve'] : 0;
 
             if (!$story->published() && $approve) {
                 $story->setPublished(time());
@@ -386,7 +380,7 @@ switch ($op) {
             if (empty($storyid)) {
                 $approve = 1;
             } else {
-                $approve = isset($_POST['approve']) ? (int)($_POST['approve']) : 0;
+                $approve = isset($_POST['approve']) ? (int)$_POST['approve'] : 0;
             }
             if ($approve) {
                 $story->setPublished(time());
@@ -408,7 +402,7 @@ switch ($op) {
         // First case, it's not an anonyous, the story is approved and it's a new story
         if ($uid && $approve && empty($storyid)) {
             $tmpuser        = new xoopsUser($uid);
-            $member_handler =& xoops_gethandler('member');
+            $member_handler = xoops_getHandler('member');
             $member_handler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
         }
 
@@ -417,7 +411,7 @@ switch ($op) {
             $storytemp = new NewsStory($storyid);
             if (!$storytemp->published() && $storytemp->uid() > 0) { // the article has been submited but not approved
                 $tmpuser        = new xoopsUser($storytemp->uid());
-                $member_handler =& xoops_gethandler('member');
+                $member_handler = xoops_getHandler('member');
                 $member_handler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
             }
             unset($storytemp);
@@ -436,13 +430,13 @@ switch ($op) {
                 break;
         }
 
-        if ($allowupload && isset($_POST['deleteimage']) && (int)($_POST['deleteimage']) == 1) {
+        if ($allowupload && isset($_POST['deleteimage']) && (int)$_POST['deleteimage'] == 1) {
             $currentPicture = $story->picture();
             if (xoops_trim($currentPicture) != '') {
                 $currentPicture = XOOPS_ROOT_PATH . '/uploads/news/image/' . xoops_trim($story->picture());
                 if (is_file($currentPicture) && file_exists($currentPicture)) {
                     if (!unlink($currentPicture)) {
-                        trigger_error("Error, impossible to delete the picture attached to this article");
+                        trigger_error('Error, impossible to delete the picture attached to this article');
                     }
                 }
             }
@@ -453,7 +447,7 @@ switch ($op) {
         if ($allowupload) { // L'image
             if (isset($_POST['xoops_upload_file'])) {
                 $fldname = $_FILES[$_POST['xoops_upload_file'][1]];
-                $fldname = (get_magic_quotes_gpc()) ? stripslashes($fldname['name']) : $fldname['name'];
+                $fldname = $fldname['name'];
                 if (xoops_trim($fldname != '')) {
                     $sfiles         = new sFiles();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
@@ -470,7 +464,6 @@ switch ($op) {
                                 rename($newName, $fullPictureName);
                             }
                             $story->setPicture(basename($destname));
-
                         } else {
                             echo _AM_UPLOAD_ERROR . ' ' . $uploader->getErrors();
                         }
@@ -486,14 +479,14 @@ switch ($op) {
         $result = $story->store();
         if ($result) {
             if (news_getmoduleoption('tags')) {
-                $tag_handler = xoops_getmodulehandler('tag', 'tag');
+                $tag_handler = xoops_getModuleHandler('tag', 'tag');
                 $tag_handler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
             }
 
             if (!$editmode) {
-                // 	Notification
+                //  Notification
                 // TODO: modifier afin qu'en cas de pr�publication, la notification ne se fasse pas
-                $notification_handler =& xoops_gethandler('notification');
+                $notification_handler = xoops_getHandler('notification');
                 $tags                 = array();
                 $tags['STORY_NAME']   = $story->title();
                 $tags['STORY_URL']    = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/article.php?storyid=' . $story->storyid();
@@ -525,7 +518,7 @@ switch ($op) {
 
                 if (isset($_POST['xoops_upload_file'])) {
                     $fldname = $_FILES[$_POST['xoops_upload_file'][0]];
-                    $fldname = (get_magic_quotes_gpc()) ? stripslashes($fldname['name']) : $fldname['name'];
+                    $fldname = $fldname['name'];
                     if (xoops_trim($fldname != '')) {
                         $sfiles   = new sFiles();
                         $destname = $sfiles->createUploadName(XOOPS_UPLOAD_PATH, $fldname);
@@ -557,13 +550,11 @@ switch ($op) {
         } else {
             echo _ERRORS;
         }
-        $returnside = isset($_POST['returnside']) ? (int)($_POST['returnside']) : 0;
+        $returnside = isset($_POST['returnside']) ? (int)$_POST['returnside'] : 0;
         if (!$returnside) {
             redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_THANKS);
-
         } else {
             redirect_header(XOOPS_URL . '/modules/news/admin/index.php?op=newarticle', 2, _NW_THANKS);
-
         }
         break;
 

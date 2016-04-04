@@ -6,7 +6,7 @@ body {
     width: 640px;
     border: 1px solid #575757;
     padding: 1px;
-    margin: 1px
+    margin: 1px;
 }
 
 #xo-print-content {
@@ -94,7 +94,7 @@ a {
 }
 
 #xo-top {
-    display: none
+    display: none;
 }
 
 body.theme-dialog #xo-banner {
@@ -174,7 +174,7 @@ input[type=submit], input[type=reset], input[type=button] {
     display: none;
 }
 
-/*select {	display: none;}*/
+/*select {  display: none;}*/
 /*textarea { display: none;}*/
 
 /* display for print */

@@ -1,8 +1,8 @@
 <?php
-// $Id: search.inc.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -43,23 +43,22 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $highlight  = false;
     $highlight  = news_getmoduleoption('keywordshighlight'); // keywords highlighting
 
-    $module_handler =& xoops_gethandler('module');
-    $module         =& $module_handler->getByDirname('news');
+    $module_handler = xoops_getHandler('module');
+    $module         = $module_handler->getByDirname('news');
     $modid          = $module->getVar('mid');
     $searchparam    = '';
 
-    $gperm_handler =& xoops_gethandler('groupperm');
+    $gperm_handler = xoops_getHandler('groupperm');
     if (is_object($xoopsUser)) {
         $groups = $xoopsUser->getGroups();
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
 
-    $sql
-        = "SELECT storyid, topicid, uid, title, created FROM " . $xoopsDB->prefix("news_stories") . " WHERE (published>0 AND published<=" . time() . ") AND (expired = 0 OR expired > " . time() . ') ';
+    $sql = 'SELECT storyid, topicid, uid, title, created FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired > ' . time() . ') ';
 
     if ($userid != 0) {
-        $sql .= " AND uid=" . $userid . " ";
+        $sql .= ' AND uid=' . $userid . ' ';
     }
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $querryarray is really an array
@@ -69,28 +68,28 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
             $sql .= " $andor ";
             $sql .= "(hometext LIKE '%$queryarray[$i]%' OR bodytext LIKE '%$queryarray[$i]%' OR title LIKE '%$queryarray[$i]%' OR keywords LIKE '%$queryarray[$i]%' OR description LIKE '%$queryarray[$i]%')";
         }
-        $sql .= ") ";
+        $sql .= ') ';
         // keywords highlighting
         if ($highlight) {
             $searchparam = '&keywords=' . urlencode(trim(implode(' ', $queryarray)));
         }
     }
 
-    $sql .= "ORDER BY created DESC";
+    $sql .= 'ORDER BY created DESC';
     $result = $xoopsDB->query($sql, $limit, $offset);
     $ret    = array();
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $display = true;
         if ($modid && $gperm_handler) {
-            if ($restricted && !$gperm_handler->checkRight("news_view", $myrow['topicid'], $groups, $modid)) {
+            if ($restricted && !$gperm_handler->checkRight('news_view', $myrow['topicid'], $groups, $modid)) {
                 $display = false;
             }
         }
 
         if ($display) {
-            $ret[$i]['image'] = "assets/images/news.png";
-            $ret[$i]['link']  = "article.php?storyid=" . $myrow['storyid'] . "" . $searchparam;
+            $ret[$i]['image'] = 'assets/images/news.png';
+            $ret[$i]['link']  = 'article.php?storyid=' . $myrow['storyid'] . '' . $searchparam;
             $ret[$i]['title'] = $myrow['title'];
             $ret[$i]['time']  = $myrow['created'];
             $ret[$i]['uid']   = $myrow['uid'];
@@ -104,10 +103,9 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
         include_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
-        $sql = "SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM " . $xoopsDB->prefix("xoopscomments") . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status="
-            . XOOPS_COMMENT_ACTIVE . ") ";
+        $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM ' . $xoopsDB->prefix('xoopscomments') . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
         if ($userid != 0) {
-            $sql .= " AND com_uid=" . $userid . " ";
+            $sql .= ' AND com_uid=' . $userid . ' ';
         }
 
         if (is_array($queryarray) && $count = count($queryarray)) {
@@ -116,15 +114,15 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
                 $sql .= " $andor ";
                 $sql .= "(com_title LIKE '%$queryarray[$i]%' OR com_text LIKE '%$queryarray[$i]%')";
             }
-            $sql .= ") ";
+            $sql .= ') ';
         }
         $i = $ind;
-        $sql .= "ORDER BY com_created DESC";
+        $sql .= 'ORDER BY com_created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $display = true;
             if ($modid && $gperm_handler) {
-                if ($restricted && !$gperm_handler->checkRight("news_view", $myrow['com_itemid'], $groups, $modid)) {
+                if ($restricted && !$gperm_handler->checkRight('news_view', $myrow['com_itemid'], $groups, $modid)) {
                     $display = false;
                 }
             }
@@ -133,8 +131,8 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
             }
 
             if ($display) {
-                $ret[$i]['image'] = "assets/images/news.png";
-                $ret[$i]['link']  = "article.php?storyid=" . $myrow['com_itemid'] . "" . $searchparam;
+                $ret[$i]['image'] = 'assets/images/news.png';
+                $ret[$i]['link']  = 'article.php?storyid=' . $myrow['com_itemid'] . '' . $searchparam;
                 $ret[$i]['title'] = $myrow['com_title'];
                 $ret[$i]['time']  = $myrow['com_created'];
                 $ret[$i]['uid']   = $myrow['com_uid'];

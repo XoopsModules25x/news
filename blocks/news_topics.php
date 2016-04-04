@@ -2,7 +2,7 @@
 // $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -26,15 +26,18 @@
 //  ------------------------------------------------------------------------ //
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
+/**
+ * @return mixed
+ */
 function b_news_topics_show()
 {
     global $storytopic; // Don't know why this is used and where it's coming from ....
     include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-    include_once XOOPS_ROOT_PATH . "/modules/news/class/tree.php";
+    include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
     $jump       = XOOPS_URL . '/modules/news/index.php?storytopic=';
-    $storytopic = !empty($storytopic) ? (int)($storytopic) : 0;
+    $storytopic = !empty($storytopic) ? (int)$storytopic : 0;
     $restricted = news_getmoduleoption('restrictindex');
 
     $xt                 = new NewsTopic();
@@ -52,7 +55,7 @@ function b_news_topics_show()
 function b_news_topics_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = & b_news_topics_show($options);
+    $block   = &b_news_topics_show($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);

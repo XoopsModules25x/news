@@ -2,7 +2,7 @@
 // $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -34,7 +34,7 @@
  */
 function news_notify_iteminfo($category, $item_id)
 {
-    if ($category == 'global') {
+    if ($category === 'global') {
         $item['name'] = '';
         $item['url']  = '';
 
@@ -43,14 +43,14 @@ function news_notify_iteminfo($category, $item_id)
 
     global $xoopsDB;
 
-    if ($category == 'story') {
+    if ($category === 'story') {
         // Assume we have a valid story id
-        $sql    = 'SELECT title FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE storyid = ' . (int)($item_id);
+        $sql    = 'SELECT title FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE storyid = ' . (int)$item_id;
         $result = $xoopsDB->query($sql);
         if ($result) {
             $result_array = $xoopsDB->fetchArray($result);
             $item['name'] = $result_array['title'];
-            $item['url']  = XOOPS_URL . '/modules/news/article.php?storyid=' . (int)($item_id);
+            $item['url']  = XOOPS_URL . '/modules/news/article.php?storyid=' . (int)$item_id;
 
             return $item;
         } else {
@@ -59,13 +59,13 @@ function news_notify_iteminfo($category, $item_id)
     }
 
     // Added by Lankford on 2007/3/23
-    if ($category == 'category') {
-        $sql    = 'SELECT title FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE topic_id = ' . (int)($item_id);
+    if ($category === 'category') {
+        $sql    = 'SELECT title FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE topic_id = ' . (int)$item_id;
         $result = $xoopsDB->query($sql);
         if ($result) {
             $result_array = $xoopsDB->fetchArray($result);
             $item['name'] = $result_array['topic_id'];
-            $item['url']  = XOOPS_URL . '/modules/news/index.php?storytopic=' . (int)($item_id);
+            $item['url']  = XOOPS_URL . '/modules/news/index.php?storytopic=' . (int)$item_id;
 
             return $item;
         } else {

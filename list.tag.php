@@ -37,6 +37,5 @@ require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 if (!news_getmoduleoption('tags')) {
     redirect_header('index.php', 2, _ERRORS);
-
 }
 require_once XOOPS_ROOT_PATH . '/modules/tag/list.tag.php';

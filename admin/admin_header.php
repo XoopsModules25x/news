@@ -14,7 +14,6 @@
  * @package        news
  * @since          1.6.7
  * @author         XOOPS Development Team
- * @version        $Id $
  **/
 $path = dirname(dirname(dirname(__DIR__)));
 include_once $path . '/mainfile.php';
@@ -42,27 +41,25 @@ $pathModuleAdmin = $xoopsModule->getInfo('dirmoduleadmin');
 if (file_exists($GLOBALS['xoops']->path($pathModuleAdmin . '/moduleadmin.php'))) {
     include_once $GLOBALS['xoops']->path($pathModuleAdmin . '/moduleadmin.php');
 } else {
-    redirect_header("../../../admin.php", 5, _AM_MODULEADMIN_MISSING, false);
+    redirect_header('../../../admin.php', 5, _AM_MODULEADMIN_MISSING, false);
 }
 
-$topicsHandler  =& xoops_getModuleHandler('news_topics', 'news');
-$storiesHandler =& xoops_getModuleHandler('news_stories', 'news');
+$topicsHandler  = xoops_getModuleHandler('news_topics', 'news');
+$storiesHandler = xoops_getModuleHandler('news_stories', 'news');
 
 $myts = MyTextSanitizer::getInstance();
 
 if ($xoopsUser) {
-    $moduleperm_handler =& xoops_gethandler('groupperm');
+    $moduleperm_handler = xoops_getHandler('groupperm');
     if (!$moduleperm_handler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
         redirect_header(XOOPS_URL, 1, _NOPERM);
-
     }
 } else {
-    redirect_header(XOOPS_URL . "/user.php", 1, _NOPERM);
-
+    redirect_header(XOOPS_URL . '/user.php', 1, _NOPERM);
 }
 
 if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
-    include_once(XOOPS_ROOT_PATH . "/class/template.php");
+    include_once(XOOPS_ROOT_PATH . '/class/template.php');
     $xoopsTpl = new XoopsTpl();
 }
 
