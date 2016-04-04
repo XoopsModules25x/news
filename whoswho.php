@@ -41,7 +41,6 @@ include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 if (!news_getmoduleoption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
-
 }
 
 $xoopsOption['template_main'] = 'news_whos_who.tpl';
@@ -53,7 +52,7 @@ $uid_ids = array();
 $uid_ids = $article->getWhosWho(news_getmoduleoption('restrictindex'));
 if (count($uid_ids) > 0) {
     $lst_uid        = implode(',', $uid_ids);
-    $member_handler =& xoops_gethandler('member');
+    $member_handler = xoops_getHandler('member');
     $critere        = new Criteria('uid', '(' . $lst_uid . ')', 'IN');
     $tbl_users      = $member_handler->getUsers($critere);
     foreach ($tbl_users as $one_user) {
@@ -83,7 +82,7 @@ $xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
 news_CreateMetaDatas($article);
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_WHOS_WHO);
-$myts             =& MyTextSanitizer::getInstance();
+$myts             = MyTextSanitizer::getInstance();
 $meta_description = _AM_NEWS_WHOS_WHO . ' - ' . $xoopsModule->name('s');
 if (isset($xoTheme) && is_object($xoTheme)) {
     $xoTheme->addMeta('meta', 'description', $meta_description);

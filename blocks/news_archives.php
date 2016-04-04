@@ -1,7 +1,7 @@
 <?php
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -64,25 +64,23 @@ function b_news_archives_show($options)
         9  => _CAL_SEPTEMBER,
         10 => _CAL_OCTOBER,
         11 => _CAL_NOVEMBER,
-        12 => _CAL_DECEMBER
-    );
+        12 => _CAL_DECEMBER);
     $block         = array();
     $sort_order    = $options[0] == 0 ? 'ASC' : 'DESC';
-    $starting_date = mktime(0, 0, 0, (int)($options[2]), 1, (int)($options[1]));
-    if ((int)($options[5]) != 1) {
-        $ending_date = mktime(23, 59, 59, (int)($options[4]), 28, (int)($options[3]));
+    $starting_date = mktime(0, 0, 0, (int)$options[2], 1, (int)$options[1]);
+    if ((int)$options[5] != 1) {
+        $ending_date = mktime(23, 59, 59, (int)$options[4], 28, (int)$options[3]);
     } else {
         $ending_date = time();
     }
-    $sql    = "SELECT distinct(FROM_UNIXTIME(published,'%Y-%m')) as published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date
-        . ' ORDER BY published ' . $sort_order;
+    $sql    = "SELECT distinct(FROM_UNIXTIME(published,'%Y-%m')) as published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date . ' ORDER BY published ' . $sort_order;
     $result = $xoopsDB->query($sql);
     if (!$result) {
         return '';
     }
     while ($myrow = $xoopsDB->fetchArray($result)) {
-        $year                = (int)(substr($myrow['published'], 0, 4));
-        $month               = (int)(substr($myrow['published'], 5, 2));
+        $year                = (int)substr($myrow['published'], 0, 4);
+        $month               = (int)substr($myrow['published'], 5, 2);
         $formated_month      = $months_arr[$month];
         $block['archives'][] = array('month' => $month, 'year' => $year, 'formated_month' => $formated_month);
     }
@@ -183,7 +181,7 @@ function b_news_archives_edit($options)
 function b_news_archives_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = & b_news_archives_show($options);
+    $block   = &b_news_archives_show($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);

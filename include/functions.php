@@ -1,8 +1,8 @@
 <?php
-// $Id: functions.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -41,10 +41,17 @@
  *
  * @return bool
  */
+use WideImage\WideImage;
+
+/**
+ * @param        $option
+ * @param string $repmodule
+ * @return bool|mixed
+ */
 function news_getmoduleoption($option, $repmodule = 'news')
 {
     global $xoopsModuleConfig, $xoopsModule;
-    static $tbloptions = Array();
+    static $tbloptions = array();
     if (is_array($tbloptions) && array_key_exists($option, $tbloptions)) {
         return $tbloptions[$option];
     }
@@ -55,11 +62,11 @@ function news_getmoduleoption($option, $repmodule = 'news')
             $retval = $xoopsModuleConfig[$option];
         }
     } else {
-        $module_handler =& xoops_gethandler('module');
-        $module         =& $module_handler->getByDirname($repmodule);
-        $config_handler =& xoops_gethandler('config');
+        $module_handler = xoops_getHandler('module');
+        $module         = $module_handler->getByDirname($repmodule);
+        $config_handler = xoops_getHandler('config');
         if ($module) {
-            $moduleConfig =& $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+            $moduleConfig = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
             if (isset($moduleConfig[$option])) {
                 $retval = $moduleConfig[$option];
             }
@@ -76,6 +83,7 @@ function news_getmoduleoption($option, $repmodule = 'news')
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $storyid
  */
 function news_updaterating($storyid)
 {
@@ -89,7 +97,7 @@ function news_updaterating($storyid)
     }
     $finalrating = $totalrating / $votesDB;
     $finalrating = number_format($finalrating, 4);
-    $sql         = sprintf("UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u", $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
+    $sql         = sprintf('UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
     $xoopsDB->queryF($sql);
 }
 
@@ -114,10 +122,10 @@ function news_MygetItemIds($permtype = 'news_view')
         return $tblperms[$permtype];
     }
 
-    $module_handler      =& xoops_gethandler('module');
-    $newsModule          =& $module_handler->getByDirname('news');
+    $module_handler      = xoops_getHandler('module');
+    $newsModule          = $module_handler->getByDirname('news');
     $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler       =& xoops_gethandler('groupperm');
+    $gperm_handler       = xoops_getHandler('groupperm');
     $topics              = $gperm_handler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
     $tblperms[$permtype] = $topics;
 
@@ -150,24 +158,22 @@ function news_html2text($document)
         "'&(cent|#162);'i",
         "'&(pound|#163);'i",
         "'&(copy|#169);'i",
-        "'&#(\d+);'e"
-    ); // evaluate as php
+        "'&#(\d+);'e"); // evaluate as php
 
     $replace = array(
-        "",
-        "",
+        '',
+        '',
         "\\1",
         "\"",
-        "&",
-        "<",
-        ">",
-        " ",
+        '&',
+        '<',
+        '>',
+        ' ',
         chr(161),
         chr(162),
         chr(163),
         chr(169),
-        "chr(\\1)"
-    );
+        "chr(\\1)");
 
     $text = preg_replace($search, $replace, $document);
 
@@ -196,6 +202,13 @@ function news_isX23()
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param        $caption
+ * @param        $name
+ * @param string $value
+ * @param string $width
+ * @param string $height
+ * @param string $supplemental
+ * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|XoopsFormFckeditor|XoopsFormHtmlarea|XoopsFormTextArea|XoopsFormTinyeditorTextArea
  */
 function &news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
 {
@@ -266,6 +279,8 @@ function &news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $he
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $text
+ * @return mixed
  */
 function DublinQuotes($text)
 {
@@ -283,12 +298,13 @@ function DublinQuotes($text)
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param null $story
  */
 function news_CreateMetaDatas($story = null)
 {
     global $xoopsConfig, $xoTheme, $xoopsTpl;
     $content = '';
-    $myts    =& MyTextSanitizer::getInstance();
+    $myts    = MyTextSanitizer::getInstance();
     include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
     /**
@@ -343,8 +359,8 @@ function news_CreateMetaDatas($story = null)
      * Dublin Core's meta datas
      */
     if (news_getmoduleoption('dublincore') && isset($story) && is_object($story)) {
-        $config_handler        =& xoops_gethandler('config');
-        $xoopsConfigMetaFooter =& $config_handler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
+        $config_handler        = xoops_getHandler('config');
+        $xoopsConfigMetaFooter = $config_handler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
         $content .= '<meta name="DC.Title" content="' . DublinQuotes($story->title()) . "\" />\n";
         $content .= '<meta name="DC.Creator" content="' . DublinQuotes($story->uname()) . "\" />\n";
         $content .= '<meta name="DC.Subject" content="' . DublinQuotes($meta_keywords) . "\" />\n";
@@ -379,6 +395,8 @@ function news_CreateMetaDatas($story = null)
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $content
+ * @return string
  */
 function news_createmeta_keywords($content)
 {
@@ -390,7 +408,7 @@ function news_createmeta_keywords($content)
         return '';
     }
     $registry = new news_registryfile('news_metagen_options.txt');
-//    $tcontent = '';
+    //    $tcontent = '';
     $tcontent = $registry->getfile();
     if (xoops_trim($tcontent) != '') {
         list($keywordscount, $keywordsorder) = explode(',', $tcontent);
@@ -404,17 +422,17 @@ function news_createmeta_keywords($content)
     if (isset($_SESSION['news_keywords_limit'])) {
         $limit = $_SESSION['news_keywords_limit'];
     } else {
-        $config_handler                  =& xoops_gethandler('config');
-        $xoopsConfigSearch               =& $config_handler->getConfigsByCat(XOOPS_CONF_SEARCH);
+        $config_handler                  = xoops_getHandler('config');
+        $xoopsConfigSearch               = $config_handler->getConfigsByCat(XOOPS_CONF_SEARCH);
         $limit                           = $xoopsConfigSearch['keyword_min'];
         $_SESSION['news_keywords_limit'] = $limit;
     }
-    $myts            =& MyTextSanitizer::getInstance();
-    $content         = str_replace("<br />", " ", $content);
+    $myts            = MyTextSanitizer::getInstance();
+    $content         = str_replace('<br />', ' ', $content);
     $content         = $myts->undoHtmlSpecialChars($content);
     $content         = strip_tags($content);
     $content         = strtolower($content);
-    $search_pattern  = array("&nbsp;", "\t", "\r\n", "\r", "\n", ",", ".", "'", ";", ":", ")", "(", '"', '?', '!', '{', '}', '[', ']', '<', '>', '/', '+', '-', '_', '\\', '*');
+    $search_pattern  = array('&nbsp;', "\t", "\r\n", "\r", "\n", ',', '.', "'", ';', ':', ')', '(', '"', '?', '!', '{', '}', '[', ']', '<', '>', '/', '+', '-', '_', '\\', '*');
     $replace_pattern = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
     $content         = str_replace($search_pattern, $replace_pattern, $content);
     $keywords        = explode(' ', $content);
@@ -448,9 +466,9 @@ function news_createmeta_keywords($content)
         return implode(',', $tmp);
     } else {
         if (!isset($config_handler) || !is_object($config_handler)) {
-            $config_handler =& xoops_gethandler('config');
+            $config_handler = xoops_getHandler('config');
         }
-        $xoopsConfigMetaFooter =& $config_handler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
+        $xoopsConfigMetaFooter = $config_handler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
         if (isset($xoopsConfigMetaFooter['meta_keywords'])) {
             return $xoopsConfigMetaFooter['meta_keywords'];
         } else {
@@ -473,14 +491,14 @@ function news_updateCache()
     $tpllist = array();
     include_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
     include_once XOOPS_ROOT_PATH . '/class/template.php';
-    $tplfile_handler =& xoops_gethandler('tplfile');
+    $tplfile_handler = xoops_getHandler('tplfile');
     $tpllist         = $tplfile_handler->find(null, null, null, $folder);
     $xoopsTpl        = new XoopsTpl();
     xoops_template_clear_module_cache($xoopsModule->getVar('mid')); // Clear module's blocks cache
 
     // Remove cache for each page.
     foreach ($tpllist as $onetemplate) {
-        if ($onetemplate->getVar('tpl_type') == 'module') {
+        if ($onetemplate->getVar('tpl_type') === 'module') {
             // Note, I've been testing all the other methods (like the one of Smarty) and none of them run, that's why I have used this code
             $files_del = array();
             $files_del = glob(XOOPS_CACHE_PATH . '/*' . $onetemplate->getVar('tpl_file') . '*');
@@ -499,6 +517,8 @@ function news_updateCache()
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $tablename
+ * @return bool
  */
 function news_TableExists($tablename)
 {
@@ -514,11 +534,14 @@ function news_TableExists($tablename)
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $fieldname
+ * @param $table
+ * @return bool
  */
 function news_FieldExists($fieldname, $table)
 {
     global $xoopsDB;
-    $result = $xoopsDB->queryF("SHOW COLUMNS FROM	$table LIKE '$fieldname'");
+    $result = $xoopsDB->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }
@@ -529,6 +552,9 @@ function news_FieldExists($fieldname, $table)
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $field
+ * @param $table
+ * @return
  */
 function news_AddField($field, $table)
 {
@@ -576,14 +602,13 @@ function news_isbot()
     } else {
         // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
         // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
-        $botlist
-                      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
+        $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
         $botlist      = strtoupper($botlist);
         $currentagent = strtoupper(xoops_getenv('HTTP_USER_AGENT'));
         $retval       = false;
         $botarray     = explode('|', $botlist);
         foreach ($botarray as $onebot) {
-            if (strstr($currentagent, $onebot)) {
+            if (false !== strpos($currentagent, $onebot)) {
                 $retval = true;
                 break;
             }
@@ -600,12 +625,14 @@ function news_isbot()
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
+ * @param $text
+ * @return null
  */
 function news_make_infotips($text)
 {
     $infotips = news_getmoduleoption('infotips');
     if ($infotips > 0) {
-        $myts =& MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
 
         return $myts->htmlSpecialChars(xoops_substr(strip_tags($text), 0, $infotips));
     }
@@ -616,6 +643,8 @@ function news_make_infotips($text)
 /**
  * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
  *           <amos dot robinson at gmail dot com>
+ * @param $string
+ * @return string
  */
 function news_close_tags($string)
 {
@@ -629,7 +658,7 @@ function news_close_tags($string)
 
             foreach ($start_tags as $key => $val) {
                 $posb = array_search($val, $end_tags);
-                if (is_integer($posb)) {
+                if (is_int($posb)) {
                     unset($end_tags[$posb]);
                 } else {
                     $complete_tags[] = $val;
@@ -640,7 +669,7 @@ function news_close_tags($string)
         }
 
         $complete_tags = array_reverse($complete_tags);
-        for ($i = 0; $i < count($complete_tags); ++$i) {
+        for ($i = 0, $iMax = count($complete_tags); $i < $iMax; ++$i) {
             $string .= '</' . $complete_tags[$i] . '>';
         }
     }
@@ -703,7 +732,7 @@ function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words
  */
 function news_resizePicture($src_path, $dst_path, $param_width, $param_height, $keep_original = false, $fit = 'inside')
 {
-    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
+//    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
     $resize            = true;
     $pictureDimensions = getimagesize($src_path);
     if (is_array($pictureDimensions)) {

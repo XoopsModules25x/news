@@ -29,12 +29,12 @@
  */
 class news_registryfile
 {
-    var $filename; // filename to manage
+    public $filename; // filename to manage
 
     /**
      * @param null $fichier
      */
-    function news_registryfile($fichier = null)
+    public function __construct($fichier = null)
     {
         $this->setfile($fichier);
     }
@@ -42,7 +42,7 @@ class news_registryfile
     /**
      * @param null $fichier
      */
-    function setfile($fichier = null)
+    public function setfile($fichier = null)
     {
         if ($fichier) {
             $this->filename = XOOPS_UPLOAD_PATH . '/' . $fichier;
@@ -54,7 +54,7 @@ class news_registryfile
      *
      * @return bool|string
      */
-    function getfile($fichier = null)
+    public function getfile($fichier = null)
     {
         $fw = '';
         if (!$fichier) {
@@ -75,7 +75,7 @@ class news_registryfile
      *
      * @return bool
      */
-    function savefile($content, $fichier = null)
+    public function savefile($content, $fichier = null)
     {
         $fw = '';
         if (!$fichier) {

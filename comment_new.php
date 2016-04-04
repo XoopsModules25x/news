@@ -2,7 +2,7 @@
 // $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -42,14 +42,12 @@ if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) { // Anon
 }
 // ****************************************************************************
 
-$com_itemid = isset($_GET['com_itemid']) ? (int)($_GET['com_itemid']) : 0;
+$com_itemid = isset($_GET['com_itemid']) ? (int)$_GET['com_itemid'] : 0;
 if ($com_itemid > 0) {
     $article = new NewsStory($com_itemid);
     if ($article->storyid > 0) {
-        $com_replytext
-                  = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), news_getmoduleoption('dateformat')) . '</b><br /><br />'
-            . $article->hometext();
-        $bodytext = $article->bodytext();
+        $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), news_getmoduleoption('dateformat')) . '</b><br /><br />' . $article->hometext();
+        $bodytext      = $article->bodytext();
         if ($bodytext != '') {
             $com_replytext .= '<br /><br />' . $bodytext . '';
         }

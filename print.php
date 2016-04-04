@@ -1,8 +1,8 @@
 <?php
-// $Id: print.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -45,7 +45,7 @@
 include dirname(dirname(__DIR__)) . '/mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-$storyid = isset($_GET['storyid']) ? (int)($_GET['storyid']) : 0;
+$storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
@@ -55,17 +55,15 @@ $story = new NewsStory($storyid);
 // Not yet published
 if ($story->published() == 0 || $story->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
-
 }
 
 // Expired
 if ($story->expired() != 0 && $story->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
-
 }
 
 // Verify permissions
-$gperm_handler =& xoops_gethandler('groupperm');
+$gperm_handler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
@@ -73,7 +71,6 @@ if (is_object($xoopsUser)) {
 }
 if (!$gperm_handler->checkRight('news_view', $story->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-
 }
 
 $xoops_meta_keywords    = '';
@@ -94,11 +91,13 @@ if (trim($story->description()) != '') {
 function PrintPage()
 {
     global $xoopsConfig, $xoopsModule, $story, $xoops_meta_keywords, $xoops_meta_description;
-    $myts     =& MyTextSanitizer::getInstance();
+    $myts     = MyTextSanitizer::getInstance();
     $datetime = formatTimestamp($story->published(), news_getmoduleoption('dateformat'));
     ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE;
+?>" lang="<?php echo _LANGCODE;
+?>">
     <?php
     echo "<head>\n";
     echo '<title>' . $myts->htmlSpecialChars($story->title()) . ' - ' . _NW_PRINTER . ' - ' . $myts->htmlSpecialChars($story->topic_title()) . ' - ' . $xoopsConfig['sitename'] . '</title>';
@@ -139,7 +138,8 @@ function PrintPage()
                 var target = document.getElementById(targetID);
                 var h2 = document.createElement('h2');
                 addClass.apply(h2, ['printOnly']);
-                var h2_txt = document.createTextNode('<?php echo _NW_LINKS; ?>');
+                var h2_txt = document.createTextNode('<?php echo _NW_LINKS;
+                    ?>');
                 h2.appendChild(h2_txt);
                 var coll = container.getElementsByTagName('*');
                 var ol = document.createElement('ol');
@@ -259,7 +259,8 @@ function PrintPage()
                 display: none;
             }
         </style>
-    <?php
+        <?php
+
     }
     echo '</head>';
     echo '<body bgcolor="#ffffff" text="#000000" onload="' . $supplemental . ' window.print()">
@@ -281,8 +282,7 @@ function PrintPage()
     printf(_NW_THISCOMESFROM, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES));
     echo '<br /><a href="' . XOOPS_URL . '/">' . XOOPS_URL . '</a><br /><br />
         ' . _NW_URLFORSTORY . ' <!-- Tag below can be used to display Permalink image --><!--img src="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/images/x.gif" /--><br />
-        <a class="ignore" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $story->storyid() . '">' . XOOPS_URL . '/modules/news/article.php?storyid='
-        . $story->storyid() . '</a>
+        <a class="ignore" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $story->storyid() . '">' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . '</a>
         </td></tr></table></div>
         </body>
         </html>

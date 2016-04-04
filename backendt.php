@@ -1,8 +1,8 @@
 <?php
-// $Id: backendt.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -50,7 +50,7 @@ if (!news_getmoduleoption('topicsrss')) {
     exit();
 }
 
-$topicid = isset($_GET['topicid']) ? (int)($_GET['topicid']) : 0;
+$topicid = isset($_GET['topicid']) ? (int)$_GET['topicid'] : 0;
 if ($topicid == 0) {
     exit();
 }
@@ -71,7 +71,7 @@ $tpl->caching = 2;
 $tpl->xoops_setCacheTime(3600); // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
     $xt     = new NewsTopic($topicid);
-    $sarray = $story->getAllPublished($newsnumber, 0, $restricted, $topicid);
+    $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
     if (is_array($sarray) && count($sarray) > 0) {
         $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);
         $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES);
@@ -103,16 +103,12 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
             $storytitle = $story->title();
             //if we are allowing html, we need to use htmlspecialchars or any bug will break the output
             $description = htmlspecialchars($story->hometext());
-            $tpl->append(
-                'items',
-                array(
-                    'title'       => xoops_utf8_encode($storytitle),
-                    'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
-                    'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
-                    'pubdate'     => formatTimestamp($story->published(), 'rss'),
-                    'description' => xoops_utf8_encode($description)
-                )
-            );
+            $tpl->append('items', array(
+                'title'       => xoops_utf8_encode($storytitle),
+                'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
+                'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
+                'pubdate'     => formatTimestamp($story->published(), 'rss'),
+                'description' => xoops_utf8_encode($description)));
         }
     }
 }

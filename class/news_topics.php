@@ -34,8 +34,8 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-if (!class_exists("XoopsPersistableObjectHandler")) {
-    include_once XOOPS_ROOT_PATH . "/kernel/object.php";
+if (!class_exists('XoopsPersistableObjectHandler')) {
+    include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 }
 
 /**
@@ -47,23 +47,18 @@ class news_topics extends XoopsObject
     /**
      *
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->initVar("topic_id", XOBJ_DTYPE_INT, null, false, 4);
-        $this->initVar("topic_pid", XOBJ_DTYPE_INT, null, false, 4);
-        $this->initVar("topic_title", XOBJ_DTYPE_TXTBOX, null, false);
-        $this->initVar("topic_imgurl", XOBJ_DTYPE_TXTBOX, null, false);
-        $this->initVar("menu", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("topic_frontpage", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("topic_rssurl", XOBJ_DTYPE_TXTBOX, null, false);
-        $this->initVar("topic_description", XOBJ_DTYPE_TXTAREA, null, false);
-        $this->initVar("topic_color", XOBJ_DTYPE_TXTBOX, null, false);
-    }
-
-    function news_topics()
-    {
-        $this->__construct();
+        $this->initVar('topic_id', XOBJ_DTYPE_INT, null, false, 4);
+        $this->initVar('topic_pid', XOBJ_DTYPE_INT, null, false, 4);
+        $this->initVar('topic_title', XOBJ_DTYPE_TXTBOX, null, false);
+        $this->initVar('topic_imgurl', XOBJ_DTYPE_TXTBOX, null, false);
+        $this->initVar('menu', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('topic_frontpage', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('topic_rssurl', XOBJ_DTYPE_TXTBOX, null, false);
+        $this->initVar('topic_description', XOBJ_DTYPE_TXTAREA, null, false);
+        $this->initVar('topic_color', XOBJ_DTYPE_TXTBOX, null, false);
     }
 }
 
@@ -73,10 +68,10 @@ class news_topics extends XoopsObject
 class newsnews_topicsHandler extends XoopsPersistableObjectHandler
 {
     /**
-     * @param null|object $db
+     * @param null|object|XoopsDatabase $db
      */
-    function __construct(&$db)
+    public function __construct(XoopsDatabase $db)
     {
-        parent::__construct($db, "news_topics", "news_topics", "topic_id", "topic_pid");
+        parent::__construct($db, 'news_topics', 'news_topics', 'topic_id', 'topic_pid');
     }
 }

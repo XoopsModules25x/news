@@ -47,7 +47,7 @@ $story      = new NewsStory();
 $restricted = news_getmoduleoption('restrictindex');
 $sarray     = array();
 // Get the last news from all topics according to the module's restrictions
-$sarray = $story->getAllPublished(1, 0, $restricted, 0);
+$sarray = NewsStory::getAllPublished(1, 0, $restricted, 0);
 if (count($sarray) > 0) {
     $laststory = null;
     $laststory = $sarray[0];

@@ -34,8 +34,8 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-if (!class_exists("XoopsPersistableObjectHandler")) {
-    include_once XOOPS_ROOT_PATH . "/kernel/object.php";
+if (!class_exists('XoopsPersistableObjectHandler')) {
+    include_once XOOPS_ROOT_PATH . '/kernel/object.php';
 }
 
 /**
@@ -47,40 +47,35 @@ class news_stories extends XoopsObject
     /**
      *
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->initVar("storyid", XOBJ_DTYPE_INT, null, false, 8);
-        $this->initVar("uid", XOBJ_DTYPE_INT, null, false, 5);
-        $this->initVar("title", XOBJ_DTYPE_TXTBOX, null, false);
-        $this->initVar("created", XOBJ_DTYPE_INT, null, false, 10);
-        $this->initVar("published", XOBJ_DTYPE_INT, null, false, 10);
-        $this->initVar("expired", XOBJ_DTYPE_INT, null, false, 10);
-        $this->initVar("hostname", XOBJ_DTYPE_TXTBOX, null, false, 150);
-        $this->initVar("nohtml", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("nosmiley", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("hometext", XOBJ_DTYPE_TXTAREA, null, false);
-        $this->initVar("bodytext", XOBJ_DTYPE_TXTAREA, null, false);
-        $this->initVar("keywords", XOBJ_DTYPE_TXTBOX, null, false, 255);
-        $this->initVar("description", XOBJ_DTYPE_TXTBOX, null, false, 255);
-        $this->initVar("counter", XOBJ_DTYPE_INT, null, false, 8);
-        $this->initVar("topicid", XOBJ_DTYPE_INT, null, false, 4);
-        $this->initVar("ihome", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("notifypub", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("story_type", XOBJ_DTYPE_TXTBOX, null, false);
-        $this->initVar("topicdisplay", XOBJ_DTYPE_INT, null, false, 1);
-        $this->initVar("topicalign", XOBJ_DTYPE_TXTBOX, null, false, 1);
-        $this->initVar("comments", XOBJ_DTYPE_INT, null, false, 5);
-        $this->initVar("rating", XOBJ_DTYPE_DECIMAL, null, false, 6, 4);
-        $this->initVar("votes", XOBJ_DTYPE_INT, null, false, 11);
-        $this->initVar("picture", XOBJ_DTYPE_TXTBOX, null, false, 50);
-        $this->initVar("pictureinfo", XOBJ_DTYPE_TXTBOX, null, false, 255);
-        $this->initVar("subtitle", XOBJ_DTYPE_TXTBOX, null, false, 255);
-    }
-
-    function news_stories()
-    {
-        $this->__construct();
+        $this->initVar('storyid', XOBJ_DTYPE_INT, null, false, 8);
+        $this->initVar('uid', XOBJ_DTYPE_INT, null, false, 5);
+        $this->initVar('title', XOBJ_DTYPE_TXTBOX, null, false);
+        $this->initVar('created', XOBJ_DTYPE_INT, null, false, 10);
+        $this->initVar('published', XOBJ_DTYPE_INT, null, false, 10);
+        $this->initVar('expired', XOBJ_DTYPE_INT, null, false, 10);
+        $this->initVar('hostname', XOBJ_DTYPE_TXTBOX, null, false, 150);
+        $this->initVar('nohtml', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('nosmiley', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('hometext', XOBJ_DTYPE_TXTAREA, null, false);
+        $this->initVar('bodytext', XOBJ_DTYPE_TXTAREA, null, false);
+        $this->initVar('keywords', XOBJ_DTYPE_TXTBOX, null, false, 255);
+        $this->initVar('description', XOBJ_DTYPE_TXTBOX, null, false, 255);
+        $this->initVar('counter', XOBJ_DTYPE_INT, null, false, 8);
+        $this->initVar('topicid', XOBJ_DTYPE_INT, null, false, 4);
+        $this->initVar('ihome', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('notifypub', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('story_type', XOBJ_DTYPE_TXTBOX, null, false);
+        $this->initVar('topicdisplay', XOBJ_DTYPE_INT, null, false, 1);
+        $this->initVar('topicalign', XOBJ_DTYPE_TXTBOX, null, false, 1);
+        $this->initVar('comments', XOBJ_DTYPE_INT, null, false, 5);
+        $this->initVar('rating', XOBJ_DTYPE_DECIMAL, null, false, 6, 4);
+        $this->initVar('votes', XOBJ_DTYPE_INT, null, false, 11);
+        $this->initVar('picture', XOBJ_DTYPE_TXTBOX, null, false, 50);
+        $this->initVar('pictureinfo', XOBJ_DTYPE_TXTBOX, null, false, 255);
+        $this->initVar('subtitle', XOBJ_DTYPE_TXTBOX, null, false, 255);
     }
 }
 
@@ -90,10 +85,10 @@ class news_stories extends XoopsObject
 class newsnews_storiesHandler extends XoopsPersistableObjectHandler
 {
     /**
-     * @param null|object $db
+     * @param null|object|XoopsDatabase $db
      */
-    function __construct(&$db)
+    public function __construct(XoopsDatabase $db)
     {
-        parent::__construct($db, "news_stories", "news_stories", "storyid", "uid");
+        parent::__construct($db, 'news_stories', 'news_stories', 'storyid', 'uid');
     }
 }

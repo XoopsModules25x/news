@@ -38,6 +38,5 @@ require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 if (!news_getmoduleoption('tags')) {
     redirect_header('index.php', 2, _ERRORS);
-
 }
 require XOOPS_ROOT_PATH . '/modules/tag/view.tag.php';

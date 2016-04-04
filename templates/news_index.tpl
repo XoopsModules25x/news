@@ -25,5 +25,5 @@
     </table>
 
     <div class="pagenav"><{$pagenav}></div>
-    <{include file='db:system_notification_select.html'}>
+    <{include file='db:system_notification_select.tpl'}>
 </div>

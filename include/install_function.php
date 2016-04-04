@@ -13,7 +13,8 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Voltan
  * @package     News
- * @version     $Id: install_function.php 9572 2012-05-22 11:13:40Z beckmi $
+ * @param $xoopsModule
+ * @return bool
  */
 
 function xoops_module_pre_install_news(&$xoopsModule)
@@ -47,8 +48,8 @@ function xoops_module_pre_install_news(&$xoopsModule)
 function xoops_module_install_news(&$xoopsModule)
 {
     $module_id     = $xoopsModule->getVar('mid');
-    $gpermHandler  =& xoops_gethandler('groupperm');
-    $configHandler =& xoops_gethandler('config');
+    $gpermHandler  = xoops_getHandler('groupperm');
+    $configHandler = xoops_getHandler('config');
 
     /**
      * Default public category permission mask
@@ -62,29 +63,29 @@ function xoops_module_install_news(&$xoopsModule)
     $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_USERS, $module_id);
     $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
 
-    $dir = XOOPS_ROOT_PATH . "/uploads/news";
+    $dir = XOOPS_ROOT_PATH . '/uploads/news';
     if (!is_dir($dir)) {
         mkdir($dir, 0777);
     }
     chmod($dir, 0777);
 
-    $dir = XOOPS_ROOT_PATH . "/uploads/news/file";
+    $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
     if (!is_dir($dir)) {
         mkdir($dir, 0777);
     }
     chmod($dir, 0777);
 
-    $dir = XOOPS_ROOT_PATH . "/uploads/news/image";
+    $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
     if (!is_dir($dir)) {
         mkdir($dir, 0777);
     }
     chmod($dir, 0777);
 
     // Copy index.html files on uploads folders
-    $indexFile = XOOPS_ROOT_PATH . "/modules/news/include/index.html";
-    copy($indexFile, XOOPS_ROOT_PATH . "/uploads/news/index.html");
-    copy($indexFile, XOOPS_ROOT_PATH . "/uploads/news/file/index.html");
-    copy($indexFile, XOOPS_ROOT_PATH . "/uploads/news/image/index.html");
+    $indexFile = XOOPS_ROOT_PATH . '/modules/news/include/index.html';
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/index.html');
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/file/index.html');
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/image/index.html');
 
     return true;
 }

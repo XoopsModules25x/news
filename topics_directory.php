@@ -41,7 +41,7 @@ include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 $xoopsOption['template_main'] = 'news_topics_directory.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 
-$myts =& MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 
 $newscountbytopic = $tbl_topics = array();
 $perms            = '';
@@ -49,10 +49,10 @@ $xt               = new NewsTopic();
 $restricted       = news_getmoduleoption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
-    $module_handler =& xoops_gethandler('module');
-    $newsModule     =& $module_handler->getByDirname('news');
+    $module_handler = xoops_getHandler('module');
+    $newsModule     = $module_handler->getByDirname('news');
     $groups         = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler  =& xoops_gethandler('groupperm');
+    $gperm_handler  = xoops_getHandler('groupperm');
     $topics         = $gperm_handler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
     if (count($topics) > 0) {
         $topics = implode(',', $topics);
@@ -75,12 +75,12 @@ if (is_array($topics_arr) && count($topics_arr)) {
             $onetopic['prefix'] = str_replace('.', '', $onetopic['prefix']);
         }
 
-        $tbl_topics[] = array('id'          => $onetopic['topic_id'],
-                              'news_count'  => $count,
-                              'topic_color' => '#' . $onetopic['topic_color'],
-                              'prefix'      => $onetopic['prefix'],
-                              'title'       => $myts->displayTarea($onetopic['topic_title'])
-        );
+        $tbl_topics[] = array(
+            'id'          => $onetopic['topic_id'],
+            'news_count'  => $count,
+            'topic_color' => '#' . $onetopic['topic_color'],
+            'prefix'      => $onetopic['prefix'],
+            'title'       => $myts->displayTarea($onetopic['topic_title']));
     }
 }
 $xoopsTpl->assign('topics', $tbl_topics);

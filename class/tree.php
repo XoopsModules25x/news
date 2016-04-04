@@ -2,7 +2,7 @@
 // $Id$
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -32,10 +32,10 @@
 /**
  * A tree structures with {@link XoopsObject}s as nodes
  *
- * @package          kernel
- * @subpackage       core
+ * @package              kernel
+ * @subpackage           core
  *
- * @author           Kazumi Ono    <onokazu@xoops.org>
+ * @author               Kazumi Ono    <onokazu@xoops.org>
  * @copyright        (c) XOOPS Project (http://xoops.org)
  */
 class MyXoopsObjectTree
@@ -43,11 +43,11 @@ class MyXoopsObjectTree
     /**#@+
      * @access    private
      */
-    var $_parentId;
-    var $_myId;
-    var $_rootId = null;
-    var $_tree = array();
-    var $_objects;
+    public $_parentId;
+    public $_myId;
+    public $_rootId = null;
+    public $_tree   = array();
+    public $_objects;
     /**#@-*/
 
     /**
@@ -58,9 +58,9 @@ class MyXoopsObjectTree
      * @param string $parentId  field name of parent object ID
      * @param string $rootId    field name of root object ID
      **/
-    function __construct(&$objectArr, $myId, $parentId, $rootId = null)
+    public function __construct(&$objectArr, $myId, $parentId, $rootId = null)
     {
-        //$this->db = &XoopsDatabaseFactory::getDatabaseConnection();
+        //$this->db = xoopsDatabaseFactory::getDatabaseConnection();
         $this->_objects  =& $objectArr;
         $this->_myId     = $myId;
         $this->_parentId = $parentId;
@@ -75,11 +75,11 @@ class MyXoopsObjectTree
      *
      * @access    private
      **/
-    function _initialize()
+    public function _initialize()
     {
         foreach (array_keys($this->_objects) as $i) {
             $key1                          = $this->_objects[$i]->getVar($this->_myId);
-            $this->_tree[$key1]['obj']     =& $this->_objects[$i];
+            $this->_tree[$key1]['obj']     = $this->_objects[$i];
             $key2                          = $this->_objects[$i]->getVar($this->_parentId);
             $this->_tree[$key1]['parent']  = $key2;
             $this->_tree[$key2]['child'][] = $key1;
@@ -94,7 +94,7 @@ class MyXoopsObjectTree
      *
      * @return array Associative array comprising the tree
      **/
-    function &getTree()
+    public function &getTree()
     {
         return $this->_tree;
     }
@@ -106,7 +106,7 @@ class MyXoopsObjectTree
      *
      * @return object Object within the tree
      **/
-    function &getByKey($key)
+    public function &getByKey($key)
     {
         return $this->_tree[$key]['obj'];
     }
@@ -118,12 +118,12 @@ class MyXoopsObjectTree
      *
      * @return array Array of children of the parent
      **/
-    function getFirstChild($key)
+    public function getFirstChild($key)
     {
         $ret = array();
         if (isset($this->_tree[$key]['child'])) {
             foreach ($this->_tree[$key]['child'] as $childkey) {
-                $ret[$childkey] =& $this->_tree[$childkey]['obj'];
+                $ret[$childkey] = $this->_tree[$childkey]['obj'];
             }
         }
 
@@ -138,14 +138,14 @@ class MyXoopsObjectTree
      *
      * @return array Array of child nodes.
      **/
-    function getAllChild($key, $ret = array())
+    public function getAllChild($key, $ret = array())
     {
         if (isset($this->_tree[$key]['child'])) {
             foreach ($this->_tree[$key]['child'] as $childkey) {
-                $ret[$childkey] =& $this->_tree[$childkey]['obj'];
-                $children       =& $this->getAllChild($childkey, $ret);
+                $ret[$childkey] = $this->_tree[$childkey]['obj'];
+                $children       = $this->getAllChild($childkey, $ret);
                 foreach (array_keys($children) as $newkey) {
-                    $ret[$newkey] =& $children[$newkey];
+                    $ret[$newkey] = $children[$newkey];
                 }
             }
         }
@@ -163,13 +163,13 @@ class MyXoopsObjectTree
      *
      * @return array Array of parent nodes.
      **/
-    function getAllParent($key, $ret = array(), $uplevel = 1)
+    public function getAllParent($key, $ret = array(), $uplevel = 1)
     {
         if (isset($this->_tree[$key]['parent']) && isset($this->_tree[$this->_tree[$key]['parent']]['obj'])) {
-            $ret[$uplevel] =& $this->_tree[$this->_tree[$key]['parent']]['obj'];
-            $parents       =& $this->getAllParent($this->_tree[$key]['parent'], $ret, $uplevel + 1);
+            $ret[$uplevel] = $this->_tree[$this->_tree[$key]['parent']]['obj'];
+            $parents       = $this->getAllParent($this->_tree[$key]['parent'], $ret, $uplevel + 1);
             foreach (array_keys($parents) as $newkey) {
-                $ret[$newkey] =& $parents[$newkey];
+                $ret[$newkey] = $parents[$newkey];
             }
         }
 
@@ -188,9 +188,9 @@ class MyXoopsObjectTree
      * @param string $prefix_curr String to indent the current item
      *
      * @return void
-    @access	private
+    @access private
      */
-    function _makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = '')
+    public function _makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
             $value = $this->_tree[$key]['obj']->getVar($this->_myId);
@@ -221,13 +221,13 @@ class MyXoopsObjectTree
      *
      * @return string HTML select box
      */
-    function makeSelBox($name, $fieldName, $prefix = '-', $selected = '', $addEmptyOption = false, $key = 0, $additional = '')
+    public function makeSelBox($name, $fieldName, $prefix = '-', $selected = '', $addEmptyOption = false, $key = 0, $additional = '')
     {
         $ret = "<select id='" . $name . "' name='" . $name . "'";
         if ($additional != '') {
             $ret .= $additional;
         }
-        $ret .= ">";
+        $ret .= '>';
         if (false != $addEmptyOption) {
             $ret .= '<option value=\'0\'>----</option>';
         }
@@ -238,8 +238,13 @@ class MyXoopsObjectTree
 
     /**
      * Internal function used by makeTreeAsArray
+     * @param        $fieldName
+     * @param        $key
+     * @param        $ret
+     * @param        $prefix_orig
+     * @param string $prefix_curr
      */
-    function _recursiveMakeTreeAsArray($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
+    public function _recursiveMakeTreeAsArray($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
             $value       = $this->_tree[$key]['obj']->getVar($this->_myId);
@@ -263,7 +268,7 @@ class MyXoopsObjectTree
      *
      * @return array key = object ID, value = $fieldName
      */
-    function makeTreeAsArray($fieldName, $prefix = '-', $key = 0, $empty = null)
+    public function makeTreeAsArray($fieldName, $prefix = '-', $key = 0, $empty = null)
     {
         $ret = array();
         if ($empty != null) {
@@ -284,24 +289,23 @@ class MyXoopsObjectTree
      *
      * @return unknown
      */
-//      function getChildTreeArray($sel_id = 0, $order = "", $parray = array(), $r_prefix = "")
-//      {
-//          $sel_id = (int)($sel_id);
-//          $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
-//          if ($order != "") {
-//              $sql .= " ORDER BY $order";
-//          }
-//          $result = $this->db->query($sql);
-//          $count = $this->db->getRowsNum($result);
-//          if ($count == 0) {
-//              return $parray;
-//          }
-//          while ($row = $this->db->fetchArray($result)) {
-//              $row['prefix'] = $r_prefix . ".";
-//              array_push($parray, $row);
-//              $parray = $this->getChildTreeArray($row[$this->id], $order, $parray, $row['prefix']);
-//          }
-//          return $parray;
-//      }
-
+    //      function getChildTreeArray($sel_id = 0, $order = "", $parray = array(), $r_prefix = "")
+    //      {
+    //          $sel_id = (int)($sel_id);
+    //          $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->pid . "=" . $sel_id . "";
+    //          if ($order != "") {
+    //              $sql .= " ORDER BY $order";
+    //          }
+    //          $result = $this->db->query($sql);
+    //          $count = $this->db->getRowsNum($result);
+    //          if ($count == 0) {
+    //              return $parray;
+    //          }
+    //          while ($row = $this->db->fetchArray($result)) {
+    //              $row['prefix'] = $r_prefix . ".";
+    //              array_push($parray, $row);
+    //              $parray = $this->getChildTreeArray($row[$this->id], $order, $parray, $row['prefix']);
+    //          }
+    //          return $parray;
+    //      }
 }

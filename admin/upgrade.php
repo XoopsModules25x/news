@@ -1,8 +1,8 @@
 <?php
-// $Id: upgrade.php 9767 2012-07-02 06:02:52Z beckmi $
+// 
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -66,10 +66,10 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         news_AddField("topic_frontpage TINYINT( 1 ) DEFAULT '1' NOT NULL", $xoopsDB->prefix('news_topics'));
     }
     if (!news_FieldExists('topic_rssurl', $xoopsDB->prefix('news_topics'))) {
-        news_AddField("topic_rssurl VARCHAR( 255 ) NOT NULL", $xoopsDB->prefix('news_topics'));
+        news_AddField('topic_rssurl VARCHAR( 255 ) NOT NULL', $xoopsDB->prefix('news_topics'));
     }
     if (!news_FieldExists('topic_description', $xoopsDB->prefix('news_topics'))) {
-        news_AddField("topic_description TEXT NOT NULL", $xoopsDB->prefix('news_topics'));
+        news_AddField('topic_description TEXT NOT NULL', $xoopsDB->prefix('news_topics'));
     }
     if (!news_FieldExists('topic_color', $xoopsDB->prefix('news_topics'))) {
         news_AddField("topic_color varchar(6) NOT NULL default '000000'", $xoopsDB->prefix('news_topics'));
@@ -103,22 +103,22 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         news_AddField("votes INT( 11 ) UNSIGNED DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_stories'));
     }
     if (!news_FieldExists('keywords', $xoopsDB->prefix('news_stories'))) {
-        news_AddField("keywords VARCHAR(255) NOT NULL", $xoopsDB->prefix('news_stories'));
+        news_AddField('keywords VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
     if (!news_FieldExists('description', $xoopsDB->prefix('news_stories'))) {
-        news_AddField("description VARCHAR(255) NOT NULL", $xoopsDB->prefix('news_stories'));
+        news_AddField('description VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
     if (!news_FieldExists('pictureinfo', $xoopsDB->prefix('news_stories'))) {
-        news_AddField("pictureinfo VARCHAR(255) NOT NULL", $xoopsDB->prefix('news_stories'));
+        news_AddField('pictureinfo VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
     if (!news_FieldExists('subtitle', $xoopsDB->prefix('news_stories'))) {
-        news_AddField("subtitle VARCHAR(255) NOT NULL", $xoopsDB->prefix('news_stories'));
+        news_AddField('subtitle VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
 
     // 5) Add some indexes to the topics table
-    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . " ADD INDEX ( `topic_title` );");
+    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' ADD INDEX ( `topic_title` );');
     $result = $xoopsDB->queryF($sql);
-    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . " ADD INDEX ( `menu` );");
+    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' ADD INDEX ( `menu` );');
     $result = $xoopsDB->queryF($sql);
 
     // At the end, if there was errors, show them or redirect user to the module's upgrade page
@@ -126,7 +126,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         echo '<H1>' . _AM_NEWS_UPGRADEFAILED . '</H1>';
         echo '<br />' . _AM_NEWS_UPGRADEFAILED0;
     } else {
-        echo _AM_NEWS_UPGRADECOMPLETE . " - <a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>" . _AM_NEWS_UPDATEMODULE . "</a>";
+        echo _AM_NEWS_UPGRADECOMPLETE . " - <a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>" . _AM_NEWS_UPDATEMODULE . '</a>';
     }
 } else {
     printf("<h2>%s</h2>\n", _AM_NEWS_UPGR_ACCESS_ERROR);
