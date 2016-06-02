@@ -64,9 +64,9 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Returns the number of stories published before a date
-     * @param        $timestamp
-     * @param        $expired
-     * @param string $topicslist
+     * @param         $timestamp
+     * @param         $expired
+     * @param  string $topicslist
      * @return mixed
      */
     public function GetCountStoriesPublishedBefore($timestamp, $expired, $topicslist = '')
@@ -98,9 +98,9 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Delete stories that were published before a given date
-     * @param        $timestamp
-     * @param        $expired
-     * @param string $topicslist
+     * @param         $timestamp
+     * @param         $expired
+     * @param  string $topicslist
      * @return bool
      */
     public function DeleteBeforeDate($timestamp, $expired, $topicslist = '')
@@ -151,10 +151,24 @@ class NewsStory extends MyXoopsStory
         $ret     = array();
         $storyid = (int)$storyid;
         if ($next) {
-            $sql     = 'SELECT storyid, title FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ') AND storyid > ' . $storyid;
+            $sql     = 'SELECT storyid, title FROM '
+                       . $db->prefix('news_stories')
+                       . ' WHERE (published > 0 AND published <= '
+                       . time()
+                       . ') AND (expired = 0 OR expired > '
+                       . time()
+                       . ') AND storyid > '
+                       . $storyid;
             $orderBy = ' ORDER BY storyid ASC';
         } else {
-            $sql     = 'SELECT storyid, title FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ') AND storyid < ' . $storyid;
+            $sql     = 'SELECT storyid, title FROM '
+                       . $db->prefix('news_stories')
+                       . ' WHERE (published > 0 AND published <= '
+                       . time()
+                       . ') AND (expired = 0 OR expired > '
+                       . time()
+                       . ') AND storyid < '
+                       . $storyid;
             $orderBy = ' ORDER BY storyid DESC';
         }
         if ($checkRight) {
@@ -202,14 +216,14 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Returns published stories according to some options
-     * @param int    $limit
-     * @param int    $start
-     * @param bool   $checkRight
-     * @param int    $topic
-     * @param int    $ihome
-     * @param bool   $asobject
-     * @param string $order
-     * @param bool   $topic_frontpage
+     * @param  int    $limit
+     * @param  int    $start
+     * @param  bool   $checkRight
+     * @param  int    $topic
+     * @param  int    $ihome
+     * @param  bool   $asobject
+     * @param  string $order
+     * @param  bool   $topic_frontpage
      * @return array
      */
     public static function getAllPublished($limit = 0, $start = 0, $checkRight = false, $topic = 0, $ihome = 0, $asobject = true, $order = 'published', $topic_frontpage = false)
@@ -217,7 +231,15 @@ class NewsStory extends MyXoopsStory
         $db   = XoopsDatabaseFactory::getDatabaseConnection();
         $myts = MyTextSanitizer::getInstance();
         $ret  = array();
-        $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.published > 0 AND s.published <= ' . time() . ') AND (s.expired = 0 OR s.expired > ' . time() . ') AND (s.topicid=t.topic_id) ';
+        $sql  = 'SELECT s.*, t.* FROM '
+                . $db->prefix('news_stories')
+                . ' s, '
+                . $db->prefix('news_topics')
+                . ' t WHERE (s.published > 0 AND s.published <= '
+                . time()
+                . ') AND (s.expired = 0 OR s.expired > '
+                . time()
+                . ') AND (s.topicid=t.topic_id) ';
         if ($topic != 0) {
             if (!is_array($topic)) {
                 if ($checkRight) {
@@ -274,11 +296,11 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Retourne la liste des articles aux archives (pour une p�riode donn�e)
-     * @param        $publish_start
-     * @param        $publish_end
-     * @param bool   $checkRight
-     * @param bool   $asobject
-     * @param string $order
+     * @param             $publish_start
+     * @param             $publish_end
+     * @param  bool       $checkRight
+     * @param  bool       $asobject
+     * @param  string     $order
      * @return array|null
      */
     public function getArchive($publish_start, $publish_end, $checkRight = false, $asobject = true, $order = 'published')
@@ -286,7 +308,17 @@ class NewsStory extends MyXoopsStory
         $db   = XoopsDatabaseFactory::getDatabaseConnection();
         $myts = MyTextSanitizer::getInstance();
         $ret  = array();
-        $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published > ' . $publish_start . ' AND s.published <= ' . $publish_end . ') AND (expired = 0 OR expired > ' . time() . ') ';
+        $sql  = 'SELECT s.*, t.* FROM '
+                . $db->prefix('news_stories')
+                . ' s, '
+                . $db->prefix('news_topics')
+                . ' t WHERE (s.topicid=t.topic_id) AND (s.published > '
+                . $publish_start
+                . ' AND s.published <= '
+                . $publish_end
+                . ') AND (expired = 0 OR expired > '
+                . time()
+                . ') ';
 
         if ($checkRight) {
             $topics = news_MygetItemIds('news_view');
@@ -329,7 +361,17 @@ class NewsStory extends MyXoopsStory
         $myts  = MyTextSanitizer::getInstance();
         $ret   = array();
         $tdate = mktime(0, 0, 0, date('n'), date('j'), date('Y'));
-        $sql   = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (published > ' . $tdate . ' AND published < ' . time() . ') AND (expired > ' . time() . ' OR expired = 0) ';
+        $sql   = 'SELECT s.*, t.* FROM '
+                 . $db->prefix('news_stories')
+                 . ' s, '
+                 . $db->prefix('news_topics')
+                 . ' t WHERE (s.topicid=t.topic_id) AND (published > '
+                 . $tdate
+                 . ' AND published < '
+                 . time()
+                 . ') AND (expired > '
+                 . time()
+                 . ' OR expired = 0) ';
 
         if ((int)$topic != 0) {
             if (!is_array($topic)) {
@@ -386,12 +428,30 @@ class NewsStory extends MyXoopsStory
         $tblstory  = $db->prefix('news_stories');
         $tbltopics = $db->prefix('news_topics');
 
-        $sql = 'SELECT ' . $tblstory . '.*, ' . $tbltopics . '.topic_title, ' . $tbltopics . '.topic_color FROM ' . $tblstory . ',' . $tbltopics . ' WHERE (' . $tblstory . '.topicid=' . $tbltopics . '.topic_id) AND (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ')';
+        $sql = 'SELECT '
+               . $tblstory
+               . '.*, '
+               . $tbltopics
+               . '.topic_title, '
+               . $tbltopics
+               . '.topic_color FROM '
+               . $tblstory
+               . ','
+               . $tbltopics
+               . ' WHERE ('
+               . $tblstory
+               . '.topicid='
+               . $tbltopics
+               . '.topic_id) AND (published > 0 AND published <= '
+               . time()
+               . ') AND (expired = 0 OR expired > '
+               . time()
+               . ')';
         $sql .= ' AND uid=' . (int)$uid;
         if ($checkRight) {
             $topics = news_MygetItemIds('news_view');
             $topics = implode(',', $topics);
-            if (xoops_trim($topics) != '') {
+            if (xoops_trim($topics) !== '') {
                 $sql .= ' AND topicid IN (' . $topics . ')';
             }
         }
@@ -422,7 +482,8 @@ class NewsStory extends MyXoopsStory
                     'topic_color' => $myts->displayTarea($myrow['topic_color']),
                     'published'   => (int)$myrow['published'],
                     'rating'      => (float)$myrow['rating'],
-                    'votes'       => (int)$myrow['votes']);
+                    'votes'       => (int)$myrow['votes']
+                );
             }
         }
 
@@ -431,11 +492,11 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Get all expired stories
-     * @param int  $limit
-     * @param int  $start
-     * @param int  $topic
-     * @param int  $ihome
-     * @param bool $asobject
+     * @param  int  $limit
+     * @param  int  $start
+     * @param  int  $topic
+     * @param  int  $ihome
+     * @param  bool $asobject
      * @return array
      */
     public static function getAllExpired($limit = 0, $start = 0, $topic = 0, $ihome = 0, $asobject = true)
@@ -467,9 +528,9 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Returns an array of object containing all the news to be automatically published.
-     * @param int  $limit
-     * @param bool $asobject
-     * @param int  $start
+     * @param  int  $limit
+     * @param  bool $asobject
+     * @param  int  $start
      * @return array
      */
     public static function getAllAutoStory($limit = 0, $asobject = true, $start = 0)
@@ -576,8 +637,8 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Get a list of stories (as objects) related to a specific topic
-     * @param     $topicid
-     * @param int $limit
+     * @param        $topicid
+     * @param  int   $limit
      * @return array
      */
     public static function getByTopic($topicid, $limit = 0)
@@ -595,8 +656,8 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Count the number of news published for a specific topic
-     * @param int  $topicid
-     * @param bool $checkRight
+     * @param  int  $topicid
+     * @param  bool $checkRight
      * @return null
      */
     public static function countPublishedByTopic($topicid = 0, $checkRight = false)
@@ -629,12 +690,33 @@ class NewsStory extends MyXoopsStory
     public function adminlink()
     {
         global $xoopsModule;
-        $dirname        = basename(dirname(__DIR__));
-        $module_handler = xoops_getHandler('module');
-        $module         = $module_handler->getByDirname($dirname);
-        $pathIcon16     = $module->getInfo('icons16');
+        $dirname       = basename(dirname(__DIR__));
+        $moduleHandler = xoops_getHandler('module');
+        $module        = $moduleHandler->getByDirname($dirname);
+        $pathIcon16    = $module->getInfo('icons16');
 
-        $ret = '&nbsp; <a href=' . XOOPS_URL . '/modules/news/submit.php?op=edit&amp;storyid=' . $this->storyid() . '><img src=' . $pathIcon16 . '/edit.png' . ' ' . 'title=' . _NW_EDIT . '></a>' . '<a href=' . XOOPS_URL . '/modules/news/admin/index.php?op=delete&amp;storyid=' . $this->storyid() . '><img src=' . $pathIcon16 . '/delete.png' . ' ' . 'title=' . _NW_DELETE . '></a> &nbsp;';
+        $ret = '&nbsp; <a href='
+               . XOOPS_URL
+               . '/modules/news/submit.php?op=edit&amp;storyid='
+               . $this->storyid()
+               . '><img src='
+               . $pathIcon16
+               . '/edit.png'
+               . ' '
+               . 'title='
+               . _NW_EDIT
+               . '></a>'
+               . '<a href='
+               . XOOPS_URL
+               . '/modules/news/admin/index.php?op=delete&amp;storyid='
+               . $this->storyid()
+               . '><img src='
+               . $pathIcon16
+               . '/delete.png'
+               . ' '
+               . 'title='
+               . _NW_DELETE
+               . '></a> &nbsp;';
 
         return $ret;
     }
@@ -646,7 +728,7 @@ class NewsStory extends MyXoopsStory
      */
     public function topic_imgurl($format = 'S')
     {
-        if (trim($this->topic_imgurl) == '') {
+        if (trim($this->topic_imgurl) === '') {
             $this->topic_imgurl = 'blank.png';
         }
         $myts = MyTextSanitizer::getInstance();
@@ -704,8 +786,20 @@ class NewsStory extends MyXoopsStory
     public function imglink()
     {
         $ret = '';
-        if ($this->topic_imgurl() != '' && file_exists(XOOPS_ROOT_PATH . '/uploads/news/image/' . $this->topic_imgurl())) {
-            $ret = "<a href='" . XOOPS_URL . '/modules/news/index.php?storytopic=' . $this->topicid() . "'><img src='" . XOOPS_URL . '/uploads/news/image/' . $this->topic_imgurl() . "' alt='" . $this->topic_title() . "' hspace='10' vspace='10' align='" . $this->topicalign() . "' /></a>";
+        if ($this->topic_imgurl() !== '' && file_exists(XOOPS_ROOT_PATH . '/uploads/news/image/' . $this->topic_imgurl())) {
+            $ret = "<a href='"
+                   . XOOPS_URL
+                   . '/modules/news/index.php?storytopic='
+                   . $this->topicid()
+                   . "'><img src='"
+                   . XOOPS_URL
+                   . '/uploads/news/image/'
+                   . $this->topic_imgurl()
+                   . "' alt='"
+                   . $this->topic_title()
+                   . "' hspace='10' vspace='10' align='"
+                   . $this->topicalign()
+                   . "' /></a>";
         }
 
         return $ret;
@@ -731,10 +825,10 @@ class NewsStory extends MyXoopsStory
         include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
         global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
 
-        $dirname        = basename(dirname(__DIR__));
-        $module_handler = xoops_getHandler('module');
-        $module         = $module_handler->getByDirname($dirname);
-        $pathIcon16     = $module->getInfo('icons16');
+        $dirname       = basename(dirname(__DIR__));
+        $moduleHandler = xoops_getHandler('module');
+        $module        = $moduleHandler->getByDirname($dirname);
+        $pathIcon16    = $module->getInfo('icons16');
 
         $myts                 = MyTextSanitizer::getInstance();
         $infotips             = news_getmoduleoption('infotips');
@@ -743,7 +837,7 @@ class NewsStory extends MyXoopsStory
         $story['poster']      = $this->uname();
         $story['author_name'] = $this->uname();
         $story['author_uid']  = $this->uid();
-        if ($story['poster'] != false) {
+        if ($story['poster'] !== false) {
             $story['poster'] = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $this->uid() . "'>" . $story['poster'] . '</a>';
         } else {
             if ($xoopsModuleConfig['displayname'] != 3) {
@@ -770,7 +864,7 @@ class NewsStory extends MyXoopsStory
         $story['text'] = str_replace('[summary]', $auto_summary, $story['text']);
 
         //$story['picture'] = XOOPS_URL.'/uploads/news/image/'.$this->picture();
-        if ($this->picture() != '') {
+        if ($this->picture() !== '') {
             $story['picture'] = XOOPS_URL . '/uploads/news/image/' . $this->picture();
         } else {
             $story['picture'] = '';
@@ -830,7 +924,14 @@ class NewsStory extends MyXoopsStory
         if ($approveprivilege) {
             $story['adminlink'] = $this->adminlink();
         }
-        $story['mail_link'] = 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
+        $story['mail_link'] = 'mailto:?subject='
+                              . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename'])
+                              . '&amp;body='
+                              . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename'])
+                              . ':  '
+                              . XOOPS_URL
+                              . '/modules/news/article.php?storyid='
+                              . $this->storyid();
         $story['imglink']   = '';
         $story['align']     = '';
         if ($this->topicdisplay()) {
@@ -848,7 +949,19 @@ class NewsStory extends MyXoopsStory
         $story['hits'] = $this->counter();
         if ($filescount > 0) {
             $story['files_attached'] = true;
-            $story['attached_link']  = "<a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . "' title='" . _NW_ATTACHEDLIB . "'><img src=" . $pathIcon16 . '/attach.png' . ' ' . 'title=' . _NW_ATTACHEDLIB . '></a>';
+            $story['attached_link']  = "<a href='"
+                                       . XOOPS_URL
+                                       . '/modules/news/article.php?storyid='
+                                       . $this->storyid()
+                                       . "' title='"
+                                       . _NW_ATTACHEDLIB
+                                       . "'><img src="
+                                       . $pathIcon16
+                                       . '/attach.png'
+                                       . ' '
+                                       . 'title='
+                                       . _NW_ATTACHEDLIB
+                                       . '></a>';
         } else {
             $story['files_attached'] = false;
             $story['attached_link']  = '';
@@ -859,7 +972,7 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Returns the user's name of the current story according to the module's option "displayname"
-     * @param int $uid
+     * @param  int $uid
      * @return null|string
      */
     public function uname($uid = 0)
@@ -892,7 +1005,7 @@ class NewsStory extends MyXoopsStory
                 $thisuser       = $member_handler->getUser($uid);
                 if (is_object($thisuser)) {
                     $return = $thisuser->getVar('name');
-                    if ($return == '') {
+                    if ($return === '') {
                         $return = $thisuser->getVar('uname');
                     }
                 } else {
@@ -944,7 +1057,15 @@ class NewsStory extends MyXoopsStory
         }
 
         // Now we can search for the stories
-        $sql = 'SELECT s.*, t.* FROM ' . $this->table . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published >=' . $fromdate . ' AND s.published <= ' . $todate . ')';
+        $sql = 'SELECT s.*, t.* FROM '
+               . $this->table
+               . ' s, '
+               . $this->db->prefix('news_topics')
+               . ' t WHERE (s.topicid=t.topic_id) AND (s.published >='
+               . $fromdate
+               . ' AND s.published <= '
+               . $todate
+               . ')';
         if (strlen(trim($topicslist)) > 0) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
@@ -963,7 +1084,7 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Create or update an article
-     * @param bool $approved
+     * @param  bool $approved
      * @return bool|int
      */
     public function store($approved = false)
@@ -1000,9 +1121,17 @@ class NewsStory extends MyXoopsStory
             $newstoryid = $this->db->genId($this->table . '_storyid_seq');
             $created    = time();
             $published  = $this->approved ? (int)$this->published : 0;
-            $sql        = sprintf("INSERT INTO %s (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments, rating, votes, description, keywords, picture, pictureinfo, subtitle) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u, %u, %u, '%s', '%s', '%s', '%s', '%s')", $this->table, $newstoryid, (int)$this->uid(), $title, $created, $published, $expired, $hostname, (int)$this->nohtml(), (int)$this->nosmiley(), $hometext, $bodytext, $counter, (int)$this->topicid(), (int)$this->ihome(), (int)$this->notifypub(), $type, (int)$this->topicdisplay(), $this->topicalign, (int)$this->comments(), $rating, $votes, $description, $keywords, $picture, $pictureinfo, $subtitle);
+            $sql        =
+                sprintf("INSERT INTO %s (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments, rating, votes, description, keywords, picture, pictureinfo, subtitle) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u, %u, %u, '%s', '%s', '%s', '%s', '%s')",
+                        $this->table, $newstoryid, (int)$this->uid(), $title, $created, $published, $expired, $hostname, (int)$this->nohtml(), (int)$this->nosmiley(), $hometext, $bodytext, $counter,
+                        (int)$this->topicid(), (int)$this->ihome(), (int)$this->notifypub(), $type, (int)$this->topicdisplay(), $this->topicalign, (int)$this->comments(), $rating, $votes,
+                        $description, $keywords, $picture, $pictureinfo, $subtitle);
         } else {
-            $sql        = sprintf("UPDATE %s SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s', picture='%s' , pictureinfo='%s' , subtitle='%s' WHERE storyid = %u", $this->table, $title, (int)$this->published(), $expired, (int)$this->nohtml(), (int)$this->nosmiley(), $hometext, $bodytext, (int)$this->topicid(), (int)$this->ihome(), (int)$this->topicdisplay(), $this->topicalign, (int)$this->comments(), $rating, $votes, (int)$this->uid(), $description, $keywords, $picture, $pictureinfo, $subtitle, (int)$this->storyid());
+            $sql        =
+                sprintf("UPDATE %s SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s', picture='%s' , pictureinfo='%s' , subtitle='%s' WHERE storyid = %u",
+                        $this->table, $title, (int)$this->published(), $expired, (int)$this->nohtml(), (int)$this->nosmiley(), $hometext, $bodytext, (int)$this->topicid(), (int)$this->ihome(),
+                        (int)$this->topicdisplay(), $this->topicalign, (int)$this->comments(), $rating, $votes, (int)$this->uid(), $description, $keywords, $picture, $pictureinfo, $subtitle,
+                        (int)$this->storyid());
             $newstoryid = (int)$this->storyid();
         }
         if (!$this->db->queryF($sql)) {
@@ -1146,13 +1275,13 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Returns a random number of news
-     * @param int    $limit
-     * @param int    $start
-     * @param bool   $checkRight
-     * @param int    $topic
-     * @param int    $ihome
-     * @param string $order
-     * @param bool   $topic_frontpage
+     * @param  int    $limit
+     * @param  int    $start
+     * @param  bool   $checkRight
+     * @param  int    $topic
+     * @param  int    $ihome
+     * @param  string $order
+     * @param  bool   $topic_frontpage
      * @return array
      */
     public function getRandomNews($limit = 0, $start = 0, $checkRight = false, $topic = 0, $ihome = 0, $order = 'published', $topic_frontpage = false)
@@ -1419,7 +1548,7 @@ class NewsStory extends MyXoopsStory
                 if (isset($titles) && is_array($titles)) {
                     $titles[] = strip_tags(sprintf(_NW_PAGE_AUTO_SUMMARY, 1, $this->title()));
                 }
-                $item = "<a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . "&page=0'>" . sprintf(_NW_PAGE_AUTO_SUMMARY, 1, $this->title()) . '</a><br />';
+                $item = "<a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . "&page=0'>" . sprintf(_NW_PAGE_AUTO_SUMMARY, 1, $this->title()) . '</a><br>';
                 $auto_summary .= $item;
 
                 foreach ($delimiters as $item) {
@@ -1429,7 +1558,8 @@ class NewsStory extends MyXoopsStory
                         $item = $cpt;
                     }
                     $titles[] = strip_tags(sprintf(_NW_PAGE_AUTO_SUMMARY, $cpt, $item));
-                    $item     = "<a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '&page=' . ($cpt - 1) . "'>" . sprintf(_NW_PAGE_AUTO_SUMMARY, $cpt, $item) . '</a><br />';
+                    $item     =
+                        "<a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '&page=' . ($cpt - 1) . "'>" . sprintf(_NW_PAGE_AUTO_SUMMARY, $cpt, $item) . '</a><br>';
                     $auto_summary .= $item;
                 }
             }
@@ -1516,11 +1646,11 @@ class NewsStory extends MyXoopsStory
 
     /**
      * Returns stories by Ids
-     * @param        $ids
-     * @param bool   $checkRight
-     * @param bool   $asobject
-     * @param string $order
-     * @param bool   $onlyOnline
+     * @param             $ids
+     * @param  bool       $checkRight
+     * @param  bool       $asobject
+     * @param  string     $order
+     * @param  bool       $onlyOnline
      * @return array|null
      */
     public function getStoriesByIds($ids, $checkRight = true, $asobject = true, $order = 'published', $onlyOnline = true)

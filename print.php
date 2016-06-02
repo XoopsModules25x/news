@@ -76,13 +76,13 @@ if (!$gperm_handler->checkRight('news_view', $story->topicid(), $groups, $xoopsM
 $xoops_meta_keywords    = '';
 $xoops_meta_description = '';
 
-if (trim($story->keywords()) != '') {
+if (trim($story->keywords()) !== '') {
     $xoops_meta_keywords = $story->keywords();
 } else {
     $xoops_meta_keywords = news_createmeta_keywords($story->hometext() . ' ' . $story->bodytext());
 }
 
-if (trim($story->description()) != '') {
+if (trim($story->description()) !== '') {
     $xoops_meta_description = $story->description();
 } else {
     $xoops_meta_description = strip_tags($story->title());
@@ -232,7 +232,7 @@ function PrintPage()
                 return false;
             }
             function addClass(theClass) {
-                if (this.className != '') {
+                if (this.className !== '') {
                     this.className += ' ' + theClass;
                 } else {
                     this.className = theClass;
@@ -268,21 +268,41 @@ function PrintPage()
         <table border="0"><tr><td align="center">
         <table border="0" width="100%" cellpadding="0" cellspacing="1" bgcolor="#000000"><tr><td>
         <table border="0" width="100%" cellpadding="20" cellspacing="1" bgcolor="#ffffff"><tr><td align="center">
-        <img src="' . XOOPS_URL . '/images/logo.png" border="0" alt="" /><br /><br />
+        <img src="' . XOOPS_URL . '/images/logo.png" border="0" alt="" /><br><br>
         <h3>' . $story->title() . '</h3>
-        <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . $myts->htmlSpecialChars($story->topic_title()) . '</small><br /><br /></td></tr>';
-    echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br />';
+        <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . $myts->htmlSpecialChars($story->topic_title()) . '</small><br><br></td></tr>';
+    echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br>';
     $bodytext = $story->bodytext();
     $bodytext = str_replace('[pagebreak]', "<br style=\"page-break-after:always;\" />", $bodytext);
-    if ($bodytext != '') {
-        echo $bodytext . '<br /><br />';
+    if ($bodytext !== '') {
+        echo $bodytext . '<br><br>';
     }
     echo '</td></tr></table></td></tr></table>
-    <br /><br />';
+    <br><br>';
     printf(_NW_THISCOMESFROM, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES));
-    echo '<br /><a href="' . XOOPS_URL . '/">' . XOOPS_URL . '</a><br /><br />
-        ' . _NW_URLFORSTORY . ' <!-- Tag below can be used to display Permalink image --><!--img src="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/images/x.gif" /--><br />
-        <a class="ignore" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $story->storyid() . '">' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . '</a>
+    echo '<br><a href="'
+         . XOOPS_URL
+         . '/">'
+         . XOOPS_URL
+         . '</a><br><br>
+        '
+         . _NW_URLFORSTORY
+         . ' <!-- Tag below can be used to display Permalink image --><!--img src="'
+         . XOOPS_URL
+         . '/modules/'
+         . $xoopsModule->dirname()
+         . '/assets/images/x.gif" /--><br>
+        <a class="ignore" href="'
+         . XOOPS_URL
+         . '/modules/'
+         . $xoopsModule->dirname()
+         . '/article.php?storyid='
+         . $story->storyid()
+         . '">'
+         . XOOPS_URL
+         . '/modules/news/article.php?storyid='
+         . $story->storyid()
+         . '</a>
         </td></tr></table></div>
         </body>
         </html>

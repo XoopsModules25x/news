@@ -224,7 +224,7 @@ class MyXoopsObjectTree
     public function makeSelBox($name, $fieldName, $prefix = '-', $selected = '', $addEmptyOption = false, $key = 0, $additional = '')
     {
         $ret = "<select id='" . $name . "' name='" . $name . "'";
-        if ($additional != '') {
+        if ($additional !== '') {
             $ret .= $additional;
         }
         $ret .= '>';

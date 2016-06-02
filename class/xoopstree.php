@@ -47,7 +47,7 @@ class MyXoopsTree
     public function __construct($table_name, $id_name, $pid_name)
     {
         $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php");
-        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table_name;
         $this->id    = $id_name;
         $this->pid   = $pid_name;
@@ -65,7 +65,7 @@ class MyXoopsTree
         $sel_id = (int)$sel_id;
         $arr    = array();
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -114,7 +114,7 @@ class MyXoopsTree
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -142,7 +142,7 @@ class MyXoopsTree
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -173,7 +173,7 @@ class MyXoopsTree
             return $path;
         }
         list($parentid, $name) = $this->db->fetchRow($result);
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         $name = $myts->htmlspecialchars($name);
         $path = '/' . $name . $path . '';
         if ($parentid == 0) {
@@ -200,14 +200,14 @@ class MyXoopsTree
         if ($sel_name == '') {
             $sel_name = $this->id;
         }
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         echo "<select name='" . $sel_name . "'";
-        if ($onchange != '') {
+        if ($onchange !== '') {
             echo " onchange='" . $onchange . "'";
         }
         echo ">\n";
         $sql = 'SELECT ' . $this->id . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=0';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -254,7 +254,7 @@ class MyXoopsTree
             return $path;
         }
         list($parentid, $name) = $this->db->fetchRow($result);
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         $name = $myts->htmlspecialchars($name);
         $path = "<a href='" . $funcURL . '&amp;' . $this->id . '=' . $sel_id . "'>" . $name . '</a>' . $path . '';
         if ($parentid == 0) {
@@ -303,7 +303,7 @@ class MyXoopsTree
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -333,7 +333,7 @@ class MyXoopsTree
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);

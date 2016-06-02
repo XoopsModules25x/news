@@ -154,7 +154,8 @@ if ($articlescount > 0) {
                     'topic_color'          => $oldtopiccolor,
                     'topic_title'          => $oldtopictitle,
                     'topic_link'           => $topic_link,
-                    'news'                 => $articlestpl));
+                    'news'                 => $articlestpl
+                ));
             }
             $oldtopic       = $article['topicid'];
             $oldtopictitle  = $article['topic_title'];
@@ -176,7 +177,8 @@ if ($articlescount > 0) {
             'created'      => formatTimestamp($article['created'], $dateformat),
             'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle, $article['title']),
             'published'    => formatTimestamp($article['published'], $dateformat),
-            'rating'       => $article['rating']);
+            'rating'       => $article['rating']
+        );
     }
 }
 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);

@@ -64,7 +64,8 @@ function b_news_archives_show($options)
         9  => _CAL_SEPTEMBER,
         10 => _CAL_OCTOBER,
         11 => _CAL_NOVEMBER,
-        12 => _CAL_DECEMBER);
+        12 => _CAL_DECEMBER
+    );
     $block         = array();
     $sort_order    = $options[0] == 0 ? 'ASC' : 'DESC';
     $starting_date = mktime(0, 0, 0, (int)$options[2], 1, (int)$options[1]);
@@ -73,7 +74,14 @@ function b_news_archives_show($options)
     } else {
         $ending_date = time();
     }
-    $sql    = "SELECT distinct(FROM_UNIXTIME(published,'%Y-%m')) as published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date . ' ORDER BY published ' . $sort_order;
+    $sql    = "SELECT distinct(FROM_UNIXTIME(published,'%Y-%m')) as published FROM "
+              . $xoopsDB->prefix('news_stories')
+              . ' WHERE published>='
+              . $starting_date
+              . ' AND published<='
+              . $ending_date
+              . ' ORDER BY published '
+              . $sort_order;
     $result = $xoopsDB->query($sql);
     if (!$result) {
         return '';
@@ -140,7 +148,7 @@ function b_news_archives_edit($options)
     $form .= "</select>\n";
 
     // Starting and ending dates **********************************************
-    $form .= '<br /><br /><b>' . _MB_NEWS_STARTING_DATE . '</b><br />';
+    $form .= '<br><br><b>' . _MB_NEWS_STARTING_DATE . '</b><br>';
     $form .= _MB_NEWS_CAL_YEAR . "&nbsp;<select name='options[]'>";
     for ($i = $syear; $i <= $eyear; ++$i) {
         $selected = ($i == $selsyear) ? "selected='selected'" : '';
@@ -153,7 +161,7 @@ function b_news_archives_edit($options)
     }
     $form .= '</select>';
 
-    $form .= '<br /><br /><b>' . _MB_NEWS_ENDING_DATE . '</b><br />';
+    $form .= '<br><br><b>' . _MB_NEWS_ENDING_DATE . '</b><br>';
     $form .= _MB_NEWS_CAL_YEAR . "&nbsp;<select name='options[]'>";
     for ($i = $syear; $i <= $eyear; ++$i) {
         $selected = ($i == $seleyear) ? "selected='selected'" : '';
@@ -167,7 +175,7 @@ function b_news_archives_edit($options)
     $form .= '</select>';
 
     // Or until today *********************************************************
-    $form .= '<br />';
+    $form .= '<br>';
     $checked = $options[5] == 1 ? " checked='checked'" : '';
     $form .= "<input type='checkbox' value='1' name='options[]'" . $checked . '>';
     $form .= ' <b>' . _MB_NEWS_UNTIL_TODAY . '</b>';

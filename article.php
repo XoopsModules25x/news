@@ -186,7 +186,7 @@ $story['topic_title'] = $article->textlink();
 $story['text'] = $article->hometext();
 $bodytext      = $article->bodytext();
 
-if (xoops_trim($bodytext) != '') {
+if (xoops_trim($bodytext) !== '') {
     $articletext = array();
     if (news_getmoduleoption('enhanced_pagenav')) {
         $articletext             = preg_split('/(\[pagebreak:|\[pagebreak)(.*)(\])/iU', $bodytext);
@@ -215,12 +215,12 @@ if (xoops_trim($bodytext) != '') {
         }
 
         if ($storypage == 0) {
-            $story['text'] = $story['text'] . '<br />' . news_getmoduleoption('advertisement') . '<br />' . $articletext[$storypage];
+            $story['text'] = $story['text'] . '<br>' . news_getmoduleoption('advertisement') . '<br>' . $articletext[$storypage];
         } else {
             $story['text'] = $articletext[$storypage];
         }
     } else {
-        $story['text'] = $story['text'] . '<br />' . news_getmoduleoption('advertisement') . '<br />' . $bodytext;
+        $story['text'] = $story['text'] . '<br>' . news_getmoduleoption('advertisement') . '<br>' . $bodytext;
     }
 }
 // Publicit�
@@ -295,16 +295,30 @@ if ($article->topicdisplay()) {
     $story['align']   = $article->topicalign();
 }
 $story['hits']      = $article->counter();
-$story['mail_link'] = 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/news/article.php?storyid=' . $article->storyid();
+$story['mail_link'] = 'mailto:?subject='
+                      . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename'])
+                      . '&amp;body='
+                      . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename'])
+                      . ':  '
+                      . XOOPS_URL
+                      . '/modules/news/article.php?storyid='
+                      . $article->storyid();
 $xoopsTpl->assign('lang_printerpage', _NW_PRINTERFRIENDLY);
 $xoopsTpl->assign('lang_sendstory', _NW_SENDSTORY);
 $xoopsTpl->assign('lang_pdfstory', _NW_MAKEPDF);
 $xoopsTpl->assign('lang_on', _ON);
 $xoopsTpl->assign('lang_postedby', _POSTEDBY);
 $xoopsTpl->assign('lang_reads', _READS);
-$xoopsTpl->assign('mail_link', 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/news/article.php?storyid=' . $article->storyid());
+$xoopsTpl->assign('mail_link', 'mailto:?subject='
+                               . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename'])
+                               . '&amp;body='
+                               . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename'])
+                               . ':  '
+                               . XOOPS_URL
+                               . '/modules/news/article.php?storyid='
+                               . $article->storyid());
 
-if (xoops_trim($article->picture()) != '') {
+if (xoops_trim($article->picture()) !== '') {
     $story['picture']     = XOOPS_URL . '/uploads/news/image/' . $article->picture();
     $story['pictureinfo'] = $article->pictureinfo();
 } else {
@@ -326,7 +340,8 @@ if ($filescount > 0) {
             'file_realname'     => $onefile->getFileRealName(),
             'file_attacheddate' => formatTimestamp($onefile->getDate(), $dateformat),
             'file_mimetype'     => $onefile->getMimetype(),
-            'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname());
+            'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname()
+        );
     }
     $xoopsTpl->assign('attached_files', $newsfiles);
 }
@@ -390,7 +405,8 @@ if (news_getmoduleoption('showsummarytable')) {
                 'infotips'        => $tooltips,
                 'story_title'     => $onearticle->title(),
                 'story_hits'      => $onearticle->counter(),
-                'story_published' => formatTimestamp($onearticle->published, $dateformat)));
+                'story_published' => formatTimestamp($onearticle->published, $dateformat)
+            ));
         }
     }
     $xoopsTpl->assign('summary_count', $count);
@@ -501,7 +517,7 @@ if (news_getmoduleoption('ratenews') && $other_test) {
 $xoopsTpl->assign('story', $story);
 
 // Added in version 1.63, TAGS
-if (news_getmoduleoption('tags')) {
+if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
     require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
     $xoopsTpl->assign('tags', true);
     $xoopsTpl->assign('tagbar', tagBar($storyid, 0));

@@ -216,7 +216,7 @@ class cmimetype
             'bmp'     => 'image/bmp',
             'gif'     => 'image/gif',
             'ief'     => 'image/ief',
-//            'jpeg'    => 'image/pjpeg',
+            //            'jpeg'    => 'image/pjpeg',
             'jpeg'    => 'image/jpeg',
             'jpg'     => 'image/jpeg',
             'jpe'     => 'image/jpeg',
@@ -271,6 +271,7 @@ class cmimetype
             'php'     => 'text/php',
             'php3'    => 'text/php3',
             'ice'     => 'x-conference-xcooltalk',
-            'unknown' => 'application/octet-stream');
+            'unknown' => 'application/octet-stream'
+        );
     }
 }

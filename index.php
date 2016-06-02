@@ -204,7 +204,7 @@ if ($showclassic) {
             $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
             $story['topic_title'] = $thisstory->textlink();
             $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
-            if ($firsttitle == '') {
+            if ($firsttitle === '') {
                 $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();
             }
             $columns[$k][] = $story;
@@ -302,19 +302,21 @@ if ($xoopsOption['storytopic']) {
 /**
  * Create a link for the RSS feed (if the module's option is activated)
  */
-$moduleInfo = $module_handler->get($xoopsModule->getVar('mid'));
+$moduleHandler = xoops_getHandler('module');
+$moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($xoopsModuleConfig['topicsrss'] && $xoopsOption['storytopic']) {
-    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, XOOPS_URL . '/' . $moduleInfo->getInfo('icons16') . '/rss.gif', _NW_RSSFEED);
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED,
+                    XOOPS_URL . '/' . $moduleInfo->getInfo('icons16') . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }
 
 /**
  * Assign page's title
  */
-if ($firsttitle != '') {
+if ($firsttitle !== '') {
     $xoopsTpl->assign('xoops_pagetitle', $firsttitle . ' - ' . $xoopsModule->name('s'));
 } else {
-    if ($topictitle != '') {
+    if ($topictitle !== '') {
         $xoopsTpl->assign('xoops_pagetitle', $topictitle);
     } else {
         $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->name('s'));

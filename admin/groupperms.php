@@ -34,11 +34,23 @@ xoops_cp_header();
 $permAdmin = new ModuleAdmin();
 echo $permAdmin->addNavigation(basename(__FILE__));
 
-echo '<br /><br /><br />';
+echo '<br><br><br>';
 $permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
 $selected                 = array('', '', '');
 $selected[$permtoset - 1] = ' selected';
-echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='javascript: document.fselperm.submit()'><option value='1'" . $selected[0] . '>' . _AM_APPROVEFORM . "</option><option value='2'" . $selected[1] . '>' . _AM_SUBMITFORM . "</option><option value='3'" . $selected[2] . '>' . _AM_VIEWFORM . "</option></select> <input type='submit' name='go'></form>";
+echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='javascript: document.fselperm.submit()'><option value='1'"
+     . $selected[0]
+     . '>'
+     . _AM_APPROVEFORM
+     . "</option><option value='2'"
+     . $selected[1]
+     . '>'
+     . _AM_SUBMITFORM
+     . "</option><option value='3'"
+     . $selected[2]
+     . '>'
+     . _AM_VIEWFORM
+     . "</option></select> <input type='submit' name='go'></form>";
 $module_id = $xoopsModule->getVar('mid');
 
 switch ($permtoset) {
@@ -68,7 +80,7 @@ if ($alltopics) {
         $permform->addItem($topic_id, $topic['title'], $topic['pid']);
     }
     echo $permform->render();
-    echo "<br /><br /><br /><br />\n";
+    echo "<br><br><br><br>\n";
     unset($permform);
 } else {
     redirect_header('index.php?op=topicsmanager', 5, _NW_NEWS_NO_TOPICS, false);

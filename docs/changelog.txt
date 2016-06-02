@@ -6,7 +6,11 @@
 - reversed "mod_" prefix on tables (mamba)
 - moved WideImage library to XOOPS 2.5.8 /class/libraries/
 - added option to display PDF icon for each article (mamba)
-- 
+- added check to make sure that Tag moodule is active (mamba)
+- replaced <b /> with <b> (mamba)
+- XOOPS 2.5.8 and PHP 7 fixes (mamba)
+- removed @version (mamba)
+
 
 ======================
 1.70 Beta 2 2013-09-26

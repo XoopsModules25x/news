@@ -44,8 +44,8 @@
 use WideImage\WideImage;
 
 /**
- * @param        $option
- * @param string $repmodule
+ * @param             $option
+ * @param  string     $repmodule
  * @return bool|mixed
  */
 function news_getmoduleoption($option, $repmodule = 'news')
@@ -62,8 +62,8 @@ function news_getmoduleoption($option, $repmodule = 'news')
             $retval = $xoopsModuleConfig[$option];
         }
     } else {
-        $module_handler = xoops_getHandler('module');
-        $module         = $module_handler->getByDirname($repmodule);
+        $moduleHandler  = xoops_getHandler('module');
+        $module         = $moduleHandler->getByDirname($repmodule);
         $config_handler = xoops_getHandler('config');
         if ($module) {
             $moduleConfig = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
@@ -122,8 +122,8 @@ function news_MygetItemIds($permtype = 'news_view')
         return $tblperms[$permtype];
     }
 
-    $module_handler      = xoops_getHandler('module');
-    $newsModule          = $module_handler->getByDirname('news');
+    $moduleHandler       = xoops_getHandler('module');
+    $newsModule          = $moduleHandler->getByDirname('news');
     $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
     $gperm_handler       = xoops_getHandler('groupperm');
     $topics              = $gperm_handler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
@@ -158,7 +158,8 @@ function news_html2text($document)
         "'&(cent|#162);'i",
         "'&(pound|#163);'i",
         "'&(copy|#169);'i",
-        "'&#(\d+);'e"); // evaluate as php
+        "'&#(\d+);'e"
+    ); // evaluate as php
 
     $replace = array(
         '',
@@ -173,7 +174,8 @@ function news_html2text($document)
         chr(162),
         chr(163),
         chr(169),
-        "chr(\\1)");
+        "chr(\\1)"
+    );
 
     $text = preg_replace($search, $replace, $document);
 
@@ -202,15 +204,15 @@ function news_isX23()
  * @package       News
  * @author        Hervé Thouzard (http://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
- * @param        $caption
- * @param        $name
- * @param string $value
- * @param string $width
- * @param string $height
- * @param string $supplemental
+ * @param                                                                                                                                 $caption
+ * @param                                                                                                                                 $name
+ * @param  string                                                                                                                         $value
+ * @param  string                                                                                                                         $width
+ * @param  string                                                                                                                         $height
+ * @param  string                                                                                                                         $supplemental
  * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|XoopsFormFckeditor|XoopsFormHtmlarea|XoopsFormTextArea|XoopsFormTinyeditorTextArea
  */
-function &news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
+function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
 {
     $editor_option            = strtolower(news_getmoduleoption('form_options'));
     $editor                   = false;
@@ -336,12 +338,12 @@ function news_CreateMetaDatas($story = null)
      */
     $meta_keywords = '';
     if (isset($story) && is_object($story)) {
-        if (xoops_trim($story->keywords()) != '') {
+        if (xoops_trim($story->keywords()) !== '') {
             $meta_keywords = $story->keywords();
         } else {
             $meta_keywords = news_createmeta_keywords($story->hometext() . ' ' . $story->bodytext());
         }
-        if (xoops_trim($story->description()) != '') {
+        if (xoops_trim($story->description()) !== '') {
             $meta_description = strip_tags($story->description);
         } else {
             $meta_description = strip_tags($story->title);
@@ -410,7 +412,7 @@ function news_createmeta_keywords($content)
     $registry = new news_registryfile('news_metagen_options.txt');
     //    $tcontent = '';
     $tcontent = $registry->getfile();
-    if (xoops_trim($tcontent) != '') {
+    if (xoops_trim($tcontent) !== '') {
         list($keywordscount, $keywordsorder) = explode(',', $tcontent);
     } else {
         $keywordscount = $cfg['meta_keywords_count'];
@@ -428,7 +430,7 @@ function news_createmeta_keywords($content)
         $_SESSION['news_keywords_limit'] = $limit;
     }
     $myts            = MyTextSanitizer::getInstance();
-    $content         = str_replace('<br />', ' ', $content);
+    $content         = str_replace('<br>', ' ', $content);
     $content         = $myts->undoHtmlSpecialChars($content);
     $content         = strip_tags($content);
     $content         = strtolower($content);
@@ -602,7 +604,8 @@ function news_isbot()
     } else {
         // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
         // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
-        $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
+        $botlist      =
+            'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
         $botlist      = strtoupper($botlist);
         $currentagent = strtoupper(xoops_getenv('HTTP_USER_AGENT'));
         $retval       = false;
@@ -732,7 +735,7 @@ function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words
  */
 function news_resizePicture($src_path, $dst_path, $param_width, $param_height, $keep_original = false, $fit = 'inside')
 {
-//    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
+    //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
     $resize            = true;
     $pictureDimensions = getimagesize($src_path);
     if (is_array($pictureDimensions)) {

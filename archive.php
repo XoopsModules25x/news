@@ -96,7 +96,8 @@ $months_arr = array(
     9  => _CAL_SEPTEMBER,
     10 => _CAL_OCTOBER,
     11 => _CAL_NOVEMBER,
-    12 => _CAL_DECEMBER);
+    12 => _CAL_DECEMBER
+);
 
 $fromyear  = isset($_GET['year']) ? (int)$_GET['year'] : 0;
 $frommonth = isset($_GET['month']) ? (int)$_GET['month'] : 0;
@@ -108,7 +109,7 @@ if ($fromyear && $frommonth) {
 $infotips   = news_getmoduleoption('infotips');
 $restricted = news_getmoduleoption('restrictindex');
 $dateformat = news_getmoduleoption('dateformat');
-if ($dateformat == '') {
+if ($dateformat === '') {
     $dateformat = 'm';
 }
 $myts = MyTextSanitizer::getInstance();
@@ -123,7 +124,13 @@ if (is_object($xoopsUser)) {
         $useroffset = $xoopsConfig['default_TZ'];
     }
 }
-$result = $xoopsDB->query('SELECT published FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired <= ' . time() . ') ORDER BY published DESC');
+$result = $xoopsDB->query('SELECT published FROM '
+                          . $xoopsDB->prefix('news_stories')
+                          . ' WHERE (published>0 AND published<='
+                          . time()
+                          . ') AND (expired = 0 OR expired <= '
+                          . time()
+                          . ') ORDER BY published DESC');
 if (!$result) {
     echo _ERRORS;
     exit();
@@ -191,11 +198,34 @@ if ($fromyear != 0 && $frommonth != 0) {
                 $story['infotips'] = news_make_infotips($article->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
-            $story['title']      = "<a href='" . XOOPS_URL . '/modules/news/index.php?storytopic=' . $article->topicid() . "'>" . $article->topic_title() . "</a>: <a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $article->storyid() . "'" . $htmltitle . '>' . $article->title() . '</a>';
+            $story['title']      = "<a href='"
+                                   . XOOPS_URL
+                                   . '/modules/news/index.php?storytopic='
+                                   . $article->topicid()
+                                   . "'>"
+                                   . $article->topic_title()
+                                   . "</a>: <a href='"
+                                   . XOOPS_URL
+                                   . '/modules/news/article.php?storyid='
+                                   . $article->storyid()
+                                   . "'"
+                                   . $htmltitle
+                                   . '>'
+                                   . $article->title()
+                                   . '</a>';
             $story['counter']    = $article->counter();
             $story['date']       = formatTimestamp($article->published(), $dateformat, $useroffset);
             $story['print_link'] = XOOPS_URL . '/modules/news/print.php?storyid=' . $article->storyid();
-            $story['mail_link']  = 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $article->storyid();
+            $story['mail_link']  = 'mailto:?subject='
+                                   . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename'])
+                                   . '&amp;body='
+                                   . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename'])
+                                   . ':  '
+                                   . XOOPS_URL
+                                   . '/modules/'
+                                   . $xoopsModule->dirname()
+                                   . '/article.php?storyid='
+                                   . $article->storyid();
             $xoopsTpl->append('stories', $story);
         }
     }

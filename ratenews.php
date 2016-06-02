@@ -160,7 +160,9 @@ if (!empty($_POST['submit'])) { // The form was submited
     } else {
         // Check if ANONYMOUS user is trying to vote more than once per day.
         $yesterday = (time() - (86400 * $anonwaitdays));
-        $result    = $xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
+        $result    = $xoopsDB->query('SELECT COUNT(*) FROM '
+                                     . $xoopsDB->prefix('news_stories_votedata')
+                                     . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
         list($anonvotecount) = $xoopsDB->fetchRow($result);
         if ($anonvotecount >= 1) {
             redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
@@ -170,12 +172,13 @@ if (!empty($_POST['submit'])) { // The form was submited
     //All is well.  Add to Line Item Rate to DB.
     $newid    = $xoopsDB->genId($xoopsDB->prefix('news_stories_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
+    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid,
+                        $storyid, $ratinguser, $rating, $ip, $datetime);
     $xoopsDB->query($sql) || ErrorHandler::show('0013');
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
     news_updaterating($storyid);
-    $ratemessage = _NW_VOTEAPPRE . '<br />' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
+    $ratemessage = _NW_VOTEAPPRE . '<br>' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
     $xoopsOption['template_main'] = 'news_ratenews.tpl';

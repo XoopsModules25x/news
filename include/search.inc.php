@@ -43,10 +43,10 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $highlight  = false;
     $highlight  = news_getmoduleoption('keywordshighlight'); // keywords highlighting
 
-    $module_handler = xoops_getHandler('module');
-    $module         = $module_handler->getByDirname('news');
-    $modid          = $module->getVar('mid');
-    $searchparam    = '';
+    $moduleHandler = xoops_getHandler('module');
+    $module        = $moduleHandler->getByDirname('news');
+    $modid         = $module->getVar('mid');
+    $searchparam   = '';
 
     $gperm_handler = xoops_getHandler('groupperm');
     if (is_object($xoopsUser)) {
@@ -55,7 +55,8 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
 
-    $sql = 'SELECT storyid, topicid, uid, title, created FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired > ' . time() . ') ';
+    $sql =
+        'SELECT storyid, topicid, uid, title, created FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired > ' . time() . ') ';
 
     if ($userid != 0) {
         $sql .= ' AND uid=' . $userid . ' ';
@@ -103,7 +104,11 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
         include_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
-        $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM ' . $xoopsDB->prefix('xoopscomments') . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
+        $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM '
+               . $xoopsDB->prefix('xoopscomments')
+               . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status="
+               . XOOPS_COMMENT_ACTIVE
+               . ') ';
         if ($userid != 0) {
             $sql .= ' AND com_uid=' . $userid . ' ';
         }

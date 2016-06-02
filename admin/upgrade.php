@@ -45,7 +45,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
         if (!$xoopsDB->queryF($sql)) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED1;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED1;
             ++$errors;
         }
     }
@@ -54,7 +54,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' CHANGE topic_title topic_title VARCHAR( 255 ) NOT NULL;');
     $result = $xoopsDB->queryF($sql);
     if (!$result) {
-        echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+        echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
         ++$errors;
     }
 
@@ -90,7 +90,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
         if (!$xoopsDB->queryF($sql)) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED3;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED3;
             ++$errors;
         }
     }
@@ -124,7 +124,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     // At the end, if there was errors, show them or redirect user to the module's upgrade page
     if ($errors) {
         echo '<H1>' . _AM_NEWS_UPGRADEFAILED . '</H1>';
-        echo '<br />' . _AM_NEWS_UPGRADEFAILED0;
+        echo '<br>' . _AM_NEWS_UPGRADEFAILED0;
     } else {
         echo _AM_NEWS_UPGRADECOMPLETE . " - <a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>" . _AM_NEWS_UPDATEMODULE . '</a>';
     }

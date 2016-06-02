@@ -205,7 +205,7 @@ function b_news_top_show($options)
             }
             $spotlight          = array();
             $spotlight['title'] = $tmpstory->title();
-            if ($options[7] != '') {
+            if ($options[7] !== '') {
                 $spotlight['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $tmpstory->storyid(), $myts->displayTarea($options[7], $tmpstory->nohtml));
             }
             $spotlight['text'] = $tmpstory->hometext();
@@ -323,7 +323,7 @@ function b_news_top_show($options)
                         if (strlen($title) > $options[2]) {
                             $title = news_truncate_tagsafe($title, $options[2] + 3);
                         }
-                        if ($options[7] != '') {
+                        if ($options[7] !== '') {
                             $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
                         }
                         if ($options[3] > 0) {
@@ -376,19 +376,19 @@ function b_news_top_show($options)
         $block['color4'] = $defcolors[$tabskin][3];
         $block['color5'] = $defcolors[$tabskin][4];
 
-        if (xoops_trim($options[9]) != '') {
+        if (xoops_trim($options[9]) !== '') {
             $block['color1'] = $options[9];
         }
-        if (xoops_trim($options[10]) != '') {
+        if (xoops_trim($options[10]) !== '') {
             $block['color2'] = $options[10];
         }
-        if (xoops_trim($options[11]) != '') {
+        if (xoops_trim($options[11]) !== '') {
             $block['color3'] = $options[11];
         }
-        if (xoops_trim($options[12]) != '') {
+        if (xoops_trim($options[12]) !== '') {
             $block['color4'] = $options[12];
         }
-        if (xoops_trim($options[13]) != '') {
+        if (xoops_trim($options[13]) !== '') {
             $block['color5'] = $options[13];
         }
     } else { // ************************ Classical view **************************************************************************************************************
@@ -425,7 +425,7 @@ function b_news_top_show($options)
 
                 if ($visible) {
                     $spotlight['title'] = $title;
-                    if ($options[7] != '') {
+                    if ($options[7] !== '') {
                         $spotlight['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
                     }
                     // Added 16 february 2007 *****************************************
@@ -526,8 +526,9 @@ function b_news_top_show($options)
             if ($block['use_spotlight'] == true) {
                 $spotlight          = array();
                 $spotlight['title'] = xoops_substr($spotlightArticle->title(), 0, $options[2] - 1);
-                if ($options[7] != '') {
-                    $spotlight['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $spotlightArticle->storyid(), $myts->displayTarea($options[7], $spotlightArticle->nohtml));
+                if ($options[7] !== '') {
+                    $spotlight['image'] =
+                        sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $spotlightArticle->storyid(), $myts->displayTarea($options[7], $spotlightArticle->nohtml));
                 }
                 // Added 16 february 2007 *****************************************
                 $story_user = null;
@@ -604,10 +605,10 @@ function b_news_top_edit($options)
     $form .= "</select>\n";
 
     $form .= '&nbsp;' . _MB_NEWS_DISP . "&nbsp;<input type='text' name='options[]' value='" . $options[1] . "'/>&nbsp;" . _MB_NEWS_ARTCLS;
-    $form .= '&nbsp;<br /><br />' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'/>&nbsp;" . _MB_NEWS_LENGTH . '<br /><br />';
+    $form .= '&nbsp;<br><br>' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'/>&nbsp;" . _MB_NEWS_LENGTH . '<br><br>';
 
     $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "' />" . _MB_NEWS_LENGTH;
-    $form .= '<br /><br />';
+    $form .= '<br><br>';
 
     $form .= _MB_NEWS_SPOTLIGHT . " <input type='radio' name='options[]' value='1'";
     if ($options[4] == 1) {
@@ -618,7 +619,7 @@ function b_news_top_edit($options)
     if ($options[4] == 0) {
         $form .= " checked='checked'";
     }
-    $form .= ' />' . _NO . '<br /><br />';
+    $form .= ' />' . _NO . '<br><br>';
 
     $form .= _MB_NEWS_WHAT_PUBLISH . " <select name='options[]'><option value='1'";
     if ($options[5] == 1) {
@@ -631,7 +632,7 @@ function b_news_top_edit($options)
     }
     $form .= ' />' . _MB_NEWS_RECENT_SPECIFIC . '</option></select>';
 
-    $form .= '<br /><br />' . _MB_NEWS_SPOTLIGHT_ARTICLE . '<br />';
+    $form .= '<br><br>' . _MB_NEWS_SPOTLIGHT_ARTICLE . '<br>';
     $articles = NewsStory::getAllPublished(200, 0, false, 0, 0, false); // I have limited the listbox to the last 200 articles
     $form .= "<select name ='options[]'>";
     $form .= "<option value='0'>" . _MB_NEWS_FIRST . '</option>';
@@ -642,11 +643,15 @@ function b_news_top_edit($options)
         }
         $form .= "<option value='$storyid'$sel>" . $storytitle . '</option>';
     }
-    $form .= '</select><br /><br />';
+    $form .= '</select><br><br>';
 
     $form .= _MB_NEWS_IMAGE . "&nbsp;<input type='text' id='spotlightimage' name='options[]' value='" . $options[7] . "' size='50'/>";
-    $form .= "&nbsp;<img align='middle' onmouseover='style.cursor=\"hand\"' onclick='javascript:openWithSelfMain(\"" . XOOPS_URL . "/imagemanager.php?target=spotlightimage\",\"imgmanager\",400,430);' src='" . XOOPS_URL . "/images/image.gif' alt='image' title='image' />";
-    $form .= '<br /><br />' . _MB_NEWS_DISP . "&nbsp;<select name='options[]'><option value='1' ";
+    $form .= "&nbsp;<img align='middle' onmouseover='style.cursor=\"hand\"' onclick='javascript:openWithSelfMain(\""
+             . XOOPS_URL
+             . "/imagemanager.php?target=spotlightimage\",\"imgmanager\",400,430);' src='"
+             . XOOPS_URL
+             . "/images/image.gif' alt='image' title='image' />";
+    $form .= '<br><br>' . _MB_NEWS_DISP . "&nbsp;<select name='options[]'><option value='1' ";
     if ($options[8] == 1) {
         $form .= 'selected';
     }
@@ -654,7 +659,7 @@ function b_news_top_edit($options)
     if ($options[8] == 2) {
         $form .= 'selected';
     }
-    $form .= '>' . _MB_NEWS_VIEW_TYPE2 . '</option></select><br /><br />';
+    $form .= '>' . _MB_NEWS_VIEW_TYPE2 . '</option></select><br><br>';
 
     $form .= "<table border=0>\n";
     $form .= "<tr><td colspan='2' align='center'><u>" . _MB_NEWS_DEFAULT_COLORS . '</u></td></tr>';
@@ -665,7 +670,7 @@ function b_news_top_edit($options)
     $form .= '<tr><td>' . _MB_NEWS_TAB_COLOR5 . "</td><td><input type='text' name='options[]' value='" . $options[13] . "' size=7></td></tr>";
     $form .= "</table>\n";
 
-    $form .= '<br /><br />' . _MB_SPOTLIGHT_TOPIC . "<br /><select name='options[]' multiple='multiple'>";
+    $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
     include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $topics_arr = array();
     include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
@@ -686,7 +691,7 @@ function b_news_top_edit($options)
         }
         $form .= "<option value='" . $onetopic['topic_id'] . "'$sel>" . $onetopic['prefix'] . $onetopic['topic_title'] . '</option>';
     }
-    $form .= '</select><br />';
+    $form .= '</select><br>';
 
     return $form;
 }

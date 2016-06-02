@@ -279,10 +279,10 @@ switch ($op) {
         $p_hometext = $story->hometext('Preview');
         if ($approveprivilege) {
             $p_bodytext = $story->bodytext('Preview');
-            $p_hometext .= '<br /><br />' . $p_bodytext;
+            $p_hometext .= '<br><br>' . $p_bodytext;
         }
         $topicalign2 = isset($story->topicalign) ? 'align="' . $story->topicalign() . '"' : '';
-        $p_hometext  = (($xt->topic_imgurl() != '') && $topicdisplay) ? '<img src="assets/images/topics/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
+        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="assets/images/topics/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
         themecenterposts($p_title, $p_hometext);
 
         //Display post edit form
@@ -432,7 +432,7 @@ switch ($op) {
 
         if ($allowupload && isset($_POST['deleteimage']) && (int)$_POST['deleteimage'] == 1) {
             $currentPicture = $story->picture();
-            if (xoops_trim($currentPicture) != '') {
+            if (xoops_trim($currentPicture) !== '') {
                 $currentPicture = XOOPS_ROOT_PATH . '/uploads/news/image/' . xoops_trim($story->picture());
                 if (is_file($currentPicture) && file_exists($currentPicture)) {
                     if (!unlink($currentPicture)) {
@@ -448,7 +448,7 @@ switch ($op) {
             if (isset($_POST['xoops_upload_file'])) {
                 $fldname = $_FILES[$_POST['xoops_upload_file'][1]];
                 $fldname = $fldname['name'];
-                if (xoops_trim($fldname != '')) {
+                if (xoops_trim($fldname !== '')) {
                     $sfiles         = new sFiles();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
                     $permittedtypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png');
@@ -478,7 +478,7 @@ switch ($op) {
 
         $result = $story->store();
         if ($result) {
-            if (news_getmoduleoption('tags')) {
+            if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
                 $tag_handler = xoops_getModuleHandler('tag', 'tag');
                 $tag_handler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
             }
@@ -519,7 +519,7 @@ switch ($op) {
                 if (isset($_POST['xoops_upload_file'])) {
                     $fldname = $_FILES[$_POST['xoops_upload_file'][0]];
                     $fldname = $fldname['name'];
-                    if (xoops_trim($fldname != '')) {
+                    if (xoops_trim($fldname !== '')) {
                         $sfiles   = new sFiles();
                         $destname = $sfiles->createUploadName(XOOPS_UPLOAD_PATH, $fldname);
                         /**

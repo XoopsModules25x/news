@@ -43,11 +43,11 @@ function b_news_topicsnav_show($options)
     $restricted       = news_getmoduleoption('restrictindex');
     if ($restricted) {
         global $xoopsUser;
-        $module_handler = xoops_getHandler('module');
-        $newsModule     = $module_handler->getByDirname('news');
-        $groups         = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gperm_handler  = xoops_getHandler('groupperm');
-        $topics         = $gperm_handler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+        $moduleHandler = xoops_getHandler('module');
+        $newsModule    = $moduleHandler->getByDirname('news');
+        $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $gperm_handler = xoops_getHandler('groupperm');
+        $topics        = $gperm_handler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
         if (count($topics) > 0) {
             $topics = implode(',', $topics);
             $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -73,7 +73,8 @@ function b_news_topicsnav_show($options)
                 'id'          => $onetopic['topic_id'],
                 'news_count'  => $count,
                 'topic_color' => '#' . $onetopic['topic_color'],
-                'title'       => $myts->displayTarea($onetopic['topic_title']));
+                'title'       => $myts->displayTarea($onetopic['topic_title'])
+            );
         }
     }
 

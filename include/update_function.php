@@ -27,7 +27,7 @@ function xoops_module_update_news()
         $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files'));
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
             ++$errors;
         }
     } else {
@@ -46,7 +46,7 @@ function xoops_module_update_news()
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
             if (!$xoopsDB->queryF($sql)) {
-                echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED1;
+                echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED1;
                 ++$errors;
             }
         }
@@ -56,7 +56,7 @@ function xoops_module_update_news()
         $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('stories') . ' RENAME ' . $xoopsDB->prefix('news_stories'));
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
             ++$errors;
         }
     }
@@ -65,7 +65,7 @@ function xoops_module_update_news()
         $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('topics') . ' RENAME ' . $xoopsDB->prefix('news_topics'));
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
             ++$errors;
         }
     }
@@ -74,7 +74,7 @@ function xoops_module_update_news()
         $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files'));
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
             ++$errors;
         }
     }
@@ -83,7 +83,7 @@ function xoops_module_update_news()
     $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' CHANGE topic_title topic_title VARCHAR( 255 ) NOT NULL;');
     $result = $xoopsDB->queryF($sql);
     if (!$result) {
-        echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+        echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
         ++$errors;
     }
 
@@ -119,7 +119,7 @@ function xoops_module_update_news()
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
         if (!$xoopsDB->queryF($sql)) {
-            echo '<br />' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED3;
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED3;
             ++$errors;
         }
     }
