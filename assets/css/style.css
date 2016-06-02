@@ -1,38 +1,41 @@
 .item-bookmarkme-ftg {
-	width: 100%;
-	height: 25px;
+    width: 100%;
+    height: 25px;
 }
 
 .item-bookmarkme-ftg ul {
-	
+
 }
 
 .item-bookmarkme-ftg li {
-	float: left;
-	list-style: none !important;
-	list-style-type: none !important;
+    float: left;
+    list-style: none !important;
+    list-style-type: none !important;
 }
 
-.item-bookmarkme-facebook {}
+.item-bookmarkme-facebook {
+}
 
-.item-bookmarkme-twitter {}
+.item-bookmarkme-twitter {
+}
 
-.item-bookmarkme-googleplus {}
+.item-bookmarkme-googleplus {
+}
 
 .item-bookmarkme {
-	margin-top: 35px;
-	margin-bottom: 20px;
-	padding: 5px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    padding: 5px;
 }
 
 .item-bookmarkme-items {
-	padding: 10px;
+    padding: 10px;
 }
 
 .item-bookmarkme-items a {
-	padding: 1px;
+    padding: 1px;
 }
 
 .item-bookmarkme-title {
-	text-align: left; 
+    text-align: left;
 }

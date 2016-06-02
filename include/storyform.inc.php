@@ -99,7 +99,7 @@ if ($approveprivilege) {
     $editor2 = news_getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
     $sform->addElement($editor2, false);
 
-    if (news_getmoduleoption('tags')) {
+    if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
         $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
@@ -110,7 +110,7 @@ if ($approveprivilege) {
         $sform->addElement(new xoopsFormText(_NW_META_KEYWORDS, 'keywords', 50, 255, $keywords), false);
     }
 } else {
-    if (news_getmoduleoption('tags')) {
+    if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
         $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
@@ -136,7 +136,7 @@ if ($allowupload) {
         $filesarr = array();
         $filesarr = $sfiles->getAllbyStory($storyid);
         if (count($filesarr) > 0) {
-            $upl_tray     = new XoopsFormElementTray(_AM_UPLOAD_ATTACHFILE, '<br />');
+            $upl_tray     = new XoopsFormElementTray(_AM_UPLOAD_ATTACHFILE, '<br>');
             $upl_checkbox = new XoopsFormCheckBox('', 'delupload[]');
 
             foreach ($filesarr as $onefile) {
@@ -151,8 +151,8 @@ if ($allowupload) {
     }
     $sform->addElement(new XoopsFormFile(_AM_SELFILE, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
     if ($op === 'edit') {
-        if (isset($picture) && xoops_trim($picture) != '') {
-            $pictureTray = new XoopsFormElementTray(_NW_CURENT_PICTURE, '<br />');
+        if (isset($picture) && xoops_trim($picture) !== '') {
+            $pictureTray = new XoopsFormElementTray(_NW_CURENT_PICTURE, '<br>');
             $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "' />"));
             $deletePicureCheckbox = new XoopsFormCheckBox('', 'deleteimage', 0);
             $deletePicureCheckbox->addOption(1, _DELETE);
@@ -167,7 +167,7 @@ if ($allowupload) {
     $sform->addElement(new XoopsFormText(_NW_SELECT_IMAGE_DESC, 'pictureinfo', 50, 255, $pictureinfo), false);
 }
 
-$option_tray = new XoopsFormElementTray(_OPTIONS, '<br />');
+$option_tray = new XoopsFormElementTray(_OPTIONS, '<br>');
 //Set date of publish/expiration
 if ($approveprivilege) {
     if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid'))) {
@@ -246,8 +246,8 @@ $type_hidden = new XoopsFormHidden('type', $type);
 $sform->addElement($type_hidden);
 
 echo '<h1>' . _NW_SUBMITNEWS . '</h1>';
-if (xoops_trim(news_getmoduleoption('submitintromsg')) != '') {
-    echo "<div class='infotext'><br /><br />" . nl2br(news_getmoduleoption('submitintromsg')) . '<br /><br /></div>';
+if (xoops_trim(news_getmoduleoption('submitintromsg')) !== '') {
+    echo "<div class='infotext'><br><br>" . nl2br(news_getmoduleoption('submitintromsg')) . '<br><br></div>';
 }
 
 $sform->display();

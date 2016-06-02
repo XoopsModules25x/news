@@ -33,7 +33,8 @@ define('_MI_ALLOWEDAPPROVEGROUPS', 'Groups who can approve news');
 define('_MI_NEWSDISPLAY', 'News display layout');
 define('_MI_NAMEDISPLAY', "Author's name");
 define('_MI_COLUMNMODE', 'Columns');
-define('_MI_STORYCOUNTADMIN', 'Number of new articles to display in admin area (this option will be also used to limit the number of topics displayed in the admin area and it will be used in the statistics): ');
+define('_MI_STORYCOUNTADMIN',
+       'Number of new articles to display in admin area (this option will be also used to limit the number of topics displayed in the admin area and it will be used in the statistics): ');
 define('_MI_UPLOADFILESIZE', 'Max file size upload (KB) 1048576 = 1 Meg');
 define('_MI_UPLOADGROUPS', 'Authorized groups to upload');
 // Description of each config items
@@ -84,7 +85,8 @@ define('_MI_RESTRICTINDEXDSC', "If set to 'yes', users will only see news items 
 define('_MI_NEWSBYTHISAUTHOR', 'News by the same author');
 define('_MI_NEWSBYTHISAUTHORDSC', "If you set this option to 'yes', then a link 'Articles by this author' will be visible");
 define('_MI_NEWS_PREVNEX_LINK', 'Show previous and next link?');
-define('_MI_NEWS_PREVNEX_LINK_DESC', "When this option is set to 'yes', two new links are visible at the bottom of each article. Those links are used to go to the previous and next article according to the publish date");
+define('_MI_NEWS_PREVNEX_LINK_DESC',
+       "When this option is set to 'yes', two new links are visible at the bottom of each article. Those links are used to go to the previous and next article according to the publish date");
 define('_MI_NEWS_SUMMARY_SHOW', 'Show summary table?');
 define('_MI_NEWS_SUMMARY_SHOW_DESC', 'When you use this option, a summary containing links to all the recent published articles is visible at the bottom of each article');
 define('_MI_NEWS_AUTHOR_EDIT', 'Enable authors to edit their post?');
@@ -93,7 +95,8 @@ define('_MI_NEWS_RATE_NEWS', 'Enable users to rate news?');
 define('_MI_NEWS_TOPICS_RSS', 'Enable RSS feeds per topics?');
 define('_MI_NEWS_TOPICS_RSS_DESC', "If you set this option to 'yes' then the topics content will be available as RSS feeds");
 define('_MI_NEWS_DATEFORMAT', "Date's format");
-define('_MI_NEWS_DATEFORMAT_DESC', "Please refer to the Php documentation (http://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
+define('_MI_NEWS_DATEFORMAT_DESC',
+       "Please refer to the Php documentation (http://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
 define('_MI_NEWS_META_DATA', 'Enable meta data (keywords and description) to be entered?');
 define('_MI_NEWS_META_DATA_DESC', "If you set this option to 'yes' then the approvers will be able to enter the following meta data: keywords and description");
 define('_MI_NEWS_BNAME8', 'Random news');
@@ -106,7 +109,8 @@ define('_MI_NEWS_FORM_SPAW', 'Spaw editor');
 define('_MI_NEWS_FORM_HTMLAREA', 'HtmlArea editor');
 define('_MI_NEWS_FORM_FCK', 'FCK editor');
 define('_MI_NEWS_FORM_KOIVI', 'Koivi editor');
-define('_MI_NEWS_FORM_OPTIONS_DESC', "Select the editor to use. If you have a 'simple' install (e.g you use only xoops core editor class, provided in the standard xoops core package), then you can just select DHTML and Compact");
+define('_MI_NEWS_FORM_OPTIONS_DESC',
+       "Select the editor to use. If you have a 'simple' install (e.g you use only xoops core editor class, provided in the standard xoops core package), then you can just select DHTML and Compact");
 define('_MI_NEWS_KEYWORDS_HIGH', 'Use keywords highlighting?');
 define('_MI_NEWS_KEYWORDS_HIGH_DESC', 'If you use this option, then the keywords typed in the search will be highlighted in the articles');
 define('_MI_NEWS_HIGH_COLOR', 'Color used to highlight keywords?');
@@ -142,7 +146,8 @@ define('_MI_NEWS_ADVERTISEMENT', 'Advertisement');
 define('_MI_NEWS_ADV_DESCR', 'Enter a text or a java-script code to display in your articles');
 define('_MI_NEWS_MIME_TYPES', 'Enter authorized mime-types for upload (separated them on a new line)');
 define('_MI_NEWS_ENHANCED_PAGENAV', 'Use enhanced page navigator?');
-define('_MI_NEWS_ENHANCED_PAGENAV_DSC', 'With this option you can separate your pages with something like this: [pagebreak:Page Title], the links to the pages are replaced by a drop-down list and you can use [summary] to create an automatic summary of pages');
+define('_MI_NEWS_ENHANCED_PAGENAV_DSC',
+       'With this option you can separate your pages with something like this: [pagebreak:Page Title], the links to the pages are replaced by a drop-down list and you can use [summary] to create an automatic summary of pages');
 // Added in version 1.54
 define('_MI_NEWS_CATEGORY_NOTIFY', 'Category');
 define('_MI_NEWS_CATEGORY_NOTIFYDSC', 'Notification options that apply to the current category');
@@ -163,8 +168,8 @@ define('_MI_NEWS_HELP', 'Help');
 define('_MI_NEWS_ABOUT', 'About');
 define('_MI_NEWS_HOME', 'Home');
 define('_MI_NEWS_UPGRADE', 'Upgrade');
-define('_MI_NEWS_DESCRIPTION', 'With this Xoops module, you can create an unlimited number of news articles on your site. <br /><br />
-You can create all articles you want and organize them in topics.<br /><br />
+define('_MI_NEWS_DESCRIPTION', 'With this Xoops module, you can create an unlimited number of news articles on your site. <br><br>
+You can create all articles you want and organize them in topics.<br><br>
 With a very powerful permissions management, you can create groups authorized to submit articles and a group authorized to approve them and decide who can see what.');
 define('_MI_NEWS_SHARE_ME', 'Display share icons?');
 define('_MI_NEWS_SHARE_ME_DSC', 'Share icons to Facebook, Twitter, Google Plus');

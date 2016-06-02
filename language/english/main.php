@@ -63,7 +63,7 @@ define('_NW_USERAVG', 'Average user rating');
 define('_NW_DLRATINGS', 'News rating (total votes: %s)');
 define('_NW_ONEVOTE', '1 vote');
 define('_NW_NUMVOTES', '%u votes');        // Warning
-define('_NW_CANTVOTEOWN', 'You cannot vote on the resource you submitted.<br />All votes are logged and reviewed.');
+define('_NW_CANTVOTEOWN', 'You cannot vote on the resource you submitted.<br>All votes are logged and reviewed.');
 define('_NW_VOTEDELETED', 'Vote data deleted.');
 define('_NW_VOTEONCE', 'Please do not vote for the same resource more than once.');
 define('_NW_VOTEAPPRE', 'Your vote is appreciated.');

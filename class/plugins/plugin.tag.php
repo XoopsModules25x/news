@@ -58,7 +58,8 @@ function news_tag_iteminfo(&$items)
                     'link'    => "article.php?storyid={$item_id}",
                     'time'    => $item_obj->published(),
                     'tags'    => '', // tag_parse_tag($item_obj->getVar("item_tags", "n")), // optional
-                    'content' => '');
+                    'content' => ''
+                );
             }
         }
     }
@@ -76,13 +77,35 @@ function news_tag_synchronization($mid)
     $item_handler_keyName = 'storyid';
     $item_handler_table   = $xoopsDB->prefix('news_stories');
     $link_handler         = xoops_getModuleHandler('link', 'tag');
-    $where                = "($item_handler_table.published > 0 AND $item_handler_table.published <= " . time() . ") AND ($item_handler_table.expired = 0 OR $item_handler_table.expired > " . time() . ')';
+    $where                =
+        "($item_handler_table.published > 0 AND $item_handler_table.published <= " . time() . ") AND ($item_handler_table.expired = 0 OR $item_handler_table.expired > " . time() . ')';
 
     /* clear tag-item links */
     if ($link_handler->mysql_major_version() >= 4):
-        $sql = "    DELETE FROM {$link_handler->table}" . ' WHERE ' . "     tag_modid = {$mid}" . '     AND ' . '       ( tag_itemid NOT IN ' . "           ( SELECT DISTINCT {$item_handler_keyName} " . "             FROM {$item_handler_table} " . "                WHERE $where" . '           ) ' . '     )';
+        $sql = "    DELETE FROM {$link_handler->table}"
+               . ' WHERE '
+               . "     tag_modid = {$mid}"
+               . '     AND '
+               . '       ( tag_itemid NOT IN '
+               . "           ( SELECT DISTINCT {$item_handler_keyName} "
+               . "             FROM {$item_handler_table} "
+               . "                WHERE $where"
+               . '           ) '
+               . '     )';
     else:
-        $sql = "   DELETE {$link_handler->table} FROM {$link_handler->table}" . "  LEFT JOIN {$item_handler_table} AS aa ON {$link_handler->table}.tag_itemid = aa.{$item_handler_keyName} " . '   WHERE ' . "     tag_modid = {$mid}" . '     AND ' . "       ( aa.{$item_handler_keyName} IS NULL" . '           OR ' . '       (aa.published > 0 AND aa.published <= ' . time() . ') AND (aa.expired = 0 OR aa.expired > ' . time() . ')' . '       )';
+        $sql = "   DELETE {$link_handler->table} FROM {$link_handler->table}"
+               . "  LEFT JOIN {$item_handler_table} AS aa ON {$link_handler->table}.tag_itemid = aa.{$item_handler_keyName} "
+               . '   WHERE '
+               . "     tag_modid = {$mid}"
+               . '     AND '
+               . "       ( aa.{$item_handler_keyName} IS NULL"
+               . '           OR '
+               . '       (aa.published > 0 AND aa.published <= '
+               . time()
+               . ') AND (aa.expired = 0 OR aa.expired > '
+               . time()
+               . ')'
+               . '       )';
 
     endif;
     if (!$result = $link_handler->db->queryF($sql)) {

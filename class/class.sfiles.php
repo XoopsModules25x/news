@@ -109,7 +109,7 @@ class sFiles
     {
         $cmimetype   = new cmimetype();
         $workingfile = $this->downloadname;
-        if (xoops_trim($filename) != '') {
+        if (xoops_trim($filename) !== '') {
             $workingfile = $filename;
 
             return $cmimetype->getType($workingfile);
@@ -170,10 +170,42 @@ class sFiles
 
         if (!isset($this->fileid)) {
             $newid        = (int)$this->db->genId($this->table . '_fileid_seq');
-            $sql          = 'INSERT INTO ' . $this->table . ' (fileid, storyid, filerealname, date, mimetype, downloadname, counter) ' . 'VALUES (' . $newid . ',' . $storyid . ",'" . $fileRealName . "','" . $date . "','" . $mimetype . "','" . $downloadname . "'," . $counter . ')';
+            $sql          = 'INSERT INTO '
+                            . $this->table
+                            . ' (fileid, storyid, filerealname, date, mimetype, downloadname, counter) '
+                            . 'VALUES ('
+                            . $newid
+                            . ','
+                            . $storyid
+                            . ",'"
+                            . $fileRealName
+                            . "','"
+                            . $date
+                            . "','"
+                            . $mimetype
+                            . "','"
+                            . $downloadname
+                            . "',"
+                            . $counter
+                            . ')';
             $this->fileid = $newid;
         } else {
-            $sql = 'UPDATE ' . $this->table . ' SET storyid=' . $storyid . ",filerealname='" . $fileRealName . "',date=" . $date . ",mimetype='" . $mimetype . "',downloadname='" . $downloadname . "',counter=" . $counter . ' WHERE fileid=' . $this->getFileid();
+            $sql = 'UPDATE '
+                   . $this->table
+                   . ' SET storyid='
+                   . $storyid
+                   . ",filerealname='"
+                   . $fileRealName
+                   . "',date="
+                   . $date
+                   . ",mimetype='"
+                   . $mimetype
+                   . "',downloadname='"
+                   . $downloadname
+                   . "',counter="
+                   . $counter
+                   . ' WHERE fileid='
+                   . $this->getFileid();
         }
         if (!$result = $this->db->query($sql)) {
             return false;

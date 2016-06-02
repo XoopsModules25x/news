@@ -34,7 +34,7 @@ define('_MB_NEWS_TAB_COLOR2', "Background color of the tab's content");
 define('_MB_NEWS_TAB_COLOR3', "Current tab header's color");
 define('_MB_NEWS_TAB_COLOR4', 'Color of header for the non selected tabs');
 define('_MB_NEWS_TAB_COLOR5', "Header's hover color");
-define('_MB_NEWS_WHAT_PUBLISH', 'What do you want to publish<br />in the spotlight?');
+define('_MB_NEWS_WHAT_PUBLISH', 'What do you want to publish<br>in the spotlight?');
 define('_MB_NEWS_RECENT_NEWS', "Recent news (don't use the list below)");
 define('_MB_NEWS_RECENT_SPECIFIC', 'A specific news (see below)');
 define('_MB_NEWS_DEFAULT_COLORS', 'Leave the zones empty to use the default colors');

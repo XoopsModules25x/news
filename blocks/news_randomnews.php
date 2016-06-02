@@ -123,10 +123,10 @@ function b_news_randomnews_edit($options)
 
     $form .= "</select>\n";
     $form .= '&nbsp;' . _MB_NEWS_DISP . "&nbsp;<input type='text' name='options[]' value='" . $options[1] . "'/>&nbsp;" . _MB_NEWS_ARTCLS;
-    $form .= '&nbsp;<br><br />' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'/>&nbsp;" . _MB_NEWS_LENGTH . '<br /><br />';
+    $form .= '&nbsp;<br><br>' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'/>&nbsp;" . _MB_NEWS_LENGTH . '<br><br>';
 
     $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "' />" . _MB_NEWS_LENGTH;
-    $form .= '<br /><br />' . _MB_SPOTLIGHT_TOPIC . "<br /><select id='options[4]' name='options[]' multiple='multiple'>";
+    $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select id='options[4]' name='options[]' multiple='multiple'>";
 
     include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
     $xt                    = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
@@ -143,7 +143,7 @@ function b_news_randomnews_edit($options)
         }
         $form .= "<option value='$topicid'$sel>" . $topic['title'] . '</option>';
     }
-    $form .= '</select><br />';
+    $form .= '</select><br>';
 
     return $form;
 }

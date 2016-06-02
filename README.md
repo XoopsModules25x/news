@@ -15,6 +15,6 @@ To contribute to the Tutorial, [fork it on GitHub](https://github.com/XoopsDocs/
 
 [![Translations on Transifex](http://xoops.org/images/translations-transifex-blue.svg)](https://www.transifex.com/xoops) 
 
-Please visit us on http://xoops.org
+Please visit us on  [http://xoops.org](http://xoops.org)
 
 The upcoming "next generation" version of XOOPS CMS is being crafted on GitHub at: https://github.com/XOOPS

@@ -45,13 +45,13 @@ include_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
 if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     if (!isset($_POST['go'])) {
         echo '<h1>Welcome to the AMS 2.41 import script</h1>';
-        echo '<br /><br />Select the import options you wan to use :';
+        echo '<br><br>Select the import options you wan to use :';
         echo "<form method='post' action='amsimport.php'>";
-        echo "<br /><input type='checkbox' name='useforum' value='1' /> Import forums links inside news (at the bottom of the news)";
-        echo "<br /><input type='checkbox' name='useextlinks' value='1' /> Import external links inside news (at the bottom of the news)";
-        echo "<br /><br /><input type='submit' name='go' value='Import' />";
+        echo "<br><input type='checkbox' name='useforum' value='1' /> Import forums links inside news (at the bottom of the news)";
+        echo "<br><input type='checkbox' name='useextlinks' value='1' /> Import external links inside news (at the bottom of the news)";
+        echo "<br><br><input type='submit' name='go' value='Import' />";
         echo '</form>';
-        echo "<br /><br />If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
+        echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
     } else {
         // Launch the import
         if (file_exists(XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/main.php')) {
@@ -69,11 +69,11 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $use_forum    = (isset($_POST['useforum']) && $_POST['useforum'] == 1) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && $_POST['useextlinks'] == 1) ? 1 : 0;
         // Retreive News module's ID
-        $module_handler = xoops_getHandler('module');
-        $newsModule     = $module_handler->getByDirname('news');
-        $news_mid       = $newsModule->getVar('mid');
+        $moduleHandler = xoops_getHandler('module');
+        $newsModule    = $moduleHandler->getByDirname('news');
+        $news_mid      = $newsModule->getVar('mid');
         // Retreive AMS module's ID
-        $AmsModule = $module_handler->getByDirname('AMS');
+        $AmsModule = $moduleHandler->getByDirname('AMS');
         $ams_mid   = $AmsModule->getVar('mid');
 
         // Retreive AMS tables names
@@ -196,7 +196,19 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 // The ratings
                 $result5 = $db->query('SELECT * FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
                 while ($ratings = $db->fetchArray($result5)) {
-                    $result6 = $db->queryF('INSERT INTO ' . $news_stories_votedata . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (' . $news_newsid . ',' . $ratings['ratinguser'] . ',' . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')');
+                    $result6 = $db->queryF('INSERT INTO '
+                                           . $news_stories_votedata
+                                           . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES ('
+                                           . $news_newsid
+                                           . ','
+                                           . $ratings['ratinguser']
+                                           . ','
+                                           . $ratings['rating']
+                                           . ','
+                                           . $ratings['ratinghostname']
+                                           . ','
+                                           . $ratings['ratingtimestamp']
+                                           . ')');
                 }
 
                 // The comments

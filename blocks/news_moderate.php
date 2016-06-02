@@ -62,7 +62,19 @@ function b_news_topics_moderate()
             $story['title']       = $linktitle;
             $story['date']        = formatTimestamp($newstory->created(), $dateformat);
             $story['author']      = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $newstory->uid() . "'>" . $newstory->uname() . '</a>';
-            $story['action']      = "<a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=edit&amp;storyid=' . $newstory->storyid() . "'>" . _EDIT . "</a> - <a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=delete&amp;storyid=' . $newstory->storyid() . "'>" . _MB_DELETE . '</a>';
+            $story['action']      = "<a href='"
+                                    . XOOPS_URL
+                                    . '/modules/news/admin/index.php?op=edit&amp;storyid='
+                                    . $newstory->storyid()
+                                    . "'>"
+                                    . _EDIT
+                                    . "</a> - <a href='"
+                                    . XOOPS_URL
+                                    . '/modules/news/admin/index.php?op=delete&amp;storyid='
+                                    . $newstory->storyid()
+                                    . "'>"
+                                    . _MB_DELETE
+                                    . '</a>';
             $story['topic_title'] = $newstory->topic_title();
             $story['topic_color'] = '#' . $myts->displayTarea($newstory->topic_color);
             $block['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
@@ -81,7 +93,7 @@ function b_news_topics_moderate()
 function b_news_topics_moderate_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_topics_moderate($options);
+    $block   =& b_news_topics_moderate($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);

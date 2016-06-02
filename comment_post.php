@@ -31,7 +31,7 @@ if (!isset($xoopsModuleConfig)) {
     die();
 }
 
-if ($xoopsModuleConfig['com_rule'] == 0) { // Comments are deactivate
+if ($xoopsModuleConfig['com_rule'] == 0) { // Comments are deactivated
     die();
 }
 

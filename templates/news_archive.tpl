@@ -7,7 +7,8 @@
             <{foreach item=month from=$year.months}>
                 <tr class="even">
                     <td>
-                        <a title="<{$month.string}> <{$year.number}>" href="<{$xoops_url}>/modules/news/archive.php?year=<{$year.number}>&amp;month=<{$month.number}>"><{$month.string}> <{$year.number}></a>
+                        <a title="<{$month.string}> <{$year.number}>"
+                           href="<{$xoops_url}>/modules/news/archive.php?year=<{$year.number}>&amp;month=<{$month.number}>"><{$month.string}> <{$year.number}></a>
                     </td>
                 </tr>
             <{/foreach}>

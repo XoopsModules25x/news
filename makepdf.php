@@ -79,15 +79,15 @@ $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);
 $pdf_data['filename']     = preg_replace("/[^0-9a-z\-_\.]/i", '', $myts->htmlSpecialChars($article->topic_title()) . ' - ' . $article->title());
 $hometext                 = $article->hometext();
 $bodytext                 = $article->bodytext();
-$content                  = $myts->undoHtmlSpecialChars($hometext) . '<br /><br />' . $myts->undoHtmlSpecialChars($bodytext);
-$content                  = str_replace('[pagebreak]', '<br /><br />', $content);
+$content                  = $myts->undoHtmlSpecialChars($hometext) . '<br><br>' . $myts->undoHtmlSpecialChars($bodytext);
+$content                  = str_replace('[pagebreak]', '<br><br>', $content);
 $pdf_data['content']      = $content;
 
 $pdf_data['author'] = $article->uname();
 
 //Other stuff
-$puff   = '<br />';
-$puffer = '<br /><br />';
+$puff   = '<br>';
+$puffer = '<br><br>';
 
 //create the A4-PDF...
 $pdf_config['slogan'] = XOOPS_URL . ' - ' . $xoopsConfig['sitename'] . ' - ' . $xoopsConfig['slogan'];
@@ -129,16 +129,16 @@ $pdf->SetTextColor(10, 60, 160);
 $pdf->SetFont(PDF_FONT_NAME_TITLE, PDF_FONT_STYLE_TITLE, PDF_FONT_SIZE_TITLE);
 $pdf->WriteHTML($pdf_data['title'] . ' - ' . $pdf_data['subtitle'], K_TITLE_MAGNIFICATION);
 //$pdf->Line(25,20,190,20);
-if ($pdf_data['subsubtitle'] != '') {
+if ($pdf_data['subsubtitle'] !== '') {
     $pdf->WriteHTML($puff, K_XSMALL_RATIO);
     $pdf->SetFont(PDF_FONT_NAME_SUBSUB, PDF_FONT_STYLE_SUBSUB, PDF_FONT_SIZE_SUBSUB);
     $pdf->WriteHTML($pdf_data['subsubtitle'], '1');
 }
 $pdf->WriteHTML($puff, '0.2');
 $pdf->SetFont(PDF_FONT_NAME_DATA, PDF_FONT_STYLE_DATA, PDF_FONT_SIZE_DATA);
-$out = NEWS_PDF_AUTHOR . ': ' . $pdf_data['author'] . '<br />';
+$out = NEWS_PDF_AUTHOR . ': ' . $pdf_data['author'] . '<br>';
 $pdf->WriteHTML($out, '0.2');
-$out = NEWS_PDF_DATE . ': ' . $pdf_data['date'] . '<br />';
+$out = NEWS_PDF_DATE . ': ' . $pdf_data['date'] . '<br>';
 $pdf->WriteHTML($out, '0.2');
 $pdf->SetTextColor(0, 0, 0);
 $pdf->WriteHTML($puffer, '1');

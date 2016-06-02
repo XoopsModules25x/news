@@ -115,10 +115,10 @@ class MyXoopsTopic
         $myts   = MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
-        if (isset($this->topic_title) && $this->topic_title != '') {
+        if (isset($this->topic_title) && $this->topic_title !== '') {
             $title = $myts->addSlashes($this->topic_title);
         }
-        if (isset($this->topic_imgurl) && $this->topic_imgurl != '') {
+        if (isset($this->topic_imgurl) && $this->topic_imgurl !== '') {
             $imgurl = $myts->addSlashes($this->topic_imgurl);
         }
         if (!isset($this->topic_pid) || !is_numeric($this->topic_pid)) {

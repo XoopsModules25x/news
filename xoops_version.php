@@ -30,7 +30,8 @@ $moduleDirName = basename(__DIR__);
 $modversion['name']           = _MI_NEWS_NAME;
 $modversion['version']        = 1.71;
 $modversion['description']    = _MI_NEWS_DESC;
-$modversion['credits']        = 'XOOPS Project, Christian, Pilou, Marco, <br />ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br />Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
+$modversion['credits']        =
+    'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
 $modversion['author']         = 'XOOPS Project Module Dev Team & Hervé Thouzard';
 $modversion['nickname']       = 'hervet';
 $modversion['help']           = 'page=help';
@@ -192,8 +193,8 @@ $cansubmit = 0;
 /**
  * This part inserts the selected topics as sub items in the Xoops main menu
  */
-$module_handler = xoops_getHandler('module');
-$module         = $module_handler->getByDirname($modversion['dirname']);
+$moduleHandler = xoops_getHandler('module');
+$module        = $moduleHandler->getByDirname($modversion['dirname']);
 if ($module) {
     global $xoopsUser;
     if (is_object($xoopsUser)) {
@@ -585,7 +586,8 @@ $modversion['config'][$i]['options']     = array(
     _MI_NEWS_SKIN_5 => 5,
     _MI_NEWS_SKIN_6 => 6,
     _MI_NEWS_SKIN_7 => 7,
-    _MI_NEWS_SKIN_8 => 8);
+    _MI_NEWS_SKIN_8 => 8
+);
 $modversion['config'][$i]['default']     = 6;
 
 /**
@@ -655,7 +657,8 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_MIME_TYPES';
 $modversion['config'][$i]['description'] = '';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
+$modversion['config'][$i]['default']     =
+    "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
 
 /**
  * Use enhanced page separator ?

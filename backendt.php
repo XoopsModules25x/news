@@ -108,7 +108,8 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
                 'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'pubdate'     => formatTimestamp($story->published(), 'rss'),
-                'description' => xoops_utf8_encode($description)));
+                'description' => xoops_utf8_encode($description)
+            ));
         }
     }
 }
