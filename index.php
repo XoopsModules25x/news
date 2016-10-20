@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -78,7 +78,7 @@
  * @template_var          string    lang_sendstory    fixed text : Send this Story to a Friend
  * @template_var          string     topic_select    contains the topics selector
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 
 //$XOOPS_URL = XOOPS_URL;
 //$u=$XOOPS_URL.'/uploads/news_xml.php';
@@ -124,7 +124,9 @@ if (isset($_GET['start'])) {
     $start = 0;
 }
 
-if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] === 'Classic' || $xoopsOption['storytopic'] > 0) {
+if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] === 'Classic'
+    || $xoopsOption['storytopic'] > 0
+) {
     $showclassic = 1;
 } else {
     $showclassic = 0;
@@ -137,7 +139,7 @@ $sfiles     = new sFiles();
 $column_count = $xoopsModuleConfig['columnmode'];
 
 if ($showclassic) {
-    $xoopsOption['template_main'] = 'news_index.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'news_index.tpl';
     include_once XOOPS_ROOT_PATH . '/header.php';
     $xt = new NewsTopic();
 
@@ -169,7 +171,7 @@ if ($showclassic) {
         for ($i = 5; $i <= 30; $i += 5) {
             $sel = '';
             if ($i == $xoopsOption['storynum']) {
-                $sel = ' selected="selected"';
+                $sel = ' selected';
             }
             $storynum_options .= '<option value="' . $i . '"' . $sel . '>' . $i . '</option>';
         }
@@ -182,7 +184,8 @@ if ($showclassic) {
     } else {
         $topic_frontpage = false;
     }
-    $sarray = NewsStory::getAllPublished($xoopsOption['storynum'], $start, $xoopsModuleConfig['restrictindex'], $xoopsOption['storytopic'], 0, true, 'published', $topic_frontpage);
+    $sarray = NewsStory::getAllPublished($xoopsOption['storynum'], $start, $xoopsModuleConfig['restrictindex'], $xoopsOption['storytopic'], 0, true,
+                                         'published', $topic_frontpage);
 
     $scount = count($sarray);
     $xoopsTpl->assign('story_count', $scount);
@@ -230,7 +233,7 @@ if ($showclassic) {
         $xoopsTpl->assign('pagenav', '');
     }
 } else { // Affichage par sujets
-    $xoopsOption['template_main'] = 'news_by_topic.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'news_by_topic.tpl';
     include_once XOOPS_ROOT_PATH . '/header.php';
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
     if ($xoopsModuleConfig['ratenews']) {
@@ -242,7 +245,7 @@ if ($showclassic) {
     }
 
     $xt            = new NewsTopic();
-    $alltopics     =& $xt->getTopicsList(true, $xoopsModuleConfig['restrictindex']);
+    $alltopics     = $xt->getTopicsList(true, $xoopsModuleConfig['restrictindex']);
     $smarty_topics = array();
     $topicstories  = array();
 
@@ -261,7 +264,12 @@ if ($showclassic) {
             $topicstories[$topicid][] = $story;
         }
         if (isset($topicstories[$topicid])) {
-            $smarty_topics[$topicstories[$topicid][0]['posttimestamp']] = array('title' => $topic['title'], 'stories' => $topicstories[$topicid], 'id' => $topicid, 'topic_color' => $topic['color']);
+            $smarty_topics[$topicstories[$topicid][0]['posttimestamp']] = array(
+                'title'       => $topic['title'],
+                'stories'     => $topicstories[$topicid],
+                'id'          => $topicid,
+                'topic_color' => $topic['color']
+            );
         }
     }
 
@@ -302,10 +310,12 @@ if ($xoopsOption['storytopic']) {
 /**
  * Create a link for the RSS feed (if the module's option is activated)
  */
+/** @var XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($xoopsModuleConfig['topicsrss'] && $xoopsOption['storytopic']) {
-    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED,
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>",
+                    XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED,
                     XOOPS_URL . '/' . $moduleInfo->getInfo('icons16') . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }

@@ -85,7 +85,7 @@ class news_stories extends XoopsObject
 class newsnews_storiesHandler extends XoopsPersistableObjectHandler
 {
     /**
-     * @param null|object|XoopsDatabase $db
+     * @param null|XoopsDatabase $db
      */
     public function __construct(XoopsDatabase $db)
     {

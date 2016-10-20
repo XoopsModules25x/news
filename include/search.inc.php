@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -43,6 +43,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $highlight  = false;
     $highlight  = news_getmoduleoption('keywordshighlight'); // keywords highlighting
 
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname('news');
     $modid         = $module->getVar('mid');
@@ -55,8 +56,13 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
 
-    $sql =
-        'SELECT storyid, topicid, uid, title, created FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired > ' . time() . ') ';
+    $sql = 'SELECT storyid, topicid, uid, title, created FROM '
+           . $xoopsDB->prefix('news_stories')
+           . ' WHERE (published>0 AND published<='
+           . time()
+           . ') AND (expired = 0 OR expired > '
+           . time()
+           . ') ';
 
     if ($userid != 0) {
         $sql .= ' AND uid=' . $userid . ' ';

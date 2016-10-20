@@ -172,8 +172,8 @@ if (!empty($_POST['submit'])) { // The form was submited
     //All is well.  Add to Line Item Rate to DB.
     $newid    = $xoopsDB->genId($xoopsDB->prefix('news_stories_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid,
-                        $storyid, $ratinguser, $rating, $ip, $datetime);
+    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)",
+                        $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
     $xoopsDB->query($sql) || ErrorHandler::show('0013');
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
@@ -181,7 +181,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $ratemessage = _NW_VOTEAPPRE . '<br>' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
-    $xoopsOption['template_main'] = 'news_ratenews.tpl';
+    $GLOBALS['xoopsOption']['template_main'] = 'news_ratenews.tpl';
     include_once XOOPS_ROOT_PATH . '/header.php';
     $news = null;
     $news = new NewsStory($storyid);

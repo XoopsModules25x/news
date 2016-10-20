@@ -26,7 +26,8 @@
                 <option>1</option>
             </select>&nbsp;&nbsp;
             <input type="submit" name="submit" value="<{$lang_rateit}>"/>
-            <input type='button' value="<{$lang_cancel}>" onclick="location='<{$xoops_url}>/modules/news/article.php?storyid=<{$news.storyid}>'"/>
+            <input type='button' value="<{$lang_cancel}>"
+                   onclick="location='<{$xoops_url}>/modules/news/article.php?storyid=<{$news.storyid}>'"/>
         </form>
     </div>
 </div>

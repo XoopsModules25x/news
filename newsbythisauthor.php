@@ -72,7 +72,7 @@
  *                                                          string  published       Date of publication formated (according to user's prefs)
  *                                                          int     rating          Rating for this news
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
@@ -94,9 +94,9 @@ if (!news_getmoduleoption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
-$myts                         = MyTextSanitizer::getInstance();
-$articles                     = new NewsStory();
-$xoopsOption['template_main'] = 'news_by_this_author.tpl';
+$myts                                    = MyTextSanitizer::getInstance();
+$articles                                = new NewsStory();
+$GLOBALS['xoopsOption']['template_main'] = 'news_by_this_author.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 
 $dateformat = news_getmoduleoption('dateformat');
@@ -175,14 +175,20 @@ if ($articlescount > 0) {
             'title'        => $article['title'],
             'hits'         => $article['counter'],
             'created'      => formatTimestamp($article['created'], $dateformat),
-            'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle, $article['title']),
+            'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle,
+                                      $article['title']),
             'published'    => formatTimestamp($article['published'], $dateformat),
             'rating'       => $article['rating']
         );
     }
 }
 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-$xoopsTpl->append('topics', array('topic_id' => $oldtopic, 'topic_title' => $oldtopictitle, 'topic_link' => $topic_link, 'news' => $articlestpl));
+$xoopsTpl->append('topics', array(
+    'topic_id'    => $oldtopic,
+    'topic_title' => $oldtopictitle,
+    'topic_link'  => $topic_link,
+    'news'        => $articlestpl
+));
 $xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
 $xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
 

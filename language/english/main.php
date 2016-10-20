@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //%%%%%%        File Name index.php         %%%%%
 define('_NW_PRINTER', 'Printer friendly page');
 define('_NW_SENDSTORY', 'Send this story to a friend');
@@ -75,7 +75,8 @@ define('_NW_META_KEYWORDS', 'Meta keywords');
 define('_NW_MAKEPDF', 'Create a PDF from the article');
 define('_MD_POSTEDON', 'Posted on: ');
 define('_NW_AUTHOR_ID', "Author's ID");
-define('_NW_POST_SORRY', "Sorry, but either there are no topics or you don't have the rights to post in any topic. If you are the webmaster, go in the permissions and set the 'Submit' permissions.");
+define('_NW_POST_SORRY',
+       "Sorry, but either there are no topics or you don't have the rights to post in any topic. If you are the webmaster, go in the permissions and set the 'Submit' permissions.");
 // Added in v 1.50
 define('_NW_LINKS', 'Links');
 define('_NW_PAGE', 'Page');

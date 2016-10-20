@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -118,7 +118,7 @@
  * @template_var                    string    votes    "1 vote" or "X votes"
  * @template_var                    string    topic_path    A path from the root to the current topic (of the current news)
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -173,7 +173,7 @@ if (empty($_GET['com_id']) && $storypage == 0) {
         $article->updateCounter();
     }
 }
-$xoopsOption['template_main'] = 'news_article.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'news_article.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 
 $story['id']          = $storyid;
@@ -280,7 +280,10 @@ $story['adminlink'] = '';
 unset($isadmin);
 
 if (is_object($xoopsUser)) {
-    if ($xoopsUser->isAdmin($xoopsModule->getVar('mid')) || (news_getmoduleoption('authoredit') && $article->uid() == $xoopsUser->getVar('uid'))) {
+    if ($xoopsUser->isAdmin($xoopsModule->getVar('mid'))
+        || (news_getmoduleoption('authoredit')
+            && $article->uid() == $xoopsUser->getVar('uid'))
+    ) {
         $isadmin = true;
         //      $story['adminlink'] = $article->adminlink();
     }
@@ -350,13 +353,19 @@ if ($filescount > 0) {
  * Create page's title
  */
 $complement = '';
-if (news_getmoduleoption('enhanced_pagenav') && (isset($arr_titles) && is_array($arr_titles) && isset($arr_titles, $storypage) && $storypage > 0)) {
+if (news_getmoduleoption('enhanced_pagenav')
+    && (isset($arr_titles) && is_array($arr_titles)
+        && isset($arr_titles, $storypage)
+        && $storypage > 0)
+) {
     $complement = ' - ' . $arr_titles[$storypage];
 }
 $xoopsTpl->assign('xoops_pagetitle', $article->title() . $complement . ' - ' . $article->topic_title() . ' - ' . $xoopsModule->name('s'));
 
 if (news_getmoduleoption('newsbythisauthor')) {
-    $xoopsTpl->assign('news_by_the_same_author_link', sprintf("<a href='%s?uid=%d'>%s</a>", XOOPS_URL . '/modules/news/newsbythisauthor.php', $article->uid(), _NW_NEWSSAMEAUTHORLINK));
+    $xoopsTpl->assign('news_by_the_same_author_link',
+                      sprintf("<a href='%s?uid=%d'>%s</a>", XOOPS_URL . '/modules/news/newsbythisauthor.php', $article->uid(),
+                              _NW_NEWSSAMEAUTHORLINK));
 }
 
 /**
@@ -446,12 +455,14 @@ if (news_getmoduleoption('showprevnextlink')) {
     $xoopsTpl->assign('next_story_id', $nextId);
     if ($previousId > 0) {
         $xoopsTpl->assign('previous_story_title', $previousTitle);
-        $hcontent .= sprintf("<link rel=\"Prev\" title=\"%s\" href=\"%s/\" />\n", $previousTitle, XOOPS_URL . '/modules/news/article.php?storyid=' . $previousId);
+        $hcontent .= sprintf("<link rel=\"Prev\" title=\"%s\" href=\"%s/\" />\n", $previousTitle,
+                             XOOPS_URL . '/modules/news/article.php?storyid=' . $previousId);
     }
 
     if ($nextId > 0) {
         $xoopsTpl->assign('next_story_title', $nextTitle);
-        $hcontent .= sprintf("<link rel=\"Next\" title=\"%s\" href=\"%s/\" />\n", $nextTitle, XOOPS_URL . '/modules/news/article.php?storyid=' . $nextId);
+        $hcontent .= sprintf("<link rel=\"Next\" title=\"%s\" href=\"%s/\" />\n", $nextTitle,
+                             XOOPS_URL . '/modules/news/article.php?storyid=' . $nextId);
     }
     $xoopsTpl->assign('lang_previous_story', _NW_PREVIOUS_ARTICLE);
     $xoopsTpl->assign('lang_next_story', _NW_NEXT_ARTICLE);

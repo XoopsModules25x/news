@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -105,25 +105,31 @@ function b_news_randomnews_edit($options)
     $form = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";
     $form .= "<option value='published'";
     if ($options[0] === 'published') {
-        $form .= " selected='selected'";
+        $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_DATE . "</option>\n";
 
     $form .= "<option value='counter'";
     if ($options[0] === 'counter') {
-        $form .= " selected='selected'";
+        $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_HITS . '</option>';
 
     $form .= "<option value='rating'";
     if ($options[0] === 'rating') {
-        $form .= " selected='selected'";
+        $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_RATE . '</option>';
 
     $form .= "</select>\n";
     $form .= '&nbsp;' . _MB_NEWS_DISP . "&nbsp;<input type='text' name='options[]' value='" . $options[1] . "'/>&nbsp;" . _MB_NEWS_ARTCLS;
-    $form .= '&nbsp;<br><br>' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'/>&nbsp;" . _MB_NEWS_LENGTH . '<br><br>';
+    $form .= '&nbsp;<br><br>'
+             . _MB_NEWS_CHARS
+             . "&nbsp;<input type='text' name='options[]' value='"
+             . $options[2]
+             . "'/>&nbsp;"
+             . _MB_NEWS_LENGTH
+             . '<br><br>';
 
     $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "' />" . _MB_NEWS_LENGTH;
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select id='options[4]' name='options[]' multiple='multiple'>";
@@ -138,7 +144,7 @@ function b_news_randomnews_edit($options)
         $sel = '';
         for ($i = 4; $i < $size; ++$i) {
             if ($options[$i] == $topicid) {
-                $sel = " selected='selected'";
+                $sel = ' selected';
             }
         }
         $form .= "<option value='$topicid'$sel>" . $topic['title'] . '</option>';

@@ -43,6 +43,7 @@ function b_news_topicsnav_show($options)
     $restricted       = news_getmoduleoption('restrictindex');
     if ($restricted) {
         global $xoopsUser;
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -90,12 +91,12 @@ function b_news_topicsnav_edit($options)
 {
     $form = _MB_NEWS_SHOW_NEWS_COUNT . " <input type='radio' name='options[]' value='1'";
     if ($options[0] == 1) {
-        $form .= " checked='checked'";
+        $form .= ' checked';
     }
     $form .= ' />' . _YES;
     $form .= "<input type='radio' name='options[]' value='0'";
     if ($options[0] == 0) {
-        $form .= " checked='checked'";
+        $form .= ' checked';
     }
     $form .= ' />' . _NO;
 

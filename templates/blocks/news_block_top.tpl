@@ -943,7 +943,8 @@
                     <ul>
                         <li><{$onenews.title}></li>
                     </ul>
-                    <span class="itemStats">&nbsp;&nbsp;<{$onenews.author}> <{$block.lang_on}> <{$onenews.date}> - <{if $block.use_rating}> <{$onenews.rating}>/10 (<{$onenews.number_votes}>)<{/if}>
+                    <span class="itemStats">&nbsp;&nbsp;<{$onenews.author}> <{$block.lang_on}> <{$onenews.date}>
+                        - <{if $block.use_rating}> <{$onenews.rating}>/10 (<{$onenews.number_votes}>)<{/if}>
                         , <{$onenews.hits}> <{$block.lang_reads}></span></div>
                 <p class="note"><{$onenews.text}></p>
             <{/foreach}>
@@ -959,7 +960,8 @@
                             <td colspan='2'>
                                 <table border='0'>
                                     <tr>
-                                        <td><img src='<{$block.spotlight.topic_image}>' border='0' alt='<{$block.spotlight.title}>'/></td>
+                                        <td><img src='<{$block.spotlight.topic_image}>' border='0'
+                                                 alt='<{$block.spotlight.title}>'/></td>
                                         <td align='left'><{$block.spotlight.topic_description}></td>
                                     </tr>
                                 </table>
@@ -981,7 +983,9 @@
                             <td colspan='2'>
                                 <{if $block.spotlight.read_more}>
                                     <hr width='98%'/>
-                                    <div align='right'><a href="<{$xoops_url}>/modules/news/article.php?storyid=<{$block.spotlight.id}>"><{$block.lang_read_more}></a> &nbsp;&nbsp;&nbsp;</div>
+                                    <div align='right'><a
+                                                href="<{$xoops_url}>/modules/news/article.php?storyid=<{$block.spotlight.id}>"><{$block.lang_read_more}></a>
+                                        &nbsp;&nbsp;&nbsp;</div>
                                     <hr width='98%'/>
                                 <{/if}>
                             </td>

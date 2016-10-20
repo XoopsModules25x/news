@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -27,36 +27,33 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $moduleDirName = basename(__DIR__);
 
-$modversion['name']           = _MI_NEWS_NAME;
-$modversion['version']        = 1.71;
-$modversion['description']    = _MI_NEWS_DESC;
-$modversion['credits']        =
-    'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
-$modversion['author']         = 'XOOPS Project Module Dev Team & Hervé Thouzard';
-$modversion['nickname']       = 'hervet';
-$modversion['help']           = 'page=help';
-$modversion['license']        = 'GNU General Public License';
-$modversion['license_url']    = 'http://www.gnu.org/licenses/gpl.html';
-$modversion['official']       = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
-$modversion['image']          = 'assets/images/logo_module.png';
-$modversion['dirname']        = $moduleDirName;
-$modversion['dirmoduleadmin'] = '/Frameworks/moduleclasses/moduleadmin';
-$modversion['icons16']        = '../../Frameworks/moduleclasses/icons/16';
-$modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
-$modversion['onInstall']      = 'include/install_function.php';
-$modversion['onUpdate']       = 'include/update_function.php';
-
-//about
-$modversion['module_status']       = 'Beta 2';
-$modversion['release_date']        = '2016/04/02';
+$modversion['version']             = 1.71;
+$modversion['module_status']       = 'Final';
+$modversion['release_date']        = '2016/10/18';
+$modversion['name']                = _MI_NEWS_NAME;
+$modversion['description']         = _MI_NEWS_DESC;
+$modversion['credits']             = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
+$modversion['author']              = 'XOOPS Project Module Dev Team & Hervé Thouzard';
+$modversion['nickname']            = 'hervet';
+$modversion['help']                = 'page=help';
+$modversion['license']             = 'GNU General Public License';
+$modversion['license_url']         = 'http://www.gnu.org/licenses/gpl.html';
+$modversion['official']            = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
+$modversion['image']               = 'assets/images/logoModule.png';
+$modversion['dirname']             = $moduleDirName;
+$modversion['dirmoduleadmin']      = '/Frameworks/moduleclasses/moduleadmin';
+$modversion['icons16']             = '../../Frameworks/moduleclasses/icons/16';
+$modversion['icons32']             = '../../Frameworks/moduleclasses/icons/32';
+$modversion['onInstall']           = 'include/install_function.php';
+$modversion['onUpdate']            = 'include/update_function.php';
 $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'http://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.8';
-$modversion['min_admin']           = '1.1';
-$modversion['min_db']              = array('mysql' => '5.0.7', 'mysqli' => '5.0.7');
+$modversion['min_admin']           = '1.2';
+$modversion['min_db']              = array('mysql' => '5.1');
 
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
@@ -193,6 +190,7 @@ $cansubmit = 0;
 /**
  * This part inserts the selected topics as sub items in the Xoops main menu
  */
+/** @var XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->getByDirname($modversion['dirname']);
 if ($module) {
@@ -213,7 +211,9 @@ $i = 1;
 global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
 // We try to "win" some time
 // 1)  Check to see it the module is the current module
-if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['dirname'] && $xoopsModule->getVar('isactive')) {
+if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['dirname']
+    && $xoopsModule->getVar('isactive')
+) {
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || $_SESSION['items_count'] == -1) {
         $sql    = 'SELECT COUNT(*) as cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
@@ -233,7 +233,9 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
             foreach ($topics_arr as $onetopic) {
-                if ($gperm_handler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid')) && $onetopic->menu()) {
+                if ($gperm_handler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
+                    && $onetopic->menu()
+                ) {
                     $modversion['sub'][$i]['name'] = $onetopic->topic_title();
                     $modversion['sub'][$i]['url']  = 'index.php?storytopic=' . $onetopic->topic_id();
                 }
@@ -358,7 +360,11 @@ $modversion['config'][$i]['description'] = '_MI_ADISPLAYNAMEDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 1;
-$modversion['config'][$i]['options']     = array('_MI_DISPLAYNAME1' => 1, '_MI_DISPLAYNAME2' => 2, '_MI_DISPLAYNAME3' => 3);
+$modversion['config'][$i]['options']     = array(
+    '_MI_DISPLAYNAME1' => 1,
+    '_MI_DISPLAYNAME2' => 2,
+    '_MI_DISPLAYNAME3' => 3
+);
 
 /**
  * Number of columns to use to display news
@@ -382,7 +388,16 @@ $modversion['config'][$i]['description'] = '_MI_STORYCOUNTADMIN_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 10;
-$modversion['config'][$i]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '35' => 35, '40' => 40);
+$modversion['config'][$i]['options']     = array(
+    '5'  => 5,
+    '10' => 10,
+    '15' => 15,
+    '20' => 20,
+    '25' => 25,
+    '30' => 30,
+    '35' => 35,
+    '40' => 40
+);
 
 /**
  * Authorized groups to upload
@@ -394,7 +409,11 @@ $modversion['config'][$i]['description'] = '_MI_UPLOADGROUPS_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 2;
-$modversion['config'][$i]['options']     = array('_MI_UPLOAD_GROUP1' => 1, '_MI_UPLOAD_GROUP2' => 2, '_MI_UPLOAD_GROUP3' => 3);
+$modversion['config'][$i]['options']     = array(
+    '_MI_UPLOAD_GROUP1' => 1,
+    '_MI_UPLOAD_GROUP2' => 2,
+    '_MI_UPLOAD_GROUP3' => 3
+);
 
 /**
  * MAX Filesize Upload in kilo bytes
@@ -657,8 +676,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_MIME_TYPES';
 $modversion['config'][$i]['description'] = '';
 $modversion['config'][$i]['formtype']    = 'textarea';
 $modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     =
-    "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
+$modversion['config'][$i]['default']     = "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
 
 /**
  * Use enhanced page separator ?

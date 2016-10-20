@@ -137,12 +137,12 @@ function b_news_archives_edit($options)
     $form .= '<b>' . _MB_NEWS_ORDER . "</b>&nbsp;<select name='options[]'>";
     $form .= "<option value='0'";
     if ($options[0] == 0) {
-        $form .= " selected='selected'";
+        $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_OLDER_FIRST . "</option>\n";
     $form .= "<option value='1'";
     if ($options[0] == 1) {
-        $form .= " selected='selected'";
+        $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_RECENT_FIRST . '</option>';
     $form .= "</select>\n";
@@ -151,12 +151,12 @@ function b_news_archives_edit($options)
     $form .= '<br><br><b>' . _MB_NEWS_STARTING_DATE . '</b><br>';
     $form .= _MB_NEWS_CAL_YEAR . "&nbsp;<select name='options[]'>";
     for ($i = $syear; $i <= $eyear; ++$i) {
-        $selected = ($i == $selsyear) ? "selected='selected'" : '';
+        $selected = ($i == $selsyear) ? 'selected' : '';
         $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>&nbsp;' . _MB_NEWS_CAL_MONTH . "&nbsp;<select name='options[]'>";
     for ($i = 1; $i <= 12; ++$i) {
-        $selected = ($i == $selsmonth) ? "selected='selected'" : '';
+        $selected = ($i == $selsmonth) ? 'selected' : '';
         $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>';
@@ -164,19 +164,19 @@ function b_news_archives_edit($options)
     $form .= '<br><br><b>' . _MB_NEWS_ENDING_DATE . '</b><br>';
     $form .= _MB_NEWS_CAL_YEAR . "&nbsp;<select name='options[]'>";
     for ($i = $syear; $i <= $eyear; ++$i) {
-        $selected = ($i == $seleyear) ? "selected='selected'" : '';
+        $selected = ($i == $seleyear) ? 'selected' : '';
         $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>&nbsp;' . _MB_NEWS_CAL_MONTH . "&nbsp;<select name='options[]'>";
     for ($i = 1; $i <= 12; ++$i) {
-        $selected = ($i == $selemonth) ? "selected='selected'" : '';
+        $selected = ($i == $selemonth) ? 'selected' : '';
         $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>';
 
     // Or until today *********************************************************
     $form .= '<br>';
-    $checked = $options[5] == 1 ? " checked='checked'" : '';
+    $checked = $options[5] == 1 ? ' checked' : '';
     $form .= "<input type='checkbox' value='1' name='options[]'" . $checked . '>';
     $form .= ' <b>' . _MB_NEWS_UNTIL_TODAY . '</b>';
 

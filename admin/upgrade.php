@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-include_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+include_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
 include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
@@ -126,7 +126,12 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         echo '<H1>' . _AM_NEWS_UPGRADEFAILED . '</H1>';
         echo '<br>' . _AM_NEWS_UPGRADEFAILED0;
     } else {
-        echo _AM_NEWS_UPGRADECOMPLETE . " - <a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>" . _AM_NEWS_UPDATEMODULE . '</a>';
+        echo _AM_NEWS_UPGRADECOMPLETE
+             . " - <a href='"
+             . XOOPS_URL
+             . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>"
+             . _AM_NEWS_UPDATEMODULE
+             . '</a>';
     }
 } else {
     printf("<h2>%s</h2>\n", _AM_NEWS_UPGR_ACCESS_ERROR);
