@@ -17,7 +17,7 @@
  * @return bool
  */
 
-function xoops_module_pre_install_news(&$xoopsModule)
+function xoops_module_pre_install_news(XoopsModule $xoopsModule)
 {
     // Check if this XOOPS version is supported
     $minSupportedVersion = explode('.', '2.5.0');
@@ -41,11 +41,11 @@ function xoops_module_pre_install_news(&$xoopsModule)
 }
 
 /**
- * @param $xoopsModule
+ * @param XoopsModule $xoopsModule
  *
  * @return bool
  */
-function xoops_module_install_news(&$xoopsModule)
+function xoops_module_install_news(XoopsModule $xoopsModule)
 {
     $module_id     = $xoopsModule->getVar('mid');
     $gpermHandler  = xoops_getHandler('groupperm');

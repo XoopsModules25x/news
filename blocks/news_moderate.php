@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -54,9 +54,25 @@ function b_news_topics_moderate()
             }
 
             if (!isset($title) || ($title == '')) {
-                $linktitle = "<a href='" . XOOPS_URL . '/modules/news/index.php?op=edit&amp;storyid=' . $newstory->storyid() . "' target='_blank'" . $htmltitle . '>' . _MD_NEWS_NOSUBJECT . '</a>';
+                $linktitle = "<a href='"
+                             . XOOPS_URL
+                             . '/modules/news/index.php?op=edit&amp;storyid='
+                             . $newstory->storyid()
+                             . "' target='_blank'"
+                             . $htmltitle
+                             . '>'
+                             . _MD_NEWS_NOSUBJECT
+                             . '</a>';
             } else {
-                $linktitle = "<a href='" . XOOPS_URL . '/modules/news/submit.php?op=edit&amp;storyid=' . $newstory->storyid() . "' target='_blank'" . $htmltitle . '>' . $title . '</a>';
+                $linktitle = "<a href='"
+                             . XOOPS_URL
+                             . '/modules/news/submit.php?op=edit&amp;storyid='
+                             . $newstory->storyid()
+                             . "' target='_blank'"
+                             . $htmltitle
+                             . '>'
+                             . $title
+                             . '</a>';
             }
             $story                = array();
             $story['title']       = $linktitle;

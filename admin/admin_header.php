@@ -26,7 +26,7 @@ $moduleDirName  = $GLOBALS['xoopsModule']->getVar('dirname');
 $thisModulePath = dirname(__DIR__);
 
 //if functions.php file exist
-//require_once dirname(__DIR__) . '/include/functions.php';
+//require_once __DIR__ . '/../include/functions.php';
 require_once $thisModulePath . '/include/functions.php';
 
 // Load language files
@@ -59,7 +59,7 @@ if ($xoopsUser) {
 }
 
 if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
-    include_once(XOOPS_ROOT_PATH . '/class/template.php');
+    include_once XOOPS_ROOT_PATH . '/class/template.php';
     $xoopsTpl = new XoopsTpl();
 }
 

@@ -33,12 +33,12 @@
  * @author Herve Thouzard
  * @copyright (c) Herve Thouzard - http://www.herve-thouzard.com
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
-$xoopsOption['template_main'] = 'news_topics_directory.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'news_topics_directory.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 
 $myts = MyTextSanitizer::getInstance();
@@ -49,6 +49,7 @@ $xt               = new NewsTopic();
 $restricted       = news_getmoduleoption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $newsModule    = $moduleHandler->getByDirname('news');
     $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;

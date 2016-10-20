@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -57,11 +57,15 @@ function news_getmoduleoption($option, $repmodule = 'news')
     }
 
     $retval = false;
-    if (isset($xoopsModuleConfig) && (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $repmodule && $xoopsModule->getVar('isactive'))) {
+    if (isset($xoopsModuleConfig)
+        && (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $repmodule
+            && $xoopsModule->getVar('isactive'))
+    ) {
         if (isset($xoopsModuleConfig[$option])) {
             $retval = $xoopsModuleConfig[$option];
         }
     } else {
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler  = xoops_getHandler('module');
         $module         = $moduleHandler->getByDirname($repmodule);
         $config_handler = xoops_getHandler('config');
@@ -97,7 +101,8 @@ function news_updaterating($storyid)
     }
     $finalrating = $totalrating / $votesDB;
     $finalrating = number_format($finalrating, 4);
-    $sql         = sprintf('UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
+    $sql         = sprintf('UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB,
+                           $storyid);
     $xoopsDB->queryF($sql);
 }
 
@@ -122,6 +127,7 @@ function news_MygetItemIds($permtype = 'news_view')
         return $tblperms[$permtype];
     }
 
+    /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler       = xoops_getHandler('module');
     $newsModule          = $moduleHandler->getByDirname('news');
     $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -147,6 +153,7 @@ function news_html2text($document)
 
     $search = array(
         "'<script[^>]*?>.*?</script>'si", // Strip out javascript
+        "'<img.*?/>'si", // Strip out img tags
         "'<[\/\!]*?[^<>]*?>'si", // Strip out HTML tags
         "'([\r\n])[\s]+'", // Strip out white space
         "'&(quot|#34);'i", // Replace HTML entities
@@ -157,11 +164,11 @@ function news_html2text($document)
         "'&(iexcl|#161);'i",
         "'&(cent|#162);'i",
         "'&(pound|#163);'i",
-        "'&(copy|#169);'i",
-        "'&#(\d+);'e"
+        "'&(copy|#169);'i"
     ); // evaluate as php
 
     $replace = array(
+        '',
         '',
         '',
         "\\1",
@@ -174,10 +181,13 @@ function news_html2text($document)
         chr(162),
         chr(163),
         chr(169),
-        "chr(\\1)"
     );
 
     $text = preg_replace($search, $replace, $document);
+
+    preg_replace_callback('/&#(\d+);/', function ($matches) {
+        return chr($matches[1]);
+    }, $document);
 
     return $text;
 }
@@ -235,14 +245,14 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
     switch ($editor_option) {
         case 'fckeditor':
             if (is_readable(XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php')) {
-                require_once(XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php');
+                require_once XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php';
                 $editor = new XoopsFormFckeditor($caption, $name, $value);
             }
             break;
 
         case 'htmlarea':
             if (is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
-                require_once(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php');
+                require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
                 $editor = new XoopsFormHtmlarea($caption, $name, $value);
             }
             break;
@@ -260,13 +270,19 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
         case 'tinymce':
             if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                 require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
-                $editor = new XoopsFormTinyeditorTextArea(array('caption' => $caption, 'name' => $name, 'value' => $value, 'width' => '100%', 'height' => '400px'));
+                $editor = new XoopsFormTinyeditorTextArea(array(
+                                                              'caption' => $caption,
+                                                              'name'    => $name,
+                                                              'value'   => $value,
+                                                              'width'   => '100%',
+                                                              'height'  => '400px'
+                                                          ));
             }
             break;
 
         case 'koivi':
             if (is_readable(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php')) {
-                require_once(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php');
+                require_once XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php';
                 $editor = new XoopsFormWysiwygTextArea($caption, $name, $value, $width, $height, '');
             }
             break;
@@ -318,7 +334,8 @@ function news_CreateMetaDatas($story = null)
         $content .= sprintf("<link rel=\"Search\" href=\"%s\" />\n", XOOPS_URL . '/search.php');
         $content .= sprintf("<link rel=\"Glossary\" href=\"%s\" />\n", XOOPS_URL . '/modules/news/archive.php');
         $content .= sprintf("<link rel=\"%s\" href=\"%s\" />\n", $myts->htmlSpecialChars(_NW_SUBMITNEWS), XOOPS_URL . '/modules/news/submit.php');
-        $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
+        $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'],
+                            XOOPS_URL . '/backend.php');
 
         // Create chapters
         include_once XOOPS_ROOT_PATH . '/class/tree.php';
@@ -328,7 +345,8 @@ function news_CreateMetaDatas($story = null)
         $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         foreach ($topics_arr as $onetopic) {
-            $content .= sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\" />\n", $onetopic->topic_title(), XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
+            $content .= sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\" />\n", $onetopic->topic_title(),
+                                XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
         }
     }
 
@@ -373,7 +391,11 @@ function news_CreateMetaDatas($story = null)
         $content .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\" />\n";
         $content .= '<meta name="DC.Source" content="' . XOOPS_URL . "\" />\n";
         $content .= '<meta name="DC.Language" content="' . _LANGCODE . "\" />\n";
-        $content .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\" />\n";
+        $content .= '<meta name="DC.Relation.isReferencedBy" content="'
+                    . XOOPS_URL
+                    . '/modules/news/index.php?storytopic='
+                    . $story->topicid()
+                    . "\" />\n";
         if (isset($xoopsConfigMetaFooter['meta_copyright'])) {
             $content .= '<meta name="DC.Rights" content="' . DublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\" />\n";
         }
@@ -434,8 +456,64 @@ function news_createmeta_keywords($content)
     $content         = $myts->undoHtmlSpecialChars($content);
     $content         = strip_tags($content);
     $content         = strtolower($content);
-    $search_pattern  = array('&nbsp;', "\t", "\r\n", "\r", "\n", ',', '.', "'", ';', ':', ')', '(', '"', '?', '!', '{', '}', '[', ']', '<', '>', '/', '+', '-', '_', '\\', '*');
-    $replace_pattern = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+    $search_pattern  = array(
+        '&nbsp;',
+        "\t",
+        "\r\n",
+        "\r",
+        "\n",
+        ',',
+        '.',
+        "'",
+        ';',
+        ':',
+        ')',
+        '(',
+        '"',
+        '?',
+        '!',
+        '{',
+        '}',
+        '[',
+        ']',
+        '<',
+        '>',
+        '/',
+        '+',
+        '-',
+        '_',
+        '\\',
+        '*'
+    );
+    $replace_pattern = array(
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    );
     $content         = str_replace($search_pattern, $replace_pattern, $content);
     $keywords        = explode(' ', $content);
     switch ($keywordsorder) {
@@ -604,8 +682,7 @@ function news_isbot()
     } else {
         // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
         // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
-        $botlist      =
-            'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
+        $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
         $botlist      = strtoupper($botlist);
         $currentagent = strtoupper(xoops_getenv('HTTP_USER_AGENT'));
         $retval       = false;
@@ -733,8 +810,14 @@ function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words
  *
  * @return bool
  */
-function news_resizePicture($src_path, $dst_path, $param_width, $param_height, $keep_original = false, $fit = 'inside')
-{
+function news_resizePicture(
+    $src_path,
+    $dst_path,
+    $param_width,
+    $param_height,
+    $keep_original = false,
+    $fit = 'inside'
+) {
     //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
     $resize            = true;
     $pictureDimensions = getimagesize($src_path);

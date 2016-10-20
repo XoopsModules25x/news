@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -135,7 +135,8 @@ if ($allowupload) {
             $upl_checkbox = new XoopsFormCheckBox('', 'delupload[]');
 
             foreach ($filesarr as $onefile) {
-                $link = sprintf("<a href='%s/%s' target='_blank'>%s</a>\n", XOOPS_UPLOAD_URL, $onefile->getDownloadname('S'), $onefile->getFileRealName('S'));
+                $link = sprintf("<a href='%s/%s' target='_blank'>%s</a>\n", XOOPS_UPLOAD_URL, $onefile->getDownloadname('S'),
+                                $onefile->getFileRealName('S'));
                 $upl_checkbox->addOption($onefile->getFileid(), $link);
             }
             $upl_tray->addElement($upl_checkbox, false);

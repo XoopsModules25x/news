@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -27,7 +27,7 @@
 
 //defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 if (!defined('XOOPS_ROOT_PATH')) {
-    include dirname(dirname(__DIR__)) . '/mainfile.php';
+    include __DIR__ . '/../../mainfile.php';
 }
 include_once __DIR__ . '/header.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -96,7 +96,11 @@ if (isset($_POST['preview'])) {
         $op      = 'delete';
         $storyid = (int)$_GET['storyid'];
     } else {
-        if (news_getmoduleoption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid']) && ($_GET['op'] === 'edit' || $_POST['op'] === 'preview' || $_POST['op'] === 'post')) {
+        if (news_getmoduleoption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
+            && ($_GET['op'] === 'edit'
+                || $_POST['op'] === 'preview'
+                || $_POST['op'] === 'post')
+        ) {
             $storyid = 0;
             $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : (int)$_POST['storyid'];
             if (!empty($storyid)) {
@@ -282,7 +286,12 @@ switch ($op) {
             $p_hometext .= '<br><br>' . $p_bodytext;
         }
         $topicalign2 = isset($story->topicalign) ? 'align="' . $story->topicalign() . '"' : '';
-        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="assets/images/topics/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
+        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="assets/images/topics/'
+                                                                         . $xt->topic_imgurl()
+                                                                         . '" '
+                                                                         . $topicalign2
+                                                                         . ' alt="" />'
+                                                                         . $p_hometext : $p_hometext;
         themecenterposts($p_title, $p_hometext);
 
         //Display post edit form
@@ -452,7 +461,8 @@ switch ($op) {
                     $sfiles         = new sFiles();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
                     $permittedtypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png');
-                    $uploader       = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+                    $uploader       = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes,
+                                                             $xoopsModuleConfig['maxuploadsize']);
                     $uploader->setTargetFileName($destname);
                     if ($uploader->fetchMedia($_POST['xoops_upload_file'][1])) {
                         if ($uploader->upload()) {
@@ -493,7 +503,8 @@ switch ($op) {
                 // If notify checkbox is set, add subscription for approve
                 if ($notifypub && $approve) {
                     include_once XOOPS_ROOT_PATH . '/include/notification_constants.php';
-                    $notification_handler->subscribe('story', $story->storyid(), 'approve', XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE, $xoopsModule->getVar('mid'), $story->uid());
+                    $notification_handler->subscribe('story', $story->storyid(), 'approve', XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE,
+                                                     $xoopsModule->getVar('mid'), $story->uid());
                 }
 
                 if ($approve == 1) {

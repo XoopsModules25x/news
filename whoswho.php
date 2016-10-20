@@ -33,7 +33,7 @@
  * @author Herve Thouzard
  * @copyright (c) Herve Thouzard (http://www.herve-thouzard.com)
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
@@ -43,7 +43,7 @@ if (!news_getmoduleoption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
-$xoopsOption['template_main'] = 'news_whos_who.tpl';
+$GLOBALS['xoopsOption']['template_main'] = 'news_whos_who.tpl';
 include_once XOOPS_ROOT_PATH . '/header.php';
 
 $option  = news_getmoduleoption('displayname');
@@ -70,7 +70,11 @@ if (count($uid_ids) > 0) {
                 }
                 break;
         }
-        $xoopsTpl->append('whoswho', array('uid' => $one_user->getVar('uid'), 'name' => $uname, 'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar')));
+        $xoopsTpl->append('whoswho', array(
+            'uid'            => $one_user->getVar('uid'),
+            'name'           => $uname,
+            'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar')
+        ));
     }
 }
 

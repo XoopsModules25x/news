@@ -1,5 +1,5 @@
 <?php
-// 
+//
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
 // Copyright (c) 2000-2016 XOOPS.org                                             //
@@ -24,7 +24,7 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
-include_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+include_once __DIR__ . '/../../../include/cp_header.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
@@ -73,7 +73,7 @@ switch ($permtoset) {
 
 $permform  = new XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/groupperms.php');
 $xt        = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
-$alltopics =& $xt->getTopicsList();
+$alltopics = $xt->getTopicsList();
 
 if ($alltopics) {
     foreach ($alltopics as $topic_id => $topic) {

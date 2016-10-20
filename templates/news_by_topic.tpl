@@ -5,7 +5,8 @@
                 <td width="<{$columnwidth}>%" valign="top">
                     <{foreach item=topic from=$columns[i]}>
                         <div class="itemBody">
-                            <div class="itemInfo"><span class="itemText"><a title="<{$topic.title}>" href="<{$xoops_url}>/modules/news/index.php?storytopic=<{$topic.id}>"><{$topic.title}></a></span>
+                            <div class="itemInfo"><span class="itemText"><a title="<{$topic.title}>"
+                                                                            href="<{$xoops_url}>/modules/news/index.php?storytopic=<{$topic.id}>"><{$topic.title}></a></span>
                             </div>
                             <{counter start=0 print=false assign=storynum}>
                             <{foreach item=story from=$topic.stories}>
@@ -15,13 +16,17 @@
                             <{if $storynum == 1}>
                             <ul>
                                 <{/if}>
-                                <li><a title="<{$story.title}>" href="<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><{$story.title}></a> (<{$story.posttime}>)</li>
+                                <li><a title="<{$story.title}>"
+                                       href="<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><{$story.title}></a>
+                                    (<{$story.posttime}>)
+                                </li>
                                 <{/if}>
                                 <{counter}>
                                 <{/foreach}>
                                 <{if $storynum > 1}>
                             </ul>
-                            <a title="<{$lang_morereleases}><{$topic.title}>" href="<{$xoops_url}>/modules/news/index.php?storytopic=<{$topic.id}>"><{$lang_morereleases}><{$topic.title}></a>
+                            <a title="<{$lang_morereleases}><{$topic.title}>"
+                               href="<{$xoops_url}>/modules/news/index.php?storytopic=<{$topic.id}>"><{$lang_morereleases}><{$topic.title}></a>
                             <{/if}>
                         </div>
                     <{/foreach}>
