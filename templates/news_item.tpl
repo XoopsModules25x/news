@@ -1,7 +1,7 @@
 <div class="item">
     <div class="itemHead">
         <span class="itemTitle">
-            <h2><{$story.news_title}></h2>
+            <{$story.topic_title}> - &nbsp;<h2><{$story.news_title}></h2>
         </span>
     </div>
     <h6><i><{$story.subtitle}></i></h6>
