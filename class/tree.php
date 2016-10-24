@@ -196,7 +196,7 @@ class MyXoopsObjectTree
             $value = $this->_tree[$key]['obj']->getVar($this->_myId);
             $ret .= '<option value=\'' . $value . '\'';
             if ($value == $selected) {
-                $ret .= ' selected="selected"';
+                $ret .= ' selected';
             }
             $ret .= '>' . $prefix_curr . $this->_tree[$key]['obj']->getVar($fieldName) . '</option>';
             $prefix_curr .= $prefix_orig;
@@ -221,8 +221,15 @@ class MyXoopsObjectTree
      *
      * @return string HTML select box
      */
-    public function makeSelBox($name, $fieldName, $prefix = '-', $selected = '', $addEmptyOption = false, $key = 0, $additional = '')
-    {
+    public function makeSelBox(
+        $name,
+        $fieldName,
+        $prefix = '-',
+        $selected = '',
+        $addEmptyOption = false,
+        $key = 0,
+        $additional = ''
+    ) {
         $ret = "<select id='" . $name . "' name='" . $name . "'";
         if ($additional !== '') {
             $ret .= $additional;

@@ -1,3 +1,16 @@
+1.71 FINAL        2016-10-18
+=================================
+- code cosmetics (mamba)
+- removed @version (mamba)
+- addNavigation(basename(__FILE__))  (mamba)
+- dirname(__FILE__) to __DIR__ (mamba)
+- XOOPS 2.5.8, PHP 7 (mamba)
+- replaced < b /> with < b > (mamba)
+- Unnecessary double quotes (mamba)
+- reference mismatch (mamba)
+- Hardening to type safe (mamba)
+- update Help (mamba)
+
 ======================
 1.71 Beta 2 (NOT RELEASED)
 ======================

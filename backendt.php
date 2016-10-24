@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -37,7 +37,7 @@
  *
  * @param type $nomvariable description
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/class/template.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';

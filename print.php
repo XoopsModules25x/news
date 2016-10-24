@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -42,7 +42,7 @@
  * @template_name         This page does not use any template
  *
  */
-include dirname(dirname(__DIR__)) . '/mainfile.php';
+include __DIR__ . '/../../mainfile.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
@@ -94,13 +94,22 @@ function PrintPage()
     $myts     = MyTextSanitizer::getInstance();
     $datetime = formatTimestamp($story->published(), news_getmoduleoption('dateformat'));
     ?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE;
 ?>" lang="<?php echo _LANGCODE;
 ?>">
     <?php
     echo "<head>\n";
-    echo '<title>' . $myts->htmlSpecialChars($story->title()) . ' - ' . _NW_PRINTER . ' - ' . $myts->htmlSpecialChars($story->topic_title()) . ' - ' . $xoopsConfig['sitename'] . '</title>';
+    echo '<title>'
+         . $myts->htmlSpecialChars($story->title())
+         . ' - '
+         . _NW_PRINTER
+         . ' - '
+         . $myts->htmlSpecialChars($story->topic_title())
+         . ' - '
+         . $xoopsConfig['sitename']
+         . '</title>';
     echo '<meta http-equiv="Content-Type" content="text/html; charset=' . _CHARSET . '" />';
     echo '<meta name="author" content="XOOPS" />';
     echo '<meta name="keywords" content="' . $xoops_meta_keywords . '" />';
@@ -109,7 +118,11 @@ function PrintPage()
     echo '<meta name="generator" content="XOOPS" />';
     echo '<meta name="robots" content="noindex,nofollow" />';
     if (file_exists(XOOPS_ROOT_PATH . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/style.css')) {
-        echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/style.css" />';
+        echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'
+             . XOOPS_URL
+             . '/language/'
+             . $GLOBALS['xoopsConfig']['language']
+             . '/style.css" />';
     } else {
         echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/language/english/style.css" />';
     }
@@ -263,14 +276,28 @@ function PrintPage()
 
     }
     echo '</head>';
-    echo '<body bgcolor="#ffffff" text="#000000" onload="' . $supplemental . ' window.print()">
+    echo '<body bgcolor="#ffffff" text="#000000" onload="'
+         . $supplemental
+         . ' window.print()">
         <div id="content">
         <table border="0"><tr><td align="center">
         <table border="0" width="100%" cellpadding="0" cellspacing="1" bgcolor="#000000"><tr><td>
         <table border="0" width="100%" cellpadding="20" cellspacing="1" bgcolor="#ffffff"><tr><td align="center">
-        <img src="' . XOOPS_URL . '/images/logo.png" border="0" alt="" /><br><br>
-        <h3>' . $story->title() . '</h3>
-        <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . $myts->htmlSpecialChars($story->topic_title()) . '</small><br><br></td></tr>';
+        <img src="'
+         . XOOPS_URL
+         . '/images/logo.png" border="0" alt="" /><br><br>
+        <h3>'
+         . $story->title()
+         . '</h3>
+        <small><b>'
+         . _NW_DATE
+         . '</b>&nbsp;'
+         . $datetime
+         . ' | <b>'
+         . _NW_TOPICC
+         . '</b>&nbsp;'
+         . $myts->htmlSpecialChars($story->topic_title())
+         . '</small><br><br></td></tr>';
     echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br>';
     $bodytext = $story->bodytext();
     $bodytext = str_replace('[pagebreak]', "<br style=\"page-break-after:always;\" />", $bodytext);

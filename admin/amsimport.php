@@ -1,5 +1,5 @@
 <?php
-// 
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
@@ -34,7 +34,7 @@
  * @copyright 2005, 2006 - Herve Thouzard
  */
 
-include_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+include_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
 include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -69,6 +69,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $use_forum    = (isset($_POST['useforum']) && $_POST['useforum'] == 1) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && $_POST['useextlinks'] == 1) ? 1 : 0;
         // Retreive News module's ID
+        /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $news_mid      = $newsModule->getVar('mid');
@@ -145,7 +146,15 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 // The forum
                 $forum = '';
                 if ($use_forum && $one_amstopic['forum_id'] != 0) {
-                    $forum = "\n\n" . '[url=' . XOOPS_URL . '/modules/newbb/viewforum.php?forum=' . $one_amstopic['forum_id'] . ']' . _AMS_AM_LINKEDFORUM . '[/url]' . "\n";
+                    $forum = "\n\n"
+                             . '[url='
+                             . XOOPS_URL
+                             . '/modules/newbb/viewforum.php?forum='
+                             . $one_amstopic['forum_id']
+                             . ']'
+                             . _AMS_AM_LINKEDFORUM
+                             . '[/url]'
+                             . "\n";
                 }
 
                 // We create the story
@@ -212,7 +221,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 }
 
                 // The comments
-                $comments =& $comment_handler->getByItemId($ams_mid, $ams_newsid, 'ASC');
+                $comments = $comment_handler->getByItemId($ams_mid, $ams_newsid, 'ASC');
                 if (is_array($comments) && count($comments) > 0) {
                     foreach ($comments as $onecomment) {
                         $onecomment->setNew();
@@ -254,7 +263,9 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
             }
         }
         unset($notifications);
-        echo "<p><a href='" . XOOPS_URL . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
+        echo "<p><a href='"
+             . XOOPS_URL
+             . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
     }
 } else {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);

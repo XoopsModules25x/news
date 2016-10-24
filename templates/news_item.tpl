@@ -1,8 +1,8 @@
 <div class="item">
     <div class="itemHead">
-		<span class="itemTitle">
-			<h2><{$story.news_title}></h2>
-		</span>
+        <span class="itemTitle">
+            <h2><{$story.news_title}></h2>
+        </span>
     </div>
     <h6><i><{$story.subtitle}></i></h6>
 
@@ -26,7 +26,8 @@
     <div class="itemFoot">
         <span class="itemAdminLink"><{$story.adminlink}></span>
         <{if $rates}><b><{$lang_ratingc}></b> <{$story.rating}> (<{$story.votes}>) -
-            <a title="<{$lang_ratethisnews}>" href="<{$xoops_url}>/modules/news/ratenews.php?storyid=<{$story.id}>" rel="nofollow"><{$lang_ratethisnews}></a>
+            <a title="<{$lang_ratethisnews}>" href="<{$xoops_url}>/modules/news/ratenews.php?storyid=<{$story.id}>"
+               rel="nofollow"><{$lang_ratethisnews}></a>
             - <{/if}>
         <span class="itemPermaLink"><{$story.morelink}></span>
     </div>

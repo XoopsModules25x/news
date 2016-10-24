@@ -91,13 +91,13 @@ $puffer = '<br><br>';
 
 //create the A4-PDF...
 $pdf_config['slogan'] = XOOPS_URL . ' - ' . $xoopsConfig['sitename'] . ' - ' . $xoopsConfig['slogan'];
-require_once(XOOPS_PATH . '/vendor/tcpdf/tcpdf.php');
+require_once XOOPS_PATH . '/vendor/tcpdf/tcpdf.php';
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET, false);
 // load $localLanguageOptions array with language specific definitions and apply
 if (is_file(XOOPS_PATH . '/vendor/tcpdf/config/lang/' . $xoopsConfig['language'] . '.php')) {
-    require_once(XOOPS_PATH . '/vendor/tcpdf/config/lang/' . $xoopsConfig['language'] . '.php');
+    require_once XOOPS_PATH . '/vendor/tcpdf/config/lang/' . $xoopsConfig['language'] . '.php';
 } else {
-    require_once(XOOPS_PATH . '/vendor/tcpdf/config/lang/english.php');
+    require_once XOOPS_PATH . '/vendor/tcpdf/config/lang/english.php';
 }
 $pdf->setLanguageArray($localLanguageOptions);
 
@@ -110,16 +110,16 @@ $out = PDF_AUTHOR . ', ' . $pdf_data['author'] . ', ' . $pdf_data['title'] . ', 
 $pdf->SetKeywords($out);
 $pdf->SetAutoPageBreak(true, 25);
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 $pdf->setHeaderFont(array(PDF_FONT_NAME_SUB, '', PDF_FONT_SIZE_SUB));
 $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
 //$pdf->SetHeaderData('','5',$pdf_config['slogan']);
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $pdf_config['slogan'], array(0, 64, 255), array(0, 64, 128));
+$pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $pdf_config['slogan'], array(0, 64, 255), array(0, 64, 128));
 //set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+$pdf->setHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 
 $pdf->Open();
 //First page
@@ -127,23 +127,23 @@ $pdf->AddPage();
 $pdf->SetXY(24, 25);
 $pdf->SetTextColor(10, 60, 160);
 $pdf->SetFont(PDF_FONT_NAME_TITLE, PDF_FONT_STYLE_TITLE, PDF_FONT_SIZE_TITLE);
-$pdf->WriteHTML($pdf_data['title'] . ' - ' . $pdf_data['subtitle'], K_TITLE_MAGNIFICATION);
+$pdf->writeHTML($pdf_data['title'] . ' - ' . $pdf_data['subtitle'], K_TITLE_MAGNIFICATION);
 //$pdf->Line(25,20,190,20);
 if ($pdf_data['subsubtitle'] !== '') {
-    $pdf->WriteHTML($puff, K_XSMALL_RATIO);
+    $pdf->writeHTML($puff, K_XSMALL_RATIO);
     $pdf->SetFont(PDF_FONT_NAME_SUBSUB, PDF_FONT_STYLE_SUBSUB, PDF_FONT_SIZE_SUBSUB);
-    $pdf->WriteHTML($pdf_data['subsubtitle'], '1');
+    $pdf->writeHTML($pdf_data['subsubtitle'], '1');
 }
-$pdf->WriteHTML($puff, '0.2');
+$pdf->writeHTML($puff, '0.2');
 $pdf->SetFont(PDF_FONT_NAME_DATA, PDF_FONT_STYLE_DATA, PDF_FONT_SIZE_DATA);
 $out = NEWS_PDF_AUTHOR . ': ' . $pdf_data['author'] . '<br>';
-$pdf->WriteHTML($out, '0.2');
+$pdf->writeHTML($out, '0.2');
 $out = NEWS_PDF_DATE . ': ' . $pdf_data['date'] . '<br>';
-$pdf->WriteHTML($out, '0.2');
+$pdf->writeHTML($out, '0.2');
 $pdf->SetTextColor(0, 0, 0);
-$pdf->WriteHTML($puffer, '1');
+$pdf->writeHTML($puffer, '1');
 
 $pdf->SetFont(PDF_FONT_NAME_MAIN, PDF_FONT_STYLE_MAIN, PDF_FONT_SIZE_MAIN);
-$pdf->WriteHTML($pdf_data['content'], $pdf_config['scale']);
+$pdf->writeHTML($pdf_data['content'], $pdf_config['scale']);
 
 $pdf->Output();
