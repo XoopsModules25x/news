@@ -282,7 +282,7 @@ switch ($op) {
             $p_hometext .= '<br><br>' . $p_bodytext;
         }
         $topicalign2 = isset($story->topicalign) ? 'align="' . $story->topicalign() . '"' : '';
-        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="assets/images/topics/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
+        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="'.XOOPS_URL . '/uploads/news/image/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
         themecenterposts($p_title, $p_hometext);
 
         //Display post edit form
