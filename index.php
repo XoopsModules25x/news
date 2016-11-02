@@ -220,6 +220,13 @@ if ($showclassic) {
     }
     $xoopsTpl->assign('columns', $columns);
     unset($story);
+    
+    // orwah show topictitle in news_item.tpl
+	if (news_getmoduleoption('displaytopictitle') == 1) {
+          $xoopsTpl->assign('displaytopictitle',true);
+    } else {
+          $xoopsTpl->assign('displaytopictitle',false);
+    }
 
     $totalcount = NewsStory::countPublishedByTopic($xoopsOption['storytopic'], $xoopsModuleConfig['restrictindex']);
     if ($totalcount > $scount) {
