@@ -545,6 +545,13 @@ if (!is_object($GLOBALS['xoopsUser']) && $xoopsModuleConfig['show_pdficon'] == 0
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);
 
+		
+if (news_getmoduleoption('displaytopictitle') == 1) {
+       $xoopsTpl->assign('displaytopictitle',true);
+} else {
+       $xoopsTpl->assign('displaytopictitle',false);
+}
+
 //Add style css
 $xoTheme->addStylesheet('modules/news/assets/css/style.css');
 

@@ -427,6 +427,18 @@ $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 1048576;
 
 /**
+ * Display  Topic_title with news_title  ?
+ * display Topic_title right before news_title in  news_item.tpl
+ */
+++$i;
+$modversion['config'][$i]['name']        = 'displaytopictitle';
+$modversion['config'][$i]['title']       = '_MI_DISPLAYTOPIC_TITLE';
+$modversion['config'][$i]['description'] = '_MI_DISPLAYTOPIC_TITLEDSC';
+$modversion['config'][$i]['formtype']    = 'yesno';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default']     = 1;
+
+/**
  * Restrict Topics on Index Page
  *
  * This is one of the mot important option in the module.

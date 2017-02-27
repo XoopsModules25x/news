@@ -187,3 +187,6 @@ define('_MI_NEWS_FACEBOOKCOMMENTS_DSC', 'Let your users use Facebook to add comm
 
 define('_MI_NEWS_SHOWICONS_PDF', 'Display PDF icon for non-registered users?');
 define('_MI_NEWS_SHOWICONS_PDF_DSC', 'Display PDF icon at the bottom of each article for Anonymous users');
+
+define('_MI_DISPLAYTOPIC_TITLE', 'Display Topic with news_title');
+define('_MI_DISPLAYTOPIC_TITLEDSC', 'display Topic title link right before the news title');
