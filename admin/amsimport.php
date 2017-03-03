@@ -1,29 +1,22 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 /**
  * AMS Import
  *
@@ -87,8 +80,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // Retreive News tables names
         $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
-        $comment_handler      = xoops_getHandler('comment');
-        $notification_handler = xoops_getHandler('notification');
+        $commentHandler      = xoops_getHandler('comment');
+        $notificationHandler = xoops_getHandler('notification');
         $ams_news_topics      = array(); // Key => AMS Id,  Value => News ID
 
         // The import by itself
@@ -109,7 +102,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
             $news_topic->setTopicImgurl($one_amstopic['topic_imgurl']);
             $news_topic->setMenu(0);
             $news_topic->setTopicFrontpage(1);
-            $news_topic->Settopic_rssurl('');
+            $news_topic->setTopicRssUrl('');
             $news_topic->setTopicDescription('');
             $news_topic->setTopic_color('000000');
             $news_topic->store();
@@ -128,7 +121,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $text_lastversion = $db->fetchArray($result2);
 
                 // We search for the number of votes
-                $result3 = $db->query('SELECT count(*) as cpt FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
+                $result3 = $db->query('SELECT count(*) AS cpt FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
                 $votes   = $db->fetchArray($result3);
 
                 // The links
@@ -146,15 +139,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 // The forum
                 $forum = '';
                 if ($use_forum && $one_amstopic['forum_id'] != 0) {
-                    $forum = "\n\n"
-                             . '[url='
-                             . XOOPS_URL
-                             . '/modules/newbb/viewforum.php?forum='
-                             . $one_amstopic['forum_id']
-                             . ']'
-                             . _AMS_AM_LINKEDFORUM
-                             . '[/url]'
-                             . "\n";
+                    $forum = "\n\n" . '[url=' . XOOPS_URL . '/modules/newbb/viewforum.php?forum=' . $one_amstopic['forum_id'] . ']' . _AMS_AM_LINKEDFORUM . '[/url]' . "\n";
                 }
 
                 // We create the story
@@ -221,29 +206,29 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 }
 
                 // The comments
-                $comments = $comment_handler->getByItemId($ams_mid, $ams_newsid, 'ASC');
+                $comments = $commentHandler->getByItemId($ams_mid, $ams_newsid, 'ASC');
                 if (is_array($comments) && count($comments) > 0) {
                     foreach ($comments as $onecomment) {
                         $onecomment->setNew();
                         $onecomment->setVar('com_modid', $news_mid);
                         $onecomment->setVar('com_itemid', $news_newsid);
-                        $comment_handler->insert($onecomment);
+                        $commentHandler->insert($onecomment);
                     }
                 }
                 unset($comments);
 
                 // The notifications of this news
-                //$notifications =& $notification_handler->getByItemId($ams_mid, $ams_newsid, 'ASC');
+                //$notifications =& $notificationHandler->getByItemId($ams_mid, $ams_newsid, 'ASC');
                 $criteria = new CriteriaCompo(new Criteria('not_modid', $ams_mid));
                 $criteria->add(new Criteria('not_itemid', $ams_newsid));
                 $criteria->setOrder('ASC');
-                $notifications = $notification_handler->getObjects($criteria);
+                $notifications = $notificationHandler->getObjects($criteria);
                 if (is_array($notifications) && count($notifications) > 0) {
                     foreach ($notifications as $onenotification) {
                         $onenotification->setNew();
                         $onenotification->setVar('not_modid', $news_mid);
                         $onenotification->setVar('not_itemid', $news_newsid);
-                        $notification_handler->insert($onenotification);
+                        $notificationHandler->insert($onenotification);
                     }
                 }
                 unset($notifications);
@@ -253,19 +238,17 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $criteria = new CriteriaCompo(new Criteria('not_modid', $ams_mid));
         $criteria->add(new Criteria('not_category', 'global'));
         $criteria->setOrder('ASC');
-        $notifications = $notification_handler->getObjects($criteria);
+        $notifications = $notificationHandler->getObjects($criteria);
         if (is_array($notifications) && count($notifications) > 0) {
             foreach ($notifications as $onenotification) {
                 $onenotification->setNew();
                 $onenotification->setVar('not_modid', $news_mid);
                 $onenotification->setVar('not_itemid', $news_newsid);
-                $notification_handler->insert($onenotification);
+                $notificationHandler->insert($onenotification);
             }
         }
         unset($notifications);
-        echo "<p><a href='"
-             . XOOPS_URL
-             . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
+        echo "<p><a href='" . XOOPS_URL . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
     }
 } else {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);

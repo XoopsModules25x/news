@@ -1,29 +1,22 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-// ------------------------------------------------------------------------- //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 /**
  * Print an article
  *
@@ -63,13 +56,13 @@ if ($story->expired() != 0 && $story->expired() < time()) {
 }
 
 // Verify permissions
-$gperm_handler = xoops_getHandler('groupperm');
+$gpermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-if (!$gperm_handler->checkRight('news_view', $story->topicid(), $groups, $xoopsModule->getVar('mid'))) {
+if (!$gpermHandler->checkRight('news_view', $story->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
@@ -92,24 +85,13 @@ function PrintPage()
 {
     global $xoopsConfig, $xoopsModule, $story, $xoops_meta_keywords, $xoops_meta_description;
     $myts     = MyTextSanitizer::getInstance();
-    $datetime = formatTimestamp($story->published(), news_getmoduleoption('dateformat'));
-    ?>
+    $datetime = formatTimestamp($story->published(), news_getmoduleoption('dateformat')); ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE;
-?>" lang="<?php echo _LANGCODE;
-?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
     <?php
     echo "<head>\n";
-    echo '<title>'
-         . $myts->htmlSpecialChars($story->title())
-         . ' - '
-         . _NW_PRINTER
-         . ' - '
-         . $myts->htmlSpecialChars($story->topic_title())
-         . ' - '
-         . $xoopsConfig['sitename']
-         . '</title>';
+    echo '<title>' . $myts->htmlSpecialChars($story->title()) . ' - ' . _NW_PRINTER . ' - ' . $myts->htmlSpecialChars($story->topic_title()) . ' - ' . $xoopsConfig['sitename'] . '</title>';
     echo '<meta http-equiv="Content-Type" content="text/html; charset=' . _CHARSET . '" />';
     echo '<meta name="author" content="XOOPS" />';
     echo '<meta name="keywords" content="' . $xoops_meta_keywords . '" />';
@@ -118,19 +100,14 @@ function PrintPage()
     echo '<meta name="generator" content="XOOPS" />';
     echo '<meta name="robots" content="noindex,nofollow" />';
     if (file_exists(XOOPS_ROOT_PATH . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/style.css')) {
-        echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'
-             . XOOPS_URL
-             . '/language/'
-             . $GLOBALS['xoopsConfig']['language']
-             . '/style.css" />';
+        echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/style.css" />';
     } else {
         echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/language/english/style.css" />';
     }
     echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/news/assets/css/print.css" />';
     $supplemental = '';
     if (news_getmoduleoption('footNoteLinks')) {
-        $supplemental = "footnoteLinks('content','content'); ";
-        ?>
+        $supplemental = "footnoteLinks('content','content'); "; ?>
         <script type="text/javascript">
             // <![CDATA[
             /*------------------------------------------------------------------------------
@@ -151,8 +128,7 @@ function PrintPage()
                 var target = document.getElementById(targetID);
                 var h2 = document.createElement('h2');
                 addClass.apply(h2, ['printOnly']);
-                var h2_txt = document.createTextNode('<?php echo _NW_LINKS;
-                    ?>');
+                var h2_txt = document.createTextNode('<?php echo _NW_LINKS; ?>');
                 h2.appendChild(h2_txt);
                 var coll = container.getElementsByTagName('*');
                 var ol = document.createElement('ol');
@@ -276,28 +252,14 @@ function PrintPage()
 
     }
     echo '</head>';
-    echo '<body bgcolor="#ffffff" text="#000000" onload="'
-         . $supplemental
-         . ' window.print()">
+    echo '<body bgcolor="#ffffff" text="#000000" onload="' . $supplemental . ' window.print()">
         <div id="content">
         <table border="0"><tr><td align="center">
         <table border="0" width="100%" cellpadding="0" cellspacing="1" bgcolor="#000000"><tr><td>
         <table border="0" width="100%" cellpadding="20" cellspacing="1" bgcolor="#ffffff"><tr><td align="center">
-        <img src="'
-         . XOOPS_URL
-         . '/images/logo.png" border="0" alt="" /><br><br>
-        <h3>'
-         . $story->title()
-         . '</h3>
-        <small><b>'
-         . _NW_DATE
-         . '</b>&nbsp;'
-         . $datetime
-         . ' | <b>'
-         . _NW_TOPICC
-         . '</b>&nbsp;'
-         . $myts->htmlSpecialChars($story->topic_title())
-         . '</small><br><br></td></tr>';
+        <img src="' . XOOPS_URL . '/images/logo.png" border="0" alt="" /><br><br>
+        <h3>' . $story->title() . '</h3>
+        <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . $myts->htmlSpecialChars($story->topic_title()) . '</small><br><br></td></tr>';
     echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br>';
     $bodytext = $story->bodytext();
     $bodytext = str_replace('[pagebreak]', "<br style=\"page-break-after:always;\" />", $bodytext);

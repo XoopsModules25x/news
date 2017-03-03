@@ -35,13 +35,13 @@ function xoops_module_update_news()
         // 1) Create, if it does not exists, the stories_files table
         if (!news_TableExists($xoopsDB->prefix('news_stories_files'))) {
             $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (
-              fileid int(8) unsigned NOT NULL auto_increment,
-              filerealname varchar(255) NOT NULL default '',
-              storyid int(8) unsigned NOT NULL default '0',
-              date int(10) NOT NULL default '0',
-              mimetype varchar(64) NOT NULL default '',
-              downloadname varchar(255) NOT NULL default '',
-              counter int(8) unsigned NOT NULL default '0',
+              fileid INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+              filerealname VARCHAR(255) NOT NULL DEFAULT '',
+              storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
+              date INT(10) NOT NULL DEFAULT '0',
+              mimetype VARCHAR(64) NOT NULL DEFAULT '',
+              downloadname VARCHAR(255) NOT NULL DEFAULT '',
+              counter INT(8) UNSIGNED NOT NULL DEFAULT '0',
               PRIMARY KEY  (fileid),
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
@@ -107,12 +107,12 @@ function xoops_module_update_news()
     // 3) If it does not exists, create the table stories_votedata
     if (!news_TableExists($xoopsDB->prefix('news_stories_votedata'))) {
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_votedata') . " (
-              ratingid int(11) unsigned NOT NULL auto_increment,
-              storyid int(8) unsigned NOT NULL default '0',
-              ratinguser int(11) NOT NULL default '0',
-              rating tinyint(3) unsigned NOT NULL default '0',
-              ratinghostname varchar(60) NOT NULL default '',
-              ratingtimestamp int(10) NOT NULL default '0',
+              ratingid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+              storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
+              ratinguser INT(11) NOT NULL DEFAULT '0',
+              rating TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+              ratinghostname VARCHAR(60) NOT NULL DEFAULT '',
+              ratingtimestamp INT(10) NOT NULL DEFAULT '0',
               PRIMARY KEY  (ratingid),
               KEY ratinguser (ratinguser),
               KEY ratinghostname (ratinghostname),

@@ -1,30 +1,25 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+
+use Xmf\Module\Helper;
 
 include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
@@ -68,7 +63,7 @@ class NewsTopic extends MyXoopsTopic
      *
      * @return null|string
      */
-    public function MakeMyTopicSelBox(
+    public function makeMyTopicSelBox(
         $none = 0,
         $seltopic = -1,
         $selname = '',
@@ -83,8 +78,8 @@ class NewsTopic extends MyXoopsTopic
             $moduleHandler = xoops_getHandler('module');
             $newsModule    = $moduleHandler->getByDirname('news');
             $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-            $gperm_handler = xoops_getHandler('groupperm');
-            $topics        = $gperm_handler->getItemIds($perm_type, $groups, $newsModule->getVar('mid'));
+            $gpermHandler = xoops_getHandler('groupperm');
+            $topics        = $gpermHandler->getItemIds($perm_type, $groups, $newsModule->getVar('mid'));
             if (count($topics) > 0) {
                 $topics = implode(',', $topics);
                 $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -132,7 +127,7 @@ class NewsTopic extends MyXoopsTopic
             $outbuffer .= " onchange='" . $onchange . "'";
         }
         $outbuffer .= ">\n";
-        $sql = 'SELECT topic_id, ' . $title . ' FROM ' . $this->table . ' WHERE (topic_pid=0)' . $perms;
+        $sql       = 'SELECT topic_id, ' . $title . ' FROM ' . $this->table . ' WHERE (topic_pid=0)' . $perms;
         if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
@@ -145,10 +140,10 @@ class NewsTopic extends MyXoopsTopic
             if ($catid == $preset_id) {
                 $sel = ' selected';
             }
-            $name = $myts->displayTarea($name);
+            $name      = $myts->displayTarea($name);
             $outbuffer .= "<option value='$catid'$sel>$name</option>\n";
-            $sel = '';
-            $arr = $this->getChildTreeArray($catid, $order, $perms);
+            $sel       = '';
+            $arr       = $this->getChildTreeArray($catid, $order, $perms);
             foreach ($arr as $option) {
                 $option['prefix'] = str_replace('.', '--', $option['prefix']);
                 $catpath          = $option['prefix'] . '&nbsp;' . $myts->displayTarea($option[$title]);
@@ -157,7 +152,7 @@ class NewsTopic extends MyXoopsTopic
                     $sel = ' selected';
                 }
                 $outbuffer .= "<option value='" . $option['topic_id'] . "'$sel>$catpath</option>\n";
-                $sel = '';
+                $sel       = '';
             }
         }
         $outbuffer .= "</select>\n";
@@ -222,8 +217,8 @@ class NewsTopic extends MyXoopsTopic
             $moduleHandler = xoops_getHandler('module');
             $newsModule    = $moduleHandler->getByDirname('news');
             $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-            $gperm_handler = xoops_getHandler('groupperm');
-            $topics        = $gperm_handler->getItemIds('news_submit', $groups, $newsModule->getVar('mid'));
+            $gpermHandler = xoops_getHandler('groupperm');
+            $topics        = $gpermHandler->getItemIds('news_submit', $groups, $newsModule->getVar('mid'));
             if (count($topics) > 0) {
                 $topics = implode(',', $topics);
                 $perms  = ' WHERE topic_id IN (' . $topics . ') ';
@@ -232,7 +227,7 @@ class NewsTopic extends MyXoopsTopic
             }
         }
 
-        $sql   = 'SELECT count(topic_id) as cpt FROM ' . $this->table . $perms;
+        $sql   = 'SELECT count(topic_id) AS cpt FROM ' . $this->table . $perms;
         $array = $this->db->fetchArray($this->db->query($sql));
 
         return $array['cpt'];
@@ -256,9 +251,9 @@ class NewsTopic extends MyXoopsTopic
                 return array();
             }
             $topics = implode(',', $topics);
-            $sql .= ' WHERE topic_id IN (' . $topics . ')';
+            $sql    .= ' WHERE topic_id IN (' . $topics . ')';
         }
-        $sql .= ' ORDER BY topic_title';
+        $sql    .= ' ORDER BY topic_title';
         $result = $db->query($sql);
         while ($array = $db->fetchArray($result)) {
             $topic = new NewsTopic();
@@ -276,7 +271,7 @@ class NewsTopic extends MyXoopsTopic
     public function getNewsCountByTopic()
     {
         $ret    = array();
-        $sql    = 'SELECT count(storyid) as cpt, topicid FROM '
+        $sql    = 'SELECT count(storyid) AS cpt, topicid FROM '
                   . $this->db->prefix('news_stories')
                   . ' WHERE (published > 0 AND published <= '
                   . time()
@@ -299,7 +294,7 @@ class NewsTopic extends MyXoopsTopic
     public function getTopicMiniStats($topicid)
     {
         $ret          = array();
-        $sql          = 'SELECT count(storyid) as cpt1, sum(counter) as cpt2 FROM '
+        $sql          = 'SELECT count(storyid) AS cpt1, sum(counter) AS cpt2 FROM '
                         . $this->db->prefix('news_stories')
                         . ' WHERE (topicid='
                         . $topicid
@@ -367,6 +362,8 @@ class NewsTopic extends MyXoopsTopic
         $topic_rssurl      = $myts->addSlashes($this->topic_rssurl);
         $topic_color       = $myts->addSlashes($this->topic_color);
 
+        $dirname = basename(dirname(__DIR__));
+
         if (isset($this->topic_title) && $this->topic_title !== '') {
             $title = $myts->addSlashes($this->topic_title);
         }
@@ -382,17 +379,17 @@ class NewsTopic extends MyXoopsTopic
             $insert         = true;
             $this->topic_id = $this->db->genId($this->table . '_topic_id_seq');
             $sql            = sprintf("INSERT INTO %s (topic_id, topic_pid, topic_imgurl, topic_title, menu, topic_description, topic_frontpage, topic_rssurl, topic_color) VALUES (%u, %u, '%s', '%s', %u, '%s', %d, '%s', '%s')",
-                                      $this->table, (int)$this->topic_id, (int)$this->topic_pid, $imgurl, $title, (int)$this->menu,
-                                      $topic_description, $topic_frontpage, $topic_rssurl, $topic_color);
+                                      $this->table, (int)$this->topic_id, (int)$this->topic_pid, $imgurl, $title, (int)$this->menu, $topic_description, $topic_frontpage, $topic_rssurl, $topic_color);
         } else {
             $sql = sprintf("UPDATE %s SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s', menu=%d, topic_description='%s', topic_frontpage=%d, topic_rssurl='%s', topic_color='%s' WHERE topic_id = %u",
-                           $this->table, (int)$this->topic_pid, $imgurl, $title, (int)$this->menu, $topic_description, $topic_frontpage,
-                           $topic_rssurl, $topic_color, (int)$this->topic_id);
+                           $this->table, (int)$this->topic_pid, $imgurl, $title, (int)$this->menu, $topic_description, $topic_frontpage, $topic_rssurl, $topic_color, (int)$this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
             // TODO: Replace with something else
+            //            ErrorHandler::show('0022');
 
-            ErrorHandler::show('0022');
+            $helper = Helper::getHelper($dirname);
+            $helper->redirect('admin/index.php', 5, $this->db->error());
         } else {
             if ($insert) {
                 $this->topic_id = $this->db->getInsertId();
@@ -471,7 +468,7 @@ class NewsTopic extends MyXoopsTopic
     /**
      * @param $value
      */
-    public function Settopic_rssurl($value)
+    public function setTopicRssUrl($value)
     {
         $this->topic_rssurl = $value;
     }
@@ -636,7 +633,7 @@ class NewsTopic extends MyXoopsTopic
                 return '';
             }
             $topics = implode(',', $topicsids);
-            $sql .= ' AND topic_id IN (' . $topics . ')';
+            $sql    .= ' AND topic_id IN (' . $topics . ')';
         }
         $result = $this->db->query($sql);
         $ret    = array();

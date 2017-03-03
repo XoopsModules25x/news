@@ -23,8 +23,8 @@
                                 <{/if}>
                                 <{counter}>
                                 <{/foreach}>
-                                <{if $storynum > 1}>
                             </ul>
+                            <{if $storynum > 1}>
                             <a title="<{$lang_morereleases}><{$topic.title}>"
                                href="<{$xoops_url}>/modules/news/index.php?storytopic=<{$topic.id}>"><{$lang_morereleases}><{$topic.title}></a>
                             <{/if}>

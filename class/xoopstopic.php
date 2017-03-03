@@ -126,16 +126,14 @@ class MyXoopsTopic
         }
         if (empty($this->topic_id)) {
             $this->topic_id = $this->db->genId($this->table . '_topic_id_seq');
-            $sql            = sprintf("INSERT INTO %s (topic_id, topic_pid, topic_imgurl, topic_title) VALUES (%u, %u, '%s', '%s')", $this->table,
-                                      $this->topic_id, $this->topic_pid, $imgurl, $title);
+            $sql            = sprintf("INSERT INTO %s (topic_id, topic_pid, topic_imgurl, topic_title) VALUES (%u, %u, '%s', '%s')", $this->table, $this->topic_id, $this->topic_pid, $imgurl, $title);
         } else {
-            $sql = sprintf("UPDATE %s SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table,
-                           $this->topic_pid, $imgurl, $title, $this->topic_id);
+            $sql = sprintf("UPDATE %s SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table, $this->topic_pid, $imgurl, $title, $this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
             ErrorHandler::show('0022');
         }
-        if ($this->use_permission == true) {
+        if ($this->use_permission === true) {
             if (empty($this->topic_id)) {
                 $this->topic_id = $this->db->getInsertId();
             }
@@ -152,7 +150,7 @@ class MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add == true) {
+                    if ($add === true) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
@@ -172,7 +170,7 @@ class MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add == true) {
+                    if ($add === true) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
@@ -192,7 +190,7 @@ class MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add == true) {
+                    if ($add === true) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
@@ -352,6 +350,7 @@ class MyXoopsTopic
     }
 
     //generates nicely formatted linked path from the root id to a given id
+
     /**
      * @param $funcURL
      *
@@ -402,7 +401,7 @@ class MyXoopsTopic
      */
     public function topicExists($pid, $title)
     {
-        $sql = 'SELECT COUNT(*) from ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . trim($title) . "'";
+        $sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . trim($title) . "'";
         $rs  = $this->db->query($sql);
         list($count) = $this->db->fetchRow($rs);
         if ($count > 0) {

@@ -29,10 +29,10 @@ include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 include_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
-$permAdmin = new ModuleAdmin();
-echo $permAdmin->addNavigation(basename(__FILE__));
+$permAdmin = \Xmf\Module\Admin::getInstance();
+$permAdmin->displayNavigation(basename(__FILE__));
 
 echo '<br><br><br>';
 $permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
@@ -86,4 +86,4 @@ if ($alltopics) {
     redirect_header('index.php?op=topicsmanager', 5, _NW_NEWS_NO_TOPICS, false);
 }
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

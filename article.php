@@ -1,29 +1,22 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 /**
  * Article's page
  *
@@ -145,13 +138,13 @@ if ($article->expired() != 0 && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
-$gperm_handler = xoops_getHandler('groupperm');
+$gpermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-if (!$gperm_handler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
+if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
@@ -363,9 +356,7 @@ if (news_getmoduleoption('enhanced_pagenav')
 $xoopsTpl->assign('xoops_pagetitle', $article->title() . $complement . ' - ' . $article->topic_title() . ' - ' . $xoopsModule->name('s'));
 
 if (news_getmoduleoption('newsbythisauthor')) {
-    $xoopsTpl->assign('news_by_the_same_author_link',
-                      sprintf("<a href='%s?uid=%d'>%s</a>", XOOPS_URL . '/modules/news/newsbythisauthor.php', $article->uid(),
-                              _NW_NEWSSAMEAUTHORLINK));
+    $xoopsTpl->assign('news_by_the_same_author_link', sprintf("<a href='%s?uid=%d'>%s</a>", XOOPS_URL . '/modules/news/newsbythisauthor.php', $article->uid(), _NW_NEWSSAMEAUTHORLINK));
 }
 
 /**
@@ -455,14 +446,12 @@ if (news_getmoduleoption('showprevnextlink')) {
     $xoopsTpl->assign('next_story_id', $nextId);
     if ($previousId > 0) {
         $xoopsTpl->assign('previous_story_title', $previousTitle);
-        $hcontent .= sprintf("<link rel=\"Prev\" title=\"%s\" href=\"%s/\" />\n", $previousTitle,
-                             XOOPS_URL . '/modules/news/article.php?storyid=' . $previousId);
+        $hcontent .= sprintf("<link rel=\"Prev\" title=\"%s\" href=\"%s/\" />\n", $previousTitle, XOOPS_URL . '/modules/news/article.php?storyid=' . $previousId);
     }
 
     if ($nextId > 0) {
         $xoopsTpl->assign('next_story_title', $nextTitle);
-        $hcontent .= sprintf("<link rel=\"Next\" title=\"%s\" href=\"%s/\" />\n", $nextTitle,
-                             XOOPS_URL . '/modules/news/article.php?storyid=' . $nextId);
+        $hcontent .= sprintf("<link rel=\"Next\" title=\"%s\" href=\"%s/\" />\n", $nextTitle, XOOPS_URL . '/modules/news/article.php?storyid=' . $nextId);
     }
     $xoopsTpl->assign('lang_previous_story', _NW_PREVIOUS_ARTICLE);
     $xoopsTpl->assign('lang_next_story', _NW_NEXT_ARTICLE);

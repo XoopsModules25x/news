@@ -1,29 +1,22 @@
 <?php
-// 
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 
 //defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 if (!defined('XOOPS_ROOT_PATH')) {
@@ -51,7 +44,7 @@ if (is_object($xoopsUser)) {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
 
-$gperm_handler = xoops_getHandler('groupperm');
+$gpermHandler = xoops_getHandler('groupperm');
 
 if (isset($_POST['topic_id'])) {
     $perm_itemid = (int)$_POST['topic_id'];
@@ -59,14 +52,14 @@ if (isset($_POST['topic_id'])) {
     $perm_itemid = 0;
 }
 //If no access
-if (!$gperm_handler->checkRight('news_submit', $perm_itemid, $groups, $module_id)) {
+if (!$gpermHandler->checkRight('news_submit', $perm_itemid, $groups, $module_id)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 $op = 'form';
 
 //If approve privileges
 $approveprivilege = 0;
-if (is_object($xoopsUser) && $gperm_handler->checkRight('news_approve', $perm_itemid, $groups, $module_id)) {
+if (is_object($xoopsUser) && $gpermHandler->checkRight('news_approve', $perm_itemid, $groups, $module_id)) {
     $approveprivilege = 1;
 }
 
@@ -140,7 +133,7 @@ switch ($op) {
         //$storyid=(int)($_POST['storyid']);
         //}
         $story = new NewsStory($storyid);
-        if (!$gperm_handler->checkRight('news_view', $story->topicid(), $groups, $module_id)) {
+        if (!$gpermHandler->checkRight('news_view', $story->topicid(), $groups, $module_id)) {
             redirect_header(XOOPS_URL . '/modules/news/index.php', 0, _NOPERM);
         }
         echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td class=\"odd\">";
@@ -286,7 +279,7 @@ switch ($op) {
             $p_hometext .= '<br><br>' . $p_bodytext;
         }
         $topicalign2 = isset($story->topicalign) ? 'align="' . $story->topicalign() . '"' : '';
-        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="'.XOOPS_URL . '/uploads/news/image/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
+        $p_hometext  = (($xt->topic_imgurl() !== '') && $topicdisplay) ? '<img src="assets/images/topics/' . $xt->topic_imgurl() . '" ' . $topicalign2 . ' alt="" />' . $p_hometext : $p_hometext;
         themecenterposts($p_title, $p_hometext);
 
         //Display post edit form
@@ -406,8 +399,8 @@ switch ($op) {
         // First case, it's not an anonyous, the story is approved and it's a new story
         if ($uid && $approve && empty($storyid)) {
             $tmpuser        = new xoopsUser($uid);
-            $member_handler = xoops_getHandler('member');
-            $member_handler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
+            $memberHandler = xoops_getHandler('member');
+            $memberHandler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
         }
 
         // Second case, it's not an anonymous, the story is NOT approved and it's NOT a new story (typical when someone is approving a submited story)
@@ -415,8 +408,8 @@ switch ($op) {
             $storytemp = new NewsStory($storyid);
             if (!$storytemp->published() && $storytemp->uid() > 0) { // the article has been submited but not approved
                 $tmpuser        = new xoopsUser($storytemp->uid());
-                $member_handler = xoops_getHandler('member');
-                $member_handler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
+                $memberHandler = xoops_getHandler('member');
+                $memberHandler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
             }
             unset($storytemp);
         }
@@ -456,8 +449,7 @@ switch ($op) {
                     $sfiles         = new sFiles();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
                     $permittedtypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png');
-                    $uploader       = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes,
-                                                             $xoopsModuleConfig['maxuploadsize']);
+                    $uploader       = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
                     $uploader->setTargetFileName($destname);
                     if ($uploader->fetchMedia($_POST['xoops_upload_file'][1])) {
                         if ($uploader->upload()) {
@@ -484,32 +476,31 @@ switch ($op) {
         $result = $story->store();
         if ($result) {
             if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
-                $tag_handler = xoops_getModuleHandler('tag', 'tag');
-                $tag_handler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
+                $tagHandler = xoops_getModuleHandler('tag', 'tag');
+                $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
             }
 
             if (!$editmode) {
                 //  Notification
                 // TODO: modifier afin qu'en cas de pr�publication, la notification ne se fasse pas
-                $notification_handler = xoops_getHandler('notification');
+                $notificationHandler = xoops_getHandler('notification');
                 $tags                 = array();
                 $tags['STORY_NAME']   = $story->title();
                 $tags['STORY_URL']    = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/article.php?storyid=' . $story->storyid();
                 // If notify checkbox is set, add subscription for approve
                 if ($notifypub && $approve) {
                     include_once XOOPS_ROOT_PATH . '/include/notification_constants.php';
-                    $notification_handler->subscribe('story', $story->storyid(), 'approve', XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE,
-                                                     $xoopsModule->getVar('mid'), $story->uid());
+                    $notificationHandler->subscribe('story', $story->storyid(), 'approve', XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE, $xoopsModule->getVar('mid'), $story->uid());
                 }
 
                 if ($approve == 1) {
-                    $notification_handler->triggerEvent('global', 0, 'new_story', $tags);
-                    $notification_handler->triggerEvent('story', $story->storyid(), 'approve', $tags);
+                    $notificationHandler->triggerEvent('global', 0, 'new_story', $tags);
+                    $notificationHandler->triggerEvent('story', $story->storyid(), 'approve', $tags);
                     // Added by Lankford on 2007/3/23
-                    $notification_handler->triggerEvent('category', $story->topicid(), 'new_story', $tags);
+                    $notificationHandler->triggerEvent('category', $story->topicid(), 'new_story', $tags);
                 } else {
                     $tags['WAITINGSTORIES_URL'] = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/index.php?op=newarticle';
-                    $notification_handler->triggerEvent('global', 0, 'story_submit', $tags);
+                    $notificationHandler->triggerEvent('global', 0, 'story_submit', $tags);
                 }
             }
 

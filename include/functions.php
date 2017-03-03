@@ -1,39 +1,29 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ * @author         Hervé Thouzard (http://www.herve-thouzard.com)
+ */
+
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * Returns a module's option
  *
  * Return's a module's option (for the news module)
- *
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
- * @copyright (c) Hervé Thouzard
  *
  * @param string $option module option's name
  *
@@ -68,9 +58,9 @@ function news_getmoduleoption($option, $repmodule = 'news')
         /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler  = xoops_getHandler('module');
         $module         = $moduleHandler->getByDirname($repmodule);
-        $config_handler = xoops_getHandler('config');
+        $configHandler = xoops_getHandler('config');
         if ($module) {
-            $moduleConfig = $config_handler->getConfigsByCat(0, $module->getVar('mid'));
+            $moduleConfig = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
             if (isset($moduleConfig[$option])) {
                 $retval = $moduleConfig[$option];
             }
@@ -101,8 +91,7 @@ function news_updaterating($storyid)
     }
     $finalrating = $totalrating / $votesDB;
     $finalrating = number_format($finalrating, 4);
-    $sql         = sprintf('UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB,
-                           $storyid);
+    $sql         = sprintf('UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
     $xoopsDB->queryF($sql);
 }
 
@@ -131,8 +120,8 @@ function news_MygetItemIds($permtype = 'news_view')
     $moduleHandler       = xoops_getHandler('module');
     $newsModule          = $moduleHandler->getByDirname('news');
     $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler       = xoops_getHandler('groupperm');
-    $topics              = $gperm_handler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
+    $gpermHandler       = xoops_getHandler('groupperm');
+    $topics              = $gpermHandler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
     $tblperms[$permtype] = $topics;
 
     return $topics;
@@ -334,8 +323,7 @@ function news_CreateMetaDatas($story = null)
         $content .= sprintf("<link rel=\"Search\" href=\"%s\" />\n", XOOPS_URL . '/search.php');
         $content .= sprintf("<link rel=\"Glossary\" href=\"%s\" />\n", XOOPS_URL . '/modules/news/archive.php');
         $content .= sprintf("<link rel=\"%s\" href=\"%s\" />\n", $myts->htmlSpecialChars(_NW_SUBMITNEWS), XOOPS_URL . '/modules/news/submit.php');
-        $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'],
-                            XOOPS_URL . '/backend.php');
+        $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
 
         // Create chapters
         include_once XOOPS_ROOT_PATH . '/class/tree.php';
@@ -345,8 +333,7 @@ function news_CreateMetaDatas($story = null)
         $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         foreach ($topics_arr as $onetopic) {
-            $content .= sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\" />\n", $onetopic->topic_title(),
-                                XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
+            $content .= sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\" />\n", $onetopic->topic_title(), XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
         }
     }
 
@@ -379,23 +366,19 @@ function news_CreateMetaDatas($story = null)
      * Dublin Core's meta datas
      */
     if (news_getmoduleoption('dublincore') && isset($story) && is_object($story)) {
-        $config_handler        = xoops_getHandler('config');
-        $xoopsConfigMetaFooter = $config_handler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
-        $content .= '<meta name="DC.Title" content="' . DublinQuotes($story->title()) . "\" />\n";
-        $content .= '<meta name="DC.Creator" content="' . DublinQuotes($story->uname()) . "\" />\n";
-        $content .= '<meta name="DC.Subject" content="' . DublinQuotes($meta_keywords) . "\" />\n";
-        $content .= '<meta name="DC.Description" content="' . DublinQuotes($story->title()) . "\" />\n";
-        $content .= '<meta name="DC.Publisher" content="' . DublinQuotes($xoopsConfig['sitename']) . "\" />\n";
-        $content .= '<meta name="DC.Date.created" scheme="W3CDTF" content="' . date('Y-m-d', $story->created) . "\" />\n";
-        $content .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . date('Y-m-d', $story->published) . "\" />\n";
-        $content .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\" />\n";
-        $content .= '<meta name="DC.Source" content="' . XOOPS_URL . "\" />\n";
-        $content .= '<meta name="DC.Language" content="' . _LANGCODE . "\" />\n";
-        $content .= '<meta name="DC.Relation.isReferencedBy" content="'
-                    . XOOPS_URL
-                    . '/modules/news/index.php?storytopic='
-                    . $story->topicid()
-                    . "\" />\n";
+        $configHandler        = xoops_getHandler('config');
+        $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
+        $content               .= '<meta name="DC.Title" content="' . DublinQuotes($story->title()) . "\" />\n";
+        $content               .= '<meta name="DC.Creator" content="' . DublinQuotes($story->uname()) . "\" />\n";
+        $content               .= '<meta name="DC.Subject" content="' . DublinQuotes($meta_keywords) . "\" />\n";
+        $content               .= '<meta name="DC.Description" content="' . DublinQuotes($story->title()) . "\" />\n";
+        $content               .= '<meta name="DC.Publisher" content="' . DublinQuotes($xoopsConfig['sitename']) . "\" />\n";
+        $content               .= '<meta name="DC.Date.created" scheme="W3CDTF" content="' . date('Y-m-d', $story->created) . "\" />\n";
+        $content               .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . date('Y-m-d', $story->published) . "\" />\n";
+        $content               .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\" />\n";
+        $content               .= '<meta name="DC.Source" content="' . XOOPS_URL . "\" />\n";
+        $content               .= '<meta name="DC.Language" content="' . _LANGCODE . "\" />\n";
+        $content               .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\" />\n";
         if (isset($xoopsConfigMetaFooter['meta_copyright'])) {
             $content .= '<meta name="DC.Rights" content="' . DublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\" />\n";
         }
@@ -446,8 +429,8 @@ function news_createmeta_keywords($content)
     if (isset($_SESSION['news_keywords_limit'])) {
         $limit = $_SESSION['news_keywords_limit'];
     } else {
-        $config_handler                  = xoops_getHandler('config');
-        $xoopsConfigSearch               = $config_handler->getConfigsByCat(XOOPS_CONF_SEARCH);
+        $configHandler                  = xoops_getHandler('config');
+        $xoopsConfigSearch               = $configHandler->getConfigsByCat(XOOPS_CONF_SEARCH);
         $limit                           = $xoopsConfigSearch['keyword_min'];
         $_SESSION['news_keywords_limit'] = $limit;
     }
@@ -545,10 +528,10 @@ function news_createmeta_keywords($content)
     if (count($tmp) > 0) {
         return implode(',', $tmp);
     } else {
-        if (!isset($config_handler) || !is_object($config_handler)) {
-            $config_handler = xoops_getHandler('config');
+        if (!isset($configHandler) || !is_object($configHandler)) {
+            $configHandler = xoops_getHandler('config');
         }
-        $xoopsConfigMetaFooter = $config_handler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
+        $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
         if (isset($xoopsConfigMetaFooter['meta_keywords'])) {
             return $xoopsConfigMetaFooter['meta_keywords'];
         } else {
@@ -571,8 +554,8 @@ function news_updateCache()
     $tpllist = array();
     include_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
     include_once XOOPS_ROOT_PATH . '/class/template.php';
-    $tplfile_handler = xoops_getHandler('tplfile');
-    $tpllist         = $tplfile_handler->find(null, null, null, $folder);
+    $tplfileHandler = xoops_getHandler('tplfile');
+    $tpllist         = $tplfileHandler->find(null, null, null, $folder);
     $xoopsTpl        = new XoopsTpl();
     xoops_template_clear_module_cache($xoopsModule->getVar('mid')); // Clear module's blocks cache
 

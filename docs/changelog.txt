@@ -1,3 +1,18 @@
+1.72 Beta 1        (NOT RELEASED)
+=================================
+- fixes for XOOPS 2.5.9 (SMEDrieben)
+- started conversion to XMF (mamba)
+- changed _handler to Handler (mamba)
+- updated file headers for consistency (mamba)
+- PSR-2 updates (mamba)
+- sync MyXoopsObjectTree (mamba)
+- add displaytopictitle option (orwah)
+- fix typo (chaoos)
+- started conversion to XMF (mamba)
+    - updated addInfoBoxLine entries (mamba)
+    - displayNavigation(basename(__FILE__))  (mamba)
+    - changed to ->displayButton('left') (mamba)
+
 1.71 FINAL        2016-10-18
 =================================
 - code cosmetics (mamba)

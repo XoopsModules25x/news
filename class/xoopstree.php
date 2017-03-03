@@ -54,6 +54,7 @@ class MyXoopsTree
     }
 
     // returns an array of first child objects for a given id($sel_id)
+
     /**
      * @param        $sel_id
      * @param string $order
@@ -81,6 +82,7 @@ class MyXoopsTree
     }
 
     // returns an array of all FIRST child ids of a given id($sel_id)
+
     /**
      * @param $sel_id
      *
@@ -103,6 +105,7 @@ class MyXoopsTree
     }
 
     //returns an array of ALL child ids for a given id($sel_id)
+
     /**
      * @param        $sel_id
      * @param string $order
@@ -131,6 +134,7 @@ class MyXoopsTree
     }
 
     //returns an array of ALL parent ids for a given id($sel_id)
+
     /**
      * @param        $sel_id
      * @param string $order
@@ -236,6 +240,7 @@ class MyXoopsTree
     }
 
     //generates nicely formatted linked path from the root id to a given id
+
     /**
      * @param        $sel_id
      * @param        $title
@@ -293,11 +298,11 @@ class MyXoopsTree
     /**
      * Enter description here...
      *
-     * @param int|\unknown_type    $sel_id
-     * @param string|\unknown_type $order
-     * @param array|\unknown_type  $parray
+     * @param int|mixed    $sel_id
+     * @param string|mixed $order
+     * @param array|mixed  $parray
      *
-     * @return unknown
+     * @return mixed
      */
     public function getAllChild($sel_id = 0, $order = '', $parray = array())
     {
@@ -322,12 +327,12 @@ class MyXoopsTree
     /**
      * Enter description here...
      *
-     * @param int|\unknown_type    $sel_id
-     * @param string|\unknown_type $order
-     * @param array|\unknown_type  $parray
-     * @param string|\unknown_type $r_prefix
+     * @param int|mixed    $sel_id
+     * @param string|mixed $order
+     * @param array|mixed  $parray
+     * @param string|mixed $r_prefix
      *
-     * @return unknown
+     * @return mixed
      */
     public function getChildTreeArray($sel_id = 0, $order = '', $parray = array(), $r_prefix = '')
     {

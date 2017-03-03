@@ -1,33 +1,21 @@
 <?php
-// $Id$
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://xoops.org/ http://jp.xoops.org/  http://www.myweb.ne.jp/  //
-// Project: XOOPS Project (http://xoops.org/)                            //
-// ------------------------------------------------------------------------- //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright    XOOPS Project http://xoops.org/
+ * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @package
+ * @since
+ * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ */
 
 /**
  * A tree structures with {@link XoopsObject}s as nodes
@@ -46,7 +34,7 @@ class MyXoopsObjectTree
     public $_parentId;
     public $_myId;
     public $_rootId = null;
-    public $_tree   = array();
+    public $tree    = array();
     public $_objects;
     /**#@-*/
 
@@ -78,13 +66,13 @@ class MyXoopsObjectTree
     public function _initialize()
     {
         foreach (array_keys($this->_objects) as $i) {
-            $key1                          = $this->_objects[$i]->getVar($this->_myId);
-            $this->_tree[$key1]['obj']     = $this->_objects[$i];
-            $key2                          = $this->_objects[$i]->getVar($this->_parentId);
-            $this->_tree[$key1]['parent']  = $key2;
-            $this->_tree[$key2]['child'][] = $key1;
+            $key1                         = $this->_objects[$i]->getVar($this->_myId);
+            $this->tree[$key1]['obj']     = $this->_objects[$i];
+            $key2                         = $this->_objects[$i]->getVar($this->_parentId);
+            $this->tree[$key1]['parent']  = $key2;
+            $this->tree[$key2]['child'][] = $key1;
             if (isset($this->_rootId)) {
-                $this->_tree[$key1]['root'] = $this->_objects[$i]->getVar($this->_rootId);
+                $this->tree[$key1]['root'] = $this->_objects[$i]->getVar($this->_rootId);
             }
         }
     }
@@ -96,7 +84,7 @@ class MyXoopsObjectTree
      **/
     public function &getTree()
     {
-        return $this->_tree;
+        return $this->tree;
     }
 
     /**
@@ -108,7 +96,7 @@ class MyXoopsObjectTree
      **/
     public function &getByKey($key)
     {
-        return $this->_tree[$key]['obj'];
+        return $this->tree[$key]['obj'];
     }
 
     /**
@@ -121,9 +109,9 @@ class MyXoopsObjectTree
     public function getFirstChild($key)
     {
         $ret = array();
-        if (isset($this->_tree[$key]['child'])) {
-            foreach ($this->_tree[$key]['child'] as $childkey) {
-                $ret[$childkey] = $this->_tree[$childkey]['obj'];
+        if (isset($this->tree[$key]['child'])) {
+            foreach ($this->tree[$key]['child'] as $childkey) {
+                $ret[$childkey] = $this->tree[$childkey]['obj'];
             }
         }
 
@@ -140,9 +128,9 @@ class MyXoopsObjectTree
      **/
     public function getAllChild($key, $ret = array())
     {
-        if (isset($this->_tree[$key]['child'])) {
-            foreach ($this->_tree[$key]['child'] as $childkey) {
-                $ret[$childkey] = $this->_tree[$childkey]['obj'];
+        if (isset($this->tree[$key]['child'])) {
+            foreach ($this->tree[$key]['child'] as $childkey) {
+                $ret[$childkey] = $this->tree[$childkey]['obj'];
                 $children       = $this->getAllChild($childkey, $ret);
                 foreach (array_keys($children) as $newkey) {
                     $ret[$newkey] = $children[$newkey];
@@ -165,9 +153,9 @@ class MyXoopsObjectTree
      **/
     public function getAllParent($key, $ret = array(), $uplevel = 1)
     {
-        if (isset($this->_tree[$key]['parent']) && isset($this->_tree[$this->_tree[$key]['parent']]['obj'])) {
-            $ret[$uplevel] = $this->_tree[$this->_tree[$key]['parent']]['obj'];
-            $parents       = $this->getAllParent($this->_tree[$key]['parent'], $ret, $uplevel + 1);
+        if (isset($this->tree[$key]['parent']) && isset($this->tree[$this->tree[$key]['parent']]['obj'])) {
+            $ret[$uplevel] = $this->tree[$this->tree[$key]['parent']]['obj'];
+            $parents       = $this->getAllParent($this->tree[$key]['parent'], $ret, $uplevel + 1);
             foreach (array_keys($parents) as $newkey) {
                 $ret[$newkey] = $parents[$newkey];
             }
@@ -193,16 +181,16 @@ class MyXoopsObjectTree
     public function _makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
-            $value = $this->_tree[$key]['obj']->getVar($this->_myId);
-            $ret .= '<option value=\'' . $value . '\'';
+            $value = $this->tree[$key]['obj']->getVar($this->_myId);
+            $ret   .= '<option value=\'' . $value . '\'';
             if ($value == $selected) {
                 $ret .= ' selected';
             }
-            $ret .= '>' . $prefix_curr . $this->_tree[$key]['obj']->getVar($fieldName) . '</option>';
+            $ret         .= '>' . $prefix_curr . $this->tree[$key]['obj']->getVar($fieldName) . '</option>';
             $prefix_curr .= $prefix_orig;
         }
-        if (isset($this->_tree[$key]['child']) && !empty($this->_tree[$key]['child'])) {
-            foreach ($this->_tree[$key]['child'] as $childkey) {
+        if (isset($this->tree[$key]['child']) && !empty($this->tree[$key]['child'])) {
+            foreach ($this->tree[$key]['child'] as $childkey) {
                 $this->_makeSelBoxOptions($fieldName, $selected, $childkey, $ret, $prefix_orig, $prefix_curr);
             }
         }
@@ -254,12 +242,12 @@ class MyXoopsObjectTree
     public function _recursiveMakeTreeAsArray($fieldName, $key, &$ret, $prefix_orig, $prefix_curr = '')
     {
         if ($key > 0) {
-            $value       = $this->_tree[$key]['obj']->getVar($this->_myId);
-            $ret[$value] = $prefix_curr . $this->_tree[$key]['obj']->getVar($fieldName);
+            $value       = $this->tree[$key]['obj']->getVar($this->_myId);
+            $ret[$value] = $prefix_curr . $this->tree[$key]['obj']->getVar($fieldName);
             $prefix_curr .= $prefix_orig;
         }
-        if (isset($this->_tree[$key]['child']) && !empty($this->_tree[$key]['child'])) {
-            foreach ($this->_tree[$key]['child'] as $childkey) {
+        if (isset($this->tree[$key]['child']) && !empty($this->tree[$key]['child'])) {
+            foreach ($this->tree[$key]['child'] as $childkey) {
                 $this->_recursiveMakeTreeAsArray($fieldName, $childkey, $ret, $prefix_orig, $prefix_curr);
             }
         }
@@ -294,7 +282,7 @@ class MyXoopsObjectTree
      * @param unknown_type $parray
      * @param unknown_type $r_prefix
      *
-     * @return unknown
+     * @return mixed
      */
     //      function getChildTreeArray($sel_id = 0, $order = "", $parray = array(), $r_prefix = "")
     //      {

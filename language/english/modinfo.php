@@ -44,8 +44,7 @@ define('_MI_DISPLAYNAVDSC', '');
 define('_MI_AUTOAPPROVEDSC', '');
 define('_MI_ALLOWEDSUBMITGROUPSDESC', 'The selected groups will be able to submit news items');
 define('_MI_ALLOWEDAPPROVEGROUPSDESC', 'The selected groups will be able to approve news items');
-define('_MI_NEWSDISPLAYDESC',
-       'Classic shows all news ordered by date of publish. News by topic will group the news by topic with the latest story in full and the others with just the title');
+define('_MI_NEWSDISPLAYDESC', 'Classic shows all news ordered by date of publish. News by topic will group the news by topic with the latest story in full and the others with just the title');
 define('_MI_ADISPLAYNAMEDSC', "Select how to display the author's name");
 define('_MI_COLUMNMODE_DESC', 'You can choose the number of columns to display articles list');
 define('_MI_STORYCOUNTADMIN_DESC', '');
@@ -82,16 +81,14 @@ define('_MI_NEWS_STORY_APPROVE_NOTIFYCAP', 'Notify me when this story is approve
 define('_MI_NEWS_STORY_APPROVE_NOTIFYDSC', 'Receive notification when this story is approved.');
 define('_MI_NEWS_STORY_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify: Story approved');
 define('_MI_RESTRICTINDEX', 'Restrict topics on index page?');
-define('_MI_RESTRICTINDEXDSC',
-       "If set to 'yes', users will only see news items listed in the index from the topics, they have access to as set in news permissions");
+define('_MI_RESTRICTINDEXDSC', "If set to 'yes', users will only see news items listed in the index from the topics, they have access to as set in news permissions");
 define('_MI_NEWSBYTHISAUTHOR', 'News by the same author');
 define('_MI_NEWSBYTHISAUTHORDSC', "If you set this option to 'yes', then a link 'Articles by this author' will be visible");
 define('_MI_NEWS_PREVNEX_LINK', 'Show previous and next link?');
 define('_MI_NEWS_PREVNEX_LINK_DESC',
        "When this option is set to 'yes', two new links are visible at the bottom of each article. Those links are used to go to the previous and next article according to the publish date");
 define('_MI_NEWS_SUMMARY_SHOW', 'Show summary table?');
-define('_MI_NEWS_SUMMARY_SHOW_DESC',
-       'When you use this option, a summary containing links to all the recent published articles is visible at the bottom of each article');
+define('_MI_NEWS_SUMMARY_SHOW_DESC', 'When you use this option, a summary containing links to all the recent published articles is visible at the bottom of each article');
 define('_MI_NEWS_AUTHOR_EDIT', 'Enable authors to edit their post?');
 define('_MI_NEWS_AUTHOR_EDIT_DESC', 'With this option, authors can edit their posts.');
 define('_MI_NEWS_RATE_NEWS', 'Enable users to rate news?');
@@ -101,8 +98,7 @@ define('_MI_NEWS_DATEFORMAT', "Date's format");
 define('_MI_NEWS_DATEFORMAT_DESC',
        "Please refer to the Php documentation (http://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
 define('_MI_NEWS_META_DATA', 'Enable meta data (keywords and description) to be entered?');
-define('_MI_NEWS_META_DATA_DESC',
-       "If you set this option to 'yes' then the approvers will be able to enter the following meta data: keywords and description");
+define('_MI_NEWS_META_DATA_DESC', "If you set this option to 'yes' then the approvers will be able to enter the following meta data: keywords and description");
 define('_MI_NEWS_BNAME8', 'Random news');
 define('_MI_NEWS_NEWSLETTER', 'Newsletter');
 define('_MI_NEWS_STATS', 'Statistics');
@@ -120,11 +116,9 @@ define('_MI_NEWS_KEYWORDS_HIGH_DESC', 'If you use this option, then the keywords
 define('_MI_NEWS_HIGH_COLOR', 'Color used to highlight keywords?');
 define('_MI_NEWS_HIGH_COLOR_DES', "Only use this option if you have chosen 'yes' for the previous option");
 define('_MI_NEWS_INFOTIPS', 'Tooltips length');
-define('_MI_NEWS_INFOTIPS_DES',
-       'If you use this option, links related to news will contains the first (n) characters of the article. If you set this value to 0, then the infotip will be empty');
+define('_MI_NEWS_INFOTIPS_DES', 'If you use this option, links related to news will contains the first (n) characters of the article. If you set this value to 0, then the infotip will be empty');
 define('_MI_NEWS_SITE_NAVBAR', "Use Mozilla and Opera site navigation's bar?");
-define('_MI_NEWS_SITE_NAVBAR_DESC',
-       "If you set this option to 'yes', then the visitors of your website will be able to use the site navigation's bar to navigate through your articles.");
+define('_MI_NEWS_SITE_NAVBAR_DESC', "If you set this option to 'yes', then the visitors of your website will be able to use the site navigation's bar to navigate through your articles.");
 define('_MI_NEWS_TABS_SKIN', 'Select the skin to use in tabs');
 define('_MI_NEWS_TABS_SKIN_DESC', 'This skin will be used by all blocks which uses tabs');
 define('_MI_NEWS_SKIN_1', 'Bar style');

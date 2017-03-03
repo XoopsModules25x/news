@@ -1,35 +1,28 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $moduleDirName = basename(__DIR__);
 
-$modversion['version']             = 1.71;
-$modversion['module_status']       = 'Final';
-$modversion['release_date']        = '2016/10/18';
+$modversion['version']       = 1.72;
+$modversion['module_status'] = 'Beta 1';
+$modversion['release_date']  = '2017/02/25';
 $modversion['name']                = _MI_NEWS_NAME;
 $modversion['description']         = _MI_NEWS_DESC;
 $modversion['credits']             = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -41,9 +34,9 @@ $modversion['license_url']         = 'http://www.gnu.org/licenses/gpl.html';
 $modversion['official']            = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
 $modversion['image']               = 'assets/images/logoModule.png';
 $modversion['dirname']             = $moduleDirName;
-$modversion['dirmoduleadmin']      = '/Frameworks/moduleclasses/moduleadmin';
-$modversion['icons16']             = '../../Frameworks/moduleclasses/icons/16';
-$modversion['icons32']             = '../../Frameworks/moduleclasses/icons/32';
+//$modversion['dirmoduleadmin']      = '/Frameworks/moduleclasses/moduleadmin';
+//$modversion['icons16']             = '../../Frameworks/moduleclasses/icons/16';
+//$modversion['icons32']             = '../../Frameworks/moduleclasses/icons/32';
 $modversion['onInstall']           = 'include/install_function.php';
 $modversion['onUpdate']            = 'include/update_function.php';
 $modversion['module_website_url']  = 'www.xoops.org/';
@@ -200,8 +193,8 @@ if ($module) {
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
-    $gperm_handler = xoops_getHandler('groupperm');
-    if ($gperm_handler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
+    $gpermHandler = xoops_getHandler('groupperm');
+    if ($gpermHandler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
         $cansubmit = 1;
     }
 }
@@ -216,7 +209,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
 ) {
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || $_SESSION['items_count'] == -1) {
-        $sql    = 'SELECT COUNT(*) as cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
+        $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
         $result = $xoopsDB->query($sql);
         list($count) = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
@@ -233,7 +226,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
             foreach ($topics_arr as $onetopic) {
-                if ($gperm_handler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
+                if ($gpermHandler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
                     && $onetopic->menu()
                 ) {
                     $modversion['sub'][$i]['name'] = $onetopic->topic_title();
@@ -547,8 +540,8 @@ $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'dhtml';
 xoops_load('xoopseditorhandler');
-$editor_handler                      = XoopsEditorHandler::getInstance();
-$modversion['config'][$i]['options'] = array_flip($editor_handler->getList());
+$editorHandler                      = XoopsEditorHandler::getInstance();
+$modversion['config'][$i]['options'] = array_flip($editorHandler->getList());
 
 /**
  * If you set this option to Yes then the keywords entered in the

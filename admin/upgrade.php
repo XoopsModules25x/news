@@ -1,29 +1,21 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
 
 include_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
@@ -34,13 +26,13 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     // 1) Create, if it does not exists, the stories_files table
     if (!news_TableExists($xoopsDB->prefix('news_stories_files'))) {
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (
-              fileid int(8) unsigned NOT NULL auto_increment,
-              filerealname varchar(255) NOT NULL default '',
-              storyid int(8) unsigned NOT NULL default '0',
-              date int(10) NOT NULL default '0',
-              mimetype varchar(64) NOT NULL default '',
-              downloadname varchar(255) NOT NULL default '',
-              counter int(8) unsigned NOT NULL default '0',
+              fileid INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+              filerealname VARCHAR(255) NOT NULL DEFAULT '',
+              storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
+              date INT(10) NOT NULL DEFAULT '0',
+              mimetype VARCHAR(64) NOT NULL DEFAULT '',
+              downloadname VARCHAR(255) NOT NULL DEFAULT '',
+              counter INT(8) UNSIGNED NOT NULL DEFAULT '0',
               PRIMARY KEY  (fileid),
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
@@ -78,12 +70,12 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     // 3) If it does not exists, create the table stories_votedata
     if (!news_TableExists($xoopsDB->prefix('news_stories_votedata'))) {
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_votedata') . " (
-              ratingid int(11) unsigned NOT NULL auto_increment,
-              storyid int(8) unsigned NOT NULL default '0',
-              ratinguser int(11) NOT NULL default '0',
-              rating tinyint(3) unsigned NOT NULL default '0',
-              ratinghostname varchar(60) NOT NULL default '',
-              ratingtimestamp int(10) NOT NULL default '0',
+              ratingid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+              storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
+              ratinguser INT(11) NOT NULL DEFAULT '0',
+              rating TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+              ratinghostname VARCHAR(60) NOT NULL DEFAULT '',
+              ratingtimestamp INT(10) NOT NULL DEFAULT '0',
               PRIMARY KEY  (ratingid),
               KEY ratinguser (ratinguser),
               KEY ratinghostname (ratinghostname),
@@ -126,12 +118,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         echo '<H1>' . _AM_NEWS_UPGRADEFAILED . '</H1>';
         echo '<br>' . _AM_NEWS_UPGRADEFAILED0;
     } else {
-        echo _AM_NEWS_UPGRADECOMPLETE
-             . " - <a href='"
-             . XOOPS_URL
-             . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>"
-             . _AM_NEWS_UPDATEMODULE
-             . '</a>';
+        echo _AM_NEWS_UPGRADECOMPLETE . " - <a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=news'>" . _AM_NEWS_UPDATEMODULE . '</a>';
     }
 } else {
     printf("<h2>%s</h2>\n", _AM_NEWS_UPGR_ACCESS_ERROR);

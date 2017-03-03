@@ -1,29 +1,21 @@
 <?php
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-// ------------------------------------------------------------------------- //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
 
 include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -74,7 +66,7 @@ function b_news_archives_show($options)
     } else {
         $ending_date = time();
     }
-    $sql    = "SELECT distinct(FROM_UNIXTIME(published,'%Y-%m')) as published FROM "
+    $sql    = "SELECT DISTINCT(FROM_UNIXTIME(published,'%Y-%m')) AS published FROM "
               . $xoopsDB->prefix('news_stories')
               . ' WHERE published>='
               . $starting_date
@@ -114,7 +106,7 @@ function b_news_archives_edit($options)
     $selemonth = $options[4];
 
     $tmpstory = new NewsStory;
-    $tmpstory->GetOlderRecentNews($older, $recent); // We are searching for the module's older and more recent article's date
+    $tmpstory->getOlderRecentNews($older, $recent); // We are searching for the module's older and more recent article's date
 
     // Min and max value for the two dates selectors
     // We are going to use the older news for the starting date
@@ -152,12 +144,12 @@ function b_news_archives_edit($options)
     $form .= _MB_NEWS_CAL_YEAR . "&nbsp;<select name='options[]'>";
     for ($i = $syear; $i <= $eyear; ++$i) {
         $selected = ($i == $selsyear) ? 'selected' : '';
-        $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
+        $form     .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>&nbsp;' . _MB_NEWS_CAL_MONTH . "&nbsp;<select name='options[]'>";
     for ($i = 1; $i <= 12; ++$i) {
         $selected = ($i == $selsmonth) ? 'selected' : '';
-        $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
+        $form     .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>';
 
@@ -165,20 +157,20 @@ function b_news_archives_edit($options)
     $form .= _MB_NEWS_CAL_YEAR . "&nbsp;<select name='options[]'>";
     for ($i = $syear; $i <= $eyear; ++$i) {
         $selected = ($i == $seleyear) ? 'selected' : '';
-        $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
+        $form     .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>&nbsp;' . _MB_NEWS_CAL_MONTH . "&nbsp;<select name='options[]'>";
     for ($i = 1; $i <= 12; ++$i) {
         $selected = ($i == $selemonth) ? 'selected' : '';
-        $form .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
+        $form     .= "<option value='" . $i . "'" . $selected . '>' . $i . '</option>';
     }
     $form .= '</select>';
 
     // Or until today *********************************************************
-    $form .= '<br>';
+    $form    .= '<br>';
     $checked = $options[5] == 1 ? ' checked' : '';
-    $form .= "<input type='checkbox' value='1' name='options[]'" . $checked . '>';
-    $form .= ' <b>' . _MB_NEWS_UNTIL_TODAY . '</b>';
+    $form    .= "<input type='checkbox' value='1' name='options[]'" . $checked . '>';
+    $form    .= ' <b>' . _MB_NEWS_UNTIL_TODAY . '</b>';
 
     return $form;
 }
