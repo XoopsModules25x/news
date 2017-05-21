@@ -16,10 +16,10 @@
  * @author         XOOPS Development Team
  **/
 
-include_once __DIR__ . '/../../../include/cp_header.php';
-include_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
-//require __DIR__ . '/../class/utility.php';
+//require_once __DIR__ . '/../class/utility.php';
 //require_once __DIR__ . '/../include/common.php';
 
 if (!isset($moduleDirName)) {
@@ -44,7 +44,7 @@ $moduleHelper->loadLanguage('main');
 $myts = MyTextSanitizer::getInstance();
 
 if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
-    include_once $GLOBALS['xoops']->path('class/template.php');
+    require_once $GLOBALS['xoops']->path('class/template.php');
     $xoopsTpl = new XoopsTpl();
 }
 
@@ -63,7 +63,7 @@ if ($xoopsUser) {
 }
 
 if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
-    include_once XOOPS_ROOT_PATH . '/class/template.php';
+    require_once XOOPS_ROOT_PATH . '/class/template.php';
     $xoopsTpl = new XoopsTpl();
 }
 

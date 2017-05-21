@@ -21,19 +21,19 @@
 $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.72;
-$modversion['module_status'] = 'Beta 1';
-$modversion['release_date']  = '2017/02/25';
-$modversion['name']                = _MI_NEWS_NAME;
-$modversion['description']         = _MI_NEWS_DESC;
-$modversion['credits']             = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
-$modversion['author']              = 'XOOPS Project Module Dev Team & Hervé Thouzard';
-$modversion['nickname']            = 'hervet';
-$modversion['help']                = 'page=help';
-$modversion['license']             = 'GNU General Public License';
-$modversion['license_url']         = 'http://www.gnu.org/licenses/gpl.html';
-$modversion['official']            = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
-$modversion['image']               = 'assets/images/logoModule.png';
-$modversion['dirname']             = $moduleDirName;
+$modversion['module_status'] = 'RC 1';
+$modversion['release_date']  = '2017/05/20';
+$modversion['name']          = _MI_NEWS_NAME;
+$modversion['description']   = _MI_NEWS_DESC;
+$modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
+$modversion['author']        = 'XOOPS Project Module Dev Team & Hervé Thouzard';
+$modversion['nickname']      = 'hervet';
+$modversion['help']          = 'page=help';
+$modversion['license']       = 'GNU General Public License';
+$modversion['license_url']   = 'http://www.gnu.org/licenses/gpl.html';
+$modversion['official']      = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
+$modversion['image']         = 'assets/images/logoModule.png';
+$modversion['dirname']       = $moduleDirName;
 //$modversion['dirmoduleadmin']      = '/Frameworks/moduleclasses/moduleadmin';
 //$modversion['icons16']             = '../../Frameworks/moduleclasses/icons/16';
 //$modversion['icons32']             = '../../Frameworks/moduleclasses/icons/32';
@@ -46,7 +46,7 @@ $modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.8';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array('mysql' => '5.1');
+$modversion['min_db']              = array('mysql' => '5.5');
 
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
@@ -217,9 +217,9 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
         $count = $_SESSION['items_count'];
     }
     if ($count > 0) {
-        include_once XOOPS_ROOT_PATH . '/class/tree.php';
-        include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+        require_once XOOPS_ROOT_PATH . '/class/tree.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
         $xt         = new NewsTopic();
         $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
         $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
@@ -248,7 +248,7 @@ if ($cansubmit) {
 }
 unset($cansubmit);
 
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 if (news_getmoduleoption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;

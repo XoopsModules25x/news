@@ -90,7 +90,7 @@ class keyhighlighter
         $result = $replace_matches[0];
 
         foreach ($patterns as $pattern) {
-            if (!is_null($this->replace_callback)) {
+            if (null !== $this->replace_callback) {
                 $result = preg_replace_callback($pattern, $this->replace_callback, $result);
             } else {
                 $result = preg_replace($pattern, '<span class="highlightedkey">\\0</span>', $result);

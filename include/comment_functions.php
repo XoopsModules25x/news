@@ -20,7 +20,7 @@
 // comment callback functions
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 /**
  * @param $story_id

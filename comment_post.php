@@ -32,4 +32,4 @@ if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) { // Anon
     die();
 }
 // ****************************************************************************
-include_once XOOPS_ROOT_PATH . '/include/comment_post.php';
+require_once XOOPS_ROOT_PATH . '/include/comment_post.php';

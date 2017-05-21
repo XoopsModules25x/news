@@ -161,7 +161,7 @@ function news_html2text($document)
         '',
         '',
         "\\1",
-        "\"",
+        '"',
         '&',
         '<',
         '>',
@@ -291,7 +291,7 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
  */
 function DublinQuotes($text)
 {
-    return str_replace("\"", ' ', $text);
+    return str_replace('"', ' ', $text);
 }
 
 /**
@@ -312,7 +312,7 @@ function news_CreateMetaDatas($story = null)
     global $xoopsConfig, $xoTheme, $xoopsTpl;
     $content = '';
     $myts    = MyTextSanitizer::getInstance();
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
     /**
      * Firefox and Opera Navigation's Bar
@@ -326,8 +326,8 @@ function news_CreateMetaDatas($story = null)
         $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
 
         // Create chapters
-        include_once XOOPS_ROOT_PATH . '/class/tree.php';
-        include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+        require_once XOOPS_ROOT_PATH . '/class/tree.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         $xt         = new NewsTopic();
         $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
         $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
@@ -408,8 +408,8 @@ function news_CreateMetaDatas($story = null)
 function news_createmeta_keywords($content)
 {
     include XOOPS_ROOT_PATH . '/modules/news/config.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 
     if (!$cfg['meta_keywords_auto_generate']) {
         return '';
@@ -552,8 +552,8 @@ function news_updateCache()
     global $xoopsModule;
     $folder  = $xoopsModule->getVar('dirname');
     $tpllist = array();
-    include_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
-    include_once XOOPS_ROOT_PATH . '/class/template.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
+    require_once XOOPS_ROOT_PATH . '/class/template.php';
     $tplfileHandler = xoops_getHandler('tplfile');
     $tpllist         = $tplfileHandler->find(null, null, null, $folder);
     $xoopsTpl        = new XoopsTpl();
@@ -617,7 +617,7 @@ function news_FieldExists($fieldname, $table)
  * @copyright (c) Hervé Thouzard
  * @param $field
  * @param $table
- * @return
+ * @return bool|\mysqli_result
  */
 function news_AddField($field, $table)
 {

@@ -19,8 +19,8 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
 /**
  * Notes about the spotlight :
@@ -33,21 +33,21 @@ include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
  * Also, if you have selected a tabbed view and wanted to use the Spotlight but did not choosed a story, then the block
  * will switch to the "most recent news" mode (the visible news will be searched according to the permissions)
  * @param $options
- * @return array
+ * @return array|string
  */
 function b_news_top_show($options)
 {
     global $xoopsConfig;
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     $myts        = MyTextSanitizer::getInstance();
     $block       = array();
     $displayname = news_getmoduleoption('displayname');
     $tabskin     = news_getmoduleoption('tabskin');
 
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
 
     $block['displayview'] = $options[8];
@@ -673,9 +673,9 @@ function b_news_top_edit($options)
     $form .= "</table>\n";
 
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $topics_arr = array();
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
     $xt         = new MyXoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr = $xt->getChildTreeArray(0, 'topic_title');
     $size       = count($options);

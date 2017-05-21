@@ -19,13 +19,13 @@
 
 error_reporting(0);
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 //2.5.8
 require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
 
 $myts = MyTextSanitizer::getInstance();
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 
 if (empty($storyid)) {

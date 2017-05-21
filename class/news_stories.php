@@ -35,7 +35,7 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 if (!class_exists('XoopsPersistableObjectHandler')) {
-    include_once XOOPS_ROOT_PATH . '/kernel/object.php';
+    require_once XOOPS_ROOT_PATH . '/kernel/object.php';
 }
 
 /**

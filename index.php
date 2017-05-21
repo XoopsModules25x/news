@@ -77,11 +77,11 @@ include __DIR__ . '/../../mainfile.php';
 //$u=$XOOPS_URL.'/uploads/news_xml.php';
 //  $x = file_get_contents($u);
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
 $storytopic = 0;
 if (isset($_GET['storytopic'])) {
@@ -133,7 +133,7 @@ $column_count = $xoopsModuleConfig['columnmode'];
 
 if ($showclassic) {
     $GLOBALS['xoopsOption']['template_main'] = 'news_index.tpl';
-    include_once XOOPS_ROOT_PATH . '/header.php';
+    require_once XOOPS_ROOT_PATH . '/header.php';
     $xt = new NewsTopic();
 
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
@@ -214,7 +214,7 @@ if ($showclassic) {
 
     $totalcount = NewsStory::countPublishedByTopic($xoopsOption['storytopic'], $xoopsModuleConfig['restrictindex']);
     if ($totalcount > $scount) {
-        include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+        require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
         if (news_isbot()) { // A bot is reading the news, we are going to show it all the links so that he can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
@@ -226,7 +226,7 @@ if ($showclassic) {
     }
 } else { // Affichage par sujets
     $GLOBALS['xoopsOption']['template_main'] = 'news_by_topic.tpl';
-    include_once XOOPS_ROOT_PATH . '/header.php';
+    require_once XOOPS_ROOT_PATH . '/header.php';
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
     if ($xoopsModuleConfig['ratenews']) {
         $xoopsTpl->assign('rates', true);
@@ -292,7 +292,7 @@ news_CreateMetaDatas();
  * You can comment the code to optimize the requests count
  */
 if ($xoopsOption['storytopic']) {
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
     $mytree    = new MyXoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($xoopsOption['storytopic'], 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
@@ -331,4 +331,4 @@ $xoopsTpl->assign('lang_sendstory', _NW_SENDSTORY);
 $xoopsTpl->assign('lang_postedby', _POSTEDBY);
 $xoopsTpl->assign('lang_reads', _READS);
 $xoopsTpl->assign('lang_morereleases', _NW_MORERELEASES);
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

@@ -22,12 +22,12 @@
 /**
  * @param $options
  *
- * @return array
+ * @return array|string
  */
 function b_news_topicsnav_show($options)
 {
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $myts             = MyTextSanitizer::getInstance();
     $block            = array();
     $newscountbytopic = array();

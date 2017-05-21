@@ -18,8 +18,8 @@
  */
 
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 $fileid = isset($_GET['fileid']) ? (int)$_GET['fileid'] : 0;
 if (empty($fileid)) {
@@ -54,5 +54,5 @@ $url = XOOPS_UPLOAD_URL . '/' . $sfiles->getDownloadname();
 if (!preg_match("/^ed2k*:\/\//i", $url)) {
     header("Location: $url");
 }
-echo "<html><head><meta http-equiv=\"Refresh\" content=\"0; URL=" . $myts->htmlSpecialChars($url) . "\"></meta></head><body></body></html>";
+echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . $myts->htmlSpecialChars($url) . '"></meta></head><body></body></html>';
 exit();

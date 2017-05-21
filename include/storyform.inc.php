@@ -20,13 +20,13 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
-    include_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
+    require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
 } else {
-    include_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
+    require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
 }
-include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
 if (!isset($subtitle)) {
     $subtitle = '';
@@ -45,7 +45,7 @@ if ($xt->getAllTopicsCount() == 0) {
     redirect_header('index.php', 4, _NW_POST_SORRY);
 }
 
-include_once XOOPS_ROOT_PATH . '/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/class/tree.php';
 $allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
 $topic_tree   = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);

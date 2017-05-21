@@ -27,17 +27,17 @@
  * @copyright (c) Herve Thouzard (http://www.herve-thouzard.com)
  */
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 if (!news_getmoduleoption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_whos_who.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 $option  = news_getmoduleoption('displayname');
 $article = new NewsStory();
@@ -87,4 +87,4 @@ if (isset($xoTheme) && is_object($xoTheme)) {
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

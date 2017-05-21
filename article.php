@@ -112,13 +112,13 @@
  * @template_var                    string    topic_path    A path from the root to the current topic (of the current news)
  */
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/keyhighlighter.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/keyhighlighter.class.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 
@@ -167,7 +167,7 @@ if (empty($_GET['com_id']) && $storypage == 0) {
     }
 }
 $GLOBALS['xoopsOption']['template_main'] = 'news_article.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 $story['id']          = $storyid;
 $story['posttime']    = formatTimestamp($article->published(), $dateformat);
@@ -195,7 +195,7 @@ if (xoops_trim($bodytext) !== '') {
     $story_pages = count($articletext);
 
     if ($story_pages > 1) {
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/pagenav.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/pagenav.php';
         $pagenav = new XoopsPageNav($story_pages, 1, $storypage, 'page', 'storyid=' . $storyid);
         if (news_isbot()) { // A bot is reading the articles, we are going to show him all the links to the pages
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($story_pages));
@@ -544,5 +544,5 @@ if (news_getmoduleoption('displaytopictitle') == 1) {
 //Add style css
 $xoTheme->addStylesheet('modules/news/assets/css/style.css');
 
-include_once XOOPS_ROOT_PATH . '/include/comment_view.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/include/comment_view.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

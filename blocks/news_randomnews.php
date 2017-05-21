@@ -19,16 +19,16 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 /**
  * @param $options
  *
- * @return array
+ * @return array|string
  */
 function b_news_randomnews_show($options)
 {
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     $myts          = MyTextSanitizer::getInstance();
     $block         = array();
     $block['sort'] = $options[0];
@@ -121,7 +121,7 @@ function b_news_randomnews_edit($options)
     $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "' />" . _MB_NEWS_LENGTH;
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select id='options[4]' name='options[]' multiple='multiple'>";
 
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
     $xt                    = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
     $alltopics             = $xt->getTopicsList();
     $alltopics[0]['title'] = _MB_SPOTLIGHT_ALL_TOPICS;

@@ -17,7 +17,7 @@
 
 function xoops_module_update_news()
 {
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     global $xoopsDB;
     $errors = 0;
 
@@ -152,26 +152,26 @@ function xoops_module_update_news()
 
     // 6) Make files and folders
     $dir = XOOPS_ROOT_PATH . '/uploads/news';
-    if (!is_dir($dir)) {
-        mkdir($dir);
-        chmod($dir, 0777);
-    } elseif (!is_writable($dir)) {
+    if (!@mkdir($dir) && !is_dir($dir)) {
+        throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
+    }
+    if (!is_writable($dir)) {
         chmod($dir, 0777);
     }
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
-    if (!is_dir($dir)) {
-        mkdir($dir);
-        chmod($dir, 0777);
-    } elseif (!is_writable($dir)) {
+    if (!@mkdir($dir) && !is_dir($dir)) {
+        throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
+    }
+    if (!is_writable($dir)) {
         chmod($dir, 0777);
     }
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
-    if (!is_dir($dir)) {
-        mkdir($dir);
-        chmod($dir, 0777);
-    } elseif (!is_writable($dir)) {
+    if (!@mkdir($dir) && !is_dir($dir)) {
+        throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
+    }
+    if (!is_writable($dir)) {
         chmod($dir, 0777);
     }
 

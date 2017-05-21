@@ -31,7 +31,7 @@
 function news_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB, $xoopsUser;
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     $restricted = news_getmoduleoption('restrictindex');
     $highlight  = false;
     $highlight  = news_getmoduleoption('keywordshighlight'); // keywords highlighting
@@ -97,11 +97,11 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         }
     }
 
-    include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
     $searchincomments = $cfg['config_search_comments'];
 
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
-        include_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+        require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
         $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM '
                . $xoopsDB->prefix('xoopscomments')

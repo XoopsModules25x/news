@@ -70,10 +70,10 @@
 
 include __DIR__ . '/../../mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 $lastyear  = 0;
 $lastmonth = 0;
 
@@ -236,4 +236,4 @@ $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
  */
 news_CreateMetaDatas();
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

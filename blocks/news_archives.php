@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 /**
  * Display archives
@@ -30,18 +30,18 @@ include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
  *                       4 = Ending date, month
  *                       5 = until today ?
  *
- * @return array
+ * @return array|string
  */
 function b_news_archives_show($options)
 {
     global $xoopsDB, $xoopsConfig;
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-    include_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
 
     $months_arr    = array(

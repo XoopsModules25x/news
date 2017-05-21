@@ -56,11 +56,11 @@
  * @template_var                    string  title       story's title
  */
 
-include_once __DIR__ . '/header.php';
-include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+require_once __DIR__ . '/header.php';
+require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 $myts = MyTextSanitizer::getInstance();
 
 // Verify the perms
@@ -176,7 +176,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
     $GLOBALS['xoopsOption']['template_main'] = 'news_ratenews.tpl';
-    include_once XOOPS_ROOT_PATH . '/header.php';
+    require_once XOOPS_ROOT_PATH . '/header.php';
     $news = null;
     $news = new NewsStory($storyid);
     if (is_object($news)) {
@@ -194,6 +194,6 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsTpl->assign('lang_cancel', _CANCEL);
     $xoopsTpl->assign('xoops_pagetitle', $title . ' - ' . _NW_RATETHISNEWS . ' - ' . $xoopsModule->name('s'));
     news_CreateMetaDatas();
-    include_once XOOPS_ROOT_PATH . '/footer.php';
+    require_once XOOPS_ROOT_PATH . '/footer.php';
 }
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

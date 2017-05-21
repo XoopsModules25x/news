@@ -40,7 +40,7 @@ class news_blacklist
         $myts     = MyTextSanitizer::getInstance();
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
-            include_once $filename;
+            require_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
                 if (xoops_trim($onekeyword) !== '') {
                     $onekeyword       = $myts->htmlSpecialChars($onekeyword);
@@ -133,7 +133,7 @@ class news_blacklist
         fwrite($fd, "<?php\n");
         fwrite($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {
-            fwrite($fd, "\"" . $onekeyword . "\",\n");
+            fwrite($fd, '"' . $onekeyword . "\",\n");
         }
         fwrite($fd, "'');\n");
         fwrite($fd, "?>\n");

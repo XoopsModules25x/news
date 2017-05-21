@@ -19,9 +19,9 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-include_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 /**
  * Class NewsStory
@@ -822,7 +822,7 @@ class NewsStory extends MyXoopsStory
      */
     public function prepare2show($filescount)
     {
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
         global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
 
         $dirname = basename(dirname(__DIR__));
@@ -982,7 +982,7 @@ class NewsStory extends MyXoopsStory
     public function uname($uid = 0)
     {
         global $xoopsConfig;
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
         static $tblusers = array();
         $option = -1;
         if ($uid == 0) {

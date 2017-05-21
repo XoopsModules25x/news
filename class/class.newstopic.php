@@ -21,10 +21,10 @@
 
 use Xmf\Module\Helper;
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 /**
  * Class NewsTopic
@@ -618,7 +618,7 @@ class NewsTopic extends MyXoopsTopic
      * @param bool $frontpage
      * @param bool $perms
      *
-     * @return array
+     * @return array|string
      */
     public function &getTopicsList($frontpage = false, $perms = false)
     {

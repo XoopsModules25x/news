@@ -24,8 +24,8 @@
  */
 function b_news_topics_moderate()
 {
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
     $block      = array();
     $dateformat = news_getmoduleoption('dateformat');
     $infotips   = news_getmoduleoption('infotips');

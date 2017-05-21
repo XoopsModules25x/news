@@ -24,8 +24,8 @@
  */
 function b_news_bigstory_show()
 {
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     $myts       = MyTextSanitizer::getInstance();
     $restricted = news_getmoduleoption('restrictindex');
     $dateformat = news_getmoduleoption('dateformat');

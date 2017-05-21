@@ -67,16 +67,16 @@
  *                                                          int     rating          Rating for this news
  */
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 global $xoopsUser;
 
 if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php')) {
-    include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php';
 } else {
-    include_once XOOPS_ROOT_PATH . '/modules/news/language/english/modinfo.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/language/english/modinfo.php';
 }
 
 $uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
@@ -91,7 +91,7 @@ if (!news_getmoduleoption('newsbythisauthor')) {
 $myts                                    = MyTextSanitizer::getInstance();
 $articles                                = new NewsStory();
 $GLOBALS['xoopsOption']['template_main'] = 'news_by_this_author.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 $dateformat = news_getmoduleoption('dateformat');
 $infotips   = news_getmoduleoption('infotips');
@@ -197,5 +197,5 @@ if (isset($xoTheme) && is_object($xoTheme)) {
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 
-include_once XOOPS_ROOT_PATH . '/include/comment_view.php';
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/include/comment_view.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

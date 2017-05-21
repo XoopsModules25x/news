@@ -24,11 +24,11 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
-include_once __DIR__ . '/../../../include/cp_header.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 $permAdmin = \Xmf\Module\Admin::getInstance();
@@ -38,7 +38,7 @@ echo '<br><br><br>';
 $permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
 $selected                 = array('', '', '');
 $selected[$permtoset - 1] = ' selected';
-echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='javascript: document.fselperm.submit()'><option value='1'"
+echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='document.fselperm.submit()'><option value='1'"
      . $selected[0]
      . '>'
      . _AM_APPROVEFORM

@@ -27,13 +27,13 @@
  * @copyright 2005, 2006 - Herve Thouzard
  */
 
-include_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
 
 if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     if (!isset($_POST['go'])) {
@@ -48,14 +48,14 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     } else {
         // Launch the import
         if (file_exists(XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/main.php')) {
-            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/main.php';
+            require_once XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/main.php';
         } else {
-            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/main.php';
+            require_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/main.php';
         }
         if (file_exists(XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/admin.php')) {
-            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/admin.php';
+            require_once XOOPS_ROOT_PATH . '/modules/AMS/language/' . $xoopsConfig['language'] . '/admin.php';
         } else {
-            include_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/admin.php';
+            require_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/admin.php';
         }
         $db = XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices

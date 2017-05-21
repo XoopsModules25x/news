@@ -22,17 +22,17 @@
 if (!defined('XOOPS_ROOT_PATH')) {
     include __DIR__ . '/../../mainfile.php';
 }
-include_once __DIR__ . '/header.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/class/uploader.php';
-include_once XOOPS_ROOT_PATH . '/header.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once __DIR__ . '/header.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/class/uploader.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php')) {
-    include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php';
 } else {
-    include_once XOOPS_ROOT_PATH . '/modules/news/language/english/admin.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/language/english/admin.php';
 }
 $myts      = MyTextSanitizer::getInstance();
 $module_id = $xoopsModule->getVar('mid');
@@ -169,9 +169,9 @@ switch ($op) {
         $topicdisplay = $story->topicdisplay();
         $topicalign   = $story->topicalign(false);
         if (!news_is_admin_group()) {
-            include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
+            require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         } else {
-            include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
+            require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
         }
         echo '</td></tr></table>';
         break;
@@ -284,7 +284,7 @@ switch ($op) {
 
         //Display post edit form
         $returnside = (int)$_POST['returnside'];
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         break;
 
     case 'post':
@@ -489,7 +489,7 @@ switch ($op) {
                 $tags['STORY_URL']    = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/article.php?storyid=' . $story->storyid();
                 // If notify checkbox is set, add subscription for approve
                 if ($notifypub && $approve) {
-                    include_once XOOPS_ROOT_PATH . '/include/notification_constants.php';
+                    require_once XOOPS_ROOT_PATH . '/include/notification_constants.php';
                     $notificationHandler->subscribe('story', $story->storyid(), 'approve', XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE, $xoopsModule->getVar('mid'), $story->uid());
                 }
 
@@ -580,7 +580,7 @@ switch ($op) {
         if ($xoopsModuleConfig['autoapprove'] == 1) {
             $approve = 1;
         }
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         break;
 }
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

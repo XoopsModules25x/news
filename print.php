@@ -36,8 +36,8 @@
  *
  */
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
@@ -158,7 +158,7 @@ function PrintPage()
                             num++;
                         }
                         note.appendChild(note_txt);
-                        if (coll[i].tagName.toLowerCase() == 'blockquote') {
+                        if (coll[i].tagName.toLowerCase() === 'blockquote') {
                             var lastChild = lastChildContainingText.apply(coll[i]);
                             lastChild.appendChild(note);
                         } else {
@@ -183,7 +183,7 @@ function PrintPage()
              http://creativecommons.org/licenses/by-sa/2.0/
              Note:           If you change or improve on this script, please let us know.
              ------------------------------------------------------------------------------*/
-            if (Array.prototype.push == null) {
+            if (Array.prototype.push === null) {
                 Array.prototype.push = function (item) {
                     this[this.length] = item;
 
@@ -262,7 +262,7 @@ function PrintPage()
         <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . $myts->htmlSpecialChars($story->topic_title()) . '</small><br><br></td></tr>';
     echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br>';
     $bodytext = $story->bodytext();
-    $bodytext = str_replace('[pagebreak]', "<br style=\"page-break-after:always;\" />", $bodytext);
+    $bodytext = str_replace('[pagebreak]', '<br style="page-break-after:always;" />', $bodytext);
     if ($bodytext !== '') {
         echo $bodytext . '<br><br>';
     }

@@ -19,7 +19,7 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.mimetype.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.mimetype.php';
 
 /**
  * Class sFiles

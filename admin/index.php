@@ -24,21 +24,21 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
-include_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
 require_once __DIR__ . '/admin_header.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
-include_once XOOPS_ROOT_PATH . '/class/uploader.php';
-include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
+require_once XOOPS_ROOT_PATH . '/class/uploader.php';
+require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 $dateformat  = news_getmoduleoption('dateformat');
 $myts        = MyTextSanitizer::getInstance();
 $topicscount = 0;
@@ -473,7 +473,7 @@ function expStories()
  */
 function setPruneManager()
 {
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
     $pruneAdmin = \Xmf\Module\Admin::getInstance();
     $pruneAdmin->displayNavigation('index.php?op=prune');
@@ -573,7 +573,7 @@ function pruneNews()
  */
 function createNewsletter()
 {
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
     $newsletterAdmin = \Xmf\Module\Admin::getInstance();
     $newsletterAdmin->displayNavigation('index.php?op=configurenewsletter');
@@ -622,9 +622,9 @@ function launchNewsletter()
     $newsletterAdmin->displayNavigation('index.php?op=configurenewsletter');
     $newslettertemplate = '';
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/newsletter.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/newsletter.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/newsletter.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/english/newsletter.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/newsletter.php';
     }
     echo '<br>';
     $story           = new NewsStory();
@@ -725,7 +725,7 @@ function launchNewsletter()
  */
 function exportNews()
 {
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
     $exportAdmin = \Xmf\Module\Admin::getInstance();
     $exportAdmin->displayNavigation('index.php?op=export');
@@ -877,7 +877,7 @@ function launchExport()
 function topicsmanager()
 {
     global $xoopsDB, $xoopsConfig, $xoopsModule, $myts;
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
     $topicAdmin = \Xmf\Module\Admin::getInstance();
     $topicAdmin->displayNavigation('index.php?op=topicsmanager');
@@ -1011,7 +1011,7 @@ function topicsmanager()
     $sform->addElement(new XoopsFormHidden('op', $op), false);
     $sform->addElement(new XoopsFormHidden('topic_id', $topic_id), false);
 
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $xt = new NewsTopic();
     $sform->addElement(new XoopsFormLabel(_AM_PARENTTOPIC, $xt->makeMyTopicSelBox(1, $parent, 'topic_pid', '', false)));
     // Topic's color
@@ -1571,9 +1571,9 @@ function getStats()
     xoops_cp_header();
     $myts = MyTextSanitizer::getInstance();
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
     $statsAdmin = \Xmf\Module\Admin::getInstance();
     $statsAdmin->displayNavigation('index.php?op=stats');
@@ -1761,14 +1761,14 @@ function getStats()
  */
 function getMetagen()
 {
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     global $xoopsModule, $xoopsConfig, $xoopsModuleConfig, $cfg;
     xoops_cp_header();
     $myts = MyTextSanitizer::getInstance();
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
     $metagenAdmin = \Xmf\Module\Admin::getInstance();
     $metagenAdmin->displayNavigation('index.php?op=metagen');
@@ -1908,7 +1908,7 @@ switch ($op) {
         xoops_cp_header();
         $adminObject->displayNavigation('index.php?op=newarticle');
         echo '<h4>' . _AM_CONFIG . '</h4>';
-        include_once XOOPS_ROOT_PATH . '/class/module.textsanitizer.php';
+        require_once XOOPS_ROOT_PATH . '/class/module.textsanitizer.php';
         newSubmissions();
         autoStories();
         lastStories();
@@ -1934,16 +1934,16 @@ switch ($op) {
         $description  = '';
         $keywords     = '';
         if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-            include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
+            require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
         } else {
-            include_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+            require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
         }
 
         if ($xoopsModuleConfig['autoapprove'] == 1) {
             $approve = 1;
         }
         $approveprivilege = 1;
-        include_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
         break;
 
     case 'delete':
@@ -1998,11 +1998,11 @@ switch ($op) {
 
     case 'edit':
         if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-            include_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
+            require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
         } else {
-            include_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+            require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
         }
-        include_once XOOPS_ROOT_PATH . '/modules/news/submit.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/submit.php';
         break;
 
     case 'prune':

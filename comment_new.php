@@ -18,8 +18,8 @@
  */
 
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 
 // We verify that the user can post comments **********************************
 if (!isset($xoopsModuleConfig)) {
@@ -53,7 +53,7 @@ if ($com_itemid > 0) {
             $com_replytext .= '<br><br>' . $bodytext . '';
         }
         $com_replytitle = $article->title();
-        include_once XOOPS_ROOT_PATH . '/include/comment_new.php';
+        require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
     } else {
         exit;
     }
