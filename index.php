@@ -83,6 +83,10 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
+$moduleDirName = basename(dirname(__DIR__));
+xoops_load('utility', $moduleDirName);
+$module        = XoopsModule::getByDirname($moduleDirName);
+
 $storytopic = 0;
 if (isset($_GET['storytopic'])) {
     $storytopic = (int)$_GET['storytopic'];
@@ -157,7 +161,14 @@ if ($showclassic) {
 
         $allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex']);
         $topic_tree   = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
-        $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+
+        if (NewsUtility::checkVerXoops($module, '2.5.9')) {
+//            $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+            $topic_select = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', $xoopsOption['storytopic'], true, 0, '', '');
+        } else {
+            $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+        }
+
 
         $xoopsTpl->assign('topic_select', $topic_select);
         $storynum_options = '';
@@ -190,22 +201,24 @@ if ($showclassic) {
         }
         $filesperstory = $sfiles->getCountbyStories($storieslist);
 
-        foreach ($sarray as $storyid => $thisstory) {
-            $filescount = array_key_exists($thisstory->storyid(), $filesperstory) ? $filesperstory[$thisstory->storyid()] : 0;
-            $story      = $thisstory->prepare2show($filescount);
-            // The line below can be used to display a Permanent Link image
-            // $story['title'] .= "&nbsp;&nbsp;<a href='".XOOPS_URL."/modules/news/article.php?storyid=".$sarray[$i]->storyid()."'><img src='".XOOPS_URL."/modules/news/assets/images/x.gif' alt='Permanent Link' /></a>";
-            $story['news_title']  = $story['title'];
-            $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
-            $story['topic_title'] = $thisstory->textlink();
-            $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
-            if ($firsttitle === '') {
-                $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();
-            }
-            $columns[$k][] = $story;
-            ++$k;
-            if ($k == $column_count) {
-                $k = 0;
+        if (!empty($sarray)) {
+            foreach ($sarray as $storyid => $thisstory) {
+                $filescount = array_key_exists($thisstory->storyid(), $filesperstory) ? $filesperstory[$thisstory->storyid()] : 0;
+                $story      = $thisstory->prepare2show($filescount);
+                // The line below can be used to display a Permanent Link image
+                // $story['title'] .= "&nbsp;&nbsp;<a href='".XOOPS_URL."/modules/news/article.php?storyid=".$sarray[$i]->storyid()."'><img src='".XOOPS_URL."/modules/news/assets/images/x.gif' alt='Permanent Link' /></a>";
+                $story['news_title']  = $story['title'];
+                $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
+                $story['topic_title'] = $thisstory->textlink();
+                $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
+                if ($firsttitle === '') {
+                    $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();
+                }
+                $columns[$k][] = $story;
+                ++$k;
+                if ($k == $column_count) {
+                    $k = 0;
+                }
             }
         }
     }

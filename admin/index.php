@@ -475,8 +475,8 @@ function setPruneManager()
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
-    $pruneAdmin = \Xmf\Module\Admin::getInstance();
-    $pruneAdmin->displayNavigation('index.php?op=prune');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=prune');
     echo '<br><br><br>';
     $sform = new XoopsThemeForm(_AM_NEWS_PRUNENEWS, 'pruneform', XOOPS_URL . '/modules/news/admin/index.php', 'post');
     $sform->addElement(new XoopsFormTextDateSelect(_AM_NEWS_PRUNE_BEFORE, 'prune_date', 15, time()), true);
@@ -575,8 +575,8 @@ function createNewsletter()
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
-    $newsletterAdmin = \Xmf\Module\Admin::getInstance();
-    $newsletterAdmin->displayNavigation('index.php?op=configurenewsletter');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=configurenewsletter');
     echo '<br><br><br>';
     $sform      = new XoopsThemeForm(_AM_NEWS_NEWSLETTER, 'newsletterform', XOOPS_URL . '/modules/news/admin/index.php', 'post');
     $dates_tray = new XoopsFormElementTray(_AM_NEWS_NEWSLETTER_BETWEEN);
@@ -618,8 +618,8 @@ function launchNewsletter()
 {
     global $xoopsConfig, $dateformat;
     xoops_cp_header();
-    $newsletterAdmin = \Xmf\Module\Admin::getInstance();
-    $newsletterAdmin->displayNavigation('index.php?op=configurenewsletter');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=configurenewsletter');
     $newslettertemplate = '';
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/newsletter.php')) {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/newsletter.php';
@@ -727,8 +727,8 @@ function exportNews()
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
-    $exportAdmin = \Xmf\Module\Admin::getInstance();
-    $exportAdmin->displayNavigation('index.php?op=export');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=export');
     echo '<br><br><br>';
     $sform      = new XoopsThemeForm(_AM_NEWS_EXPORT_NEWS, 'exportform', XOOPS_URL . '/modules/news/admin/index.php', 'post');
     $dates_tray = new XoopsFormElementTray(_AM_NEWS_EXPORT_BETWEEN);
@@ -774,8 +774,8 @@ function news_utf8_encode($text)
 function launchExport()
 {
     xoops_cp_header();
-    $exportAdmin = \Xmf\Module\Admin::getInstance();
-    $exportAdmin->displayNavigation('index.php?op=export');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=export');
     echo '<br>';
     $story           = new NewsStory();
     $topic           = new NewsTopic();
@@ -802,7 +802,7 @@ function launchExport()
         fwrite($fp, news_utf8_encode("<news_stories>\n"));
         if ($topicsexport) {
             foreach ($tbltopics as $onetopic) {
-                $topic->NewsTopic($onetopic);
+                $topic = new NewsTopic($onetopic);
                 $content = "<news_topic>\n";
                 $content .= sprintf("\t<topic_id>%u</topic_id>\n", $topic->topic_id());
                 $content .= sprintf("\t<topic_pid>%u</topic_pid>\n", $topic->topic_pid());
@@ -879,8 +879,8 @@ function topicsmanager()
     global $xoopsDB, $xoopsConfig, $xoopsModule, $myts;
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
-    $topicAdmin = \Xmf\Module\Admin::getInstance();
-    $topicAdmin->displayNavigation('index.php?op=topicsmanager');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=topicsmanager');
 
     global $pathIcon16;
 
@@ -1575,8 +1575,8 @@ function getStats()
     } else {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
-    $statsAdmin = \Xmf\Module\Admin::getInstance();
-    $statsAdmin->displayNavigation('index.php?op=stats');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=stats');
     $news   = new NewsStory();
     $stats  = array();
     $stats  = $news->getStats(news_getmoduleoption('storycountadmin'));
@@ -1770,8 +1770,8 @@ function getMetagen()
     } else {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
-    $metagenAdmin = \Xmf\Module\Admin::getInstance();
-    $metagenAdmin->displayNavigation('index.php?op=metagen');
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation('index.php?op=metagen');
     //echo "<h1>"._AM_NEWS_METAGEN."</h1>";
     echo _AM_NEWS_METAGEN_DESC . '<br><br>';
 

@@ -31,8 +31,8 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
-$permAdmin = \Xmf\Module\Admin::getInstance();
-$permAdmin->displayNavigation(basename(__FILE__));
+$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject->displayNavigation(basename(__FILE__));
 
 echo '<br><br><br>';
 $permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;

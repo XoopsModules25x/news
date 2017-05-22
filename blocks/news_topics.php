@@ -29,6 +29,10 @@ function b_news_topics_show()
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
+    $moduleDirName = basename(dirname(__DIR__));
+    xoops_load('utility', $moduleDirName);
+    $module        = XoopsModule::getByDirname($moduleDirName);
+
     $jump       = XOOPS_URL . '/modules/news/index.php?storytopic=';
     $storytopic = !empty($storytopic) ? (int)$storytopic : 0;
     $restricted = news_getmoduleoption('restrictindex');
@@ -37,7 +41,14 @@ function b_news_topics_show()
     $allTopics          = $xt->getAllTopics($restricted);
     $topic_tree         = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
     $additional         = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";
-    $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
+
+    if (NewsUtility::checkVerXoops($module, '2.5.9')) {
+//        $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
+        $block['selectbox'] = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', '', true, 0, $additional, '');
+
+    } else {
+        $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
+    }
 
     return $block;
 }

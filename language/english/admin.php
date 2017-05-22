@@ -214,3 +214,11 @@ define('_AM_NEWS_THEREARE_STORIES_EXPIRED', "There are <span class='red bold'>%s
 define('_AM_NEWS_THEREARE_STORIES_EXPIRED_SOON', "There are <span class='red bold'>%s</span> News to Expire soon");
 define('_AM_NEWS_THEREARE_STORIES_APPROVED', "There are <span class='red bold'>%s</span> Approved News");
 define('_AM_NEWS_THEREARE_STORIES_NEED_APPROVAL', "There are <span class='red bold'>%s</span> News that need Approval");
+//1.72
+define('_AM_NEWS_UPGRADE_FAILED0', "Update failed - couldn't rename field '%s'");
+define('_AM_NEWS_UPGRADE_FAILED1', "Update failed - couldn't add new fields");
+define('_AM_NEWS_UPGRADE_FAILED2', "Update failed - couldn't rename table '%s'");
+define('_AM_NEWS_ERROR_COLUMN', 'Could not create column in database : %s');
+define('_AM_NEWS_ERROR_BAD_XOOPS', 'This module requires XOOPS %s+ (%s installed)');
+define('_AM_NEWS_ERROR_BAD_PHP', 'This module requires PHP version %s+ (%s installed)');
+define('_AM_NEWS_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module');

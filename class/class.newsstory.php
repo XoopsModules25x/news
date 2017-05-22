@@ -186,10 +186,10 @@ class NewsStory extends MyXoopsStory
     }
 
     /**
-     * @param      $storyid
+     * @param int  $storyid
      * @param bool $checkRight
      *
-     * @return array
+     * @return null|array
      */
     public function getNextArticle($storyid, $checkRight = false)
     {

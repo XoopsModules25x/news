@@ -1,10 +1,13 @@
-<h5>1.72 RC 1        (NOT RELEASED)</h5>
+<h5>1.72 Beta 2        (NOT RELEASED)</h5>
 <hr>
+- updated file headers for consistency (mamba)
+- renamed several $indexAdmin with $adminObject for consistency (mamba)
+- updated PayPal changes (zyspec)
+- updated deprecated makeSelBox() (mamba)
 
 <h5>1.72 Beta 1        (NOT RELEASED)</h5>
 <hr>
 - fixes for XOOPS 2.5.9 (SMEDrieben)
-- started conversion to XMF (mamba)
 - changed _handler to Handler (mamba)
 - updated file headers for consistency (mamba)
 - PSR-2 updates (mamba)
@@ -157,9 +160,9 @@
 - The library used to generate PDFs was changed.
   It supports UTF8 and local pictures (pictures must not be GIF and must not be interlaced (it's running with PNG and JPEG))
   The html entities, usually visible in PDFs should not cause anymore problems (except in the PDF's title)
-  <hr><hr><hr>==
+==========================
   ** This version of the News module is the last which will run with Php4 **
-  <hr><hr><hr>==
+===========================
 
 
 <h5>1.55</h5>
@@ -332,31 +335,30 @@
 <hr>
 Some corrections available in this version was made by Marcan and 5vision, thank you both !
 - backendt.php, the "channel_category" tag now contains the topic's title (5vision)
-- When an article was submited, the author was not alarmed of the article's approbation (marcan)
+- When an article was submitted, the author was not alarmed of the article's approbation (marcan)
 - In the module's admin (index.php), there was a little typo in the html code used to create collapsable bars (5vision)
-- Newsletter and xml export, the final timestamp created to export datas was wrong (5vision)
+- Newsletter and xml export, the final timestamp created to export data was wrong (5vision)
 - XML export, some "titles" were change (from <xoops_topic> to <news_topic>) (5vision)
 - Some missing "index.html" was added. (5vision)
-- The template name "news_archive.html" was corrected (a border propertie was missing to the pictures tags and a "</a>" tag) (5vision)
-
+- The template name "news_archive.html" was corrected (a border property was missing to the pictures tags and a "< / a >" tag) (5vision)
 
 
 <h5>1.43</h5>
 <hr>
 - Code corrected because of the bug "Call to a member function getConfigsByCat() on a non-object in include/functions.php on line 328"
   This bug was appearing under some rare circumstances.
-- A better Php 5.0.5 compatibility
+- A better PHP 5.0.5 compatibility
 - Some corrections in the generation of PDFs
 - There was a bug when you was trying to edit a news from the admin panel
 - The prune manager was not removing the comments, the votes, the notifications and the files attached to the news
-- I have modified backend.php and pda.php to run with Php 5.0.5
+- I have modified backend.php and pda.php to run with PHP 5.0.5
 - The option "Enable authors to edit their posts" is now checked by default
 
 
 <h5>1.42</h5>
 <hr>
 - Corrected a bug in the infotips
-- Corrected a bug due to Php 5.0.5
+- Corrected a bug due to PHP 5.0.5
 
 
 <h5>1.41</h5>
@@ -428,8 +430,8 @@ Corrections :
 - A bug in the topics permissions has been corrected
 - The module's seach was also corrected
 
-Finally, the module was successfully tested with Php 5.0.4
-Many tests were made with phpcoverage and xdebug to be sure that early all the code was treated by Php that's why I can affirm that the module is Php 5 compatible.
+Finally, the module was successfully tested with PHP 5.0.4
+Many tests were made with phpcoverage and xdebug to be sure that early all the code was treated by PHP that's why I can affirm that the module is PHP 5 compatible.
 
 
 
@@ -471,7 +473,7 @@ Corrections :
 - News by this author, it was possible to call this page even if the module's option was desactivated
 - It was not possible to join zip files to the news
 - The complete error message was not showed when there was an error during file's uploading
-- The module needed php 4.2 (with the Php functions array_fill() and flotval()) to runs now it respect Xoops's requirements so you can run it with Php 4.1
+- The module needed PHP 4.2 (with the PHP functions array_fill() and flotval()) to runs now it respect Xoops's requirements so you can run it with PHP 4.1
 - I have changed some includes to use absolute paths even when the included file is in the current directory (problem int the module's admin on the french ISP called "Free")
 - There was a bug when you was selecting kiovi as your editor
 - A bug in the classical spotlight has been corrected following GlaDiaC's report (thank you)
@@ -594,11 +596,11 @@ Modifications :
 - Now when you sumbit a story, you can only submit in the topics you have the rights to.
 - The list of topics only contains the topics you have the right to see (if you have checked the module's option "Restrict Topics on Index Page?")
   The only exception is that when you are in the admin panel and in the topics manager, you can see all the topics when you are creating or modifying a topic.
-- The module does not use any more the php functions ob_*
+- The module does not use any more the PHP functions ob_*
 - You can set a description for each topic
 - The code of the block news_block_top.html has change.
 - For each topic you can select if you want to see it on the front page or not.
-- In the code, all the calls to the php functions trim() was changed to xoops_trim()
+- In the code, all the calls to the PHP functions trim() was changed to xoops_trim()
 - Some page's titles have changed (the story's title has moved in the first position)
 - The bloc named "Navigate thru topics" was changed (completly rewrited). There was an option to restrict viewable topics (in the block's options), it has been removed and the block now uses the module's option "Restrict Topics on Index Page?"
 - The index's page and the article's page can now show, like in the mydownload module, a path from the root to the current topic, for example :
@@ -697,4 +699,6 @@ Modifications :
 - Added upload to topic creation form
 - The link "Comments" is not any more visible when comments are disabled
 
-<h5>1.1 - Baseline</h5>
+<h5>1.1</h5>
+<hr>
+- Baseline

@@ -18,12 +18,11 @@
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+$moduleDirName = basename(dirname(__DIR__));
+xoops_load('utility', $moduleDirName);
+$module = XoopsModule::getByDirname($moduleDirName);
+xoops_loadLanguage('calendar');
 
-if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
-    require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-} else {
-    require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
-}
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
@@ -46,10 +45,19 @@ if ($xt->getAllTopicsCount() == 0) {
 }
 
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
-$allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
-$topic_tree   = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
-$topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
-$sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
+$allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
+$topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+
+if (NewsUtility::checkVerXoops($module, '2.5.9')) {
+    //    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
+    $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', '');
+    $this->addElement($topic_select);
+} else {
+    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
+    $sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
+}
+
+
 
 //If admin - show admin form
 //TODO: Change to "If submit privilege"
@@ -74,7 +82,7 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
         $newsauthor = $xoopsUser->getVar('uid');
     }
     $memberHandler = xoops_getHandler('member');
-    $usercount      = $memberHandler->getUserCount();
+    $usercount     = $memberHandler->getUserCount();
     if ($usercount < $cfg['config_max_users_list']) {
         $sform->addElement(new XoopsFormSelectUser(_NW_AUTHOR, 'author', true, $newsauthor), false);
     } else {

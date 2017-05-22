@@ -21,7 +21,7 @@
 $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.72;
-$modversion['module_status'] = 'RC 1';
+$modversion['module_status'] = 'Beta 2';
 $modversion['release_date']  = '2017/05/20';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
@@ -51,10 +51,23 @@ $modversion['min_db']              = array('mysql' => '5.5');
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
 // Tables created by sql file (without prefix!)
-$modversion['tables'][0] = 'news_stories';
-$modversion['tables'][1] = 'news_topics';
-$modversion['tables'][2] = 'news_stories_files';
-$modversion['tables'][3] = 'news_stories_votedata';
+//$modversion['tables'][0] = 'news_stories';
+//$modversion['tables'][1] = 'news_topics';
+//$modversion['tables'][2] = 'news_stories_files';
+//$modversion['tables'][3] = 'news_stories_votedata';
+$modversion['tables'] = array(
+    $moduleDirName . '_' . 'stories',
+    $moduleDirName . '_' . 'topics',
+    $moduleDirName . '_' . 'stories_files',
+    $moduleDirName . '_' . 'stories_votedata',
+);
+
+$modversion['helpsection'] = array(
+    ['name' => _MI_NEWS_OVERVIEW, 'link' => 'page=help'],
+    ['name' => _MI_NEWS_DISCLAIMER, 'link' => 'page=disclaimer'],
+    ['name' => _MI_NEWS_LICENSE, 'link' => 'page=license'],
+    ['name' => _MI_NEWS_SUPPORT, 'link' => 'page=support'],
+);
 
 // Scripts to run upon installation or update
 //$modversion['onInstall']['file'] = "include/install_function.php";

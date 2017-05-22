@@ -18,12 +18,8 @@
  */
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+xoops_loadLanguage('calendar');
 
-if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
-    require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-} else {
-    require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
-}
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
@@ -51,8 +47,20 @@ if ($xt->getAllTopicsCount() == 0) {
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
 $allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
 $topic_tree   = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
-$topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
-$sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
+
+$moduleDirName = basename(dirname(__DIR__));
+xoops_load('utility', $moduleDirName);
+
+if (NewsUtility::checkVerXoops($xoopsModule, '2.5.9')) {
+//    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
+    $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', '');
+    $sform->addElement($topic_select);
+} else {
+    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
+    $sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
+}
+
+
 
 //If admin - show admin form
 //TODO: Change to "If submit privilege"

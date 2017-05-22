@@ -18,7 +18,6 @@
 
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
-
 //require_once __DIR__ . '/../class/utility.php';
 //require_once __DIR__ . '/../include/common.php';
 
@@ -34,6 +33,8 @@ $adminObject = \Xmf\Module\Admin::getInstance();
 
 $pathIcon16      = \Xmf\Module\Admin::iconUrl('', 16);
 $pathIcon32      = \Xmf\Module\Admin::iconUrl('', 32);
+
+/** @var Xmf\Module\Helper\GenericHelper $moduleHelper */
 $pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
 // Load language files
@@ -51,8 +52,6 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
 $topicsHandler  = xoops_getModuleHandler('news_topics', 'news');
 $storiesHandler = xoops_getModuleHandler('news_stories', 'news');
 
-$myts = MyTextSanitizer::getInstance();
-
 if ($xoopsUser) {
     $modulepermHandler = xoops_getHandler('groupperm');
     if (!$modulepermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
@@ -60,11 +59,6 @@ if ($xoopsUser) {
     }
 } else {
     redirect_header(XOOPS_URL . '/user.php', 1, _NOPERM);
-}
-
-if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
-    require_once XOOPS_ROOT_PATH . '/class/template.php';
-    $xoopsTpl = new XoopsTpl();
 }
 
 $xoopsTpl->assign('pathIcon16', $pathIcon16);
