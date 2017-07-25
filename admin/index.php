@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
 // Copyright (c) 2000-2016 XOOPS.org                                             //
-// <http://xoops.org/>                                                  //
+// <https://xoops.org/>                                                  //
 // ------------------------------------------------------------------------ //
 // This program is free software; you can redistribute it and/or modify     //
 // it under the terms of the GNU General Public License as published by     //
@@ -478,7 +478,7 @@ function setPruneManager()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=prune');
     echo '<br><br><br>';
-    $sform = new XoopsThemeForm(_AM_NEWS_PRUNENEWS, 'pruneform', XOOPS_URL . '/modules/news/admin/index.php', 'post');
+    $sform = new XoopsThemeForm(_AM_NEWS_PRUNENEWS, 'pruneform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
     $sform->addElement(new XoopsFormTextDateSelect(_AM_NEWS_PRUNE_BEFORE, 'prune_date', 15, time()), true);
     $onlyexpired = new xoopsFormCheckBox('', 'onlyexpired');
     $onlyexpired->addOption(1, _AM_NEWS_PRUNE_EXPIREDONLY);
@@ -578,7 +578,7 @@ function createNewsletter()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=configurenewsletter');
     echo '<br><br><br>';
-    $sform      = new XoopsThemeForm(_AM_NEWS_NEWSLETTER, 'newsletterform', XOOPS_URL . '/modules/news/admin/index.php', 'post');
+    $sform      = new XoopsThemeForm(_AM_NEWS_NEWSLETTER, 'newsletterform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
     $dates_tray = new XoopsFormElementTray(_AM_NEWS_NEWSLETTER_BETWEEN);
     $date1      = new XoopsFormTextDateSelect('', 'date1', 15, time());
     $date2      = new XoopsFormTextDateSelect(_AM_NEWS_EXPORT_AND, 'date2', 15, time());
@@ -730,7 +730,7 @@ function exportNews()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=export');
     echo '<br><br><br>';
-    $sform      = new XoopsThemeForm(_AM_NEWS_EXPORT_NEWS, 'exportform', XOOPS_URL . '/modules/news/admin/index.php', 'post');
+    $sform      = new XoopsThemeForm(_AM_NEWS_EXPORT_NEWS, 'exportform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
     $dates_tray = new XoopsFormElementTray(_AM_NEWS_EXPORT_BETWEEN);
     $date1      = new XoopsFormTextDateSelect('', 'date1', 15, time());
     $date2      = new XoopsFormTextDateSelect(_AM_NEWS_EXPORT_AND, 'date2', 15, time());
@@ -1000,7 +1000,7 @@ function topicsmanager()
         $topic_color       = '000000';
     }
 
-    $sform = new XoopsThemeForm($formlabel, 'topicform', XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/index.php', 'post');
+    $sform = new XoopsThemeForm($formlabel, 'topicform', XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/index.php', 'post', true);
     $sform->setExtra('enctype="multipart/form-data"');
     $sform->addElement(new XoopsFormText(_AM_TOPICNAME, 'topic_title', 50, 255, $topic_title), true);
     $editor = news_getWysiwygForm(_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
@@ -1785,7 +1785,7 @@ function getMetagen()
         $keywordscount = $cfg['meta_keywords_count'];
         $keywordsorder = $cfg['meta_keywords_order'];
     }
-    $sform = new XoopsThemeForm(_OPTIONS, 'metagenoptions', XOOPS_URL . '/modules/news/admin/index.php', 'post');
+    $sform = new XoopsThemeForm(_OPTIONS, 'metagenoptions', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
     $sform->addElement(new XoopsFormHidden('op', 'metagenoptions'), false);
     $sform->addElement(new XoopsFormText(_AM_NEWS_META_KEYWORDS_CNT, 'keywordscount', 4, 6, $keywordscount), true);
     $keywordsorder = new XoopsFormRadio(_AM_NEWS_META_KEYWORDS_ORDER, 'keywordsorder', $keywordsorder);
@@ -1800,7 +1800,7 @@ function getMetagen()
     $sform->display();
 
     // Blacklist
-    $sform = new XoopsThemeForm(_AM_NEWS_BLACKLIST, 'metagenblacklist', XOOPS_URL . '/modules/news/admin/index.php', 'post');
+    $sform = new XoopsThemeForm(_AM_NEWS_BLACKLIST, 'metagenblacklist', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
     $sform->addElement(new XoopsFormHidden('op', 'metagenblacklist'), false);
 
     // Remove words

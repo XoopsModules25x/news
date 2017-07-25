@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    XOOPS Project http://xoops.org/
+ * @copyright    XOOPS Project https://xoops.org/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -24,7 +24,7 @@
  * @subpackage           core
  *
  * @author               Kazumi Ono    <onokazu@xoops.org>
- * @copyright        (c) XOOPS Project (http://xoops.org)
+ * @copyright        (c) XOOPS Project (https://xoops.org)
  */
 class MyXoopsObjectTree
 {

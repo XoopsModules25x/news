@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright      {@link http://xoops.org/ XOOPS Project}
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
@@ -28,7 +28,7 @@
  *
  * @package News
  * @author Xoops Modules Dev Team
- * @copyright   (c) XOOPS Project (http://xoops.org)
+ * @copyright   (c) XOOPS Project (https://xoops.org)
  *
  * Parameters received by this page :
  * @page_param  int     uid                     Id of the user you want to treat

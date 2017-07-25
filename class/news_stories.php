@@ -1,7 +1,7 @@
 <?php
 /**
  * ****************************************************************************
- * - Developers TEAM TDM Xoops - (http://xoops.org)
+ * - Developers TEAM TDM Xoops - (https://xoops.org)
  * ****************************************************************************
  *       NEWS - MODULE FOR XOOPS
  *        Copyright (c) 2007 - 2011
