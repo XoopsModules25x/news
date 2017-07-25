@@ -68,11 +68,7 @@ function news_tag_synchronization($mid)
     $itemHandler_keyName = 'storyid';
     $itemHandler_table   = $xoopsDB->prefix('news_stories');
     $linkHandler         = xoops_getModuleHandler('link', 'tag');
-    $where                = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= "
-                            . time()
-                            . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > "
-                            . time()
-                            . ')';
+    $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . time() . ')';
 
     /* clear tag-item links */
     if ($linkHandler->mysql_major_version() >= 4):

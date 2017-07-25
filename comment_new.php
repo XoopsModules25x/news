@@ -19,7 +19,7 @@
 
 include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
 // We verify that the user can post comments **********************************
 if (!isset($xoopsModuleConfig)) {
@@ -39,15 +39,7 @@ $com_itemid = isset($_GET['com_itemid']) ? (int)$_GET['com_itemid'] : 0;
 if ($com_itemid > 0) {
     $article = new NewsStory($com_itemid);
     if ($article->storyid > 0) {
-        $com_replytext = _POSTEDBY
-                         . '&nbsp;<b>'
-                         . $article->uname()
-                         . '</b>&nbsp;'
-                         . _DATE
-                         . '&nbsp;<b>'
-                         . formatTimestamp($article->published(), news_getmoduleoption('dateformat'))
-                         . '</b><br><br>'
-                         . $article->hometext();
+        $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), NewsUtility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
         $bodytext      = $article->bodytext();
         if ($bodytext !== '') {
             $com_replytext .= '<br><br>' . $bodytext . '';

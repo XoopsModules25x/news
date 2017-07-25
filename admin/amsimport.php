@@ -29,7 +29,7 @@
 
 require_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
@@ -40,9 +40,9 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         echo '<h1>Welcome to the AMS 2.41 import script</h1>';
         echo '<br><br>Select the import options you wan to use :';
         echo "<form method='post' action='amsimport.php'>";
-        echo "<br><input type='checkbox' name='useforum' value='1' /> Import forums links inside news (at the bottom of the news)";
-        echo "<br><input type='checkbox' name='useextlinks' value='1' /> Import external links inside news (at the bottom of the news)";
-        echo "<br><br><input type='submit' name='go' value='Import' />";
+        echo "<br><input type='checkbox' name='useforum' value='1'> Import forums links inside news (at the bottom of the news)";
+        echo "<br><input type='checkbox' name='useextlinks' value='1'> Import external links inside news (at the bottom of the news)";
+        echo "<br><br><input type='submit' name='go' value='Import'>";
         echo '</form>';
         echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
     } else {
@@ -82,7 +82,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // Misc
         $commentHandler      = xoops_getHandler('comment');
         $notificationHandler = xoops_getHandler('notification');
-        $ams_news_topics      = array(); // Key => AMS Id,  Value => News ID
+        $ams_news_topics     = array(); // Key => AMS Id,  Value => News ID
 
         // The import by itself
         // Read topics by their order

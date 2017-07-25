@@ -44,7 +44,7 @@ $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = '2.5.8';
+$modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
 $modversion['min_db']              = array('mysql' => '5.5');
 
@@ -218,8 +218,7 @@ global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
 // We try to "win" some time
 // 1)  Check to see it the module is the current module
 if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['dirname']
-    && $xoopsModule->getVar('isactive')
-) {
+    && $xoopsModule->getVar('isactive')) {
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || $_SESSION['items_count'] == -1) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
@@ -232,16 +231,15 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+        require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
         $xt         = new NewsTopic();
-        $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
+        $allTopics  = $xt->getAllTopics(NewsUtility::getModuleOption('restrictindex'));
         $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
             foreach ($topics_arr as $onetopic) {
                 if ($gpermHandler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
-                    && $onetopic->menu()
-                ) {
+                    && $onetopic->menu()) {
                     $modversion['sub'][$i]['name'] = $onetopic->topic_title();
                     $modversion['sub'][$i]['url']  = 'index.php?storytopic=' . $onetopic->topic_id();
                 }
@@ -261,8 +259,8 @@ if ($cansubmit) {
 }
 unset($cansubmit);
 
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-if (news_getmoduleoption('newsbythisauthor')) {
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+if (NewsUtility::getModuleOption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;
     $modversion['sub'][$i]['url']  = 'whoswho.php';
@@ -553,7 +551,7 @@ $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'dhtml';
 xoops_load('xoopseditorhandler');
-$editorHandler                      = XoopsEditorHandler::getInstance();
+$editorHandler                       = XoopsEditorHandler::getInstance();
 $modversion['config'][$i]['options'] = array_flip($editorHandler->getList());
 
 /**

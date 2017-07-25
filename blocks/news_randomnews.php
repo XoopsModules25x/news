@@ -28,15 +28,15 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
  */
 function b_news_randomnews_show($options)
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     $myts          = MyTextSanitizer::getInstance();
     $block         = array();
     $block['sort'] = $options[0];
 
     $tmpstory   = new NewsStory;
-    $restricted = news_getmoduleoption('restrictindex');
-    $dateformat = news_getmoduleoption('dateformat');
-    $infotips   = news_getmoduleoption('infotips');
+    $restricted = NewsUtility::getModuleOption('restrictindex');
+    $dateformat = NewsUtility::getModuleOption('dateformat');
+    $infotips   = NewsUtility::getModuleOption('infotips');
     if ($dateformat == '') {
         $dateformat = 's';
     }
@@ -70,12 +70,12 @@ function b_news_randomnews_show($options)
 
         if ($options[3] > 0) {
             $html             = $story->nohtml() == 1 ? 0 : 1;
-            $news['teaser']   = news_truncate_tagsafe($myts->displayTarea($story->hometext, $html), $options[3] + 3);
+            $news['teaser']   = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext, $html), $options[3] + 3);
             $news['infotips'] = ' title="' . $story->title() . '"';
         } else {
             $news['teaser'] = '';
             if ($infotips > 0) {
-                $news['infotips'] = ' title="' . news_make_infotips($story->hometext()) . '"';
+                $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
             } else {
                 $news['infotips'] = ' title="' . $story->title() . '"';
             }
@@ -115,10 +115,10 @@ function b_news_randomnews_edit($options)
     $form .= '>' . _MB_NEWS_RATE . '</option>';
 
     $form .= "</select>\n";
-    $form .= '&nbsp;' . _MB_NEWS_DISP . "&nbsp;<input type='text' name='options[]' value='" . $options[1] . "'/>&nbsp;" . _MB_NEWS_ARTCLS;
-    $form .= '&nbsp;<br><br>' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'/>&nbsp;" . _MB_NEWS_LENGTH . '<br><br>';
+    $form .= '&nbsp;' . _MB_NEWS_DISP . "&nbsp;<input type='text' name='options[]' value='" . $options[1] . "'>&nbsp;" . _MB_NEWS_ARTCLS;
+    $form .= '&nbsp;<br><br>' . _MB_NEWS_CHARS . "&nbsp;<input type='text' name='options[]' value='" . $options[2] . "'>&nbsp;" . _MB_NEWS_LENGTH . '<br><br>';
 
-    $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "' />" . _MB_NEWS_LENGTH;
+    $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "'>" . _MB_NEWS_LENGTH;
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select id='options[4]' name='options[]' multiple='multiple'>";
 
     require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';

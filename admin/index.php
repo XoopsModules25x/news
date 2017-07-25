@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
 // Copyright (c) 2000-2016 XOOPS.org                                             //
-// <https://xoops.org/>                                                  //
+// <https://xoops.org>                                                  //
 // ------------------------------------------------------------------------ //
 // This program is free software; you can redistribute it and/or modify     //
 // it under the terms of the GNU General Public License as published by     //
@@ -37,15 +37,15 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
-$dateformat  = news_getmoduleoption('dateformat');
+$dateformat  = NewsUtility::getModuleOption('dateformat');
 $myts        = MyTextSanitizer::getInstance();
 $topicscount = 0;
 
 $storiesTableName = $xoopsDB->prefix('news_stories');
-if (!news_FieldExists('picture', $storiesTableName)) {
-    news_AddField('`picture` VARCHAR( 50 ) NOT NULL', $storiesTableName);
+if (!NewsUtility::existField('picture', $storiesTableName)) {
+    NewsUtility::addField('`picture` VARCHAR( 50 ) NOT NULL', $storiesTableName);
 }
 
 /**
@@ -64,15 +64,11 @@ function newSubmissions()
     global $dateformat, $pathIcon16;
     $start       = isset($_GET['startnew']) ? (int)$_GET['startnew'] : 0;
     $newsubcount = NewsStory:: getAllStoriesCount(3, false);
-    $storyarray  = NewsStory:: getAllSubmitted(news_getmoduleoption('storycountadmin'), true, news_getmoduleoption('restrictindex'), $start);
+    $storyarray  = NewsStory:: getAllSubmitted(NewsUtility::getModuleOption('storycountadmin'), true, NewsUtility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
-        $pagenav = new XoopsPageNav($newsubcount, news_getmoduleoption('storycountadmin'), $start, 'startnew', 'op=newarticle');
+        $pagenav = new XoopsPageNav($newsubcount, NewsUtility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
         news_collapsableBar('newsub', 'topnewsubicon');
-        echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topnewsubicon' name='topnewsubicon' src='"
-             . $pathIcon16
-             . "/close12.gif' alt='' /></a>&nbsp;"
-             . _AM_NEWSUB
-             . '</h4>';
+        echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topnewsubicon' name='topnewsubicon' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_NEWSUB . '</h4>';
         echo "<div id='newsub'>";
         echo '<br>';
         echo "<div class='center;'><table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'><tr class='bg3'><th align='center'>"
@@ -147,16 +143,12 @@ function autoStories()
 
     $start        = isset($_GET['startauto']) ? (int)$_GET['startauto'] : 0;
     $storiescount = NewsStory:: getAllStoriesCount(2, false);
-    $storyarray   = NewsStory:: getAllAutoStory(news_getmoduleoption('storycountadmin'), true, $start);
+    $storyarray   = NewsStory:: getAllAutoStory(NewsUtility::getModuleOption('storycountadmin'), true, $start);
     $class        = '';
     if (count($storyarray) > 0) {
-        $pagenav = new XoopsPageNav($storiescount, news_getmoduleoption('storycountadmin'), $start, 'startauto', 'op=newarticle');
+        $pagenav = new XoopsPageNav($storiescount, NewsUtility::getModuleOption('storycountadmin'), $start, 'startauto', 'op=newarticle');
         news_collapsableBar('autostories', 'topautostories');
-        echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topautostories' name='topautostories' src='"
-             . $pathIcon16
-             . "/close12.gif' alt='' /></a>&nbsp;"
-             . _AM_AUTOARTICLES
-             . '</h4>';
+        echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topautostories' name='topautostories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_AUTOARTICLES . '</h4>';
         echo "<div id='autostories'>";
         echo '<br>';
         echo "<div class='center;'>\n";
@@ -246,18 +238,14 @@ function lastStories()
 {
     global $dateformat, $pathIcon16;
     news_collapsableBar('laststories', 'toplaststories');
-    echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='toplaststories' name='toplaststories' src='"
-         . $pathIcon16
-         . "/close12.gif' alt='' /></a>&nbsp;"
-         . sprintf(_AM_LAST10ARTS, news_getmoduleoption('storycountadmin'))
-         . '</h4>';
+    echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='toplaststories' name='toplaststories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . sprintf(_AM_LAST10ARTS, NewsUtility::getModuleOption('storycountadmin')) . '</h4>';
     echo "<div id='laststories'>";
     echo '<br>';
     echo "<div class='center;'>";
     $start        = isset($_GET['start']) ? (int)$_GET['start'] : 0;
-    $storyarray   = NewsStory:: getAllPublished(news_getmoduleoption('storycountadmin'), $start, false, 0, 1);
+    $storyarray   = NewsStory:: getAllPublished(NewsUtility::getModuleOption('storycountadmin'), $start, false, 0, 1);
     $storiescount = NewsStory:: getAllStoriesCount(4, false);
-    $pagenav      = new XoopsPageNav($storiescount, news_getmoduleoption('storycountadmin'), $start, 'start', 'op=newarticle');
+    $pagenav      = new XoopsPageNav($storiescount, NewsUtility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
     $class        = '';
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'><tr class='bg3'><th align='center'>"
          . _AM_STORYID
@@ -280,61 +268,25 @@ function lastStories()
         $topic = $eachstory->topic();
         $class = ($class === 'even') ? 'odd' : 'even';
         echo "<tr class='" . $class . "'>";
-        echo "<td align='center'><b>"
-             . $eachstory->storyid()
-             . "</b>
-            </td><td align='left'><a href='"
-             . XOOPS_URL
-             . '/modules/news/article.php?storyid='
-             . $eachstory->storyid()
-             . "'>"
-             . $eachstory->title()
-             . "</a>
-            </td><td align='center'>"
-             . $topic->topic_title()
-             . "
-            </td><td align='center'><a href='"
-             . XOOPS_URL
-             . '/userinfo.php?uid='
-             . $eachstory->uid()
-             . "'>"
-             . $eachstory->uname()
-             . "</a></td><td align='center' class='nw'>"
-             . $published
-             . "</td><td align='center'>"
-             . $eachstory->counter()
-             . "</td><td align='center'>
-            <a href='"
-             . XOOPS_URL
-             . '/modules/news/submit.php?returnside=1&amp;op=edit&amp;storyid='
-             . $eachstory->storyid()
-             . "'> <img src='"
-             . $pathIcon16
-             . "/edit.png' title="
-             . _AM_EDIT
-             . "> </a>
-            <a href='"
-             . XOOPS_URL
-             . '/modules/news/admin/index.php?op=delete&amp;storyid='
-             . $eachstory->storyid()
-             . "'><img src='"
-             . $pathIcon16
-             . "/delete.png' title='"
-             . _AM_DELETE
-             . "'></a>";
+        echo "<td align='center'><b>" . $eachstory->storyid() . "</b>
+            </td><td align='left'><a href='" . XOOPS_URL . '/modules/news/article.php?storyid=' . $eachstory->storyid() . "'>" . $eachstory->title() . "</a>
+            </td><td align='center'>" . $topic->topic_title() . "
+            </td><td align='center'><a href='" . XOOPS_URL . '/userinfo.php?uid=' . $eachstory->uid() . "'>" . $eachstory->uname() . "</a></td><td align='center' class='nw'>" . $published . "</td><td align='center'>" . $eachstory->counter() . "</td><td align='center'>
+            <a href='" . XOOPS_URL . '/modules/news/submit.php?returnside=1&amp;op=edit&amp;storyid=' . $eachstory->storyid() . "'> <img src='" . $pathIcon16 . "/edit.png' title=" . _AM_EDIT . "> </a>
+            <a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=delete&amp;storyid=' . $eachstory->storyid() . "'><img src='" . $pathIcon16 . "/delete.png' title='" . _AM_DELETE . "'></a>";
 
         echo "</td></tr>\n";
     }
     echo '</table><br>';
     echo "<div align='right'>" . $pagenav->renderNav() . '</div><br>';
 
-    echo "<form action='index.php' method='get'>" . _AM_STORYID . " <input type='text' name='storyid' size='10' />
+    echo "<form action='index.php' method='get'>" . _AM_STORYID . " <input type='text' name='storyid' size='10'>
         <select name='op'>
             <option value='edit' selected>" . _AM_EDIT . "</option>
             <option value='delete'>" . _AM_DELETE . "</option>
         </select>
         <input type='hidden' name='returnside' value='1'>
-        <input type='submit' value='" . _AM_GO . "' />
+        <input type='submit' value='" . _AM_GO . "'>
         </form>
     </div>";
     echo '</div><br>';
@@ -359,17 +311,13 @@ function expStories()
     global $dateformat, $pathIcon16;
     $start        = isset($_GET['startexp']) ? (int)$_GET['startexp'] : 0;
     $expiredcount = NewsStory:: getAllStoriesCount(1, false);
-    $storyarray   = NewsStory:: getAllExpired(news_getmoduleoption('storycountadmin'), $start, 0, 1);
-    $pagenav      = new XoopsPageNav($expiredcount, news_getmoduleoption('storycountadmin'), $start, 'startexp', 'op=newarticle');
+    $storyarray   = NewsStory:: getAllExpired(NewsUtility::getModuleOption('storycountadmin'), $start, 0, 1);
+    $pagenav      = new XoopsPageNav($expiredcount, NewsUtility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
 
     if (count($storyarray) > 0) {
         $class = '';
         news_collapsableBar('expstories', 'topexpstories');
-        echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topexpstories' name='topexpstories' src='"
-             . $pathIcon16
-             . "/close12.gif' alt='' /></a>&nbsp;"
-             . _AM_EXPARTS
-             . '</h4>';
+        echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topexpstories' name='topexpstories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_EXPARTS . '</h4>';
         echo "<div id='expstories'>";
         echo '<br>';
         echo "<div class='center;'>";
@@ -395,61 +343,25 @@ function expStories()
             // added exired value field to table
             $class = ($class === 'even') ? 'odd' : 'even';
             echo "<tr class='" . $class . "'>";
-            echo "<td align='center'><b>"
-                 . $eachstory->storyid()
-                 . "</b>
-                </td><td align='left'><a href='"
-                 . XOOPS_URL
-                 . '/modules/news/article.php?returnside=1&amp;storyid='
-                 . $eachstory->storyid()
-                 . "'>"
-                 . $eachstory->title()
-                 . "</a>
-                </td><td align='center'>"
-                 . $topic->topic_title()
-                 . "
-                </td><td align='center'><a href='"
-                 . XOOPS_URL
-                 . '/userinfo.php?uid='
-                 . $eachstory->uid()
-                 . "'>"
-                 . $eachstory->uname()
-                 . "</a></td><td align='center' class='nw'>"
-                 . $created
-                 . "</td><td align='center' class='nw'>"
-                 . $expired
-                 . "</td><td align='center'>
-                <a href='"
-                 . XOOPS_URL
-                 . '/modules/news/submit.php?returnside=1&amp;op=edit&amp;storyid='
-                 . $eachstory->storyid()
-                 . "'> <img src='"
-                 . $pathIcon16
-                 . "/edit.png' title="
-                 . _AM_EDIT
-                 . "></a>
-                <a href='"
-                 . XOOPS_URL
-                 . '/modules/news/admin/index.php?op=delete&amp;storyid='
-                 . $eachstory->storyid()
-                 . "'><img src='"
-                 . $pathIcon16
-                 . "/delete.png' title='"
-                 . _AM_DELETE
-                 . "'></a>";
+            echo "<td align='center'><b>" . $eachstory->storyid() . "</b>
+                </td><td align='left'><a href='" . XOOPS_URL . '/modules/news/article.php?returnside=1&amp;storyid=' . $eachstory->storyid() . "'>" . $eachstory->title() . "</a>
+                </td><td align='center'>" . $topic->topic_title() . "
+                </td><td align='center'><a href='" . XOOPS_URL . '/userinfo.php?uid=' . $eachstory->uid() . "'>" . $eachstory->uname() . "</a></td><td align='center' class='nw'>" . $created . "</td><td align='center' class='nw'>" . $expired . "</td><td align='center'>
+                <a href='" . XOOPS_URL . '/modules/news/submit.php?returnside=1&amp;op=edit&amp;storyid=' . $eachstory->storyid() . "'> <img src='" . $pathIcon16 . "/edit.png' title=" . _AM_EDIT . "></a>
+                <a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=delete&amp;storyid=' . $eachstory->storyid() . "'><img src='" . $pathIcon16 . "/delete.png' title='" . _AM_DELETE . "'></a>";
 
             echo "</td></tr>\n";
         }
         echo '</table><br>';
         echo "<div align='right'>" . $pagenav->renderNav() . '</div><br>';
         echo "<form action='index.php' method='get'>
-            " . _AM_STORYID . " <input type='text' name='storyid' size='10' />
+            " . _AM_STORYID . " <input type='text' name='storyid' size='10'>
             <select name='op'>
                 <option value='edit' selected>" . _AM_EDIT . "</option>
                 <option value='delete'>" . _AM_DELETE . "</option>
             </select>
             <input type='hidden' name='returnside' value='1'>
-            <input type='submit' value='" . _AM_GO . "' />
+            <input type='submit' value='" . _AM_GO . "'>
             </form>
         </div>";
         echo '</div><br>';
@@ -556,7 +468,7 @@ function pruneNews()
         $msg   = sprintf(_AM_NEWS_PRUNE_DELETED, $count);
         $story->deleteBeforeDate($timestamp, $expired, $topiclist);
         unset($story);
-        news_updateCache();
+        NewsUtility::updateCache();
         redirect_header('index.php', 3, $msg);
     }
 }
@@ -802,7 +714,7 @@ function launchExport()
         fwrite($fp, news_utf8_encode("<news_stories>\n"));
         if ($topicsexport) {
             foreach ($tbltopics as $onetopic) {
-                $topic = new NewsTopic($onetopic);
+                $topic   = new NewsTopic($onetopic);
                 $content = "<news_topic>\n";
                 $content .= sprintf("\t<topic_id>%u</topic_id>\n", $topic->topic_id());
                 $content .= sprintf("\t<topic_pid>%u</topic_pid>\n", $topic->topic_pid());
@@ -896,7 +808,7 @@ function topicsmanager()
     //echo '<h4>' . _AM_CONFIG . '</h4>';
     //news_collapsableBar('topicsmanager', 'toptopicsmanager');
 
-    //echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='toptopicsmanager' name='toptopicsmanager' src='" . $pathIcon16."/close12.gif' alt='' /></a>&nbsp;"._AM_TOPICSMNGR . ' (' . $totaltopics . ')'."</h4>";
+    //echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='toptopicsmanager' name='toptopicsmanager' src='" . $pathIcon16."/close12.gif' alt=''></a>&nbsp;"._AM_TOPICSMNGR . ' (' . $totaltopics . ')'."</h4>";
 
     echo "<div id='topicsmanager'>";
     echo '<br>';
@@ -955,7 +867,7 @@ function topicsmanager()
             } else {
                 $ok = false;
             }
-            if ($cpt >= news_getmoduleoption('storycountadmin')) {
+            if ($cpt >= NewsUtility::getModuleOption('storycountadmin')) {
                 $ok = false;
             }
             ++$tmpcpt;
@@ -963,7 +875,7 @@ function topicsmanager()
         }
         echo $output;
     }
-    $pagenav = new XoopsPageNav($totaltopics, news_getmoduleoption('storycountadmin'), $start, 'start', 'op=topicsmanager');
+    $pagenav = new XoopsPageNav($totaltopics, NewsUtility::getModuleOption('storycountadmin'), $start, 'start', 'op=topicsmanager');
     echo "</table><div align='right'>" . $pagenav->renderNav() . '</div><br>';
     echo "</div></div><br>\n";
 
@@ -1003,7 +915,7 @@ function topicsmanager()
     $sform = new XoopsThemeForm($formlabel, 'topicform', XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/index.php', 'post', true);
     $sform->setExtra('enctype="multipart/form-data"');
     $sform->addElement(new XoopsFormText(_AM_TOPICNAME, 'topic_title', 50, 255, $topic_title), true);
-    $editor = news_getWysiwygForm(_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
+    $editor = NewsUtility::getWysiwygForm(_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
     if ($editor) {
         $sform->addElement($editor, false);
     }
@@ -1016,9 +928,7 @@ function topicsmanager()
     $sform->addElement(new XoopsFormLabel(_AM_PARENTTOPIC, $xt->makeMyTopicSelBox(1, $parent, 'topic_pid', '', false)));
     // Topic's color
     // Code stolen to Zoullou, thank you Zoullou ;-)
-    $select_color = "\n<select name='topic_color'  onchange='xoopsGetElementById(\"NewsColorSelect\").style.backgroundColor = \"#\" + this.options[this.selectedIndex].value;'>\n<option value='000000'>"
-                    . _AM_NEWS_COLOR
-                    . "</option>\n";
+    $select_color = "\n<select name='topic_color'  onchange='xoopsGetElementById(\"NewsColorSelect\").style.backgroundColor = \"#\" + this.options[this.selectedIndex].value;'>\n<option value='000000'>" . _AM_NEWS_COLOR . "</option>\n";
     $color_values = array(
         '000000',
         '000033',
@@ -1264,20 +1174,20 @@ function topicsmanager()
     }
     $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"topic_imgurl\", \"" . $uploadirectory . "\", \"\", \"" . XOOPS_URL . "\")'");
     $imgtray->addElement($imageselect, false);
-    $imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt='' />"));
+    $imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
 
     $uploadfolder = sprintf(_AM_UPLOAD_WARNING, XOOPS_URL . '/uploads/news/image');
     $fileseltray  = new XoopsFormElementTray('', '<br>');
-    $fileseltray->addElement(new XoopsFormFile(_AM_TOPIC_PICTURE, 'attachedfile', news_getmoduleoption('maxuploadsize')), false);
+    $fileseltray->addElement(new XoopsFormFile(_AM_TOPIC_PICTURE, 'attachedfile', NewsUtility::getModuleOption('maxuploadsize')), false);
     $fileseltray->addElement(new XoopsFormLabel($uploadfolder), false);
     $imgtray->addElement($fileseltray);
     $sform->addElement($imgtray);
 
     // Permissions
     $memberHandler = xoops_getHandler('member');
-    $group_list     = $memberHandler->getGroupList();
+    $group_list    = $memberHandler->getGroupList();
     $gpermHandler  = xoops_getHandler('groupperm');
-    $full_list      = array_keys($group_list);
+    $full_list     = array_keys($group_list);
 
     $groups_ids = array();
     if ($topic_id > 0) { // Edit mode
@@ -1378,7 +1288,7 @@ function modTopicS()
 
     // Permissions
     $gpermHandler = xoops_getHandler('groupperm');
-    $criteria      = new CriteriaCompo();
+    $criteria     = new CriteriaCompo();
     $criteria->add(new Criteria('gperm_itemid', $xt->topic_id(), '='));
     $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
     $criteria->add(new Criteria('gperm_name', 'news_approve', '='));
@@ -1414,7 +1324,7 @@ function modTopicS()
         }
     }
 
-    news_updateCache();
+    NewsUtility::updateCache();
     redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
 }
 
@@ -1440,7 +1350,7 @@ function delTopic()
             // get all stories in each topic
             $story_arr = NewsStory:: getByTopic($eachtopic->topic_id());
             foreach ($story_arr as $eachstory) {
-                if (false != $eachstory->delete()) {
+                if (false !== $eachstory->delete()) {
                     xoops_comment_delete($xoopsModule->getVar('mid'), $eachstory->storyid());
                     xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'story', $eachstory->storyid());
                 }
@@ -1453,7 +1363,7 @@ function delTopic()
             xoops_groupperm_deletebymoditem($xoopsModule->getVar('mid'), 'news_submit', $eachtopic->topic_id);
             xoops_groupperm_deletebymoditem($xoopsModule->getVar('mid'), 'news_view', $eachtopic->topic_id);
         }
-        news_updateCache();
+        NewsUtility::updateCache();
         redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
     }
 }
@@ -1526,11 +1436,11 @@ function addTopic()
                 $gpermHandler->addRight('news_view', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
             }
         }
-        news_updateCache();
+        NewsUtility::updateCache();
 
         $notificationHandler = xoops_getHandler('notification');
-        $tags                 = array();
-        $tags['TOPIC_NAME']   = $_POST['topic_title'];
+        $tags                = array();
+        $tags['TOPIC_NAME']  = $_POST['topic_title'];
         $notificationHandler->triggerEvent('global', 0, 'new_category', $tags);
         redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
     } else {
@@ -1579,7 +1489,7 @@ function getStats()
     $adminObject->displayNavigation('index.php?op=stats');
     $news   = new NewsStory();
     $stats  = array();
-    $stats  = $news->getStats(news_getmoduleoption('storycountadmin'));
+    $stats  = $news->getStats(NewsUtility::getModuleOption('storycountadmin'));
     $totals = array(0, 0, 0, 0, 0);
     //printf("<h1>%s</h1>\n",_AM_NEWS_STATS);
 
@@ -1592,19 +1502,7 @@ function getStats()
     $class           = '';
 
     echo "<div class='center;'><b>" . _AM_NEWS_STATS0 . "</b><br>\n";
-    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>"
-         . _AM_TOPIC
-         . "</th><th align='center'>"
-         . _NW_ARTICLES
-         . '</th><th>'
-         . _NW_VIEWS
-         . '</th><th>'
-         . _AM_UPLOAD_ATTACHFILE
-         . '</th><th>'
-         . _AM_EXPARTS
-         . '</th><th>'
-         . _AM_NEWS_STATS1
-         . '</th></tr>';
+    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>" . _AM_TOPIC . "</th><th align='center'>" . _NW_ARTICLES . '</th><th>' . _NW_VIEWS . '</th><th>' . _AM_UPLOAD_ATTACHFILE . '</th><th>' . _AM_EXPARTS . '</th><th>' . _AM_NEWS_STATS1 . '</th></tr>';
     foreach ($storiespertopic as $topicid => $data) {
         $url   = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/index.php?storytopic=' . $topicid;
         $views = 0;
@@ -1630,89 +1528,53 @@ function getStats()
         $totals[2] += $attachedfiles;
         $totals[3] += $expired;
         $class     = ($class === 'even') ? 'odd' : 'even';
-        printf("<tr class='"
-               . $class
-               . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td></tr>\n",
-               $url, $myts->displayTarea($data['topic_title']), $articles, $views, $attachedfiles, $expired, $authors);
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td></tr>\n", $url, $myts->displayTarea($data['topic_title']), $articles,
+               $views, $attachedfiles, $expired, $authors);
     }
     $class = ($class === 'even') ? 'odd' : 'even';
-    printf("<tr class='"
-           . $class
-           . "'><td align='center'><b>%s</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td>&nbsp;</td>\n",
-           _AM_NEWS_STATS2, $totals[0], $totals[1], $totals[2], $totals[3]);
+    printf("<tr class='" . $class . "'><td align='center'><b>%s</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td>&nbsp;</td>\n", _AM_NEWS_STATS2, $totals[0], $totals[1], $totals[2], $totals[3]);
     echo '</table></div><br><br><br>';
 
     // Second part of the stats, everything about stories
     // a) Most readed articles
     $mostreadednews = $stats['mostreadednews'];
     echo "<div class='center;'><b>" . _AM_NEWS_STATS3 . '</b><br><br>' . _AM_NEWS_STATS4 . "<br>\n";
-    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>"
-         . _AM_TOPIC
-         . "</th><th align='center'>"
-         . _AM_TITLE
-         . '</th><th>'
-         . _AM_POSTER
-         . '</th><th>'
-         . _NW_VIEWS
-         . "</th></tr>\n";
+    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>" . _AM_TOPIC . "</th><th align='center'>" . _AM_TITLE . '</th><th>' . _AM_POSTER . '</th><th>' . _NW_VIEWS . "</th></tr>\n";
     foreach ($mostreadednews as $storyid => $data) {
         $url1  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/index.php?storytopic=' . $data['topicid'];
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ($class === 'even') ? 'odd' : 'even';
-        printf("<tr class='"
-               . $class
-               . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",
-               $url1, $myts->displayTarea($data['topic_title']), $url2, $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
+               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
     }
     echo '</table>';
 
     // b) Less readed articles
     $lessreadednews = $stats['lessreadednews'];
     echo '<br><br>' . _AM_NEWS_STATS5;
-    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>"
-         . _AM_TOPIC
-         . "</th><th align='center'>"
-         . _AM_TITLE
-         . '</th><th>'
-         . _AM_POSTER
-         . '</th><th>'
-         . _NW_VIEWS
-         . "</th></tr>\n";
+    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>" . _AM_TOPIC . "</th><th align='center'>" . _AM_TITLE . '</th><th>' . _AM_POSTER . '</th><th>' . _NW_VIEWS . "</th></tr>\n";
     foreach ($lessreadednews as $storyid => $data) {
         $url1  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/index.php?storytopic=' . $data['topicid'];
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ($class === 'even') ? 'odd' : 'even';
-        printf("<tr class='"
-               . $class
-               . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",
-               $url1, $myts->displayTarea($data['topic_title']), $url2, $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
+               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
     }
     echo '</table>';
 
     // c) Best rated articles (this is an average)
     $besratednews = $stats['besratednews'];
     echo '<br><br>' . _AM_NEWS_STATS6;
-    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>"
-         . _AM_TOPIC
-         . "</th><th align='center'>"
-         . _AM_TITLE
-         . '</th><th>'
-         . _AM_POSTER
-         . '</th><th>'
-         . _NW_RATING
-         . "</th></tr>\n";
+    echo "<table border='0' width='100%'><tr class='bg3'><th align='center'>" . _AM_TOPIC . "</th><th align='center'>" . _AM_TITLE . '</th><th>' . _AM_POSTER . '</th><th>' . _NW_RATING . "</th></tr>\n";
     foreach ($besratednews as $storyid => $data) {
         $url1  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/index.php?storytopic=' . $data['topicid'];
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ($class === 'even') ? 'odd' : 'even';
-        printf("<tr class='"
-               . $class
-               . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n",
-               $url1, $myts->displayTarea($data['topic_title']), $url2, $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])),
-               number_format($data['rating'], 2));
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
+               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), number_format($data['rating'], 2));
     }
     echo '</table></div><br><br><br>';
 
@@ -1881,7 +1743,7 @@ if (isset($_POST['op'])) {
 } elseif (isset($_GET['op'])) {
     $op = $_GET['op'];
 }
-$adminObject  = \Xmf\Module\Admin::getInstance();
+$adminObject = \Xmf\Module\Admin::getInstance();
 switch ($op) {
     case 'deletefile':
         xoops_cp_header();
@@ -1970,7 +1832,7 @@ switch ($op) {
             }
             xoops_comment_delete($xoopsModule->getVar('mid'), $storyid);
             xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'story', $storyid);
-            news_updateCache();
+            NewsUtility::updateCache();
             redirect_header('index.php?op=newarticle', 1, _AM_DBUPDATED);
         } else {
             $story = new NewsStory($storyid);

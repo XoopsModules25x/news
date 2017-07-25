@@ -132,13 +132,11 @@ define('_AM_NEWS_EXPORT_AND', ' and ');
 define('_AM_NEWS_EXPORT_PRUNE_DSC', "If you don't check anything then all the topics will be used<br> else only the selected topics will be used");
 define('_AM_NEWS_EXPORT_INCTOPICS', 'Include topics definitions?');
 define('_AM_NEWS_EXPORT_ERROR', 'Error while trying to create the file %s. Operation stopped.');
-define('_AM_NEWS_EXPORT_READY',
-       "Your xml export file is ready for download. <br><a href='%s'>Click on this link to download it</a>.<br>Don't forget <a href='%s'>to remove it</a> once you have finished.");
+define('_AM_NEWS_EXPORT_READY', "Your xml export file is ready for download. <br><a href='%s'>Click on this link to download it</a>.<br>Don't forget <a href='%s'>to remove it</a> once you have finished.");
 define('_AM_NEWS_RSS_URL', 'URL of RSS feed');
 define('_AM_NEWS_NEWSLETTER', 'Newsletter');
 define('_AM_NEWS_NEWSLETTER_BETWEEN', 'Select news published between');
-define('_AM_NEWS_NEWSLETTER_READY',
-       "Your newsletter file is ready for download. <br><a href='%s'>Click on this link to download it</a>.<br>Don't forget to <a href='%s'>remove it</a> once you have finished.");
+define('_AM_NEWS_NEWSLETTER_READY', "Your newsletter file is ready for download. <br><a href='%s'>Click on this link to download it</a>.<br>Don't forget to <a href='%s'>remove it</a> once you have finished.");
 define('_AM_NEWS_DELETED_OK', 'File deleted successfully');
 define('_AM_NEWS_DELETED_PB', 'There was a problem while deleting the file');
 define('_AM_NEWS_STATS0', 'Topics statistics');
@@ -171,8 +169,7 @@ define('_AM_NEWS_NEWSLETTER_FOOTER', 'Footer');
 define('_AM_NEWS_NEWSLETTER_HTML_TAGS', 'Remove html tags?');
 define('_AM_NEWS_VERIFY_TABLES', 'Maintain tables');
 define('_AM_NEWS_METAGEN', 'Metagen');
-define('_AM_NEWS_METAGEN_DESC',
-       'Metagen is a system that can help you have your page best indexed by search engines.<br>Except if you type meta keywords and meta descriptions yourself, the module will automatically create them.');
+define('_AM_NEWS_METAGEN_DESC', 'Metagen is a system that can help you have your page best indexed by search engines.<br>Except if you type meta keywords and meta descriptions yourself, the module will automatically create them.');
 define('_AM_NEWS_BLACKLIST', 'Blacklist');
 define('_AM_NEWS_BLACKLIST_DESC', 'The words in this list will not be used to create meta keywords');
 define('_AM_NEWS_BLACKLIST_ADD', 'Add');

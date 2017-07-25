@@ -20,11 +20,10 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $moduleDirName = basename(dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
-$module = XoopsModule::getByDirname($moduleDirName);
 xoops_loadLanguage('calendar');
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
 if (!isset($subtitle)) {
@@ -48,16 +47,13 @@ require_once XOOPS_ROOT_PATH . '/class/tree.php';
 $allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
 $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-if (NewsUtility::checkVerXoops($module, '2.5.9')) {
-    //    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
-    $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', '');
-    $this->addElement($topic_select);
+if (NewsUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+    $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', _NW_TOPIC);
+    $sform->addElement($topic_select);
 } else {
     $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
     $sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
 }
-
-
 
 //If admin - show admin form
 //TODO: Change to "If submit privilege"
@@ -90,28 +86,28 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     }
 }
 
-$editor = news_getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
+$editor = NewsUtility::getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
 $sform->addElement($editor, true);
 
 //Extra info
 //If admin -> if submit privilege
 
 if ($approveprivilege) {
-    $editor2 = news_getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
+    $editor2 = NewsUtility::getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
     $sform->addElement($editor2, false);
 
-    if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
+    if (xoops_isActiveModule('tag') && NewsUtility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
         $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
-    if (news_getmoduleoption('metadata')) {
+    if (NewsUtility::getModuleOption('metadata')) {
         $sform->addElement(new xoopsFormText(_NW_META_DESCRIPTION, 'description', 50, 255, $description), false);
         $sform->addElement(new xoopsFormText(_NW_META_KEYWORDS, 'keywords', 50, 255, $keywords), false);
     }
 } else {
-    if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
+    if (xoops_isActiveModule('tag') && NewsUtility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
         $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
@@ -154,7 +150,7 @@ if ($allowupload) {
     if ($op === 'edit') {
         if (isset($picture) && xoops_trim($picture) !== '') {
             $pictureTray = new XoopsFormElementTray(_NW_CURENT_PICTURE, '<br>');
-            $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "' />"));
+            $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "'>"));
             $deletePicureCheckbox = new XoopsFormCheckBox('', 'deleteimage', 0);
             $deletePicureCheckbox->addOption(1, _DELETE);
             $pictureTray->addElement($deletePicureCheckbox);
@@ -247,8 +243,8 @@ $type_hidden = new XoopsFormHidden('type', $type);
 $sform->addElement($type_hidden);
 
 echo '<h1>' . _NW_SUBMITNEWS . '</h1>';
-if (xoops_trim(news_getmoduleoption('submitintromsg')) !== '') {
-    echo "<div class='infotext'><br><br>" . nl2br(news_getmoduleoption('submitintromsg')) . '<br><br></div>';
+if (xoops_trim(NewsUtility::getModuleOption('submitintromsg')) !== '') {
+    echo "<div class='infotext'><br><br>" . nl2br(NewsUtility::getModuleOption('submitintromsg')) . '<br><br></div>';
 }
 
 $sform->display();

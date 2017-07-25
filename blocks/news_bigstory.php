@@ -24,12 +24,12 @@
  */
 function b_news_bigstory_show()
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     $myts       = MyTextSanitizer::getInstance();
-    $restricted = news_getmoduleoption('restrictindex');
-    $dateformat = news_getmoduleoption('dateformat');
-    $infotips   = news_getmoduleoption('infotips');
+    $restricted = NewsUtility::getModuleOption('restrictindex');
+    $dateformat = NewsUtility::getModuleOption('dateformat');
+    $infotips   = NewsUtility::getModuleOption('infotips');
 
     $block    = array();
     $onestory = new NewsStory();
@@ -40,7 +40,7 @@ function b_news_bigstory_show()
         foreach ($stories as $key => $story) {
             $htmltitle = '';
             if ($infotips > 0) {
-                $block['infotips'] = news_make_infotips($story->hometext());
+                $block['infotips'] = NewsUtility::makeInfotips($story->hometext());
                 $htmltitle         = ' title="' . $block['infotips'] . '"';
             } else {
                 $htmltitle = ' title="' . $story->title('Show') . '"';

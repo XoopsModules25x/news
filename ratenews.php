@@ -58,14 +58,14 @@
 
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 $myts = MyTextSanitizer::getInstance();
 
 // Verify the perms
 // 1) Is the vote activated in the module ?
-$ratenews = news_getmoduleoption('ratenews');
+$ratenews = NewsUtility::getModuleOption('ratenews');
 if (!$ratenews) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
@@ -154,9 +154,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     } else {
         // Check if ANONYMOUS user is trying to vote more than once per day.
         $yesterday = (time() - (86400 * $anonwaitdays));
-        $result    = $xoopsDB->query('SELECT COUNT(*) FROM '
-                                     . $xoopsDB->prefix('news_stories_votedata')
-                                     . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
+        $result    = $xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
         list($anonvotecount) = $xoopsDB->fetchRow($result);
         if ($anonvotecount >= 1) {
             redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
@@ -166,12 +164,11 @@ if (!empty($_POST['submit'])) { // The form was submited
     //All is well.  Add to Line Item Rate to DB.
     $newid    = $xoopsDB->genId($xoopsDB->prefix('news_stories_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid,
-                        $storyid, $ratinguser, $rating, $ip, $datetime);
+    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
     $xoopsDB->query($sql) || ErrorHandler::show('0013');
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
-    news_updaterating($storyid);
+    NewsUtility::updateRating($storyid);
     $ratemessage = _NW_VOTEAPPRE . '<br>' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
@@ -184,7 +181,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     } else {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _ERRORS);
     }
-    $xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
+    $xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
     $xoopsTpl->assign('news', array('storyid' => $storyid, 'title' => $title));
     $xoopsTpl->assign('lang_voteonce', _NW_VOTEONCE);
     $xoopsTpl->assign('lang_ratingscale', _NW_RATINGSCALE);
@@ -193,7 +190,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsTpl->assign('lang_rateit', _NW_RATEIT);
     $xoopsTpl->assign('lang_cancel', _CANCEL);
     $xoopsTpl->assign('xoops_pagetitle', $title . ' - ' . _NW_RATETHISNEWS . ' - ' . $xoopsModule->name('s'));
-    news_CreateMetaDatas();
+    NewsUtility::createMetaDatas();
     require_once XOOPS_ROOT_PATH . '/footer.php';
 }
 require_once XOOPS_ROOT_PATH . '/footer.php';

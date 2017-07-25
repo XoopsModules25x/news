@@ -36,7 +36,7 @@ function b_news_archives_show($options)
 {
     global $xoopsDB, $xoopsConfig;
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
@@ -66,14 +66,7 @@ function b_news_archives_show($options)
     } else {
         $ending_date = time();
     }
-    $sql    = "SELECT DISTINCT(FROM_UNIXTIME(published,'%Y-%m')) AS published FROM "
-              . $xoopsDB->prefix('news_stories')
-              . ' WHERE published>='
-              . $starting_date
-              . ' AND published<='
-              . $ending_date
-              . ' ORDER BY published '
-              . $sort_order;
+    $sql    = "SELECT DISTINCT(FROM_UNIXTIME(published,'%Y-%m')) AS published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date . ' ORDER BY published ' . $sort_order;
     $result = $xoopsDB->query($sql);
     if (!$result) {
         return '';

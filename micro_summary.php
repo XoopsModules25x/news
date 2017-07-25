@@ -17,7 +17,6 @@
  * @author         XOOPS Development Team
  */
 
-
 /*
  * Created on 28 oct. 2006
  *
@@ -33,12 +32,12 @@
  */
 include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-if (!news_getmoduleoption('firefox_microsummaries')) {
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+if (!NewsUtility::getModuleOption('firefox_microsummaries')) {
     exit();
 }
 $story      = new NewsStory();
-$restricted = news_getmoduleoption('restrictindex');
+$restricted = NewsUtility::getModuleOption('restrictindex');
 $sarray     = array();
 // Get the last news from all topics according to the module's restrictions
 $sarray = NewsStory::getAllPublished(1, 0, $restricted, 0);

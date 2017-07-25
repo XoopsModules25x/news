@@ -80,12 +80,12 @@ include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName = basename(__DIR__);
 xoops_load('utility', $moduleDirName);
-$module        = XoopsModule::getByDirname($moduleDirName);
+$module = XoopsModule::getByDirname($moduleDirName);
 
 $storytopic = 0;
 if (isset($_GET['storytopic'])) {
@@ -97,7 +97,7 @@ if (isset($_GET['storytopic'])) {
 }
 
 if ($storytopic) {
-    $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
     $gpermHandler = xoops_getHandler('groupperm');
     if (!$gpermHandler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
@@ -122,8 +122,7 @@ if (isset($_GET['start'])) {
 }
 
 if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] === 'Classic'
-    || $xoopsOption['storytopic'] > 0
-) {
+    || $xoopsOption['storytopic'] > 0) {
     $showclassic = 1;
 } else {
     $showclassic = 0;
@@ -159,18 +158,17 @@ if ($showclassic) {
     if ($xoopsModuleConfig['displaynav'] == 1) {
         $xoopsTpl->assign('displaynav', true);
 
-        $allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex']);
-        $topic_tree   = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+        $allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex']);
+        $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-        if (NewsUtility::checkVerXoops($module, '2.5.9')) {
-//            $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+        if (NewsUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
             $topic_select = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', $xoopsOption['storytopic'], true, 0, '', '');
+            $xoopsTpl->assign('topic_select', $topic_select->render());
         } else {
             $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+            $xoopsTpl->assign('topic_select', $topic_select);
         }
 
-
-        $xoopsTpl->assign('topic_select', $topic_select);
         $storynum_options = '';
         for ($i = 5; $i <= 30; $i += 5) {
             $sel = '';
@@ -206,7 +204,7 @@ if ($showclassic) {
                 $filescount = array_key_exists($thisstory->storyid(), $filesperstory) ? $filesperstory[$thisstory->storyid()] : 0;
                 $story      = $thisstory->prepare2show($filescount);
                 // The line below can be used to display a Permanent Link image
-                // $story['title'] .= "&nbsp;&nbsp;<a href='".XOOPS_URL."/modules/news/article.php?storyid=".$sarray[$i]->storyid()."'><img src='".XOOPS_URL."/modules/news/assets/images/x.gif' alt='Permanent Link' /></a>";
+                // $story['title'] .= "&nbsp;&nbsp;<a href='".XOOPS_URL."/modules/news/article.php?storyid=".$sarray[$i]->storyid()."'><img src='".XOOPS_URL."/modules/news/assets/images/x.gif' alt='Permanent Link'></a>";
                 $story['news_title']  = $story['title'];
                 $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
                 $story['topic_title'] = $thisstory->textlink();
@@ -229,7 +227,7 @@ if ($showclassic) {
     if ($totalcount > $scount) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
-        if (news_isbot()) { // A bot is reading the news, we are going to show it all the links so that he can read everything
+        if (NewsUtility::isBot()) { // A bot is reading the news, we are going to show it all the links so that he can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
         } else {
             $xoopsTpl->assign('pagenav', $pagenav->renderNav());
@@ -292,12 +290,12 @@ if ($showclassic) {
     $xoopsTpl->assign('columns', $columns);
 }
 
-$xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
+$xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
 
 /**
  * Create the Meta Datas
  */
-news_CreateMetaDatas();
+NewsUtility::createMetaDatas();
 
 /**
  * Create a clickable path from the root to the current topic (if we are viewing a topic)
@@ -319,8 +317,7 @@ if ($xoopsOption['storytopic']) {
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($xoopsModuleConfig['topicsrss'] && $xoopsOption['storytopic']) {
-    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED,
-                    \Xmf\Module\Admin::iconUrl('', 16) . '/rss.gif', _NW_RSSFEED);
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, \Xmf\Module\Admin::iconUrl('', 16) . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }
 

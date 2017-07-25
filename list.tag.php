@@ -27,8 +27,8 @@
  * @copyright (c) Herve Thouzard (http://www.herve-thouzard.com)
  */
 require_once __DIR__ . '/header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-if (!news_getmoduleoption('tags') || !xoops_isActiveModule('tag')) {
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+if (!NewsUtility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 require_once XOOPS_ROOT_PATH . '/modules/tag/list.tag.php';

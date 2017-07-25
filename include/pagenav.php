@@ -88,8 +88,7 @@ class XoopsPageNav
                 if ($counter == $current_page) {
                     $ret .= '<b>(' . $counter . ')</b> ';
                 } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1
-                          || $counter == $total_pages
-                ) {
+                          || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '... ';
                     }
@@ -138,7 +137,7 @@ class XoopsPageNav
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="' . _GO . '" />';
+                $ret .= '&nbsp;<input type="submit" value="' . _GO . '">';
             }
             $ret .= '</form>';
         }
@@ -181,7 +180,7 @@ class XoopsPageNav
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="' . _GO . '" />';
+                $ret .= '&nbsp;<input type="submit" value="' . _GO . '">';
             }
             $ret .= '</form>';
         }
@@ -207,7 +206,7 @@ class XoopsPageNav
             $ret  = '<table><tr>';
             $prev = $this->current - $this->perpage;
             if ($prev >= 0) {
-                $ret .= '<td class="pagneutral"><a href="' . $this->url . $prev . '">&lt;</a></td><td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt="" /></td>';
+                $ret .= '<td class="pagneutral"><a href="' . $this->url . $prev . '">&lt;</a></td><td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt=""></td>';
             }
             $counter      = 1;
             $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
@@ -215,8 +214,7 @@ class XoopsPageNav
                 if ($counter == $current_page) {
                     $ret .= '<td class="pagact"><b>' . $counter . '</b></td>';
                 } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1
-                          || $counter == $total_pages
-                ) {
+                          || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
@@ -229,7 +227,7 @@ class XoopsPageNav
             }
             $next = $this->current + $this->perpage;
             if ($this->total > $next) {
-                $ret .= '<td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt="" /></td><td class="pagneutral"><a href="' . $this->url . $next . '">&gt;</a></td>';
+                $ret .= '<td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt=""></td><td class="pagneutral"><a href="' . $this->url . $next . '">&gt;</a></td>';
             }
             $ret .= '</tr></table>';
         }

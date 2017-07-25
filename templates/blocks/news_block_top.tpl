@@ -906,7 +906,7 @@
                     <td colspan='2'>
                         <table border='0'>
                             <tr>
-                                <td><img src='<{$block.spotlight.topic_image}>' border='0' alt=''/></td>
+                                <td><img src='<{$block.spotlight.topic_image}>' border='0' alt=''></td>
                                 <td align='left'><{$block.spotlight.topic_description}></td>
                             </tr>
                         </table>
@@ -924,7 +924,7 @@
             </table>
             <br>
             <div style="text-align: center;">
-                <hr width='85%'/>
+                <hr width='85%'>
             </div>
             <ul>
                 <{foreach item=onenews from=$block.spotlight.news}>
@@ -934,7 +934,7 @@
         <{else}>
             <table border='0'>
                 <tr>
-                    <td><img src='<{$block.topic_image}>' border='0' alt=''/></td>
+                    <td><img src='<{$block.topic_image}>' border='0' alt=''></td>
                     <td align='left'><{$block.topic_description}></td>
                 </tr>
             </table>
@@ -961,7 +961,7 @@
                                 <table border='0'>
                                     <tr>
                                         <td><img src='<{$block.spotlight.topic_image}>' border='0'
-                                                 alt='<{$block.spotlight.title}>'/></td>
+                                                 alt='<{$block.spotlight.title}>'></td>
                                         <td align='left'><{$block.spotlight.topic_description}></td>
                                     </tr>
                                 </table>
@@ -982,11 +982,11 @@
                         <tr>
                             <td colspan='2'>
                                 <{if $block.spotlight.read_more}>
-                                    <hr width='98%'/>
+                                    <hr width='98%'>
                                     <div align='right'><a
                                                 href="<{$xoops_url}>/modules/news/article.php?storyid=<{$block.spotlight.id}>"><{$block.lang_read_more}></a>
                                         &nbsp;&nbsp;&nbsp;</div>
-                                    <hr width='98%'/>
+                                    <hr width='98%'>
                                 <{/if}>
                             </td>
                         </tr>

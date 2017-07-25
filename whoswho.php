@@ -30,24 +30,24 @@ include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
-if (!news_getmoduleoption('newsbythisauthor')) {
+if (!NewsUtility::getModuleOption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_whos_who.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-$option  = news_getmoduleoption('displayname');
+$option  = NewsUtility::getModuleOption('displayname');
 $article = new NewsStory();
 $uid_ids = array();
-$uid_ids = $article->getWhosWho(news_getmoduleoption('restrictindex'));
+$uid_ids = $article->getWhosWho(NewsUtility::getModuleOption('restrictindex'));
 if (count($uid_ids) > 0) {
-    $lst_uid        = implode(',', $uid_ids);
+    $lst_uid       = implode(',', $uid_ids);
     $memberHandler = xoops_getHandler('member');
-    $critere        = new Criteria('uid', '(' . $lst_uid . ')', 'IN');
-    $tbl_users      = $memberHandler->getUsers($critere);
+    $critere       = new Criteria('uid', '(' . $lst_uid . ')', 'IN');
+    $tbl_users     = $memberHandler->getUsers($critere);
     foreach ($tbl_users as $one_user) {
         $uname = '';
         switch ($option) {
@@ -71,12 +71,12 @@ if (count($uid_ids) > 0) {
     }
 }
 
-$xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
+$xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
 
 /**
  * Manage all the meta datas
  */
-news_CreateMetaDatas($article);
+NewsUtility::createMetaDatas($article);
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_WHOS_WHO);
 $myts             = MyTextSanitizer::getInstance();

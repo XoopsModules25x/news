@@ -25,12 +25,12 @@
 function b_news_topics_moderate()
 {
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     $block      = array();
-    $dateformat = news_getmoduleoption('dateformat');
-    $infotips   = news_getmoduleoption('infotips');
+    $dateformat = NewsUtility::getModuleOption('dateformat');
+    $infotips   = NewsUtility::getModuleOption('infotips');
 
-    $storyarray = NewsStory:: getAllSubmitted(0, true, news_getmoduleoption('restrictindex'));
+    $storyarray = NewsStory:: getAllSubmitted(0, true, NewsUtility::getModuleOption('restrictindex'));
     if (count($storyarray) > 0) {
         $block['lang_story_title']  = _MB_TITLE;
         $block['lang_story_date']   = _MB_POSTED;
@@ -42,7 +42,7 @@ function b_news_topics_moderate()
             $title     = $newstory->title();
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = news_make_infotips($newstory->hometext());
+                $story['infotips'] = NewsUtility::makeInfotips($newstory->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
 
@@ -55,19 +55,7 @@ function b_news_topics_moderate()
             $story['title']       = $linktitle;
             $story['date']        = formatTimestamp($newstory->created(), $dateformat);
             $story['author']      = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $newstory->uid() . "'>" . $newstory->uname() . '</a>';
-            $story['action']      = "<a href='"
-                                    . XOOPS_URL
-                                    . '/modules/news/admin/index.php?op=edit&amp;storyid='
-                                    . $newstory->storyid()
-                                    . "'>"
-                                    . _EDIT
-                                    . "</a> - <a href='"
-                                    . XOOPS_URL
-                                    . '/modules/news/admin/index.php?op=delete&amp;storyid='
-                                    . $newstory->storyid()
-                                    . "'>"
-                                    . _MB_DELETE
-                                    . '</a>';
+            $story['action']      = "<a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=edit&amp;storyid=' . $newstory->storyid() . "'>" . _EDIT . "</a> - <a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=delete&amp;storyid=' . $newstory->storyid() . "'>" . _MB_DELETE . '</a>';
             $story['topic_title'] = $newstory->topic_title();
             $story['topic_color'] = '#' . $myts->displayTarea($newstory->topic_color);
             $block['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();

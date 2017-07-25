@@ -34,12 +34,12 @@ include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
-if (!news_getmoduleoption('topicsrss')) {
+if (!NewsUtility::getModuleOption('topicsrss')) {
     exit();
 }
 
@@ -52,8 +52,8 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 
-$restricted = news_getmoduleoption('restrictindex');
-$newsnumber = news_getmoduleoption('storyhome');
+$restricted = NewsUtility::getModuleOption('restrictindex');
+$newsnumber = NewsUtility::getModuleOption('storyhome');
 
 $charset = 'utf-8';
 

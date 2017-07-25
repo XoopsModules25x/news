@@ -26,21 +26,21 @@
  */
 function b_news_topicsnav_show($options)
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $myts             = MyTextSanitizer::getInstance();
     $block            = array();
     $newscountbytopic = array();
     $perms            = '';
     $xt               = new NewsTopic();
-    $restricted       = news_getmoduleoption('restrictindex');
+    $restricted       = NewsUtility::getModuleOption('restrictindex');
     if ($restricted) {
         global $xoopsUser;
         /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gpermHandler = xoops_getHandler('groupperm');
+        $gpermHandler  = xoops_getHandler('groupperm');
         $topics        = $gpermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
         if (count($topics) > 0) {
             $topics = implode(',', $topics);
@@ -86,12 +86,12 @@ function b_news_topicsnav_edit($options)
     if ($options[0] == 1) {
         $form .= ' checked';
     }
-    $form .= ' />' . _YES;
+    $form .= '>' . _YES;
     $form .= "<input type='radio' name='options[]' value='0'";
     if ($options[0] == 0) {
         $form .= ' checked';
     }
-    $form .= ' />' . _NO;
+    $form .= '>' . _NO;
 
     return $form;
 }

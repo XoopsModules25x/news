@@ -19,12 +19,12 @@
 
 require_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
 if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     $errors = 0;
     // 1) Create, if it does not exists, the stories_files table
-    if (!news_TableExists($xoopsDB->prefix('news_stories_files'))) {
+    if (!NewsUtility::existTable($xoopsDB->prefix('news_stories_files'))) {
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (
               fileid INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
               filerealname VARCHAR(255) NOT NULL DEFAULT '',
@@ -51,24 +51,24 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     }
 
     // 2.1) Add the new fields to the topic table
-    if (!news_FieldExists('menu', $xoopsDB->prefix('news_topics'))) {
-        news_AddField("menu TINYINT( 1 ) DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_topics'));
+    if (!NewsUtility::existField('menu', $xoopsDB->prefix('news_topics'))) {
+        NewsUtility::addField("menu TINYINT( 1 ) DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_topics'));
     }
-    if (!news_FieldExists('topic_frontpage', $xoopsDB->prefix('news_topics'))) {
-        news_AddField("topic_frontpage TINYINT( 1 ) DEFAULT '1' NOT NULL", $xoopsDB->prefix('news_topics'));
+    if (!NewsUtility::existField('topic_frontpage', $xoopsDB->prefix('news_topics'))) {
+        NewsUtility::addField("topic_frontpage TINYINT( 1 ) DEFAULT '1' NOT NULL", $xoopsDB->prefix('news_topics'));
     }
-    if (!news_FieldExists('topic_rssurl', $xoopsDB->prefix('news_topics'))) {
-        news_AddField('topic_rssurl VARCHAR( 255 ) NOT NULL', $xoopsDB->prefix('news_topics'));
+    if (!NewsUtility::existField('topic_rssurl', $xoopsDB->prefix('news_topics'))) {
+        NewsUtility::addField('topic_rssurl VARCHAR( 255 ) NOT NULL', $xoopsDB->prefix('news_topics'));
     }
-    if (!news_FieldExists('topic_description', $xoopsDB->prefix('news_topics'))) {
-        news_AddField('topic_description TEXT NOT NULL', $xoopsDB->prefix('news_topics'));
+    if (!NewsUtility::existField('topic_description', $xoopsDB->prefix('news_topics'))) {
+        NewsUtility::addField('topic_description TEXT NOT NULL', $xoopsDB->prefix('news_topics'));
     }
-    if (!news_FieldExists('topic_color', $xoopsDB->prefix('news_topics'))) {
-        news_AddField("topic_color varchar(6) NOT NULL default '000000'", $xoopsDB->prefix('news_topics'));
+    if (!NewsUtility::existField('topic_color', $xoopsDB->prefix('news_topics'))) {
+        NewsUtility::addField("topic_color varchar(6) NOT NULL default '000000'", $xoopsDB->prefix('news_topics'));
     }
 
     // 3) If it does not exists, create the table stories_votedata
-    if (!news_TableExists($xoopsDB->prefix('news_stories_votedata'))) {
+    if (!NewsUtility::existTable($xoopsDB->prefix('news_stories_votedata'))) {
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_votedata') . " (
               ratingid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
               storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
@@ -88,23 +88,23 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     }
 
     // 4) Create the four new fields for the votes in the story table
-    if (!news_FieldExists('rating', $xoopsDB->prefix('news_stories'))) {
-        news_AddField("rating DOUBLE( 6, 4 ) DEFAULT '0.0000' NOT NULL", $xoopsDB->prefix('news_stories'));
+    if (!NewsUtility::existField('rating', $xoopsDB->prefix('news_stories'))) {
+        NewsUtility::addField("rating DOUBLE( 6, 4 ) DEFAULT '0.0000' NOT NULL", $xoopsDB->prefix('news_stories'));
     }
-    if (!news_FieldExists('votes', $xoopsDB->prefix('news_stories'))) {
-        news_AddField("votes INT( 11 ) UNSIGNED DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_stories'));
+    if (!NewsUtility::existField('votes', $xoopsDB->prefix('news_stories'))) {
+        NewsUtility::addField("votes INT( 11 ) UNSIGNED DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_stories'));
     }
-    if (!news_FieldExists('keywords', $xoopsDB->prefix('news_stories'))) {
-        news_AddField('keywords VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!NewsUtility::existField('keywords', $xoopsDB->prefix('news_stories'))) {
+        NewsUtility::addField('keywords VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
-    if (!news_FieldExists('description', $xoopsDB->prefix('news_stories'))) {
-        news_AddField('description VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!NewsUtility::existField('description', $xoopsDB->prefix('news_stories'))) {
+        NewsUtility::addField('description VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
-    if (!news_FieldExists('pictureinfo', $xoopsDB->prefix('news_stories'))) {
-        news_AddField('pictureinfo VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!NewsUtility::existField('pictureinfo', $xoopsDB->prefix('news_stories'))) {
+        NewsUtility::addField('pictureinfo VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
-    if (!news_FieldExists('subtitle', $xoopsDB->prefix('news_stories'))) {
-        news_AddField('subtitle VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!NewsUtility::existField('subtitle', $xoopsDB->prefix('news_stories'))) {
+        NewsUtility::addField('subtitle VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
 
     // 5) Add some indexes to the topics table

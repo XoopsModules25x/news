@@ -73,7 +73,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 $lastyear  = 0;
 $lastmonth = 0;
 
@@ -99,9 +99,9 @@ $pgtitle = '';
 if ($fromyear && $frommonth) {
     $pgtitle = sprintf(' - %d - %d', $fromyear, $frommonth);
 }
-$infotips   = news_getmoduleoption('infotips');
-$restricted = news_getmoduleoption('restrictindex');
-$dateformat = news_getmoduleoption('dateformat');
+$infotips   = NewsUtility::getModuleOption('infotips');
+$restricted = NewsUtility::getModuleOption('restrictindex');
+$dateformat = NewsUtility::getModuleOption('dateformat');
 if ($dateformat === '') {
     $dateformat = 'm';
 }
@@ -117,13 +117,7 @@ if (is_object($xoopsUser)) {
         $useroffset = $xoopsConfig['default_TZ'];
     }
 }
-$result = $xoopsDB->query('SELECT published FROM '
-                          . $xoopsDB->prefix('news_stories')
-                          . ' WHERE (published>0 AND published<='
-                          . time()
-                          . ') AND (expired = 0 OR expired <= '
-                          . time()
-                          . ') ORDER BY published DESC');
+$result = $xoopsDB->query('SELECT published FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired <= ' . time() . ') ORDER BY published DESC');
 if (!$result) {
     echo _ERRORS;
     exit();
@@ -188,7 +182,7 @@ if ($fromyear != 0 && $frommonth != 0) {
             $story     = array();
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = news_make_infotips($article->hometext());
+                $story['infotips'] = NewsUtility::makeInfotips($article->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
             $story['title']      = "<a href='"
@@ -209,16 +203,7 @@ if ($fromyear != 0 && $frommonth != 0) {
             $story['counter']    = $article->counter();
             $story['date']       = formatTimestamp($article->published(), $dateformat, $useroffset);
             $story['print_link'] = XOOPS_URL . '/modules/news/print.php?storyid=' . $article->storyid();
-            $story['mail_link']  = 'mailto:?subject='
-                                   . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename'])
-                                   . '&amp;body='
-                                   . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename'])
-                                   . ':  '
-                                   . XOOPS_URL
-                                   . '/modules/'
-                                   . $xoopsModule->dirname()
-                                   . '/article.php?storyid='
-                                   . $article->storyid();
+            $story['mail_link']  = 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $article->storyid();
             $xoopsTpl->append('stories', $story);
         }
     }
@@ -234,6 +219,6 @@ $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 /**
  * Create the meta datas
  */
-news_CreateMetaDatas();
+NewsUtility::createMetaDatas();
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

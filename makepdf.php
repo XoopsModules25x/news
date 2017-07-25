@@ -25,7 +25,7 @@ require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.p
 
 $myts = MyTextSanitizer::getInstance();
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 
 if (empty($storyid)) {
@@ -53,14 +53,14 @@ if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoops
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
-$dateformat               = news_getmoduleoption('dateformat');
+$dateformat               = NewsUtility::getModuleOption('dateformat');
 $article_data             = $article->hometext() . $article->bodytext();
 $article_title            = $article->title();
-$article_title            = news_html2text($myts->undoHtmlSpecialChars($article_title));
+$article_title            = NewsUtility::html2text($myts->undoHtmlSpecialChars($article_title));
 $forumdata['topic_title'] = $article_title;
 $pdf_data['title']        = $article->title();
 $topic_title              = $article->topic_title();
-$topic_title              = news_html2text($myts->undoHtmlSpecialChars($topic_title));
+$topic_title              = NewsUtility::html2text($myts->undoHtmlSpecialChars($topic_title));
 $pdf_data['subtitle']     = $topic_title;
 $pdf_data['subsubtitle']  = $article->subtitle();
 $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);
@@ -114,7 +114,7 @@ $pdf->writeHTML($pdf_data['title'] . ' - ' . $pdf_data['subtitle'], K_TITLE_MAGN
 //$pdf->Line(25,20,190,20);
 if ($pdf_data['subsubtitle'] !== '') {
     $pdf->writeHTML($puff, K_XSMALL_RATIO);
-//    $pdf->SetFont(PDF_FONT_NAME_SUBSUB, PDF_FONT_STYLE_SUBSUB, PDF_FONT_SIZE_SUBSUB);
+    //    $pdf->SetFont(PDF_FONT_NAME_SUBSUB, PDF_FONT_STYLE_SUBSUB, PDF_FONT_SIZE_SUBSUB);
     $pdf->writeHTML($pdf_data['subsubtitle'], '1');
 }
 $pdf->writeHTML($puff, '0.2');
@@ -129,7 +129,6 @@ $pdf->writeHTML($puffer, '1');
 //$pdf->SetFont(PDF_FONT_NAME_MAIN, PDF_FONT_STYLE_MAIN, PDF_FONT_SIZE_MAIN);
 $pdf->writeHTML($pdf_data['content'], $pdf_config['scale']);
 
-
 //2.5.8
 $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
@@ -140,8 +139,5 @@ $pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
 $pdf->Open();
 $pdf->AddPage();
 $pdf->writeHTML($content, true, 0, true, 0);
-
-
-
 
 $pdf->Output();

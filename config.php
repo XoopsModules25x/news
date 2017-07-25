@@ -1,7 +1,7 @@
 <?php
 //  ------------------------------------------------------------------------ //
 //                  Copyright (c) 2005-2006 Herve Thouzard                     //
-//                     <http://www.herve-thouzard.com/>                      //
+//                     <http://www.herve-thouzard.com>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //

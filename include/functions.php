@@ -31,6 +31,7 @@
  *
  * @return bool
  */
+
 use WideImage\WideImage;
 
 /**
@@ -49,15 +50,14 @@ function news_getmoduleoption($option, $repmodule = 'news')
     $retval = false;
     if (isset($xoopsModuleConfig)
         && (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $repmodule
-            && $xoopsModule->getVar('isactive'))
-    ) {
+            && $xoopsModule->getVar('isactive'))) {
         if (isset($xoopsModuleConfig[$option])) {
             $retval = $xoopsModuleConfig[$option];
         }
     } else {
         /** @var XoopsModuleHandler $moduleHandler */
-        $moduleHandler  = xoops_getHandler('module');
-        $module         = $moduleHandler->getByDirname($repmodule);
+        $moduleHandler = xoops_getHandler('module');
+        $module        = $moduleHandler->getByDirname($repmodule);
         $configHandler = xoops_getHandler('config');
         if ($module) {
             $moduleConfig = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
@@ -120,7 +120,7 @@ function news_MygetItemIds($permtype = 'news_view')
     $moduleHandler       = xoops_getHandler('module');
     $newsModule          = $moduleHandler->getByDirname('news');
     $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gpermHandler       = xoops_getHandler('groupperm');
+    $gpermHandler        = xoops_getHandler('groupperm');
     $topics              = $gpermHandler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
     $tblperms[$permtype] = $topics;
 
@@ -142,7 +142,7 @@ function news_html2text($document)
 
     $search = array(
         "'<script[^>]*?>.*?</script>'si", // Strip out javascript
-        "'<img.*?/>'si", // Strip out img tags
+        "'<img.*?>'si", // Strip out img tags
         "'<[\/\!]*?[^<>]*?>'si", // Strip out HTML tags
         "'([\r\n])[\s]+'", // Strip out white space
         "'&(quot|#34);'i", // Replace HTML entities
@@ -318,12 +318,12 @@ function news_CreateMetaDatas($story = null)
      * Firefox and Opera Navigation's Bar
      */
     if (news_getmoduleoption('sitenavbar')) {
-        $content .= sprintf("<link rel=\"Home\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'], XOOPS_URL);
-        $content .= sprintf("<link rel=\"Contents\" href=\"%s\" />\n", XOOPS_URL . '/modules/news/index.php');
-        $content .= sprintf("<link rel=\"Search\" href=\"%s\" />\n", XOOPS_URL . '/search.php');
-        $content .= sprintf("<link rel=\"Glossary\" href=\"%s\" />\n", XOOPS_URL . '/modules/news/archive.php');
-        $content .= sprintf("<link rel=\"%s\" href=\"%s\" />\n", $myts->htmlSpecialChars(_NW_SUBMITNEWS), XOOPS_URL . '/modules/news/submit.php');
-        $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\" />\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
+        $content .= sprintf("<link rel=\"Home\" title=\"%s\" href=\"%s/\">\n", $xoopsConfig['sitename'], XOOPS_URL);
+        $content .= sprintf("<link rel=\"Contents\" href=\"%s\">\n", XOOPS_URL . '/modules/news/index.php');
+        $content .= sprintf("<link rel=\"Search\" href=\"%s\">\n", XOOPS_URL . '/search.php');
+        $content .= sprintf("<link rel=\"Glossary\" href=\"%s\">\n", XOOPS_URL . '/modules/news/archive.php');
+        $content .= sprintf("<link rel=\"%s\" href=\"%s\">\n", $myts->htmlSpecialChars(_NW_SUBMITNEWS), XOOPS_URL . '/modules/news/submit.php');
+        $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\">\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
 
         // Create chapters
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
@@ -333,7 +333,7 @@ function news_CreateMetaDatas($story = null)
         $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         foreach ($topics_arr as $onetopic) {
-            $content .= sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\" />\n", $onetopic->topic_title(), XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
+            $content .= sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\">\n", $onetopic->topic_title(), XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
         }
     }
 
@@ -366,21 +366,21 @@ function news_CreateMetaDatas($story = null)
      * Dublin Core's meta datas
      */
     if (news_getmoduleoption('dublincore') && isset($story) && is_object($story)) {
-        $configHandler        = xoops_getHandler('config');
+        $configHandler         = xoops_getHandler('config');
         $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
-        $content               .= '<meta name="DC.Title" content="' . DublinQuotes($story->title()) . "\" />\n";
-        $content               .= '<meta name="DC.Creator" content="' . DublinQuotes($story->uname()) . "\" />\n";
-        $content               .= '<meta name="DC.Subject" content="' . DublinQuotes($meta_keywords) . "\" />\n";
-        $content               .= '<meta name="DC.Description" content="' . DublinQuotes($story->title()) . "\" />\n";
-        $content               .= '<meta name="DC.Publisher" content="' . DublinQuotes($xoopsConfig['sitename']) . "\" />\n";
-        $content               .= '<meta name="DC.Date.created" scheme="W3CDTF" content="' . date('Y-m-d', $story->created) . "\" />\n";
-        $content               .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . date('Y-m-d', $story->published) . "\" />\n";
-        $content               .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\" />\n";
-        $content               .= '<meta name="DC.Source" content="' . XOOPS_URL . "\" />\n";
-        $content               .= '<meta name="DC.Language" content="' . _LANGCODE . "\" />\n";
-        $content               .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\" />\n";
+        $content               .= '<meta name="DC.Title" content="' . NewsUtility::getDublinQuotes($story->title()) . "\">\n";
+        $content               .= '<meta name="DC.Creator" content="' . NewsUtility::getDublinQuotes($story->uname()) . "\">\n";
+        $content               .= '<meta name="DC.Subject" content="' . NewsUtility::getDublinQuotes($meta_keywords) . "\">\n";
+        $content               .= '<meta name="DC.Description" content="' . NewsUtility::getDublinQuotes($story->title()) . "\">\n";
+        $content               .= '<meta name="DC.Publisher" content="' . NewsUtility::getDublinQuotes($xoopsConfig['sitename']) . "\">\n";
+        $content               .= '<meta name="DC.Date.created" scheme="W3CDTF" content="' . date('Y-m-d', $story->created) . "\">\n";
+        $content               .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . date('Y-m-d', $story->published) . "\">\n";
+        $content               .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\">\n";
+        $content               .= '<meta name="DC.Source" content="' . XOOPS_URL . "\">\n";
+        $content               .= '<meta name="DC.Language" content="' . _LANGCODE . "\">\n";
+        $content               .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\">\n";
         if (isset($xoopsConfigMetaFooter['meta_copyright'])) {
-            $content .= '<meta name="DC.Rights" content="' . DublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\" />\n";
+            $content .= '<meta name="DC.Rights" content="' . NewsUtility::getDublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\">\n";
         }
     }
 
@@ -388,7 +388,7 @@ function news_CreateMetaDatas($story = null)
      * Firefox 2 micro summaries
      */
     if (news_getmoduleoption('firefox_microsummaries')) {
-        $content .= sprintf("<link rel=\"microsummary\" href=\"%s\" />\n", XOOPS_URL . '/modules/news/micro_summary.php');
+        $content .= sprintf("<link rel=\"microsummary\" href=\"%s\">\n", XOOPS_URL . '/modules/news/micro_summary.php');
     }
 
     if (isset($xoopsTpl) && is_object($xoopsTpl)) {
@@ -429,7 +429,7 @@ function news_createmeta_keywords($content)
     if (isset($_SESSION['news_keywords_limit'])) {
         $limit = $_SESSION['news_keywords_limit'];
     } else {
-        $configHandler                  = xoops_getHandler('config');
+        $configHandler                   = xoops_getHandler('config');
         $xoopsConfigSearch               = $configHandler->getConfigsByCat(XOOPS_CONF_SEARCH);
         $limit                           = $xoopsConfigSearch['keyword_min'];
         $_SESSION['news_keywords_limit'] = $limit;
@@ -555,8 +555,8 @@ function news_updateCache()
     require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     $tplfileHandler = xoops_getHandler('tplfile');
-    $tpllist         = $tplfileHandler->find(null, null, null, $folder);
-    $xoopsTpl        = new XoopsTpl();
+    $tpllist        = $tplfileHandler->find(null, null, null, $folder);
+    $xoopsTpl       = new XoopsTpl();
     xoops_template_clear_module_cache($xoopsModule->getVar('mid')); // Clear module's blocks cache
 
     // Remove cache for each page.
