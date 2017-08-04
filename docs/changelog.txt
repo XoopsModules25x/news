@@ -658,7 +658,7 @@ Modifications :
 - There was a small error in the "BigStory" template (a </a> was missing)
 - It was possible to edit an article you don't have the right to edit.
 - Some minors modifications following this post about xhtml compliance :
-  http://www.xoops.org/modules/newbb/viewtopic.php?topic_id=22849&forum=11
+  https://xoops.org/modules/newbb/viewtopic.php?topic_id=22849&forum=11
 
 
 

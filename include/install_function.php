@@ -64,9 +64,9 @@ function xoops_module_install_news(XoopsModule $xoopsModule)
     $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news';
-//    if (!is_dir($dir)) {
-//        mkdir($dir, 0777);
-//    }
+    //    if (!is_dir($dir)) {
+    //        mkdir($dir, 0777);
+    //    }
 
     if (!@mkdir($dir) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
