@@ -129,8 +129,8 @@ $xoopsTpl->assign('author_name_with_link', sprintf("<a href='%s'>%s</a>", XOOPS_
 $oldtopic      = -1;
 $oldtopictitle = '';
 $oldtopiccolor = '';
-$articlelist   = array();
-$articlestpl   = array();
+$articlelist   = [];
+$articlestpl   = [];
 $articlelist   = $articles->getAllPublishedByAuthor($uid, $xoopsModuleConfig['restrictindex'], false);
 $articlescount = count($articlelist);
 $xoopsTpl->assign('articles_count', $articlescount);
@@ -141,7 +141,7 @@ if ($articlescount > 0) {
         if ($oldtopic != $article['topicid']) {
             if (count($articlestpl) > 0) {
                 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-                $xoopsTpl->append('topics', array(
+                $xoopsTpl->append('topics', [
                     'topic_id'             => $oldtopic,
                     'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
                     'topic_count_reads'    => $count_reads,
@@ -149,12 +149,12 @@ if ($articlescount > 0) {
                     'topic_title'          => $oldtopictitle,
                     'topic_link'           => $topic_link,
                     'news'                 => $articlestpl
-                ));
+                ]);
             }
             $oldtopic       = $article['topicid'];
             $oldtopictitle  = $article['topic_title'];
             $oldtopiccolor  = '#' . $myts->displayTarea($article['topic_color']);
-            $articlestpl    = array();
+            $articlestpl    = [];
             $count_articles = $count_reads = 0;
         }
         $htmltitle = '';
@@ -163,7 +163,7 @@ if ($articlescount > 0) {
         }
         ++$count_articles;
         $count_reads   += $article['counter'];
-        $articlestpl[] = array(
+        $articlestpl[] = [
             'id'           => $article['storyid'],
             'hometext'     => $article['hometext'],
             'title'        => $article['title'],
@@ -172,16 +172,16 @@ if ($articlescount > 0) {
             'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle, $article['title']),
             'published'    => formatTimestamp($article['published'], $dateformat),
             'rating'       => $article['rating']
-        );
+        ];
     }
 }
 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-$xoopsTpl->append('topics', array(
+$xoopsTpl->append('topics', [
     'topic_id'    => $oldtopic,
     'topic_title' => $oldtopictitle,
     'topic_link'  => $topic_link,
     'news'        => $articlestpl
-));
+]);
 $xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
 $xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
 

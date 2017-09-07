@@ -191,9 +191,9 @@ if ($showclassic) {
     $scount = count($sarray);
     $xoopsTpl->assign('story_count', $scount);
     $k       = 0;
-    $columns = array();
+    $columns = [];
     if ($scount > 0) {
-        $storieslist = array();
+        $storieslist = [];
         foreach ($sarray as $storyid => $thisstory) {
             $storieslist[] = $thisstory->storyid();
         }
@@ -249,12 +249,12 @@ if ($showclassic) {
 
     $xt            = new NewsTopic();
     $alltopics     = $xt->getTopicsList(true, $xoopsModuleConfig['restrictindex']);
-    $smarty_topics = array();
-    $topicstories  = array();
+    $smarty_topics = [];
+    $topicstories  = [];
 
     foreach ($alltopics as $topicid => $topic) {
         $allstories  = NewsStory::getAllPublished($xoopsModuleConfig['storyhome'], 0, $xoopsModuleConfig['restrictindex'], $topicid);
-        $storieslist = array();
+        $storieslist = [];
         foreach ($allstories as $thisstory) {
             $storieslist[] = $thisstory->storyid();
         }
@@ -267,17 +267,17 @@ if ($showclassic) {
             $topicstories[$topicid][] = $story;
         }
         if (isset($topicstories[$topicid])) {
-            $smarty_topics[$topicstories[$topicid][0]['posttimestamp']] = array(
+            $smarty_topics[$topicstories[$topicid][0]['posttimestamp']] = [
                 'title'       => $topic['title'],
                 'stories'     => $topicstories[$topicid],
                 'id'          => $topicid,
                 'topic_color' => $topic['color']
-            );
+            ];
         }
     }
 
     krsort($smarty_topics);
-    $columns = array();
+    $columns = [];
     $i       = 0;
     foreach ($smarty_topics as $thistopictimestamp => $thistopic) {
         $columns[$i][] = $thistopic;

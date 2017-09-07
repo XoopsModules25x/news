@@ -77,7 +77,7 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 $lastyear  = 0;
 $lastmonth = 0;
 
-$months_arr = array(
+$months_arr = [
     1  => _CAL_JANUARY,
     2  => _CAL_FEBRUARY,
     3  => _CAL_MARCH,
@@ -90,7 +90,7 @@ $months_arr = array(
     10 => _CAL_OCTOBER,
     11 => _CAL_NOVEMBER,
     12 => _CAL_DECEMBER
-);
+];
 
 $fromyear  = isset($_GET['year']) ? (int)$_GET['year'] : 0;
 $frommonth = isset($_GET['month']) ? (int)$_GET['month'] : 0;
@@ -122,8 +122,8 @@ if (!$result) {
     echo _ERRORS;
     exit();
 } else {
-    $years  = array();
-    $months = array();
+    $years  = [];
+    $months = [];
     $i      = 0;
     while (list($time) = $xoopsDB->fetchRow($result)) {
         $time = formatTimestamp($time, 'mysql', $useroffset);
@@ -141,7 +141,7 @@ if (!$result) {
             if ($lastyear != $this_year) {
                 $years[$i]['number'] = $lastyear;
                 $years[$i]['months'] = $months;
-                $months              = array();
+                $months              = [];
                 $lastmonth           = 0;
                 $lastyear            = $this_year;
                 ++$i;
@@ -179,7 +179,7 @@ if ($fromyear != 0 && $frommonth != 0) {
     $count      = count($storyarray);
     if (is_array($storyarray) && $count > 0) {
         foreach ($storyarray as $article) {
-            $story     = array();
+            $story     = [];
             $htmltitle = '';
             if ($infotips > 0) {
                 $story['infotips'] = NewsUtility::makeInfotips($article->hometext());

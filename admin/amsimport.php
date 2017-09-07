@@ -82,7 +82,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // Misc
         $commentHandler      = xoops_getHandler('comment');
         $notificationHandler = xoops_getHandler('notification');
-        $ams_news_topics     = array(); // Key => AMS Id,  Value => News ID
+        $ams_news_topics     = []; // Key => AMS Id,  Value => News ID
 
         // The import by itself
         // Read topics by their order

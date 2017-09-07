@@ -18,7 +18,7 @@
  * @author         Hervé Thouzard (http://www.herve-thouzard.com)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Returns a module's option
@@ -42,7 +42,7 @@ use WideImage\WideImage;
 function news_getmoduleoption($option, $repmodule = 'news')
 {
     global $xoopsModuleConfig, $xoopsModule;
-    static $tbloptions = array();
+    static $tbloptions = [];
     if (is_array($tbloptions) && array_key_exists($option, $tbloptions)) {
         return $tbloptions[$option];
     }
@@ -111,7 +111,7 @@ function news_updaterating($storyid)
 function news_MygetItemIds($permtype = 'news_view')
 {
     global $xoopsUser;
-    static $tblperms = array();
+    static $tblperms = [];
     if (is_array($tblperms) && array_key_exists($permtype, $tblperms)) {
         return $tblperms[$permtype];
     }
@@ -140,7 +140,7 @@ function news_html2text($document)
     // and white space. It will also convert some
     // common HTML entities to their text equivalent.
 
-    $search = array(
+    $search = [
         "'<script[^>]*?>.*?</script>'si", // Strip out javascript
         "'<img.*?>'si", // Strip out img tags
         "'<[\/\!]*?[^<>]*?>'si", // Strip out HTML tags
@@ -154,9 +154,9 @@ function news_html2text($document)
         "'&(cent|#162);'i",
         "'&(pound|#163);'i",
         "'&(copy|#169);'i"
-    ); // evaluate as php
+    ]; // evaluate as php
 
-    $replace = array(
+    $replace = [
         '',
         '',
         '',
@@ -170,7 +170,7 @@ function news_html2text($document)
         chr(162),
         chr(163),
         chr(169),
-    );
+    ];
 
     $text = preg_replace($search, $replace, $document);
 
@@ -215,7 +215,7 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
 {
     $editor_option            = strtolower(news_getmoduleoption('form_options'));
     $editor                   = false;
-    $editor_configs           = array();
+    $editor_configs           = [];
     $editor_configs['name']   = $name;
     $editor_configs['value']  = $value;
     $editor_configs['rows']   = 35;
@@ -259,13 +259,13 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
         case 'tinymce':
             if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                 require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
-                $editor = new XoopsFormTinyeditorTextArea(array(
+                $editor = new XoopsFormTinyeditorTextArea([
                                                               'caption' => $caption,
                                                               'name'    => $name,
                                                               'value'   => $value,
                                                               'width'   => '100%',
                                                               'height'  => '400px'
-                                                          ));
+                                                          ]);
             }
             break;
 
@@ -424,7 +424,7 @@ function news_createmeta_keywords($content)
         $keywordsorder = $cfg['meta_keywords_order'];
     }
 
-    $tmp = array();
+    $tmp = [];
     // Search for the "Minimum keyword length"
     if (isset($_SESSION['news_keywords_limit'])) {
         $limit = $_SESSION['news_keywords_limit'];
@@ -439,7 +439,7 @@ function news_createmeta_keywords($content)
     $content         = $myts->undoHtmlSpecialChars($content);
     $content         = strip_tags($content);
     $content         = strtolower($content);
-    $search_pattern  = array(
+    $search_pattern  = [
         '&nbsp;',
         "\t",
         "\r\n",
@@ -467,8 +467,8 @@ function news_createmeta_keywords($content)
         '_',
         '\\',
         '*'
-    );
-    $replace_pattern = array(
+    ];
+    $replace_pattern = [
         ' ',
         ' ',
         ' ',
@@ -496,7 +496,7 @@ function news_createmeta_keywords($content)
         '',
         '',
         ''
-    );
+    ];
     $content         = str_replace($search_pattern, $replace_pattern, $content);
     $keywords        = explode(' ', $content);
     switch ($keywordsorder) {
@@ -551,7 +551,7 @@ function news_updateCache()
 {
     global $xoopsModule;
     $folder  = $xoopsModule->getVar('dirname');
-    $tpllist = array();
+    $tpllist = [];
     require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     $tplfileHandler = xoops_getHandler('tplfile');
@@ -563,7 +563,7 @@ function news_updateCache()
     foreach ($tpllist as $onetemplate) {
         if ($onetemplate->getVar('tpl_type') === 'module') {
             // Note, I've been testing all the other methods (like the one of Smarty) and none of them run, that's why I have used this code
-            $files_del = array();
+            $files_del = [];
             $files_del = glob(XOOPS_CACHE_PATH . '/*' . $onetemplate->getVar('tpl_file') . '*');
             if (count($files_del) > 0) {
                 foreach ($files_del as $one_file) {
@@ -716,7 +716,7 @@ function news_close_tags($string)
         $start_tags = $start_tags[1];
         // match closed tags
         if (preg_match_all('/<\/([a-z]+)>/', $string, $end_tags)) {
-            $complete_tags = array();
+            $complete_tags = [];
             $end_tags      = $end_tags[1];
 
             foreach ($start_tags as $key => $val) {

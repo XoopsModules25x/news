@@ -96,13 +96,13 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
             $storytitle = $story->title();
             //if we are allowing html, we need to use htmlspecialchars or any bug will break the output
             $description = htmlspecialchars($story->hometext());
-            $tpl->append('items', array(
+            $tpl->append('items', [
                 'title'       => xoops_utf8_encode($storytitle),
                 'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'pubdate'     => formatTimestamp($story->published(), 'rss'),
                 'description' => xoops_utf8_encode($description)
-            ));
+            ]);
         }
     }
 }

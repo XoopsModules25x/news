@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @param $queryarray
@@ -71,7 +71,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
 
     $sql    .= 'ORDER BY created DESC';
     $result = $xoopsDB->query($sql, $limit, $offset);
-    $ret    = array();
+    $ret    = [];
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $display = true;

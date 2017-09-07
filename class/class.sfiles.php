@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.mimetype.php';
 
@@ -118,7 +118,7 @@ class sFiles
      */
     public function getAllbyStory($storyid)
     {
-        $ret    = array();
+        $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
         while ($myrow = $this->db->fetchArray($result)) {
@@ -389,7 +389,7 @@ class sFiles
      */
     public function getCountbyStories($stories)
     {
-        $ret = array();
+        $ret = [];
         if (count($stories) > 0) {
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
             $sql    .= implode(',', $stories) . ') GROUP BY storyid';

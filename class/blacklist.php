@@ -22,7 +22,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class news_blacklist
@@ -36,7 +36,7 @@ class news_blacklist
      */
     public function getAllKeywords()
     {
-        $ret      = $tbl_black_list = array();
+        $ret      = $tbl_black_list = [];
         $myts     = MyTextSanitizer::getInstance();
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
@@ -102,7 +102,7 @@ class news_blacklist
      */
     public function remove_blacklisted($keywords)
     {
-        $ret       = array();
+        $ret       = [];
         $tmp_array = array_values($this->keywords);
         foreach ($keywords as $onekeyword) {
             $add = true;

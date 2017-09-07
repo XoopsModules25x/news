@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-//defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+//defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 if (!defined('XOOPS_ROOT_PATH')) {
     include __DIR__ . '/../../mainfile.php';
 }
@@ -446,7 +446,7 @@ switch ($op) {
                 if (xoops_trim($fldname !== '')) {
                     $sfiles         = new sFiles();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
-                    $permittedtypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png');
+                    $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
                     $uploader       = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
                     $uploader->setTargetFileName($destname);
                     if ($uploader->fetchMedia($_POST['xoops_upload_file'][1])) {
@@ -482,7 +482,7 @@ switch ($op) {
                 //  Notification
                 // TODO: modifier afin qu'en cas de pr�publication, la notification ne se fasse pas
                 $notificationHandler = xoops_getHandler('notification');
-                $tags                = array();
+                $tags                = [];
                 $tags['STORY_NAME']  = $story->title();
                 $tags['STORY_URL']   = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/article.php?storyid=' . $story->storyid();
                 // If notify checkbox is set, add subscription for approve

@@ -38,7 +38,7 @@ if (!NewsUtility::getModuleOption('firefox_microsummaries')) {
 }
 $story      = new NewsStory();
 $restricted = NewsUtility::getModuleOption('restrictindex');
-$sarray     = array();
+$sarray     = [];
 // Get the last news from all topics according to the module's restrictions
 $sarray = NewsStory::getAllPublished(1, 0, $restricted, 0);
 if (count($sarray) > 0) {

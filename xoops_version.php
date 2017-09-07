@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.72;
@@ -46,7 +46,7 @@ $modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array('mysql' => '5.5');
+$modversion['min_db']              = ['mysql' => '5.5'];
 
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
@@ -55,19 +55,19 @@ $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 //$modversion['tables'][1] = 'news_topics';
 //$modversion['tables'][2] = 'news_stories_files';
 //$modversion['tables'][3] = 'news_stories_votedata';
-$modversion['tables'] = array(
+$modversion['tables'] = [
     $moduleDirName . '_' . 'stories',
     $moduleDirName . '_' . 'topics',
     $moduleDirName . '_' . 'stories_files',
     $moduleDirName . '_' . 'stories_votedata',
-);
+];
 
-$modversion['helpsection'] = array(
+$modversion['helpsection'] = [
     ['name' => _MI_NEWS_OVERVIEW, 'link' => 'page=help'],
     ['name' => _MI_NEWS_DISCLAIMER, 'link' => 'page=disclaimer'],
     ['name' => _MI_NEWS_LICENSE, 'link' => 'page=license'],
     ['name' => _MI_NEWS_SUPPORT, 'link' => 'page=support'],
-);
+];
 
 // Scripts to run upon installation or update
 //$modversion['onInstall']['file'] = "include/install_function.php";
@@ -296,7 +296,7 @@ $modversion['config'][$i]['description'] = '_MI_STORYHOMEDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 5;
-$modversion['config'][$i]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30);
+$modversion['config'][$i]['options']     = ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30];
 
 /**
  * Format of the date to use in the module, if you don't specify anything then the default date's format will be used
@@ -352,7 +352,7 @@ $modversion['config'][$i]['description'] = '_MI_NEWSDISPLAYDESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'Classic';
-$modversion['config'][$i]['options']     = array('_MI_NEWSCLASSIC' => 'Classic', '_MI_NEWSBYTOPIC' => 'Bytopic');
+$modversion['config'][$i]['options']     = ['_MI_NEWSCLASSIC' => 'Classic', '_MI_NEWSBYTOPIC' => 'Bytopic'];
 
 /**
  * How to display Author's name, username, full name or nothing ?
@@ -364,11 +364,11 @@ $modversion['config'][$i]['description'] = '_MI_ADISPLAYNAMEDSC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 1;
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     '_MI_DISPLAYNAME1' => 1,
     '_MI_DISPLAYNAME2' => 2,
     '_MI_DISPLAYNAME3' => 3
-);
+];
 
 /**
  * Number of columns to use to display news
@@ -380,7 +380,7 @@ $modversion['config'][$i]['description'] = '_MI_COLUMNMODE_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 1;
-$modversion['config'][$i]['options']     = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5);
+$modversion['config'][$i]['options']     = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5];
 
 /**
  * Number of news and topics to display in the module's admin part
@@ -392,7 +392,7 @@ $modversion['config'][$i]['description'] = '_MI_STORYCOUNTADMIN_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 10;
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     '5'  => 5,
     '10' => 10,
     '15' => 15,
@@ -401,7 +401,7 @@ $modversion['config'][$i]['options']     = array(
     '30' => 30,
     '35' => 35,
     '40' => 40
-);
+];
 
 /**
  * Authorized groups to upload
@@ -413,11 +413,11 @@ $modversion['config'][$i]['description'] = '_MI_UPLOADGROUPS_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 2;
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     '_MI_UPLOAD_GROUP1' => 1,
     '_MI_UPLOAD_GROUP2' => 2,
     '_MI_UPLOAD_GROUP3' => 3
-);
+];
 
 /**
  * MAX Filesize Upload in kilo bytes
@@ -613,7 +613,7 @@ $modversion['config'][$i]['title']       = '_MI_NEWS_TABS_SKIN';
 $modversion['config'][$i]['description'] = '_MI_NEWS_TABS_SKIN_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['options']     = array(
+$modversion['config'][$i]['options']     = [
     _MI_NEWS_SKIN_1 => 1,
     _MI_NEWS_SKIN_2 => 2,
     _MI_NEWS_SKIN_3 => 3,
@@ -622,7 +622,7 @@ $modversion['config'][$i]['options']     = array(
     _MI_NEWS_SKIN_6 => 6,
     _MI_NEWS_SKIN_7 => 7,
     _MI_NEWS_SKIN_8 => 8
-);
+];
 $modversion['config'][$i]['default']     = 6;
 
 /**
@@ -802,12 +802,12 @@ $modversion['notification']['lookup_func'] = 'news_notify_iteminfo';
 $modversion['notification']['category'][1]['name']           = 'global';
 $modversion['notification']['category'][1]['title']          = _MI_NEWS_GLOBAL_NOTIFY;
 $modversion['notification']['category'][1]['description']    = _MI_NEWS_GLOBAL_NOTIFYDSC;
-$modversion['notification']['category'][1]['subscribe_from'] = array('index.php', 'article.php');
+$modversion['notification']['category'][1]['subscribe_from'] = ['index.php', 'article.php'];
 
 $modversion['notification']['category'][2]['name']           = 'story';
 $modversion['notification']['category'][2]['title']          = _MI_NEWS_STORY_NOTIFY;
 $modversion['notification']['category'][2]['description']    = _MI_NEWS_STORY_NOTIFYDSC;
-$modversion['notification']['category'][2]['subscribe_from'] = array('article.php');
+$modversion['notification']['category'][2]['subscribe_from'] = ['article.php'];
 $modversion['notification']['category'][2]['item_name']      = 'storyid';
 $modversion['notification']['category'][2]['allow_bookmark'] = 1;
 
@@ -815,7 +815,7 @@ $modversion['notification']['category'][2]['allow_bookmark'] = 1;
 $modversion['notification']['category'][3]['name']           = 'category';
 $modversion['notification']['category'][3]['title']          = _MI_NEWS_CATEGORY_NOTIFY;
 $modversion['notification']['category'][3]['description']    = _MI_NEWS_CATEGORY_NOTIFYDSC;
-$modversion['notification']['category'][3]['subscribe_from'] = array('index.php', 'article.php');
+$modversion['notification']['category'][3]['subscribe_from'] = ['index.php', 'article.php'];
 $modversion['notification']['category'][3]['item_name']      = 'storytopic';
 $modversion['notification']['category'][3]['allow_bookmark'] = 1;
 

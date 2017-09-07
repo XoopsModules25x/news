@@ -44,7 +44,7 @@ function b_news_archives_show($options)
         require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
     }
 
-    $months_arr    = array(
+    $months_arr    = [
         1  => _CAL_JANUARY,
         2  => _CAL_FEBRUARY,
         3  => _CAL_MARCH,
@@ -57,8 +57,8 @@ function b_news_archives_show($options)
         10 => _CAL_OCTOBER,
         11 => _CAL_NOVEMBER,
         12 => _CAL_DECEMBER
-    );
-    $block         = array();
+    ];
+    $block         = [];
     $sort_order    = $options[0] == 0 ? 'ASC' : 'DESC';
     $starting_date = mktime(0, 0, 0, (int)$options[2], 1, (int)$options[1]);
     if ((int)$options[5] != 1) {
@@ -75,7 +75,7 @@ function b_news_archives_show($options)
         $year                = (int)substr($myrow['published'], 0, 4);
         $month               = (int)substr($myrow['published'], 5, 2);
         $formated_month      = $months_arr[$month];
-        $block['archives'][] = array('month' => $month, 'year' => $year, 'formated_month' => $formated_month);
+        $block['archives'][] = ['month' => $month, 'year' => $year, 'formated_month' => $formated_month];
     }
 
     return $block;

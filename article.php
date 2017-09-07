@@ -180,10 +180,10 @@ $story['text'] = $article->hometext();
 $bodytext      = $article->bodytext();
 
 if (xoops_trim($bodytext) !== '') {
-    $articletext = array();
+    $articletext = [];
     if (NewsUtility::getModuleOption('enhanced_pagenav')) {
         $articletext             = preg_split('/(\[pagebreak:|\[pagebreak)(.*)(\])/iU', $bodytext);
-        $arr_titles              = array();
+        $arr_titles              = [];
         $auto_summary            = $article->auto_summary($bodytext, $arr_titles);
         $bodytext                = str_replace('[summary]', $auto_summary, $bodytext);
         $articletext[$storypage] = str_replace('[summary]', $auto_summary, $articletext[$storypage]);
@@ -309,20 +309,20 @@ if (xoops_trim($article->picture()) !== '') {
 
 $xoopsTpl->assign('lang_attached_files', _NW_ATTACHEDFILES);
 $sfiles     = new sFiles();
-$filesarr   = $newsfiles = array();
+$filesarr   = $newsfiles = [];
 $filesarr   = $sfiles->getAllbyStory($storyid);
 $filescount = count($filesarr);
 $xoopsTpl->assign('attached_files_count', $filescount);
 if ($filescount > 0) {
     foreach ($filesarr as $onefile) {
-        $newsfiles[] = array(
+        $newsfiles[] = [
             'file_id'           => $onefile->getFileid(),
             'visitlink'         => XOOPS_URL . '/modules/news/visit.php?fileid=' . $onefile->getFileid(),
             'file_realname'     => $onefile->getFileRealName(),
             'file_attacheddate' => formatTimestamp($onefile->getDate(), $dateformat),
             'file_mimetype'     => $onefile->getMimetype(),
             'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname()
-        );
+        ];
     }
     $xoopsTpl->assign('attached_files', $newsfiles);
 }
@@ -383,14 +383,14 @@ if (NewsUtility::getModuleOption('showsummarytable')) {
                 $tooltips  = NewsUtility::makeInfotips($onearticle->hometext());
                 $htmltitle = ' title="' . $tooltips . '"';
             }
-            $xoopsTpl->append('summary', array(
+            $xoopsTpl->append('summary', [
                 'story_id'        => $onearticle->storyid(),
                 'htmltitle'       => $htmltitle,
                 'infotips'        => $tooltips,
                 'story_title'     => $onearticle->title(),
                 'story_hits'      => $onearticle->counter(),
                 'story_published' => formatTimestamp($onearticle->published, $dateformat)
-            ));
+            ]);
         }
     }
     $xoopsTpl->assign('summary_count', $count);
@@ -411,7 +411,7 @@ if (NewsUtility::getModuleOption('showprevnextlink')) {
     $xoopsTpl->assign('nav_links', true);
     $tmparticle    = new NewsStory();
     $nextId        = $previousId = -1;
-    $next          = $previous = array();
+    $next          = $previous = [];
     $previousTitle = $nextTitle = '';
 
     $next = $tmparticle->getNextArticle($storyid, $xoopsModuleConfig['restrictindex']);

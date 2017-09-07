@@ -17,7 +17,7 @@
  * @deprecated
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 //$GLOBALS['xoopsLogger']->addDeprecated("'/class/xoopstopic.php' is deprecated since XOOPS 2.5.4, please create your own class instead.");
 
 require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
@@ -285,7 +285,7 @@ class MyXoopsTopic
      */
     public function getFirstChildTopics()
     {
-        $ret       = array();
+        $ret       = [];
         $xt        = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
         $topic_arr = $xt->getFirstChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
@@ -302,7 +302,7 @@ class MyXoopsTopic
      */
     public function getAllChildTopics()
     {
-        $ret       = array();
+        $ret       = [];
         $xt        = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
         $topic_arr = $xt->getAllChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
@@ -319,7 +319,7 @@ class MyXoopsTopic
      */
     public function getChildTopicsTreeArray()
     {
-        $ret       = array();
+        $ret       = [];
         $xt        = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
         $topic_arr = $xt->getChildTreeArray($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
@@ -381,13 +381,13 @@ class MyXoopsTopic
     public function getTopicsList()
     {
         $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
-        $ret    = array();
+        $ret    = [];
         $myts   = MyTextSanitizer::getInstance();
         while ($myrow = $this->db->fetchArray($result)) {
-            $ret[$myrow['topic_id']] = array(
+            $ret[$myrow['topic_id']] = [
                 'title' => $myts->htmlspecialchars($myrow['topic_title']),
                 'pid'   => $myrow['topic_pid']
-            );
+            ];
         }
 
         return $ret;

@@ -66,7 +66,7 @@
  * to use, or modify it however you like.  If you find this script useful please
  * e-mail me.
  **/
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class cmimetype
@@ -117,7 +117,7 @@ class cmimetype
      */
     public function privBuildMimeArray()
     {
-        return array(
+        return [
 
             'ez'      => 'application/andrew-inset',
             'hqx'     => 'application/mac-binhex40',
@@ -272,6 +272,6 @@ class cmimetype
             'php3'    => 'text/php3',
             'ice'     => 'x-conference-xcooltalk',
             'unknown' => 'application/octet-stream'
-        );
+        ];
     }
 }

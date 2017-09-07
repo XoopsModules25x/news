@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Dispay a block where news moderators can show news that need to be moderated.
@@ -26,7 +26,7 @@ function b_news_topics_moderate()
 {
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    $block      = array();
+    $block      = [];
     $dateformat = NewsUtility::getModuleOption('dateformat');
     $infotips   = NewsUtility::getModuleOption('infotips');
 
@@ -51,7 +51,7 @@ function b_news_topics_moderate()
             } else {
                 $linktitle = "<a href='" . XOOPS_URL . '/modules/news/submit.php?op=edit&amp;storyid=' . $newstory->storyid() . "' target='_blank'" . $htmltitle . '>' . $title . '</a>';
             }
-            $story                = array();
+            $story                = [];
             $story['title']       = $linktitle;
             $story['date']        = formatTimestamp($newstory->created(), $dateformat);
             $story['author']      = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $newstory->uid() . "'>" . $newstory->uname() . '</a>';

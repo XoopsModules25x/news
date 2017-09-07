@@ -95,10 +95,10 @@ $pdf->SetAutoPageBreak(true, 25);
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 //$pdf->setHeaderFont(array(PDF_FONT_NAME_SUB, '', PDF_FONT_SIZE_SUB));
-$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-$pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
+$pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
+$pdf->setFooterData($tc = [0, 64, 0], $lc = [0, 64, 128]);
 //$pdf->SetHeaderData('','5',$pdf_config['slogan']);
-$pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $pdf_config['slogan'], array(0, 64, 255), array(0, 64, 128));
+$pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $pdf_config['slogan'], [0, 64, 255], [0, 64, 128]);
 //set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->setHeaderMargin(PDF_MARGIN_HEADER);
@@ -130,10 +130,10 @@ $pdf->writeHTML($puffer, '1');
 $pdf->writeHTML($pdf_data['content'], $pdf_config['scale']);
 
 //2.5.8
-$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
+$pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 
-$pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
+$pdf->setFooterData($tc = [0, 64, 0], $lc = [0, 64, 128]);
 
 //initialize document
 $pdf->Open();

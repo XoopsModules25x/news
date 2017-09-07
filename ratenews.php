@@ -182,7 +182,7 @@ if (!empty($_POST['submit'])) { // The form was submited
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _ERRORS);
     }
     $xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
-    $xoopsTpl->assign('news', array('storyid' => $storyid, 'title' => $title));
+    $xoopsTpl->assign('news', ['storyid' => $storyid, 'title' => $title]);
     $xoopsTpl->assign('lang_voteonce', _NW_VOTEONCE);
     $xoopsTpl->assign('lang_ratingscale', _NW_RATINGSCALE);
     $xoopsTpl->assign('lang_beobjective', _NW_BEOBJECTIVE);

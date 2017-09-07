@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @param $options
@@ -29,8 +29,8 @@ function b_news_topicsnav_show($options)
     require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $myts             = MyTextSanitizer::getInstance();
-    $block            = array();
-    $newscountbytopic = array();
+    $block            = [];
+    $newscountbytopic = [];
     $perms            = '';
     $xt               = new NewsTopic();
     $restricted       = NewsUtility::getModuleOption('restrictindex');
@@ -63,12 +63,12 @@ function b_news_topicsnav_show($options)
             } else {
                 $count = '';
             }
-            $block['topics'][] = array(
+            $block['topics'][] = [
                 'id'          => $onetopic['topic_id'],
                 'news_count'  => $count,
                 'topic_color' => '#' . $onetopic['topic_color'],
                 'title'       => $myts->displayTarea($onetopic['topic_title'])
-            );
+            ];
         }
     }
 

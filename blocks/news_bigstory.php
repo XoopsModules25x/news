@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @return array
@@ -31,7 +31,7 @@ function b_news_bigstory_show()
     $dateformat = NewsUtility::getModuleOption('dateformat');
     $infotips   = NewsUtility::getModuleOption('infotips');
 
-    $block    = array();
+    $block    = [];
     $onestory = new NewsStory();
     $stories  = $onestory->getBigStory(1, 0, $restricted, 0, 1, true, 'counter');
     if (count($stories) == 0) {

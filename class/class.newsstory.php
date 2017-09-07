@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
@@ -141,7 +141,7 @@ class NewsStory extends MyXoopsStory
     public function _searchPreviousOrNextArticle($storyid, $next = true, $checkRight = false)
     {
         $db      = XoopsDatabaseFactory::getDatabaseConnection();
-        $ret     = array();
+        $ret     = [];
         $storyid = (int)$storyid;
         if ($next) {
             $sql     = 'SELECT storyid, title FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ') AND storyid > ' . $storyid;
@@ -164,7 +164,7 @@ class NewsStory extends MyXoopsStory
         if ($result) {
             $myts = MyTextSanitizer::getInstance();
             while ($row = $db->fetchArray($result)) {
-                $ret = array('storyid' => $row['storyid'], 'title' => $myts->htmlSpecialChars($row['title']));
+                $ret = ['storyid' => $row['storyid'], 'title' => $myts->htmlSpecialChars($row['title'])];
             }
         }
 
@@ -217,7 +217,7 @@ class NewsStory extends MyXoopsStory
     ) {
         $db   = XoopsDatabaseFactory::getDatabaseConnection();
         $myts = MyTextSanitizer::getInstance();
-        $ret  = array();
+        $ret  = [];
         $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.published > 0 AND s.published <= ' . time() . ') AND (s.expired = 0 OR s.expired > ' . time() . ') AND (s.topicid=t.topic_id) ';
         if ($topic != 0) {
             if (!is_array($topic)) {
@@ -291,7 +291,7 @@ class NewsStory extends MyXoopsStory
     ) {
         $db   = XoopsDatabaseFactory::getDatabaseConnection();
         $myts = MyTextSanitizer::getInstance();
-        $ret  = array();
+        $ret  = [];
         $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published > ' . $publish_start . ' AND s.published <= ' . $publish_end . ') AND (expired = 0 OR expired > ' . time() . ') ';
 
         if ($checkRight) {
@@ -340,7 +340,7 @@ class NewsStory extends MyXoopsStory
     ) {
         $db    = XoopsDatabaseFactory::getDatabaseConnection();
         $myts  = MyTextSanitizer::getInstance();
-        $ret   = array();
+        $ret   = [];
         $tdate = mktime(0, 0, 0, date('n'), date('j'), date('Y'));
         $sql   = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (published > ' . $tdate . ' AND published < ' . time() . ') AND (expired > ' . time() . ' OR expired = 0) ';
 
@@ -395,7 +395,7 @@ class NewsStory extends MyXoopsStory
     {
         $db        = XoopsDatabaseFactory::getDatabaseConnection();
         $myts      = MyTextSanitizer::getInstance();
-        $ret       = array();
+        $ret       = [];
         $tblstory  = $db->prefix('news_stories');
         $tbltopics = $db->prefix('news_topics');
 
@@ -442,7 +442,7 @@ class NewsStory extends MyXoopsStory
                 } else {
                     $smiley = 1;
                 }
-                $ret[$myrow['storyid']] = array(
+                $ret[$myrow['storyid']] = [
                     'title'       => $myts->displayTarea($myrow['title'], $html, $smiley, 1),
                     'topicid'     => (int)$myrow['topicid'],
                     'storyid'     => (int)$myrow['storyid'],
@@ -454,7 +454,7 @@ class NewsStory extends MyXoopsStory
                     'published'   => (int)$myrow['published'],
                     'rating'      => (float)$myrow['rating'],
                     'votes'       => (int)$myrow['votes']
-                );
+                ];
             }
         }
 
@@ -474,7 +474,7 @@ class NewsStory extends MyXoopsStory
     {
         $db   = XoopsDatabaseFactory::getDatabaseConnection();
         $myts = MyTextSanitizer::getInstance();
-        $ret  = array();
+        $ret  = [];
         $sql  = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE expired <= ' . time() . ' AND expired > 0';
         if (!empty($topic)) {
             $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
@@ -508,7 +508,7 @@ class NewsStory extends MyXoopsStory
     {
         $db     = XoopsDatabaseFactory::getDatabaseConnection();
         $myts   = MyTextSanitizer::getInstance();
-        $ret    = array();
+        $ret    = [];
         $sql    = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE published > ' . time() . ' ORDER BY published ASC';
         $result = $db->query($sql, (int)$limit, (int)$start);
         while ($myrow = $db->fetchArray($result)) {
@@ -537,7 +537,7 @@ class NewsStory extends MyXoopsStory
     {
         $db       = XoopsDatabaseFactory::getDatabaseConnection();
         $myts     = MyTextSanitizer::getInstance();
-        $ret      = array();
+        $ret      = [];
         $criteria = new CriteriaCompo(new Criteria('published', 0));
         if ($checkRight) {
             global $xoopsUser;
@@ -614,7 +614,7 @@ class NewsStory extends MyXoopsStory
      */
     public static function getByTopic($topicid, $limit = 0)
     {
-        $ret    = array();
+        $ret    = [];
         $db     = XoopsDatabaseFactory::getDatabaseConnection();
         $sql    = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE topicid=' . (int)$topicid . ' ORDER BY published DESC';
         $result = $db->query($sql, (int)$limit, 0);
@@ -794,7 +794,7 @@ class NewsStory extends MyXoopsStory
 
         $myts                 = MyTextSanitizer::getInstance();
         $infotips             = NewsUtility::getModuleOption('infotips');
-        $story                = array();
+        $story                = [];
         $story['id']          = $this->storyid();
         $story['poster']      = $this->uname();
         $story['author_name'] = $this->uname();
@@ -924,7 +924,7 @@ class NewsStory extends MyXoopsStory
     {
         global $xoopsConfig;
         require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-        static $tblusers = array();
+        static $tblusers = [];
         $option = -1;
         if ($uid == 0) {
             $uid = $this->uid();
@@ -994,7 +994,7 @@ class NewsStory extends MyXoopsStory
         $asobject = true,
         $order = 'published'
     ) {
-        $ret  = array();
+        $ret  = [];
         $myts = MyTextSanitizer::getInstance();
         if ($usetopicsdef) { // We firt begin by exporting topics definitions
             // Before all we must know wich topics to export
@@ -1065,13 +1065,62 @@ class NewsStory extends MyXoopsStory
             $newstoryid = $this->db->genId($this->table . '_storyid_seq');
             $created    = time();
             $published  = $this->approved ? (int)$this->published : 0;
-            $sql        = sprintf("INSERT INTO %s (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments, rating, votes, description, keywords, picture, pictureinfo, subtitle) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u, %u, %u, '%s', '%s', '%s', '%s', '%s')",
-                                  $this->table, $newstoryid, (int)$this->uid(), $title, $created, $published, $expired, $hostname, (int)$this->nohtml(), (int)$this->nosmiley(), $hometext, $bodytext, $counter, (int)$this->topicid(), (int)$this->ihome(), (int)$this->notifypub(), $type,
-                                  (int)$this->topicdisplay(), $this->topicalign, (int)$this->comments(), $rating, $votes, $description, $keywords, $picture, $pictureinfo, $subtitle);
+            $sql        = sprintf(
+                "INSERT INTO %s (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments, rating, votes, description, keywords, picture, pictureinfo, subtitle) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u, %u, %u, '%s', '%s', '%s', '%s', '%s')",
+                                  $this->table,
+                $newstoryid,
+                (int)$this->uid(),
+                $title,
+                $created,
+                $published,
+                $expired,
+                $hostname,
+                (int)$this->nohtml(),
+                (int)$this->nosmiley(),
+                $hometext,
+                $bodytext,
+                $counter,
+                (int)$this->topicid(),
+                (int)$this->ihome(),
+                (int)$this->notifypub(),
+                $type,
+                                  (int)$this->topicdisplay(),
+                $this->topicalign,
+                (int)$this->comments(),
+                $rating,
+                $votes,
+                $description,
+                $keywords,
+                $picture,
+                $pictureinfo,
+                $subtitle
+            );
         } else {
-            $sql        = sprintf("UPDATE %s SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s', picture='%s' , pictureinfo='%s' , subtitle='%s' WHERE storyid = %u",
-                                  $this->table, $title, (int)$this->published(), $expired, (int)$this->nohtml(), (int)$this->nosmiley(), $hometext, $bodytext, (int)$this->topicid(), (int)$this->ihome(), (int)$this->topicdisplay(), $this->topicalign, (int)$this->comments(), $rating, $votes,
-                                  (int)$this->uid(), $description, $keywords, $picture, $pictureinfo, $subtitle, (int)$this->storyid());
+            $sql        = sprintf(
+                "UPDATE %s SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s', picture='%s' , pictureinfo='%s' , subtitle='%s' WHERE storyid = %u",
+                                  $this->table,
+                $title,
+                (int)$this->published(),
+                $expired,
+                (int)$this->nohtml(),
+                (int)$this->nosmiley(),
+                $hometext,
+                $bodytext,
+                (int)$this->topicid(),
+                (int)$this->ihome(),
+                (int)$this->topicdisplay(),
+                $this->topicalign,
+                (int)$this->comments(),
+                $rating,
+                $votes,
+                                  (int)$this->uid(),
+                $description,
+                $keywords,
+                $picture,
+                $pictureinfo,
+                $subtitle,
+                (int)$this->storyid()
+            );
             $newstoryid = (int)$this->storyid();
         }
         if (!$this->db->queryF($sql)) {
@@ -1234,7 +1283,7 @@ class NewsStory extends MyXoopsStory
         $topic_frontpage = false
     ) {
         $db  = XoopsDatabaseFactory::getDatabaseConnection();
-        $ret = $rand_keys = $ret3 = array();
+        $ret = $rand_keys = $ret3 = [];
         $sql = 'SELECT storyid FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ')';
         if ($topic != 0) {
             if (!is_array($topic)) {
@@ -1305,7 +1354,7 @@ class NewsStory extends MyXoopsStory
      */
     public function getStats($limit)
     {
-        $ret  = array();
+        $ret  = [];
         $db   = XoopsDatabaseFactory::getDatabaseConnection();
         $tbls = $db->prefix('news_stories');
         $tblt = $db->prefix('news_topics');
@@ -1313,7 +1362,7 @@ class NewsStory extends MyXoopsStory
 
         $db = XoopsDatabaseFactory::getDatabaseConnection();
         // Number of stories per topic, including expired and non published stories
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT count(s.storyid) as cpt, s.topicid, t.topic_title FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id GROUP BY s.topicid ORDER BY t.topic_title";
         $result = $db->query($sql);
         while ($myrow = $db->fetchArray($result)) {
@@ -1323,7 +1372,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Total of reads per topic
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Sum(counter) as cpt, topicid FROM $tbls GROUP BY topicid ORDER BY topicid";
         $result = $db->query($sql);
         while ($myrow = $db->fetchArray($result)) {
@@ -1333,7 +1382,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Attached files per topic
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Count(*) as cpt, s.topicid FROM $tblf f, $tbls s WHERE f.storyid=s.storyid GROUP BY s.topicid ORDER BY s.topicid";
         $result = $db->query($sql);
         while ($myrow = $db->fetchArray($result)) {
@@ -1343,7 +1392,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Expired articles per topic
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Count(storyid) as cpt, topicid FROM $tbls WHERE expired>0 AND expired<=" . time() . ' GROUP BY topicid ORDER BY topicid';
         $result = $db->query($sql);
         while ($myrow = $db->fetchArray($result)) {
@@ -1353,7 +1402,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Number of unique authors per topic
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Count(Distinct(uid)) as cpt, topicid FROM $tbls GROUP BY topicid ORDER BY topicid";
         $result = $db->query($sql);
         while ($myrow = $db->fetchArray($result)) {
@@ -1363,7 +1412,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Most readed articles
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.counter, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.counter DESC";
         $result = $db->query($sql, (int)$limit);
         while ($myrow = $db->fetchArray($result)) {
@@ -1373,7 +1422,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Less readed articles
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.counter, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.counter";
         $result = $db->query($sql, (int)$limit);
         while ($myrow = $db->fetchArray($result)) {
@@ -1383,7 +1432,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Best rated articles
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.rating, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.rating DESC";
         $result = $db->query($sql, (int)$limit);
         while ($myrow = $db->fetchArray($result)) {
@@ -1393,7 +1442,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Most readed authors
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Sum(counter) as cpt, uid FROM $tbls GROUP BY uid ORDER BY cpt DESC";
         $result = $db->query($sql, (int)$limit);
         while ($myrow = $db->fetchArray($result)) {
@@ -1403,7 +1452,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Best rated authors
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Avg(rating) as cpt, uid FROM $tbls WHERE votes > 0 GROUP BY uid ORDER BY cpt DESC";
         $result = $db->query($sql, (int)$limit);
         while ($myrow = $db->fetchArray($result)) {
@@ -1413,7 +1462,7 @@ class NewsStory extends MyXoopsStory
         unset($ret2);
 
         // Biggest contributors
-        $ret2   = array();
+        $ret2   = [];
         $sql    = "SELECT Count(*) as cpt, uid FROM $tbls GROUP BY uid ORDER BY cpt DESC";
         $result = $db->query($sql, (int)$limit);
         while ($myrow = $db->fetchArray($result)) {
@@ -1455,7 +1504,7 @@ class NewsStory extends MyXoopsStory
     public function getWhosWho($checkRight = false, $limit = 0, $start = 0)
     {
         $db  = XoopsDatabaseFactory::getDatabaseConnection();
-        $ret = array();
+        $ret = [];
         $sql = 'SELECT DISTINCT(uid) AS uid FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ')';
         if ($checkRight) {
             $topics = NewsUtility::getMyItemIds('news_view');
@@ -1485,12 +1534,12 @@ class NewsStory extends MyXoopsStory
     {
         $auto_summary = '';
         if (NewsUtility::getModuleOption('enhanced_pagenav')) {
-            $expr_matches = array();
+            $expr_matches = [];
             $posdeb       = preg_match_all('/(\[pagebreak:|\[pagebreak).*\]/iU', $text, $expr_matches);
             if (count($expr_matches) > 0) {
                 $delimiters  = $expr_matches[0];
-                $arr_search  = array('[pagebreak:', '[pagebreak', ']');
-                $arr_replace = array('', '', '');
+                $arr_search  = ['[pagebreak:', '[pagebreak', ']'];
+                $arr_replace = ['', '', ''];
                 $cpt         = 1;
                 if (isset($titles) && is_array($titles)) {
                     $titles[] = strip_tags(sprintf(_NW_PAGE_AUTO_SUMMARY, 1, $this->title()));
@@ -1609,7 +1658,7 @@ class NewsStory extends MyXoopsStory
         $limit = $start = 0;
         $db    = XoopsDatabaseFactory::getDatabaseConnection();
         $myts  = MyTextSanitizer::getInstance();
-        $ret   = array();
+        $ret   = [];
         $sql   = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE ';
         if (is_array($ids) && count($ids) > 0) {
             array_walk($ids, 'intval');

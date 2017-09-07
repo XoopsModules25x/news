@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
 xoops_loadLanguage('calendar');
@@ -130,7 +130,7 @@ switch ($xoopsModuleConfig['uploadgroups']) {
 if ($allowupload) {
     if ($op === 'edit') {
         $sfiles   = new sFiles();
-        $filesarr = array();
+        $filesarr = [];
         $filesarr = $sfiles->getAllbyStory($storyid);
         if (count($filesarr) > 0) {
             $upl_tray     = new XoopsFormElementTray(_AM_UPLOAD_ATTACHFILE, '<br>');

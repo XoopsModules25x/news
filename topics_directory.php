@@ -36,7 +36,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 $myts = MyTextSanitizer::getInstance();
 
-$newscountbytopic = $tbl_topics = array();
+$newscountbytopic = $tbl_topics = [];
 $perms            = '';
 $xt               = new NewsTopic();
 $restricted       = NewsUtility::getModuleOption('restrictindex');
@@ -69,13 +69,13 @@ if (is_array($topics_arr) && count($topics_arr)) {
             $onetopic['prefix'] = str_replace('.', '', $onetopic['prefix']);
         }
 
-        $tbl_topics[] = array(
+        $tbl_topics[] = [
             'id'          => $onetopic['topic_id'],
             'news_count'  => $count,
             'topic_color' => '#' . $onetopic['topic_color'],
             'prefix'      => $onetopic['prefix'],
             'title'       => $myts->displayTarea($onetopic['topic_title'])
-        );
+        ];
     }
 }
 $xoopsTpl->assign('topics', $tbl_topics);

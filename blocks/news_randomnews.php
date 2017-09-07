@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -30,7 +30,7 @@ function b_news_randomnews_show($options)
 {
     require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
     $myts          = MyTextSanitizer::getInstance();
-    $block         = array();
+    $block         = [];
     $block['sort'] = $options[0];
 
     $tmpstory   = new NewsStory;
@@ -51,7 +51,7 @@ function b_news_randomnews_show($options)
         return '';
     }
     foreach ($stories as $story) {
-        $news  = array();
+        $news  = [];
         $title = $story->title();
         if (strlen($title) > $options[2]) {
             $title = xoops_substr($title, 0, $options[2] + 3);
