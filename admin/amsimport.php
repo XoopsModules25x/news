@@ -59,8 +59,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         }
         $db = XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
-        $use_forum    = (isset($_POST['useforum']) && $_POST['useforum'] == 1) ? 1 : 0;
-        $use_extlinks = (isset($_POST['useextlinks']) && $_POST['useextlinks'] == 1) ? 1 : 0;
+        $use_forum    = (isset($_POST['useforum']) && 1 == $_POST['useforum']) ? 1 : 0;
+        $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
         // Retreive News module's ID
         /** @var XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
@@ -91,7 +91,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         foreach ($ams_topics as $one_amstopic) {
             // First we create the topic
             $topicpid = 0;
-            if ($one_amstopic['topic_pid'] != 0) { // Search for its the parent
+            if (0 != $one_amstopic['topic_pid']) { // Search for its the parent
                 if (array_key_exists($one_amstopic['topic_pid'], $ams_news_topics)) {
                     $topicpid = $ams_news_topics[$one_amstopic['topic_pid']];
                 }
@@ -129,7 +129,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 if ($use_extlinks) {
                     $result7 = $db->query('SELECT * FROM ' . $ams_links . ' WHERE storyid=' . $ams_newsid . ' ORDER BY linkid');
                     while ($link = $db->fetchArray($result7)) {
-                        if (trim($links) == '') {
+                        if ('' == trim($links)) {
                             $links = "\n\n" . _AMS_NW_RELATEDARTICLES . "\n\n";
                         }
                         $links .= _AMS_NW_EXTERNALLINK . ' [url=' . $link['link_link'] . ']' . $link['link_title'] . '[/url]' . "\n";
@@ -138,7 +138,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
 
                 // The forum
                 $forum = '';
-                if ($use_forum && $one_amstopic['forum_id'] != 0) {
+                if ($use_forum && 0 != $one_amstopic['forum_id']) {
                     $forum = "\n\n" . '[url=' . XOOPS_URL . '/modules/newbb/viewforum.php?forum=' . $one_amstopic['forum_id'] . ']' . _AMS_AM_LINKEDFORUM . '[/url]' . "\n";
                 }
 

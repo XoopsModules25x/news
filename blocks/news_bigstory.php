@@ -34,7 +34,7 @@ function b_news_bigstory_show()
     $block    = [];
     $onestory = new NewsStory();
     $stories  = $onestory->getBigStory(1, 0, $restricted, 0, 1, true, 'counter');
-    if (count($stories) == 0) {
+    if (0 == count($stories)) {
         $block['message'] = _MB_NEWS_NOTYET;
     } else {
         foreach ($stories as $key => $story) {

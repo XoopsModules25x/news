@@ -46,7 +46,7 @@ class NewsTopic extends MyXoopsTopic
         $this->table = $this->db->prefix('news_topics');
         if (is_array($topicid)) {
             $this->makeTopic($topicid);
-        } elseif ($topicid != 0) {
+        } elseif (0 != $topicid) {
             $this->getTopic((int)$topicid);
         } else {
             $this->topic_id = $topicid;
@@ -123,12 +123,12 @@ class NewsTopic extends MyXoopsTopic
         $myts      = MyTextSanitizer::getInstance();
         $outbuffer = '';
         $outbuffer = "<select name='" . $sel_name . "'";
-        if ($onchange !== '') {
+        if ('' !== $onchange) {
             $outbuffer .= " onchange='" . $onchange . "'";
         }
         $outbuffer .= ">\n";
         $sql       = 'SELECT topic_id, ' . $title . ' FROM ' . $this->table . ' WHERE (topic_pid=0)' . $perms;
-        if ($order !== '') {
+        if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -172,12 +172,12 @@ class NewsTopic extends MyXoopsTopic
     public function getChildTreeArray($sel_id = 0, $order = '', $perms = '', $parray = [], $r_prefix = '')
     {
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE (topic_pid=' . $sel_id . ')' . $perms;
-        if ($order !== '') {
+        if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $parray;
         }
         while ($row = $this->db->fetchArray($result)) {
@@ -247,7 +247,7 @@ class NewsTopic extends MyXoopsTopic
         $sql        = 'SELECT * FROM ' . $table;
         if ($checkRight) {
             $topics = NewsUtility::getMyItemIds($permission);
-            if (count($topics) == 0) {
+            if (0 == count($topics)) {
                 return [];
             }
             $topics = implode(',', $topics);
@@ -350,10 +350,10 @@ class NewsTopic extends MyXoopsTopic
 
         $dirname = basename(dirname(__DIR__));
 
-        if (isset($this->topic_title) && $this->topic_title !== '') {
+        if (isset($this->topic_title) && '' !== $this->topic_title) {
             $title = $myts->addSlashes($this->topic_title);
         }
-        if (isset($this->topic_imgurl) && $this->topic_imgurl !== '') {
+        if (isset($this->topic_imgurl) && '' !== $this->topic_imgurl) {
             $imgurl = $myts->addSlashes($this->topic_imgurl);
         }
         if (!isset($this->topic_pid) || !is_numeric($this->topic_pid)) {
@@ -404,7 +404,7 @@ class NewsTopic extends MyXoopsTopic
             }
         }
 
-        if ($this->use_permission === true) {
+        if (true === $this->use_permission) {
             $xt            = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && is_array($this->m_groups)) {
@@ -418,7 +418,7 @@ class NewsTopic extends MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add === true) {
+                    if (true === $add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
@@ -438,7 +438,7 @@ class NewsTopic extends MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add === true) {
+                    if (true === $add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
@@ -458,7 +458,7 @@ class NewsTopic extends MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add === true) {
+                    if (true === $add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
@@ -568,7 +568,7 @@ class NewsTopic extends MyXoopsTopic
      */
     public function topic_imgurl($format = 'S')
     {
-        if (trim($this->topic_imgurl) === '') {
+        if ('' === trim($this->topic_imgurl)) {
             $this->topic_imgurl = 'blank.png';
         }
         $myts = MyTextSanitizer::getInstance();
@@ -637,7 +637,7 @@ class NewsTopic extends MyXoopsTopic
         if ($perms) {
             $topicsids = [];
             $topicsids = NewsUtility::getMyItemIds();
-            if (count($topicsids) == 0) {
+            if (0 == count($topicsids)) {
                 return '';
             }
             $topics = implode(',', $topicsids);

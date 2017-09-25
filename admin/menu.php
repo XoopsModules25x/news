@@ -79,7 +79,7 @@ $adminmenu[] = [
     'icon'  => $pathIcon32 . '/stats.png'
 ];
 
-if (isset($xoopsModule) && $xoopsModule->getVar('version') != 167) {
+if (isset($xoopsModule) && 167 != $xoopsModule->getVar('version')) {
     $adminmenu[] = [
         'title' => _MI_NEWS_UPGRADE,
         'link'  => 'admin/upgrade.php',

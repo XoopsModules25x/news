@@ -37,17 +37,17 @@ function b_news_randomnews_show($options)
     $restricted = NewsUtility::getModuleOption('restrictindex');
     $dateformat = NewsUtility::getModuleOption('dateformat');
     $infotips   = NewsUtility::getModuleOption('infotips');
-    if ($dateformat == '') {
+    if ('' == $dateformat) {
         $dateformat = 's';
     }
-    if ($options[4] == 0) {
+    if (0 == $options[4]) {
         $stories = $tmpstory->getRandomNews($options[1], 0, $restricted, 0, 1, $options[0]);
     } else {
         $topics  = array_slice($options, 4);
         $stories = $tmpstory->getRandomNews($options[1], 0, $restricted, $topics, 1, $options[0]);
     }
     unset($tmpstory);
-    if (count($stories) == 0) {
+    if (0 == count($stories)) {
         return '';
     }
     foreach ($stories as $story) {
@@ -69,7 +69,7 @@ function b_news_randomnews_show($options)
         $news['pictureinfo'] = $story->pictureinfo();
 
         if ($options[3] > 0) {
-            $html             = $story->nohtml() == 1 ? 0 : 1;
+            $html             = 1 == $story->nohtml() ? 0 : 1;
             $news['teaser']   = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext, $html), $options[3] + 3);
             $news['infotips'] = ' title="' . $story->title() . '"';
         } else {
@@ -97,19 +97,19 @@ function b_news_randomnews_edit($options)
     global $xoopsDB;
     $form = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";
     $form .= "<option value='published'";
-    if ($options[0] === 'published') {
+    if ('published' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_DATE . "</option>\n";
 
     $form .= "<option value='counter'";
-    if ($options[0] === 'counter') {
+    if ('counter' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_HITS . '</option>';
 
     $form .= "<option value='rating'";
-    if ($options[0] === 'rating') {
+    if ('rating' === $options[0]) {
         $form .= ' selected';
     }
     $form .= '>' . _MB_NEWS_RATE . '</option>';

@@ -44,7 +44,7 @@ if (!NewsUtility::getModuleOption('topicsrss')) {
 }
 
 $topicid = isset($_GET['topicid']) ? (int)$_GET['topicid'] : 0;
-if ($topicid == 0) {
+if (0 == $topicid) {
     exit();
 }
 

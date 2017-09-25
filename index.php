@@ -121,7 +121,7 @@ if (isset($_GET['start'])) {
     $start = 0;
 }
 
-if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] === 'Classic'
+if (empty($xoopsModuleConfig['newsdisplay']) || 'Classic' === $xoopsModuleConfig['newsdisplay']
     || $xoopsOption['storytopic'] > 0) {
     $showclassic = 1;
 } else {
@@ -155,7 +155,7 @@ if ($showclassic) {
         $topictitle = $xt->topic_title();
     }
 
-    if ($xoopsModuleConfig['displaynav'] == 1) {
+    if (1 == $xoopsModuleConfig['displaynav']) {
         $xoopsTpl->assign('displaynav', true);
 
         $allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex']);
@@ -181,7 +181,7 @@ if ($showclassic) {
     } else {
         $xoopsTpl->assign('displaynav', false);
     }
-    if ($xoopsOption['storytopic'] == 0) {
+    if (0 == $xoopsOption['storytopic']) {
         $topic_frontpage = true;
     } else {
         $topic_frontpage = false;
@@ -209,7 +209,7 @@ if ($showclassic) {
                 $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
                 $story['topic_title'] = $thisstory->textlink();
                 $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
-                if ($firsttitle === '') {
+                if ('' === $firsttitle) {
                     $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();
                 }
                 $columns[$k][] = $story;
@@ -324,10 +324,10 @@ if ($xoopsModuleConfig['topicsrss'] && $xoopsOption['storytopic']) {
 /**
  * Assign page's title
  */
-if ($firsttitle !== '') {
+if ('' !== $firsttitle) {
     $xoopsTpl->assign('xoops_pagetitle', $firsttitle . ' - ' . $xoopsModule->name('s'));
 } else {
-    if ($topictitle !== '') {
+    if ('' !== $topictitle) {
         $xoopsTpl->assign('xoops_pagetitle', $topictitle);
     } else {
         $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->name('s'));

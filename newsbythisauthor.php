@@ -103,7 +103,7 @@ switch ($xoopsModuleConfig['displayname']) {
         break;
 
     case 2: // Display full name (if it is not empty)
-        if (xoops_trim($thisuser->getVar('name')) == '') {
+        if ('' == xoops_trim($thisuser->getVar('name'))) {
             $authname = $thisuser->getVar('uname');
         } else {
             $authname = $thisuser->getVar('name');

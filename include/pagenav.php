@@ -57,7 +57,7 @@ class XoopsPageNav
         $this->total   = (int)$total_items;
         $this->perpage = (int)$items_perpage;
         $this->current = (int)$current_start;
-        if ($extra_arg !== '' && (substr($extra_arg, -5) !== '&amp;' || substr($extra_arg, -1) !== '&')) {
+        if ('' !== $extra_arg && ('&amp;' !== substr($extra_arg, -5) || '&' !== substr($extra_arg, -1))) {
             $extra_arg .= '&amp;';
         }
         $this->url = $_SERVER['PHP_SELF'] . '?' . $extra_arg . trim($start_name) . '=';
@@ -87,13 +87,13 @@ class XoopsPageNav
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<b>(' . $counter . ')</b> ';
-                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1
+                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || 1 == $counter
                           || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '... ';
                     }
                     $ret .= '<a href="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</a> ';
-                    if ($counter == 1 && $current_page > 1 + $offset) {
+                    if (1 == $counter && $current_page > 1 + $offset) {
                         $ret .= '... ';
                     }
                 }
@@ -213,13 +213,13 @@ class XoopsPageNav
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<td class="pagact"><b>' . $counter . '</b></td>';
-                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1
+                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || 1 == $counter
                           || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
                     $ret .= '<td class="paginact"><a href="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</a></td>';
-                    if ($counter == 1 && $current_page > 1 + $offset) {
+                    if (1 == $counter && $current_page > 1 + $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
                 }

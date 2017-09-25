@@ -40,7 +40,7 @@ $sform->addElement(new XoopsFormText(_NW_SUBTITLE, 'subtitle', 50, 255, $subtitl
 if (!isset($xt)) {
     $xt = new NewsTopic();
 }
-if ($xt->getAllTopicsCount() == 0) {
+if (0 == $xt->getAllTopicsCount()) {
     redirect_header('index.php', 4, _NW_POST_SORRY);
 }
 
@@ -125,7 +125,7 @@ switch ($xoopsModuleConfig['uploadgroups']) {
 }
 
 if ($allowupload) {
-    if ($op === 'edit') {
+    if ('edit' === $op) {
         $sfiles   = new sFiles();
         $filesarr = [];
         $filesarr = $sfiles->getAllbyStory($storyid);
@@ -144,8 +144,8 @@ if ($allowupload) {
         }
     }
     $sform->addElement(new XoopsFormFile(_AM_SELFILE, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
-    if ($op === 'edit') {
-        if (isset($picture) && xoops_trim($picture) !== '') {
+    if ('edit' === $op) {
+        if (isset($picture) && '' !== xoops_trim($picture)) {
             $pictureTray = new XoopsFormElementTray(_NW_CURENT_PICTURE, '<br>');
             $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "'>"));
             $deletePicureCheckbox = new XoopsFormCheckBox('', 'deleteimage', 0);

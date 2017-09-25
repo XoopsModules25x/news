@@ -26,11 +26,11 @@ if (!isset($xoopsModuleConfig)) {
     die();
 }
 
-if ($xoopsModuleConfig['com_rule'] == 0) { // Comments are deactivated
+if (0 == $xoopsModuleConfig['com_rule']) { // Comments are deactivated
     die();
 }
 
-if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) { // Anonymous users can't post
+if (0 == $xoopsModuleConfig['com_anonpost'] && !is_object($xoopsUser)) { // Anonymous users can't post
     die();
 }
 // ****************************************************************************
@@ -41,7 +41,7 @@ if ($com_itemid > 0) {
     if ($article->storyid > 0) {
         $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), NewsUtility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
         $bodytext      = $article->bodytext();
-        if ($bodytext !== '') {
+        if ('' !== $bodytext) {
             $com_replytext .= '<br><br>' . $bodytext . '';
         }
         $com_replytitle = $article->title();

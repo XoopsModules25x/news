@@ -343,12 +343,12 @@ function news_CreateMetaDatas($story = null)
      */
     $meta_keywords = '';
     if (isset($story) && is_object($story)) {
-        if (xoops_trim($story->keywords()) !== '') {
+        if ('' !== xoops_trim($story->keywords())) {
             $meta_keywords = $story->keywords();
         } else {
             $meta_keywords = news_createmeta_keywords($story->hometext() . ' ' . $story->bodytext());
         }
-        if (xoops_trim($story->description()) !== '') {
+        if ('' !== xoops_trim($story->description())) {
             $meta_description = strip_tags($story->description);
         } else {
             $meta_description = strip_tags($story->title);
@@ -417,7 +417,7 @@ function news_createmeta_keywords($content)
     $registry = new news_registryfile('news_metagen_options.txt');
     //    $tcontent = '';
     $tcontent = $registry->getfile();
-    if (xoops_trim($tcontent) !== '') {
+    if ('' !== xoops_trim($tcontent)) {
         list($keywordscount, $keywordsorder) = explode(',', $tcontent);
     } else {
         $keywordscount = $cfg['meta_keywords_count'];
@@ -561,7 +561,7 @@ function news_updateCache()
 
     // Remove cache for each page.
     foreach ($tpllist as $onetemplate) {
-        if ($onetemplate->getVar('tpl_type') === 'module') {
+        if ('module' === $onetemplate->getVar('tpl_type')) {
             // Note, I've been testing all the other methods (like the one of Smarty) and none of them run, that's why I have used this code
             $files_del = [];
             $files_del = glob(XOOPS_CACHE_PATH . '/*' . $onetemplate->getVar('tpl_file') . '*');
@@ -764,7 +764,7 @@ function news_close_tags($string)
  */
 function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false)
 {
-    if ($length == 0) {
+    if (0 == $length) {
         return '';
     }
     if (strlen($string) > $length) {

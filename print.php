@@ -46,12 +46,12 @@ if (empty($storyid)) {
 // Verify that the article is published
 $story = new NewsStory($storyid);
 // Not yet published
-if ($story->published() == 0 || $story->published() > time()) {
+if (0 == $story->published() || $story->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
 // Expired
-if ($story->expired() != 0 && $story->expired() < time()) {
+if (0 != $story->expired() && $story->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
@@ -69,13 +69,13 @@ if (!$gpermHandler->checkRight('news_view', $story->topicid(), $groups, $xoopsMo
 $xoops_meta_keywords    = '';
 $xoops_meta_description = '';
 
-if (trim($story->keywords()) !== '') {
+if ('' !== trim($story->keywords())) {
     $xoops_meta_keywords = $story->keywords();
 } else {
     $xoops_meta_keywords = NewsUtility::createMetaKeywords($story->hometext() . ' ' . $story->bodytext());
 }
 
-if (trim($story->description()) !== '') {
+if ('' !== trim($story->description())) {
     $xoops_meta_description = $story->description();
 } else {
     $xoops_meta_description = strip_tags($story->title());
@@ -267,7 +267,7 @@ function PrintPage()
     echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br>';
     $bodytext = $story->bodytext();
     $bodytext = str_replace('[pagebreak]', '<br style="page-break-after:always;">', $bodytext);
-    if ($bodytext !== '') {
+    if ('' !== $bodytext) {
         echo $bodytext . '<br><br>';
     }
     echo '</td></tr></table></td></tr></table>

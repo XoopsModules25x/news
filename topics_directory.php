@@ -63,7 +63,7 @@ if (is_array($topics_arr) && count($topics_arr)) {
         if (array_key_exists($onetopic['topic_id'], $newscountbytopic)) {
             $count = $newscountbytopic[$onetopic['topic_id']];
         }
-        if ($onetopic['topic_pid'] != 0) {
+        if (0 != $onetopic['topic_pid']) {
             $onetopic['prefix'] = str_replace('.', '-', $onetopic['prefix']) . '&nbsp;';
         } else {
             $onetopic['prefix'] = str_replace('.', '', $onetopic['prefix']);

@@ -34,12 +34,12 @@ if (empty($storyid)) {
 
 $article = new NewsStory($storyid);
 // Not yet published
-if ($article->published() == 0 || $article->published() > time()) {
+if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
 // Expired
-if ($article->expired() != 0 && $article->expired() < time()) {
+if (0 != $article->expired() && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
@@ -112,7 +112,7 @@ $pdf->SetTextColor(10, 60, 160);
 //$pdf->SetFont(PDF_FONT_NAME_TITLE, PDF_FONT_STYLE_TITLE, PDF_FONT_SIZE_TITLE);
 $pdf->writeHTML($pdf_data['title'] . ' - ' . $pdf_data['subtitle'], K_TITLE_MAGNIFICATION);
 //$pdf->Line(25,20,190,20);
-if ($pdf_data['subsubtitle'] !== '') {
+if ('' !== $pdf_data['subsubtitle']) {
     $pdf->writeHTML($puff, K_XSMALL_RATIO);
     //    $pdf->SetFont(PDF_FONT_NAME_SUBSUB, PDF_FONT_STYLE_SUBSUB, PDF_FONT_SIZE_SUBSUB);
     $pdf->writeHTML($pdf_data['subsubtitle'], '1');

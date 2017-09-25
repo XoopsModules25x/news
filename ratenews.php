@@ -89,12 +89,12 @@ if (isset($_GET['storyid'])) {
 
 if (!empty($storyid)) {
     $article = new NewsStory($storyid);
-    if ($article->published() == 0 || $article->published() > time()) {
+    if (0 == $article->published() || $article->published() > time()) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
     }
 
     // Expired
-    if ($article->expired() != 0 && $article->expired() < time()) {
+    if (0 != $article->expired() && $article->expired() < time()) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
     }
 } else {
@@ -127,7 +127,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $rating       = (int)$_POST['rating'];
 
     // Check if Rating is Null
-    if ($rating == '--') {
+    if ('--' == $rating) {
         redirect_header(XOOPS_URL . '/modules/news/ratenews.php?storyid=' . $storyid, 4, _NW_NORATING);
     }
 
@@ -136,7 +136,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     }
 
     // Check if News POSTER is voting (UNLESS Anonymous users allowed to post)
-    if ($ratinguser != 0) {
+    if (0 != $ratinguser) {
         $result = $xoopsDB->query('SELECT uid FROM ' . $xoopsDB->prefix('news_stories') . " WHERE storyid=$storyid");
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {

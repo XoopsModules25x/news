@@ -51,7 +51,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
 
     $sql = 'SELECT storyid, topicid, uid, title, created FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired > ' . time() . ') ';
 
-    if ($userid != 0) {
+    if (0 != $userid) {
         $sql .= ' AND uid=' . $userid . ' ';
     }
     // because count() returns 1 even if a supplied variable
@@ -98,7 +98,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
         $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM ' . $xoopsDB->prefix('xoopscomments') . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
-        if ($userid != 0) {
+        if (0 != $userid) {
             $sql .= ' AND com_uid=' . $userid . ' ';
         }
 

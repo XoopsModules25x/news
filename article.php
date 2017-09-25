@@ -130,11 +130,11 @@ $myts = MyTextSanitizer::getInstance();
 
 // Not yet published
 $article = new NewsStory($storyid);
-if ($article->published() == 0 || $article->published() > time()) {
+if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOTYETSTORY);
 }
 // Expired
-if ($article->expired() != 0 && $article->expired() < time()) {
+if (0 != $article->expired() && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
@@ -155,7 +155,7 @@ $hcontent   = '';
 /**
  * update counter only when viewing top page and when you are not the author or an admin
  */
-if (empty($_GET['com_id']) && $storypage == 0) {
+if (empty($_GET['com_id']) && 0 == $storypage) {
     if (is_object($xoopsUser)) {
         if (($xoopsUser->getVar('uid') == $article->uid()) || NewsUtility::isAdminGroup()) {
             // nothing ! ;-)
@@ -179,7 +179,7 @@ $story['topic_title'] = $article->textlink();
 $story['text'] = $article->hometext();
 $bodytext      = $article->bodytext();
 
-if (xoops_trim($bodytext) !== '') {
+if ('' !== xoops_trim($bodytext)) {
     $articletext = [];
     if (NewsUtility::getModuleOption('enhanced_pagenav')) {
         $articletext             = preg_split('/(\[pagebreak:|\[pagebreak)(.*)(\])/iU', $bodytext);
@@ -207,7 +207,7 @@ if (xoops_trim($bodytext) !== '') {
             }
         }
 
-        if ($storypage == 0) {
+        if (0 == $storypage) {
             $story['text'] = $story['text'] . '<br>' . NewsUtility::getModuleOption('advertisement') . '<br>' . $articletext[$storypage];
         } else {
             $story['text'] = $articletext[$storypage];
@@ -228,7 +228,7 @@ $xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement')
 function my_highlighter($matches)
 {
     $color = NewsUtility::getModuleOption('highlightcolor');
-    if (substr($color, 0, 1) !== '#') {
+    if ('#' !== substr($color, 0, 1)) {
         $color = '#' . $color;
     }
 
@@ -264,7 +264,7 @@ if ($story['poster']) {
     $story['poster_email']     = '';
     $story['poster_url']       = '';
     $story['poster_from']      = '';
-    if (NewsUtility::getModuleOption('displayname') != 3) {
+    if (3 != NewsUtility::getModuleOption('displayname')) {
         $story['poster'] = $xoopsConfig['anonymous'];
     }
 }
@@ -299,7 +299,7 @@ $xoopsTpl->assign('lang_postedby', _POSTEDBY);
 $xoopsTpl->assign('lang_reads', _READS);
 $xoopsTpl->assign('mail_link', 'mailto:?subject=' . sprintf(_NW_INTARTICLE, $xoopsConfig['sitename']) . '&amp;body=' . sprintf(_NW_INTARTFOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/news/article.php?storyid=' . $article->storyid());
 
-if (xoops_trim($article->picture()) !== '') {
+if ('' !== xoops_trim($article->picture())) {
     $story['picture']     = XOOPS_URL . '/uploads/news/image/' . $article->picture();
     $story['pictureinfo'] = $article->pictureinfo();
 } else {
@@ -489,7 +489,7 @@ if (NewsUtility::getModuleOption('ratenews') && $other_test) {
     $xoopsTpl->assign('lang_ratingc', _NW_RATINGC);
     $xoopsTpl->assign('lang_ratethisnews', _NW_RATETHISNEWS);
     $story['rating'] = number_format($article->rating(), 2);
-    if ($article->votes == 1) {
+    if (1 == $article->votes) {
         $story['votes'] = _NW_ONEVOTE;
     } else {
         $story['votes'] = sprintf(_NW_NUMVOTES, $article->votes);
@@ -513,12 +513,12 @@ $xoopsTpl->assign('share', $xoopsModuleConfig['share']);
 $xoopsTpl->assign('showicons', $xoopsModuleConfig['showicons']);
 
 $canPdf = 1;
-if (!is_object($GLOBALS['xoopsUser']) && $xoopsModuleConfig['show_pdficon'] == 0) {
+if (!is_object($GLOBALS['xoopsUser']) && 0 == $xoopsModuleConfig['show_pdficon']) {
     $canPdf = 0;
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);
 
-if (NewsUtility::getModuleOption('displaytopictitle') == 1) {
+if (1 == NewsUtility::getModuleOption('displaytopictitle')) {
     $xoopsTpl->assign('displaytopictitle', true);
 } else {
     $xoopsTpl->assign('displaytopictitle', false);
