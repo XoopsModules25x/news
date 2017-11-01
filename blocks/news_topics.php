@@ -33,7 +33,7 @@ function b_news_topics_show()
     xoops_load('utility', $moduleDirName);
 
     $jump       = XOOPS_URL . '/modules/news/index.php?storytopic=';
-    $storytopic = !empty($storytopic) ? (int)$storytopic : 0;
+    $storytopic = !empty($storytopic) ? $storytopic : 0;
     $restricted = NewsUtility::getModuleOption('restrictindex');
 
     $xt         = new NewsTopic();

@@ -1679,7 +1679,7 @@ class NewsStory extends MyXoopsStory
             }
         }
         $sql    .= " ORDER BY s.$order DESC";
-        $result = $db->query($sql, (int)$limit, (int)$start);
+        $result = $db->query($sql, $limit, $start);
 
         while ($myrow = $db->fetchArray($result)) {
             if ($asobject) {
