@@ -21,7 +21,7 @@
 /**
  * @param $items
  *
- * @return null
+ * @return bool|null
  */
 function news_tag_iteminfo(&$items)
 {
