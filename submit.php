@@ -340,7 +340,7 @@ switch ($op) {
             $expiry_date = $_POST['expiry_date'];
             $expiry_date = strtotime($expiry_date['date']) + $expiry_date['time'];
             $offset      = $xoopsUser->timezone() - $xoopsConfig['server_TZ'];
-            $expiry_date = $expiry_date - ($offset * 3600);
+            $expiry_date -= ($offset * 3600);
             $story->setExpired($expiry_date);
         } else {
             $story->setExpired(0);
