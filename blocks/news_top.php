@@ -187,7 +187,7 @@ function b_news_top_show($options)
 
             if (0 == $options[5]) { // Use a specific news
                 if (!isset($permstory)) {
-                    $tmpstory->NewsStory($options[6]);
+                    $tmpstory = new NewsStory($options[6]);
                 } else {
                     $tmpstory = $permstory;
                 }
@@ -196,7 +196,7 @@ function b_news_top_show($options)
                 $stories = NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
                 if (count($stories) > 0) {
                     $firststory = $stories[0];
-                    $tmpstory->NewsStory($firststory->storyid());
+                    $tmpstory = new NewsStory($firststory->storyid());
                 } else {
                     $block['use_spotlight'] = false;
                 }
