@@ -9,19 +9,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright    XOOPS Project (http://xoops.org)
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
  * @package      News
  * @since        1.71
  * @author       XOOPS Development Team
  **/
-include_once __DIR__ . '/admin_header.php';
 
+require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
-$aboutAdmin = new ModuleAdmin();
+$adminObject->displayNavigation(basename(__FILE__));
+$adminObject->setPaypal('xoopsfoundation@gmail.com');
+$adminObject->displayAbout(false);
 
-echo $aboutAdmin->addNavigation(basename(__FILE__));
-echo $aboutAdmin->renderAbout('6KJ7RW5DR3VTJ', false);
-
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

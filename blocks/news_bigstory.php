@@ -1,53 +1,46 @@
 <?php
-// 
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-// ------------------------------------------------------------------------- //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @return array
  */
 function b_news_bigstory_show()
 {
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     $myts       = MyTextSanitizer::getInstance();
-    $restricted = news_getmoduleoption('restrictindex');
-    $dateformat = news_getmoduleoption('dateformat');
-    $infotips   = news_getmoduleoption('infotips');
+    $restricted = NewsUtility::getModuleOption('restrictindex');
+    $dateformat = NewsUtility::getModuleOption('dateformat');
+    $infotips   = NewsUtility::getModuleOption('infotips');
 
-    $block    = array();
+    $block    = [];
     $onestory = new NewsStory();
     $stories  = $onestory->getBigStory(1, 0, $restricted, 0, 1, true, 'counter');
-    if (count($stories) == 0) {
+    if (0 == count($stories)) {
         $block['message'] = _MB_NEWS_NOTYET;
     } else {
         foreach ($stories as $key => $story) {
             $htmltitle = '';
             if ($infotips > 0) {
-                $block['infotips'] = news_make_infotips($story->hometext());
+                $block['infotips'] = NewsUtility::makeInfotips($story->hometext());
                 $htmltitle         = ' title="' . $block['infotips'] . '"';
             } else {
                 $htmltitle = ' title="' . $story->title('Show') . '"';
@@ -78,7 +71,7 @@ function b_news_bigstory_show()
 function b_news_bigstory_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_bigstory_show($options);
+    $block   =& b_news_bigstory_show($options);
 
     $tpl = new XoopsTpl();
     $tpl->assign('block', $block);

@@ -1,29 +1,22 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 /**
  * RSS per topics
  *
@@ -33,25 +26,25 @@
  *
  * @package       News
  * @author        Xoops Modules Dev Team
- * @copyright (c) XOOPS Project (http://xoops.org)
+ * @copyright (c) XOOPS Project (https://xoops.org)
  *
  * @param type $nomvariable description
  */
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/class/template.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/class/template.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
-if (!news_getmoduleoption('topicsrss')) {
+if (!NewsUtility::getModuleOption('topicsrss')) {
     exit();
 }
 
 $topicid = isset($_GET['topicid']) ? (int)$_GET['topicid'] : 0;
-if ($topicid == 0) {
+if (0 == $topicid) {
     exit();
 }
 
@@ -59,8 +52,8 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 
-$restricted = news_getmoduleoption('restrictindex');
-$newsnumber = news_getmoduleoption('storyhome');
+$restricted = NewsUtility::getModuleOption('restrictindex');
+$newsnumber = NewsUtility::getModuleOption('storyhome');
 
 $charset = 'utf-8';
 
@@ -103,13 +96,13 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
             $storytitle = $story->title();
             //if we are allowing html, we need to use htmlspecialchars or any bug will break the output
             $description = htmlspecialchars($story->hometext());
-            $tpl->append('items', array(
+            $tpl->append('items', [
                 'title'       => xoops_utf8_encode($storytitle),
                 'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'pubdate'     => formatTimestamp($story->published(), 'rss'),
                 'description' => xoops_utf8_encode($description)
-            ));
+            ]);
         }
     }
 }

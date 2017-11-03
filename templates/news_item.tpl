@@ -16,7 +16,7 @@
     </div>
     <div class="itemBody">
         <{if $story.picture != ''}>
-            <img class="left" src="<{$story.picture}>" alt="<{$story.pictureinfo}>"/>
+            <img class="left" src="<{$story.picture}>" alt="<{$story.pictureinfo}>">
         <{else}>
             <{$story.imglink}>
         <{/if}>

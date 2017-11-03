@@ -1,12 +1,7 @@
 <div id="help-template" class="outer">
-    <h1 class="head">Help:
-        <a class="ui-corner-all tooltip" href="<{$xoops_url}>/modules/news/admin/index.php"
-           title="Back to the administration of News"> News
-            <img src="<{xoAdminIcons home.png}>"
-                 alt="Back to the Administration of News"/>
-        </a></h1>
+    <{include file=$smarty.const._MI_NEWS_HELP_HEADER}>
 
-    <h4 class="odd">DESCRIPTION</h4><br>
+    <h4 class="odd">DESCRIPTION</h4> <br>
     <p class="even">
 
         <b>The module can:</b><br><br>
@@ -85,7 +80,7 @@
 
     <h4 class="odd">SUPPORT</h4>
     <p class="even">If you have questions about this module and need help, you can visit our <a
-            href="http://xoops.org/modules/newbb/viewforum.php?forum=28/" target="_blank">Support Forums on XOOPS
+            href="https://xoops.org/modules/newbb/viewforum.php?forum=28/" target="_blank">Support Forums on XOOPS
         Website</a></p>
 
     <h4 class="odd">DEVELOPMENT</h4>

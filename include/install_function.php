@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright   {@link http://xoops.org/ XOOPS Project}
+ * @copyright   {@link https://xoops.org/ XOOPS Project}
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Voltan
  * @package     News
@@ -64,20 +64,25 @@ function xoops_module_install_news(XoopsModule $xoopsModule)
     $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news';
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777);
+    //    if (!is_dir($dir)) {
+    //        mkdir($dir, 0777);
+    //    }
+
+    if (!@mkdir($dir) && !is_dir($dir)) {
+        throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
+
     chmod($dir, 0777);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777);
+    if (!@mkdir($dir) && !is_dir($dir)) {
+        throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     chmod($dir, 0777);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777);
+    if (!@mkdir($dir) && !is_dir($dir)) {
+        throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     chmod($dir, 0777);
 

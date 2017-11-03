@@ -1,7 +1,7 @@
 <?php
 //  ------------------------------------------------------------------------ //
 //                  Copyright (c) 2005-2006 Herve Thouzard                     //
-//                     <http://www.herve-thouzard.com/>                      //
+//                     <http://www.herve-thouzard.com>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -22,7 +22,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class news_blacklist
@@ -36,13 +36,13 @@ class news_blacklist
      */
     public function getAllKeywords()
     {
-        $ret      = $tbl_black_list = array();
+        $ret      = $tbl_black_list = [];
         $myts     = MyTextSanitizer::getInstance();
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
-            include_once $filename;
+            require_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
-                if (xoops_trim($onekeyword) !== '') {
+                if ('' !== xoops_trim($onekeyword)) {
                     $onekeyword       = $myts->htmlSpecialChars($onekeyword);
                     $ret[$onekeyword] = $onekeyword;
                 }
@@ -83,13 +83,13 @@ class news_blacklist
         if (is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
                 $onekeyword = xoops_trim($myts->htmlSpecialChars($onekeyword));
-                if ($onekeyword !== '') {
+                if ('' !== $onekeyword) {
                     $this->keywords[$onekeyword] = $onekeyword;
                 }
             }
         } else {
             $keyword = xoops_trim($myts->htmlSpecialChars($keyword));
-            if ($keyword !== '') {
+            if ('' !== $keyword) {
                 $this->keywords[$keyword] = $keyword;
             }
         }
@@ -102,7 +102,7 @@ class news_blacklist
      */
     public function remove_blacklisted($keywords)
     {
-        $ret       = array();
+        $ret       = [];
         $tmp_array = array_values($this->keywords);
         foreach ($keywords as $onekeyword) {
             $add = true;
@@ -133,7 +133,7 @@ class news_blacklist
         fwrite($fd, "<?php\n");
         fwrite($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {
-            fwrite($fd, "\"" . $onekeyword . "\",\n");
+            fwrite($fd, '"' . $onekeyword . "\",\n");
         }
         fwrite($fd, "'');\n");
         fwrite($fd, "?>\n");

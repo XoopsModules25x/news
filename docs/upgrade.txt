@@ -7,7 +7,7 @@ version :
 1) Upload all files in this package, overwriting the existing files.
 2) Update the module in system admin -> modules
 3) Launch the following script at least one time :
-	http://www.example.com/modules/news/admin/upgrade.php
+    http://www.example.com/modules/news/admin/upgrade.php
    To be able to launch it, YOU MUST BE AN ADMIN OF THE NEWS MODULE
    Once this script has been launched, you can remove it but it's not "vital"
 4) If you are using a personalized template set (if you have cloned it for

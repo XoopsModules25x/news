@@ -9,58 +9,54 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright      XOOPS Project (http://xoops.org)
+ * @copyright      XOOPS Project (https://xoops.org)
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
  * @package        news
  * @since          1.6.7
  * @author         XOOPS Development Team
  **/
-$path = dirname(dirname(dirname(__DIR__)));
-include_once $path . '/mainfile.php';
-include_once $path . '/include/cp_functions.php';
-require_once $path . '/include/cp_header.php';
 
-global $xoopsModule;
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
+//require_once __DIR__ . '/../class/utility.php';
+//require_once __DIR__ . '/../include/common.php';
 
-$moduleDirName  = $GLOBALS['xoopsModule']->getVar('dirname');
-$thisModulePath = dirname(__DIR__);
+$moduleDirName = basename(dirname(__DIR__));
 
-//if functions.php file exist
-//require_once __DIR__ . '/../include/functions.php';
-require_once $thisModulePath . '/include/functions.php';
+if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
+} else {
+    $moduleHelper = Xmf\Module\Helper::getHelper('system');
+}
+$adminObject = \Xmf\Module\Admin::getInstance();
+
+$pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon32 = \Xmf\Module\Admin::iconUrl('', 32);
+
+/** @var Xmf\Module\Helper\GenericHelper $moduleHelper */
+$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
 // Load language files
-xoops_loadLanguage('admin', $moduleDirName);
-xoops_loadLanguage('modinfo', $moduleDirName);
-xoops_loadLanguage('main', $moduleDirName);
+$moduleHelper->loadLanguage('admin');
+$moduleHelper->loadLanguage('modinfo');
+$moduleHelper->loadLanguage('main');
 
-$pathIcon16      = '../' . $xoopsModule->getInfo('icons16');
-$pathIcon32      = '../' . $xoopsModule->getInfo('icons32');
-$pathModuleAdmin = $xoopsModule->getInfo('dirmoduleadmin');
+$myts = MyTextSanitizer::getInstance();
 
-if (file_exists($GLOBALS['xoops']->path($pathModuleAdmin . '/moduleadmin.php'))) {
-    include_once $GLOBALS['xoops']->path($pathModuleAdmin . '/moduleadmin.php');
-} else {
-    redirect_header('../../../admin.php', 5, _AM_MODULEADMIN_MISSING, false);
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+    require_once $GLOBALS['xoops']->path('class/template.php');
+    $xoopsTpl = new XoopsTpl();
 }
 
 $topicsHandler  = xoops_getModuleHandler('news_topics', 'news');
 $storiesHandler = xoops_getModuleHandler('news_stories', 'news');
 
-$myts = MyTextSanitizer::getInstance();
-
 if ($xoopsUser) {
-    $moduleperm_handler = xoops_getHandler('groupperm');
-    if (!$moduleperm_handler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
+    $modulepermHandler = xoops_getHandler('groupperm');
+    if (!$modulepermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
         redirect_header(XOOPS_URL, 1, _NOPERM);
     }
 } else {
     redirect_header(XOOPS_URL . '/user.php', 1, _NOPERM);
-}
-
-if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
-    include_once XOOPS_ROOT_PATH . '/class/template.php';
-    $xoopsTpl = new XoopsTpl();
 }
 
 $xoopsTpl->assign('pathIcon16', $pathIcon16);

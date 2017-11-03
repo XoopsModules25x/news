@@ -6,11 +6,9 @@
     <{if $displaynav == true}>
         <div style="text-align: center;">
             <form name="form1" action="<{$xoops_url}>/modules/news/index.php" method="get">
-                <{$topic_select}> <select name="storynum"><{$storynum_options}></select> <input type="submit"
-                                                                                                value="<{$lang_go}>"
-                                                                                                class="formButton"/>
+                <{$topic_select}> <select name="storynum"><{$storynum_options}></select> <input type="submit" value="<{$lang_go}>" class="formButton">
             </form>
-            <hr/>
+            <hr>
         </div>
     <{/if}>
 

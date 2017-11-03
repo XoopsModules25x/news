@@ -1,5 +1,5 @@
 <?php
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * This file contains the keyhighlighter class that highlight the chosen keyword in the current output buffer.
@@ -77,7 +77,7 @@ class keyhighlighter
      */
     public function replace($replace_matches)
     {
-        $patterns = array();
+        $patterns = [];
         if ($this->singlewords) {
             $keywords = explode(' ', $this->preg_keywords);
             foreach ($keywords as $keyword) {
@@ -90,7 +90,7 @@ class keyhighlighter
         $result = $replace_matches[0];
 
         foreach ($patterns as $pattern) {
-            if (!is_null($this->replace_callback)) {
+            if (null !== $this->replace_callback) {
                 $result = preg_replace_callback($pattern, $this->replace_callback, $result);
             } else {
                 $result = preg_replace($pattern, '<span class="highlightedkey">\\0</span>', $result);
@@ -109,7 +109,7 @@ class keyhighlighter
     {
         $buffer              = '>' . $buffer . '<';
         $this->preg_keywords = preg_replace('/[^\w ]/si', '', $this->keywords);
-        $buffer              = preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", array(&$this, 'replace'), $buffer);
+        $buffer              = preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", [&$this, 'replace'], $buffer);
         $buffer              = xoops_substr($buffer, 1, -1);
 
         return $buffer;

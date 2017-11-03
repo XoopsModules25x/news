@@ -1,36 +1,27 @@
 <?php
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// Author: Herve Thouzard                                     //
-// URL: http://www.herve-thouzard.com                                        //
-// ------------------------------------------------------------------------- //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ * @author         Herve Thouzard  URL: http://www.herve-thouzard.com
+ */
 
 /**
  * @param $items
  *
- * @return null
+ * @return bool|null
  */
 function news_tag_iteminfo(&$items)
 {
@@ -38,7 +29,7 @@ function news_tag_iteminfo(&$items)
         return false;
     }
 
-    $items_id = array();
+    $items_id = [];
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
             $items_id[] = (int)$item_id;
@@ -52,14 +43,14 @@ function news_tag_iteminfo(&$items)
         foreach (array_keys($items[$cat_id]) as $item_id) {
             if (isset($items_obj[$item_id])) {
                 $item_obj                 =& $items_obj[$item_id];
-                $items[$cat_id][$item_id] = array(
+                $items[$cat_id][$item_id] = [
                     'title'   => $item_obj->title(),
                     'uid'     => $item_obj->uid(),
                     'link'    => "article.php?storyid={$item_id}",
                     'time'    => $item_obj->published(),
                     'tags'    => '', // tag_parse_tag($item_obj->getVar("item_tags", "n")), // optional
                     'content' => ''
-                );
+                ];
             }
         }
     }
@@ -74,34 +65,29 @@ function news_tag_iteminfo(&$items)
 function news_tag_synchronization($mid)
 {
     global $xoopsDB;
-    $item_handler_keyName = 'storyid';
-    $item_handler_table   = $xoopsDB->prefix('news_stories');
-    $link_handler         = xoops_getModuleHandler('link', 'tag');
-    $where                = "($item_handler_table.published > 0 AND $item_handler_table.published <= "
-                            . time()
-                            . ") AND ($item_handler_table.expired = 0 OR $item_handler_table.expired > "
-                            . time()
-                            . ')';
+    $itemHandler_keyName = 'storyid';
+    $itemHandler_table   = $xoopsDB->prefix('news_stories');
+    $linkHandler         = xoops_getModuleHandler('link', 'tag');
+    $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . time() . ')';
 
     /* clear tag-item links */
-    if ($link_handler->mysql_major_version() >= 4):
-        $sql = "    DELETE FROM {$link_handler->table}"
+    if ($linkHandler->mysql_major_version() >= 4):
+        $sql = "    DELETE FROM {$linkHandler->table}"
                . ' WHERE '
                . "     tag_modid = {$mid}"
                . '     AND '
                . '       ( tag_itemid NOT IN '
-               . "           ( SELECT DISTINCT {$item_handler_keyName} "
-               . "             FROM {$item_handler_table} "
+               . "           ( SELECT DISTINCT {$itemHandler_keyName} "
+               . "             FROM {$itemHandler_table} "
                . "                WHERE $where"
                . '           ) '
-               . '     )';
-    else:
-        $sql = "   DELETE {$link_handler->table} FROM {$link_handler->table}"
-               . "  LEFT JOIN {$item_handler_table} AS aa ON {$link_handler->table}.tag_itemid = aa.{$item_handler_keyName} "
+               . '     )'; else:
+        $sql = "   DELETE {$linkHandler->table} FROM {$linkHandler->table}"
+               . "  LEFT JOIN {$itemHandler_table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler_keyName} "
                . '   WHERE '
                . "     tag_modid = {$mid}"
                . '     AND '
-               . "       ( aa.{$item_handler_keyName} IS NULL"
+               . "       ( aa.{$itemHandler_keyName} IS NULL"
                . '           OR '
                . '       (aa.published > 0 AND aa.published <= '
                . time()
@@ -111,7 +97,7 @@ function news_tag_synchronization($mid)
                . '       )';
 
     endif;
-    if (!$result = $link_handler->db->queryF($sql)) {
-        //xoops_error($link_handler->db->error());
+    if (!$result = $linkHandler->db->queryF($sql)) {
+        //xoops_error($linkHandler->db->error());
     }
 }

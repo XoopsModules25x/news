@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
 // Copyright (c) 2000-2016 XOOPS.org                                             //
-// <http://xoops.org/>                                                  //
+// <https://xoops.org>                                                  //
 // ------------------------------------------------------------------------ //
 // This program is free software; you can redistribute it and/or modify     //
 // it under the terms of the GNU General Public License as published by     //
@@ -24,21 +24,21 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
-include_once __DIR__ . '/../../../include/cp_header.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
+require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
-$permAdmin = new ModuleAdmin();
-echo $permAdmin->addNavigation(basename(__FILE__));
+$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject->displayNavigation(basename(__FILE__));
 
 echo '<br><br><br>';
 $permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
-$selected                 = array('', '', '');
+$selected                 = ['', '', ''];
 $selected[$permtoset - 1] = ' selected';
-echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='javascript: document.fselperm.submit()'><option value='1'"
+echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='document.fselperm.submit()'><option value='1'"
      . $selected[0]
      . '>'
      . _AM_APPROVEFORM
@@ -86,4 +86,4 @@ if ($alltopics) {
     redirect_header('index.php?op=topicsmanager', 5, _NW_NEWS_NO_TOPICS, false);
 }
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

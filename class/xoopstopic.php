@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (http://xoops.org)
+ * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
@@ -17,10 +17,10 @@
  * @deprecated
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 //$GLOBALS['xoopsLogger']->addDeprecated("'/class/xoopstopic.php' is deprecated since XOOPS 2.5.4, please create your own class instead.");
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
 
 /**
  * Class MyXoopsTopic
@@ -46,7 +46,7 @@ class MyXoopsTopic
         $this->table = $table;
         if (is_array($topicid)) {
             $this->makeTopic($topicid);
-        } elseif ($topicid != 0) {
+        } elseif (0 != $topicid) {
             $this->getTopic((int)$topicid);
         } else {
             $this->topic_id = $topicid;
@@ -115,10 +115,10 @@ class MyXoopsTopic
         $myts   = MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
-        if (isset($this->topic_title) && $this->topic_title !== '') {
+        if (isset($this->topic_title) && '' !== $this->topic_title) {
             $title = $myts->addSlashes($this->topic_title);
         }
-        if (isset($this->topic_imgurl) && $this->topic_imgurl !== '') {
+        if (isset($this->topic_imgurl) && '' !== $this->topic_imgurl) {
             $imgurl = $myts->addSlashes($this->topic_imgurl);
         }
         if (!isset($this->topic_pid) || !is_numeric($this->topic_pid)) {
@@ -126,16 +126,14 @@ class MyXoopsTopic
         }
         if (empty($this->topic_id)) {
             $this->topic_id = $this->db->genId($this->table . '_topic_id_seq');
-            $sql            = sprintf("INSERT INTO %s (topic_id, topic_pid, topic_imgurl, topic_title) VALUES (%u, %u, '%s', '%s')", $this->table,
-                                      $this->topic_id, $this->topic_pid, $imgurl, $title);
+            $sql            = sprintf("INSERT INTO %s (topic_id, topic_pid, topic_imgurl, topic_title) VALUES (%u, %u, '%s', '%s')", $this->table, $this->topic_id, $this->topic_pid, $imgurl, $title);
         } else {
-            $sql = sprintf("UPDATE %s SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table,
-                           $this->topic_pid, $imgurl, $title, $this->topic_id);
+            $sql = sprintf("UPDATE %s SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table, $this->topic_pid, $imgurl, $title, $this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
             ErrorHandler::show('0022');
         }
-        if ($this->use_permission == true) {
+        if (true === $this->use_permission) {
             if (empty($this->topic_id)) {
                 $this->topic_id = $this->db->getInsertId();
             }
@@ -152,7 +150,7 @@ class MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add == true) {
+                    if (true === $add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
@@ -172,7 +170,7 @@ class MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add == true) {
+                    if (true === $add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
@@ -192,7 +190,7 @@ class MyXoopsTopic
                             continue;
                         }
                     }
-                    if ($add == true) {
+                    if (true === $add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
@@ -287,7 +285,7 @@ class MyXoopsTopic
      */
     public function getFirstChildTopics()
     {
-        $ret       = array();
+        $ret       = [];
         $xt        = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
         $topic_arr = $xt->getFirstChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
@@ -304,7 +302,7 @@ class MyXoopsTopic
      */
     public function getAllChildTopics()
     {
-        $ret       = array();
+        $ret       = [];
         $xt        = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
         $topic_arr = $xt->getAllChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
@@ -321,7 +319,7 @@ class MyXoopsTopic
      */
     public function getChildTopicsTreeArray()
     {
-        $ret       = array();
+        $ret       = [];
         $xt        = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
         $topic_arr = $xt->getChildTreeArray($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
@@ -352,6 +350,7 @@ class MyXoopsTopic
     }
 
     //generates nicely formatted linked path from the root id to a given id
+
     /**
      * @param $funcURL
      *
@@ -382,13 +381,13 @@ class MyXoopsTopic
     public function getTopicsList()
     {
         $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
-        $ret    = array();
+        $ret    = [];
         $myts   = MyTextSanitizer::getInstance();
         while ($myrow = $this->db->fetchArray($result)) {
-            $ret[$myrow['topic_id']] = array(
+            $ret[$myrow['topic_id']] = [
                 'title' => $myts->htmlspecialchars($myrow['topic_title']),
                 'pid'   => $myrow['topic_pid']
-            );
+            ];
         }
 
         return $ret;
@@ -402,7 +401,7 @@ class MyXoopsTopic
      */
     public function topicExists($pid, $title)
     {
-        $sql = 'SELECT COUNT(*) from ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . trim($title) . "'";
+        $sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . trim($title) . "'";
         $rs  = $this->db->query($sql);
         list($count) = $this->db->fetchRow($rs);
         if ($count > 0) {

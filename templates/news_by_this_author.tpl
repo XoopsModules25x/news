@@ -1,6 +1,6 @@
 <div class="news-author">
     <h2><{$lang_news_by_this_author}> <{$author_name_with_link}></h2>
-    <br><img src='<{$user_avatarurl}>' border='0' alt=''/>
+    <br><img src='<{$user_avatarurl}>' border='0' alt=''>
     <br>
     <table width='100%' border='0'>
         <{foreach item=topic from=$topics}>

@@ -1,29 +1,22 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-// ------------------------------------------------------------------------- //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
 /**
  * Module's index
  *
@@ -32,7 +25,7 @@
  *
  * @package               News
  * @author                Xoops Modules Dev Team
- * @copyright (c)         XOOPS Project (http://xoops.org)
+ * @copyright (c)         XOOPS Project (https://xoops.org)
  *
  * Parameters received by this page :
  * @page_param            int        storytopic                    Topic's ID
@@ -84,11 +77,15 @@ include __DIR__ . '/../../mainfile.php';
 //$u=$XOOPS_URL.'/uploads/news_xml.php';
 //  $x = file_get_contents($u);
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+
+$moduleDirName = basename(__DIR__);
+xoops_load('utility', $moduleDirName);
+$module = XoopsModule::getByDirname($moduleDirName);
 
 $storytopic = 0;
 if (isset($_GET['storytopic'])) {
@@ -100,9 +97,9 @@ if (isset($_GET['storytopic'])) {
 }
 
 if ($storytopic) {
-    $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler = xoops_getHandler('groupperm');
-    if (!$gperm_handler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
+    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $gpermHandler = xoops_getHandler('groupperm');
+    if (!$gpermHandler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
     }
     $xoopsOption['storytopic'] = $storytopic;
@@ -124,9 +121,8 @@ if (isset($_GET['start'])) {
     $start = 0;
 }
 
-if (empty($xoopsModuleConfig['newsdisplay']) || $xoopsModuleConfig['newsdisplay'] === 'Classic'
-    || $xoopsOption['storytopic'] > 0
-) {
+if (empty($xoopsModuleConfig['newsdisplay']) || 'Classic' === $xoopsModuleConfig['newsdisplay']
+    || $xoopsOption['storytopic'] > 0) {
     $showclassic = 1;
 } else {
     $showclassic = 0;
@@ -140,7 +136,7 @@ $column_count = $xoopsModuleConfig['columnmode'];
 
 if ($showclassic) {
     $GLOBALS['xoopsOption']['template_main'] = 'news_index.tpl';
-    include_once XOOPS_ROOT_PATH . '/header.php';
+    require_once XOOPS_ROOT_PATH . '/header.php';
     $xt = new NewsTopic();
 
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
@@ -159,14 +155,20 @@ if ($showclassic) {
         $topictitle = $xt->topic_title();
     }
 
-    if ($xoopsModuleConfig['displaynav'] == 1) {
+    if (1 == $xoopsModuleConfig['displaynav']) {
         $xoopsTpl->assign('displaynav', true);
 
-        $allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex']);
-        $topic_tree   = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
-        $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+        $allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex']);
+        $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-        $xoopsTpl->assign('topic_select', $topic_select);
+        if (NewsUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+            $topic_select = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', $xoopsOption['storytopic'], true, 0, '', '');
+            $xoopsTpl->assign('topic_select', $topic_select->render());
+        } else {
+            $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
+            $xoopsTpl->assign('topic_select', $topic_select);
+        }
+
         $storynum_options = '';
         for ($i = 5; $i <= 30; $i += 5) {
             $sel = '';
@@ -179,42 +181,42 @@ if ($showclassic) {
     } else {
         $xoopsTpl->assign('displaynav', false);
     }
-    if ($xoopsOption['storytopic'] == 0) {
+    if (0 == $xoopsOption['storytopic']) {
         $topic_frontpage = true;
     } else {
         $topic_frontpage = false;
     }
-    $sarray = NewsStory::getAllPublished($xoopsOption['storynum'], $start, $xoopsModuleConfig['restrictindex'], $xoopsOption['storytopic'], 0, true,
-                                         'published', $topic_frontpage);
+    $sarray = NewsStory::getAllPublished($xoopsOption['storynum'], $start, $xoopsModuleConfig['restrictindex'], $xoopsOption['storytopic'], 0, true, 'published', $topic_frontpage);
 
     $scount = count($sarray);
     $xoopsTpl->assign('story_count', $scount);
     $k       = 0;
-    $columns = array();
+    $columns = [];
     if ($scount > 0) {
-        $storieslist = array();
+        $storieslist = [];
         foreach ($sarray as $storyid => $thisstory) {
             $storieslist[] = $thisstory->storyid();
         }
         $filesperstory = $sfiles->getCountbyStories($storieslist);
 
-        foreach ($sarray as $storyid => $thisstory) {
-            $filescount = array_key_exists($thisstory->storyid(), $filesperstory) ? $filesperstory[$thisstory->storyid()] : 0;
-            $story      = $thisstory->prepare2show($filescount);
-            // The line below can be used to display a Permanent Link image
-            // $story['title'] .= "&nbsp;&nbsp;<a href='".XOOPS_URL."/modules/news/article.php?storyid=".$sarray[$i]->storyid()."'><img src='".XOOPS_URL."/modules/news/assets/images/x.gif' alt='Permanent Link' /></a>";
-            $story['news_title']  = $story['title'];
-            $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
-            $story['topic_title'] = $thisstory->textlink();
-            $story['subtitle']    = $thisstory->subtitle();
-            $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
-            if ($firsttitle === '') {
-                $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();
-            }
-            $columns[$k][] = $story;
-            ++$k;
-            if ($k == $column_count) {
-                $k = 0;
+        if (!empty($sarray)) {
+            foreach ($sarray as $storyid => $thisstory) {
+                $filescount = array_key_exists($thisstory->storyid(), $filesperstory) ? $filesperstory[$thisstory->storyid()] : 0;
+                $story      = $thisstory->prepare2show($filescount);
+                // The line below can be used to display a Permanent Link image
+                // $story['title'] .= "&nbsp;&nbsp;<a href='".XOOPS_URL."/modules/news/article.php?storyid=".$sarray[$i]->storyid()."'><img src='".XOOPS_URL."/modules/news/assets/images/x.gif' alt='Permanent Link'></a>";
+                $story['news_title']  = $story['title'];
+                $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
+                $story['topic_title'] = $thisstory->textlink();
+                $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
+                if ('' === $firsttitle) {
+                    $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();
+                }
+                $columns[$k][] = $story;
+                ++$k;
+                if ($k == $column_count) {
+                    $k = 0;
+                }
             }
         }
     }
@@ -230,9 +232,9 @@ if ($showclassic) {
 
     $totalcount = NewsStory::countPublishedByTopic($xoopsOption['storytopic'], $xoopsModuleConfig['restrictindex']);
     if ($totalcount > $scount) {
-        include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+        require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
-        if (news_isbot()) { // A bot is reading the news, we are going to show it all the links so that he can read everything
+        if (NewsUtility::isBot()) { // A bot is reading the news, we are going to show it all the links so that he can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
         } else {
             $xoopsTpl->assign('pagenav', $pagenav->renderNav());
@@ -242,7 +244,7 @@ if ($showclassic) {
     }
 } else { // Affichage par sujets
     $GLOBALS['xoopsOption']['template_main'] = 'news_by_topic.tpl';
-    include_once XOOPS_ROOT_PATH . '/header.php';
+    require_once XOOPS_ROOT_PATH . '/header.php';
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
     if ($xoopsModuleConfig['ratenews']) {
         $xoopsTpl->assign('rates', true);
@@ -254,12 +256,12 @@ if ($showclassic) {
 
     $xt            = new NewsTopic();
     $alltopics     = $xt->getTopicsList(true, $xoopsModuleConfig['restrictindex']);
-    $smarty_topics = array();
-    $topicstories  = array();
+    $smarty_topics = [];
+    $topicstories  = [];
 
     foreach ($alltopics as $topicid => $topic) {
         $allstories  = NewsStory::getAllPublished($xoopsModuleConfig['storyhome'], 0, $xoopsModuleConfig['restrictindex'], $topicid);
-        $storieslist = array();
+        $storieslist = [];
         foreach ($allstories as $thisstory) {
             $storieslist[] = $thisstory->storyid();
         }
@@ -272,17 +274,17 @@ if ($showclassic) {
             $topicstories[$topicid][] = $story;
         }
         if (isset($topicstories[$topicid])) {
-            $smarty_topics[$topicstories[$topicid][0]['posttimestamp']] = array(
+            $smarty_topics[$topicstories[$topicid][0]['posttimestamp']] = [
                 'title'       => $topic['title'],
                 'stories'     => $topicstories[$topicid],
                 'id'          => $topicid,
                 'topic_color' => $topic['color']
-            );
+            ];
         }
     }
 
     krsort($smarty_topics);
-    $columns = array();
+    $columns = [];
     $i       = 0;
     foreach ($smarty_topics as $thistopictimestamp => $thistopic) {
         $columns[$i][] = $thistopic;
@@ -295,12 +297,12 @@ if ($showclassic) {
     $xoopsTpl->assign('columns', $columns);
 }
 
-$xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
+$xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
 
 /**
  * Create the Meta Datas
  */
-news_CreateMetaDatas();
+NewsUtility::createMetaDatas();
 
 /**
  * Create a clickable path from the root to the current topic (if we are viewing a topic)
@@ -308,7 +310,7 @@ news_CreateMetaDatas();
  * You can comment the code to optimize the requests count
  */
 if ($xoopsOption['storytopic']) {
-    include_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
     $mytree    = new MyXoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($xoopsOption['storytopic'], 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
@@ -322,19 +324,17 @@ if ($xoopsOption['storytopic']) {
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($xoopsModuleConfig['topicsrss'] && $xoopsOption['storytopic']) {
-    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>",
-                    XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED,
-                    XOOPS_URL . '/' . $moduleInfo->getInfo('icons16') . '/rss.gif', _NW_RSSFEED);
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, \Xmf\Module\Admin::iconUrl('', 16) . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }
 
 /**
  * Assign page's title
  */
-if ($firsttitle !== '') {
+if ('' !== $firsttitle) {
     $xoopsTpl->assign('xoops_pagetitle', $firsttitle . ' - ' . $xoopsModule->name('s'));
 } else {
-    if ($topictitle !== '') {
+    if ('' !== $topictitle) {
         $xoopsTpl->assign('xoops_pagetitle', $topictitle);
     } else {
         $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->name('s'));
@@ -348,4 +348,4 @@ $xoopsTpl->assign('lang_sendstory', _NW_SENDSTORY);
 $xoopsTpl->assign('lang_postedby', _POSTEDBY);
 $xoopsTpl->assign('lang_reads', _READS);
 $xoopsTpl->assign('lang_morereleases', _NW_MORERELEASES);
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

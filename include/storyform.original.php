@@ -1,39 +1,28 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
 
-if (file_exists(XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php')) {
-    include_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-} else {
-    include_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
-}
-include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+xoops_loadLanguage('calendar');
+
+require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
 if (!isset($subtitle)) {
     $subtitle = '';
@@ -51,15 +40,25 @@ $sform->addElement(new XoopsFormText(_NW_SUBTITLE, 'subtitle', 50, 255, $subtitl
 if (!isset($xt)) {
     $xt = new NewsTopic();
 }
-if ($xt->getAllTopicsCount() == 0) {
+if (0 == $xt->getAllTopicsCount()) {
     redirect_header('index.php', 4, _NW_POST_SORRY);
 }
 
-include_once XOOPS_ROOT_PATH . '/class/tree.php';
-$allTopics    = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
-$topic_tree   = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
-$topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
-$sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
+require_once XOOPS_ROOT_PATH . '/class/tree.php';
+$allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
+$topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+
+$moduleDirName = basename(dirname(__DIR__));
+xoops_load('utility', $moduleDirName);
+
+if (NewsUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+    //    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
+    $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', _NW_TOPIC);
+    $sform->addElement($topic_select);
+} else {
+    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
+    $sform->addElement(new XoopsFormLabel(_NW_TOPIC, $topic_select));
+}
 
 //If admin - show admin form
 //TODO: Change to "If submit privilege"
@@ -81,8 +80,8 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     if (!isset($newsauthor)) {
         $newsauthor = $xoopsUser->getVar('uid');
     }
-    $member_handler = xoops_getHandler('member');
-    $usercount      = $member_handler->getUserCount();
+    $memberHandler = xoops_getHandler('member');
+    $usercount     = $memberHandler->getUserCount();
     if ($usercount < $cfg['config_max_users_list']) {
         $sform->addElement(new XoopsFormSelectUser(_NW_AUTHOR, 'author', true, $newsauthor), false);
     } else {
@@ -90,22 +89,22 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     }
 }
 
-$editor = news_getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
+$editor = NewsUtility::getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
 $sform->addElement($editor, true);
 
 //Extra info
 //If admin -> if submit privilege
 if ($approveprivilege) {
-    $editor2 = news_getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
+    $editor2 = NewsUtility::getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
     $sform->addElement($editor2, false);
 
-    if (xoops_isActiveModule('tag') && news_getmoduleoption('tags')) {
+    if (xoops_isActiveModule('tag') && NewsUtility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
         $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
-    if (news_getmoduleoption('metadata')) {
+    if (NewsUtility::getModuleOption('metadata')) {
         $sform->addElement(new xoopsFormText(_NW_META_DESCRIPTION, 'description', 50, 255, $description), false);
         $sform->addElement(new xoopsFormText(_NW_META_KEYWORDS, 'keywords', 50, 255, $keywords), false);
     }
@@ -126,17 +125,16 @@ switch ($xoopsModuleConfig['uploadgroups']) {
 }
 
 if ($allowupload) {
-    if ($op === 'edit') {
+    if ('edit' === $op) {
         $sfiles   = new sFiles();
-        $filesarr = array();
+        $filesarr = [];
         $filesarr = $sfiles->getAllbyStory($storyid);
         if (count($filesarr) > 0) {
             $upl_tray     = new XoopsFormElementTray(_AM_UPLOAD_ATTACHFILE, '<br>');
             $upl_checkbox = new XoopsFormCheckBox('', 'delupload[]');
 
             foreach ($filesarr as $onefile) {
-                $link = sprintf("<a href='%s/%s' target='_blank'>%s</a>\n", XOOPS_UPLOAD_URL, $onefile->getDownloadname('S'),
-                                $onefile->getFileRealName('S'));
+                $link = sprintf("<a href='%s/%s' target='_blank'>%s</a>\n", XOOPS_UPLOAD_URL, $onefile->getDownloadname('S'), $onefile->getFileRealName('S'));
                 $upl_checkbox->addOption($onefile->getFileid(), $link);
             }
             $upl_tray->addElement($upl_checkbox, false);
@@ -146,10 +144,10 @@ if ($allowupload) {
         }
     }
     $sform->addElement(new XoopsFormFile(_AM_SELFILE, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
-    if ($op === 'edit') {
-        if (isset($picture) && xoops_trim($picture) !== '') {
+    if ('edit' === $op) {
+        if (isset($picture) && '' !== xoops_trim($picture)) {
             $pictureTray = new XoopsFormElementTray(_NW_CURENT_PICTURE, '<br>');
-            $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "' />"));
+            $pictureTray->addElement(new XoopsFormLabel('', "<img src='" . XOOPS_URL . '/uploads/news/image/' . $picture . "'>"));
             $deletePicureCheckbox = new XoopsFormCheckBox('', 'deleteimage', 0);
             $deletePicureCheckbox->addOption(1, _DELETE);
             $pictureTray->addElement($deletePicureCheckbox);

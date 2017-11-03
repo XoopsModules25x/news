@@ -1,33 +1,21 @@
 <?php
-// $Id$
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// Author: Kazumi Ono (AKA onokazu)                                          //
-// URL: http://www.myweb.ne.jp/, http://xoops.org/, http://jp.xoops.org/ //
-// Project: XOOPS Project                                                    //
-// ------------------------------------------------------------------------- //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright    XOOPS Project https://xoops.org/
+ * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @package
+ * @since
+ * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ */
 
 /**
  * Class to facilitate navigation in a multi page document/list
@@ -36,10 +24,10 @@
  * @subpackage           util
  *
  * @author               Kazumi Ono    <onokazu@xoops.org>
- * @copyright        (c) XOOPS Project (http://xoops.org)
+ * @copyright        (c) XOOPS Project (https://xoops.org)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class XoopsPageNav
@@ -69,7 +57,7 @@ class XoopsPageNav
         $this->total   = (int)$total_items;
         $this->perpage = (int)$items_perpage;
         $this->current = (int)$current_start;
-        if ($extra_arg !== '' && (substr($extra_arg, -5) !== '&amp;' || substr($extra_arg, -1) !== '&')) {
+        if ('' !== $extra_arg && ('&amp;' !== substr($extra_arg, -5) || '&' !== substr($extra_arg, -1))) {
             $extra_arg .= '&amp;';
         }
         $this->url = $_SERVER['PHP_SELF'] . '?' . $extra_arg . trim($start_name) . '=';
@@ -99,14 +87,13 @@ class XoopsPageNav
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<b>(' . $counter . ')</b> ';
-                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1
-                          || $counter == $total_pages
-                ) {
+                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || 1 == $counter
+                          || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '... ';
                     }
                     $ret .= '<a href="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</a> ';
-                    if ($counter == 1 && $current_page > 1 + $offset) {
+                    if (1 == $counter && $current_page > 1 + $offset) {
                         $ret .= '... ';
                     }
                 }
@@ -136,8 +123,8 @@ class XoopsPageNav
         $total_pages = ceil($this->total / $this->perpage);
         $ret         = '';
         if ($total_pages > 1) {
-            $ret = '<form name="pagenavform">';
-            $ret .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
+            $ret          = '<form name="pagenavform">';
+            $ret          .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
             $counter      = 1;
             $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
@@ -150,7 +137,7 @@ class XoopsPageNav
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="' . _GO . '" />';
+                $ret .= '&nbsp;<input type="submit" value="' . _GO . '">';
             }
             $ret .= '</form>';
         }
@@ -174,8 +161,8 @@ class XoopsPageNav
         $total_pages = ceil($this->total / $this->perpage);
         $ret         = '';
         if ($total_pages > 1) {
-            $ret = '<form name="pagenavform">';
-            $ret .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
+            $ret          = '<form name="pagenavform">';
+            $ret          .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
             $counter      = 1;
             $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
@@ -193,7 +180,7 @@ class XoopsPageNav
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="' . _GO . '" />';
+                $ret .= '&nbsp;<input type="submit" value="' . _GO . '">';
             }
             $ret .= '</form>';
         }
@@ -219,26 +206,20 @@ class XoopsPageNav
             $ret  = '<table><tr>';
             $prev = $this->current - $this->perpage;
             if ($prev >= 0) {
-                $ret .= '<td class="pagneutral"><a href="'
-                        . $this->url
-                        . $prev
-                        . '">&lt;</a></td><td><img src="'
-                        . XOOPS_URL
-                        . '/images/blank.gif" width="6" alt="" /></td>';
+                $ret .= '<td class="pagneutral"><a href="' . $this->url . $prev . '">&lt;</a></td><td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt=""></td>';
             }
             $counter      = 1;
             $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<td class="pagact"><b>' . $counter . '</b></td>';
-                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || $counter == 1
-                          || $counter == $total_pages
-                ) {
+                } elseif (($counter > $current_page - $offset && $counter < $current_page + $offset) || 1 == $counter
+                          || $counter == $total_pages) {
                     if ($counter == $total_pages && $current_page < $total_pages - $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
                     $ret .= '<td class="paginact"><a href="' . $this->url . (($counter - 1) * $this->perpage) . '">' . $counter . '</a></td>';
-                    if ($counter == 1 && $current_page > 1 + $offset) {
+                    if (1 == $counter && $current_page > 1 + $offset) {
                         $ret .= '<td class="paginact">...</td>';
                     }
                 }
@@ -246,12 +227,7 @@ class XoopsPageNav
             }
             $next = $this->current + $this->perpage;
             if ($this->total > $next) {
-                $ret .= '<td><img src="'
-                        . XOOPS_URL
-                        . '/images/blank.gif" width="6" alt="" /></td><td class="pagneutral"><a href="'
-                        . $this->url
-                        . $next
-                        . '">&gt;</a></td>';
+                $ret .= '<td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt=""></td><td class="pagneutral"><a href="' . $this->url . $next . '">></a></td>';
             }
             $ret .= '</tr></table>';
         }

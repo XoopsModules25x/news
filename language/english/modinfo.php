@@ -33,8 +33,7 @@ define('_MI_ALLOWEDAPPROVEGROUPS', 'Groups who can approve news');
 define('_MI_NEWSDISPLAY', 'News display layout');
 define('_MI_NAMEDISPLAY', "Author's name");
 define('_MI_COLUMNMODE', 'Columns');
-define('_MI_STORYCOUNTADMIN',
-       'Number of new articles to display in admin area (this option will be also used to limit the number of topics displayed in the admin area and it will be used in the statistics): ');
+define('_MI_STORYCOUNTADMIN', 'Number of new articles to display in admin area (this option will be also used to limit the number of topics displayed in the admin area and it will be used in the statistics): ');
 define('_MI_UPLOADFILESIZE', 'Max file size upload (KB) 1048576 = 1 Meg');
 define('_MI_UPLOADGROUPS', 'Authorized groups to upload');
 // Description of each config items
@@ -44,8 +43,7 @@ define('_MI_DISPLAYNAVDSC', '');
 define('_MI_AUTOAPPROVEDSC', '');
 define('_MI_ALLOWEDSUBMITGROUPSDESC', 'The selected groups will be able to submit news items');
 define('_MI_ALLOWEDAPPROVEGROUPSDESC', 'The selected groups will be able to approve news items');
-define('_MI_NEWSDISPLAYDESC',
-       'Classic shows all news ordered by date of publish. News by topic will group the news by topic with the latest story in full and the others with just the title');
+define('_MI_NEWSDISPLAYDESC', 'Classic shows all news ordered by date of publish. News by topic will group the news by topic with the latest story in full and the others with just the title');
 define('_MI_ADISPLAYNAMEDSC', "Select how to display the author's name");
 define('_MI_COLUMNMODE_DESC', 'You can choose the number of columns to display articles list');
 define('_MI_STORYCOUNTADMIN_DESC', '');
@@ -82,27 +80,22 @@ define('_MI_NEWS_STORY_APPROVE_NOTIFYCAP', 'Notify me when this story is approve
 define('_MI_NEWS_STORY_APPROVE_NOTIFYDSC', 'Receive notification when this story is approved.');
 define('_MI_NEWS_STORY_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify: Story approved');
 define('_MI_RESTRICTINDEX', 'Restrict topics on index page?');
-define('_MI_RESTRICTINDEXDSC',
-       "If set to 'yes', users will only see news items listed in the index from the topics, they have access to as set in news permissions");
+define('_MI_RESTRICTINDEXDSC', "If set to 'yes', users will only see news items listed in the index from the topics, they have access to as set in news permissions");
 define('_MI_NEWSBYTHISAUTHOR', 'News by the same author');
 define('_MI_NEWSBYTHISAUTHORDSC', "If you set this option to 'yes', then a link 'Articles by this author' will be visible");
 define('_MI_NEWS_PREVNEX_LINK', 'Show previous and next link?');
-define('_MI_NEWS_PREVNEX_LINK_DESC',
-       "When this option is set to 'yes', two new links are visible at the bottom of each article. Those links are used to go to the previous and next article according to the publish date");
+define('_MI_NEWS_PREVNEX_LINK_DESC', "When this option is set to 'yes', two new links are visible at the bottom of each article. Those links are used to go to the previous and next article according to the publish date");
 define('_MI_NEWS_SUMMARY_SHOW', 'Show summary table?');
-define('_MI_NEWS_SUMMARY_SHOW_DESC',
-       'When you use this option, a summary containing links to all the recent published articles is visible at the bottom of each article');
+define('_MI_NEWS_SUMMARY_SHOW_DESC', 'When you use this option, a summary containing links to all the recent published articles is visible at the bottom of each article');
 define('_MI_NEWS_AUTHOR_EDIT', 'Enable authors to edit their post?');
 define('_MI_NEWS_AUTHOR_EDIT_DESC', 'With this option, authors can edit their posts.');
 define('_MI_NEWS_RATE_NEWS', 'Enable users to rate news?');
 define('_MI_NEWS_TOPICS_RSS', 'Enable RSS feeds per topics?');
 define('_MI_NEWS_TOPICS_RSS_DESC', "If you set this option to 'yes' then the topics content will be available as RSS feeds");
 define('_MI_NEWS_DATEFORMAT', "Date's format");
-define('_MI_NEWS_DATEFORMAT_DESC',
-       "Please refer to the Php documentation (http://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
+define('_MI_NEWS_DATEFORMAT_DESC', "Please refer to the Php documentation (http://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
 define('_MI_NEWS_META_DATA', 'Enable meta data (keywords and description) to be entered?');
-define('_MI_NEWS_META_DATA_DESC',
-       "If you set this option to 'yes' then the approvers will be able to enter the following meta data: keywords and description");
+define('_MI_NEWS_META_DATA_DESC', "If you set this option to 'yes' then the approvers will be able to enter the following meta data: keywords and description");
 define('_MI_NEWS_BNAME8', 'Random news');
 define('_MI_NEWS_NEWSLETTER', 'Newsletter');
 define('_MI_NEWS_STATS', 'Statistics');
@@ -113,18 +106,15 @@ define('_MI_NEWS_FORM_SPAW', 'Spaw editor');
 define('_MI_NEWS_FORM_HTMLAREA', 'HtmlArea editor');
 define('_MI_NEWS_FORM_FCK', 'FCK editor');
 define('_MI_NEWS_FORM_KOIVI', 'Koivi editor');
-define('_MI_NEWS_FORM_OPTIONS_DESC',
-       "Select the editor to use. If you have a 'simple' install (e.g you use only xoops core editor class, provided in the standard xoops core package), then you can just select DHTML and Compact");
+define('_MI_NEWS_FORM_OPTIONS_DESC', "Select the editor to use. If you have a 'simple' install (e.g you use only xoops core editor class, provided in the standard xoops core package), then you can just select DHTML and Compact");
 define('_MI_NEWS_KEYWORDS_HIGH', 'Use keywords highlighting?');
 define('_MI_NEWS_KEYWORDS_HIGH_DESC', 'If you use this option, then the keywords typed in the search will be highlighted in the articles');
 define('_MI_NEWS_HIGH_COLOR', 'Color used to highlight keywords?');
 define('_MI_NEWS_HIGH_COLOR_DES', "Only use this option if you have chosen 'yes' for the previous option");
 define('_MI_NEWS_INFOTIPS', 'Tooltips length');
-define('_MI_NEWS_INFOTIPS_DES',
-       'If you use this option, links related to news will contains the first (n) characters of the article. If you set this value to 0, then the infotip will be empty');
+define('_MI_NEWS_INFOTIPS_DES', 'If you use this option, links related to news will contains the first (n) characters of the article. If you set this value to 0, then the infotip will be empty');
 define('_MI_NEWS_SITE_NAVBAR', "Use Mozilla and Opera site navigation's bar?");
-define('_MI_NEWS_SITE_NAVBAR_DESC',
-       "If you set this option to 'yes', then the visitors of your website will be able to use the site navigation's bar to navigate through your articles.");
+define('_MI_NEWS_SITE_NAVBAR_DESC', "If you set this option to 'yes', then the visitors of your website will be able to use the site navigation's bar to navigate through your articles.");
 define('_MI_NEWS_TABS_SKIN', 'Select the skin to use in tabs');
 define('_MI_NEWS_TABS_SKIN_DESC', 'This skin will be used by all blocks which uses tabs');
 define('_MI_NEWS_SKIN_1', 'Bar style');
@@ -152,8 +142,7 @@ define('_MI_NEWS_ADVERTISEMENT', 'Advertisement');
 define('_MI_NEWS_ADV_DESCR', 'Enter a text or a java-script code to display in your articles');
 define('_MI_NEWS_MIME_TYPES', 'Enter authorized mime-types for upload (separated them on a new line)');
 define('_MI_NEWS_ENHANCED_PAGENAV', 'Use enhanced page navigator?');
-define('_MI_NEWS_ENHANCED_PAGENAV_DSC',
-       'With this option you can separate your pages with something like this: [pagebreak:Page Title], the links to the pages are replaced by a drop-down list and you can use [summary] to create an automatic summary of pages');
+define('_MI_NEWS_ENHANCED_PAGENAV_DSC', 'With this option you can separate your pages with something like this: [pagebreak:Page Title], the links to the pages are replaced by a drop-down list and you can use [summary] to create an automatic summary of pages');
 // Added in version 1.54
 define('_MI_NEWS_CATEGORY_NOTIFY', 'Category');
 define('_MI_NEWS_CATEGORY_NOTIFYDSC', 'Notification options that apply to the current category');
@@ -190,3 +179,16 @@ define('_MI_NEWS_SHOWICONS_PDF_DSC', 'Display PDF icon at the bottom of each art
 
 define('_MI_DISPLAYTOPIC_TITLE', 'Display Topic with news_title');
 define('_MI_DISPLAYTOPIC_TITLEDSC', 'display Topic title link right before the news title');
+//1.72
+//Help
+define('_MI_NEWS_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_NEWS_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
+define('_MI_NEWS_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_NEWS_OVERVIEW', 'Overview');
+
+//define('_MI_NEWS_HELP_DIR', __DIR__);
+
+//help multi-page
+define('_MI_NEWS_DISCLAIMER', 'Disclaimer');
+define('_MI_NEWS_LICENSE', 'License');
+define('_MI_NEWS_SUPPORT', 'Support');

@@ -1,7 +1,7 @@
 <?php
 /**
  * ****************************************************************************
- * - Developers TEAM TDM Xoops - (http://xoops.org)
+ * - Developers TEAM TDM Xoops - (https://xoops.org)
  * ****************************************************************************
  *       NEWS - MODULE FOR XOOPS
  *        Copyright (c) 2007 - 2011
@@ -32,10 +32,10 @@
  * Version : 1.67 Tue 2012/02/13 22:29:36 : Timgno Exp $
  * ****************************************************************************
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 if (!class_exists('XoopsPersistableObjectHandler')) {
-    include_once XOOPS_ROOT_PATH . '/kernel/object.php';
+    require_once XOOPS_ROOT_PATH . '/kernel/object.php';
 }
 
 /**

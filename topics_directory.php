@@ -1,28 +1,21 @@
 <?php
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2005-2006 Herve Thouzard                     //
-//                     <http://www.herve-thouzard.com/>                      //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
 
 /*
  * Created on 5 nov. 2006
@@ -34,27 +27,27 @@
  * @copyright (c) Herve Thouzard - http://www.herve-thouzard.com
  */
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_topics_directory.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 $myts = MyTextSanitizer::getInstance();
 
-$newscountbytopic = $tbl_topics = array();
+$newscountbytopic = $tbl_topics = [];
 $perms            = '';
 $xt               = new NewsTopic();
-$restricted       = news_getmoduleoption('restrictindex');
+$restricted       = NewsUtility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $newsModule    = $moduleHandler->getByDirname('news');
     $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gperm_handler = xoops_getHandler('groupperm');
-    $topics        = $gperm_handler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+    $gpermHandler  = xoops_getHandler('groupperm');
+    $topics        = $gpermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
     if (count($topics) > 0) {
         $topics = implode(',', $topics);
         $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -70,29 +63,29 @@ if (is_array($topics_arr) && count($topics_arr)) {
         if (array_key_exists($onetopic['topic_id'], $newscountbytopic)) {
             $count = $newscountbytopic[$onetopic['topic_id']];
         }
-        if ($onetopic['topic_pid'] != 0) {
+        if (0 != $onetopic['topic_pid']) {
             $onetopic['prefix'] = str_replace('.', '-', $onetopic['prefix']) . '&nbsp;';
         } else {
             $onetopic['prefix'] = str_replace('.', '', $onetopic['prefix']);
         }
 
-        $tbl_topics[] = array(
+        $tbl_topics[] = [
             'id'          => $onetopic['topic_id'],
             'news_count'  => $count,
             'topic_color' => '#' . $onetopic['topic_color'],
             'prefix'      => $onetopic['prefix'],
             'title'       => $myts->displayTarea($onetopic['topic_title'])
-        );
+        ];
     }
 }
 $xoopsTpl->assign('topics', $tbl_topics);
 
-$xoopsTpl->assign('advertisement', news_getmoduleoption('advertisement'));
+$xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
 
 /**
  * Manage all the meta datas
  */
-news_CreateMetaDatas();
+NewsUtility::createMetaDatas();
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_TOPICS_DIRECTORY);
 $meta_description = _AM_NEWS_TOPICS_DIRECTORY . ' - ' . $xoopsModule->name('s');
@@ -102,4 +95,4 @@ if (isset($xoTheme) && is_object($xoTheme)) {
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

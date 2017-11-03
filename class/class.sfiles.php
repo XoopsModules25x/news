@@ -1,32 +1,25 @@
 <?php
-// 
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-// ------------------------------------------------------------------------- //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
 
-include_once XOOPS_ROOT_PATH . '/modules/news/class/class.mimetype.php';
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+
+require_once XOOPS_ROOT_PATH . '/modules/news/class/class.mimetype.php';
 
 /**
  * Class sFiles
@@ -73,7 +66,7 @@ class sFiles
     public function createUploadName($folder, $filename, $trimname = false)
     {
         $workingfolder = $folder;
-        if (xoops_substr($workingfolder, strlen($workingfolder) - 1, 1) !== '/') {
+        if ('/' !== xoops_substr($workingfolder, strlen($workingfolder) - 1, 1)) {
             $workingfolder .= '/';
         }
         $ext  = basename($filename);
@@ -109,7 +102,7 @@ class sFiles
     {
         $cmimetype   = new cmimetype();
         $workingfile = $this->downloadname;
-        if (xoops_trim($filename) !== '') {
+        if ('' !== xoops_trim($filename)) {
             $workingfile = $filename;
 
             return $cmimetype->getType($workingfile);
@@ -125,7 +118,7 @@ class sFiles
      */
     public function getAllbyStory($storyid)
     {
-        $ret    = array();
+        $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
         while ($myrow = $this->db->fetchArray($result)) {
@@ -170,42 +163,10 @@ class sFiles
 
         if (!isset($this->fileid)) {
             $newid        = (int)$this->db->genId($this->table . '_fileid_seq');
-            $sql          = 'INSERT INTO '
-                            . $this->table
-                            . ' (fileid, storyid, filerealname, date, mimetype, downloadname, counter) '
-                            . 'VALUES ('
-                            . $newid
-                            . ','
-                            . $storyid
-                            . ",'"
-                            . $fileRealName
-                            . "','"
-                            . $date
-                            . "','"
-                            . $mimetype
-                            . "','"
-                            . $downloadname
-                            . "',"
-                            . $counter
-                            . ')';
+            $sql          = 'INSERT INTO ' . $this->table . ' (fileid, storyid, filerealname, date, mimetype, downloadname, counter) ' . 'VALUES (' . $newid . ',' . $storyid . ",'" . $fileRealName . "','" . $date . "','" . $mimetype . "','" . $downloadname . "'," . $counter . ')';
             $this->fileid = $newid;
         } else {
-            $sql = 'UPDATE '
-                   . $this->table
-                   . ' SET storyid='
-                   . $storyid
-                   . ",filerealname='"
-                   . $fileRealName
-                   . "',date="
-                   . $date
-                   . ",mimetype='"
-                   . $mimetype
-                   . "',downloadname='"
-                   . $downloadname
-                   . "',counter="
-                   . $counter
-                   . ' WHERE fileid='
-                   . $this->getFileid();
+            $sql = 'UPDATE ' . $this->table . ' SET storyid=' . $storyid . ",filerealname='" . $fileRealName . "',date=" . $date . ",mimetype='" . $mimetype . "',downloadname='" . $downloadname . "',counter=" . $counter . ' WHERE fileid=' . $this->getFileid();
         }
         if (!$result = $this->db->query($sql)) {
             return false;
@@ -406,6 +367,7 @@ class sFiles
     }
 
     // Deprecated
+
     /**
      * @param $storyid
      *
@@ -413,7 +375,7 @@ class sFiles
      */
     public function getCountbyStory($storyid)
     {
-        $sql    = 'SELECT count(fileid) as cnt FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid . '';
+        $sql    = 'SELECT count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid . '';
         $result = $this->db->query($sql);
         $myrow  = $this->db->fetchArray($result);
 
@@ -427,10 +389,10 @@ class sFiles
      */
     public function getCountbyStories($stories)
     {
-        $ret = array();
+        $ret = [];
         if (count($stories) > 0) {
-            $sql = 'SELECT storyid, count(fileid) as cnt FROM ' . $this->table . ' WHERE storyid IN (';
-            $sql .= implode(',', $stories) . ') GROUP BY storyid';
+            $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
+            $sql    .= implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
             while ($myrow = $this->db->fetchArray($result)) {
                 $ret[$myrow['storyid']] = $myrow['cnt'];

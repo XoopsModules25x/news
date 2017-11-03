@@ -1,30 +1,23 @@
 <?php
-//
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
-//  ------------------------------------------------------------------------ //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright      {@link https://xoops.org/ XOOPS Project}
+ * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package
+ * @since
+ * @author         XOOPS Development Team
+ */
+
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @param $queryarray
@@ -38,10 +31,10 @@
 function news_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB, $xoopsUser;
-    include_once XOOPS_ROOT_PATH . '/modules/news/include/functions.php';
-    $restricted = news_getmoduleoption('restrictindex');
+    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    $restricted = NewsUtility::getModuleOption('restrictindex');
     $highlight  = false;
-    $highlight  = news_getmoduleoption('keywordshighlight'); // keywords highlighting
+    $highlight  = NewsUtility::getModuleOption('keywordshighlight'); // keywords highlighting
 
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
@@ -49,22 +42,16 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $modid         = $module->getVar('mid');
     $searchparam   = '';
 
-    $gperm_handler = xoops_getHandler('groupperm');
+    $gpermHandler = xoops_getHandler('groupperm');
     if (is_object($xoopsUser)) {
         $groups = $xoopsUser->getGroups();
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
 
-    $sql = 'SELECT storyid, topicid, uid, title, created FROM '
-           . $xoopsDB->prefix('news_stories')
-           . ' WHERE (published>0 AND published<='
-           . time()
-           . ') AND (expired = 0 OR expired > '
-           . time()
-           . ') ';
+    $sql = 'SELECT storyid, topicid, uid, title, created FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired > ' . time() . ') ';
 
-    if ($userid != 0) {
+    if (0 != $userid) {
         $sql .= ' AND uid=' . $userid . ' ';
     }
     // because count() returns 1 even if a supplied variable
@@ -82,14 +69,14 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         }
     }
 
-    $sql .= 'ORDER BY created DESC';
+    $sql    .= 'ORDER BY created DESC';
     $result = $xoopsDB->query($sql, $limit, $offset);
-    $ret    = array();
+    $ret    = [];
     $i      = 0;
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $display = true;
-        if ($modid && $gperm_handler) {
-            if ($restricted && !$gperm_handler->checkRight('news_view', $myrow['topicid'], $groups, $modid)) {
+        if ($modid && $gpermHandler) {
+            if ($restricted && !$gpermHandler->checkRight('news_view', $myrow['topicid'], $groups, $modid)) {
                 $display = false;
             }
         }
@@ -104,18 +91,14 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         }
     }
 
-    include_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
     $searchincomments = $cfg['config_search_comments'];
 
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
-        include_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+        require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
-        $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM '
-               . $xoopsDB->prefix('xoopscomments')
-               . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status="
-               . XOOPS_COMMENT_ACTIVE
-               . ') ';
-        if ($userid != 0) {
+        $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM ' . $xoopsDB->prefix('xoopscomments') . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
+        if (0 != $userid) {
             $sql .= ' AND com_uid=' . $userid . ' ';
         }
 
@@ -127,13 +110,13 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
             }
             $sql .= ') ';
         }
-        $i = $ind;
-        $sql .= 'ORDER BY com_created DESC';
+        $i      = $ind;
+        $sql    .= 'ORDER BY com_created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $display = true;
-            if ($modid && $gperm_handler) {
-                if ($restricted && !$gperm_handler->checkRight('news_view', $myrow['com_itemid'], $groups, $modid)) {
+            if ($modid && $gpermHandler) {
+                if ($restricted && !$gpermHandler->checkRight('news_view', $myrow['com_itemid'], $groups, $modid)) {
                     $display = false;
                 }
             }
