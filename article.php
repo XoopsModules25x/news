@@ -518,6 +518,7 @@ if (!is_object($GLOBALS['xoopsUser']) && 0 == $xoopsModuleConfig['show_pdficon']
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);
 
+
 if (1 == NewsUtility::getModuleOption('displaytopictitle')) {
     $xoopsTpl->assign('displaytopictitle', true);
 } else {
