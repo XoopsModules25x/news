@@ -224,7 +224,7 @@ if ($showclassic) {
     unset($story);
     
     // orwah show topictitle in news_item.tpl
-	if (news_getmoduleoption('displaytopictitle') == 1) {
+	if (NewsUtility::getModuleOption('displaytopictitle') == 1) {
           $xoopsTpl->assign('displaytopictitle',true);
     } else {
           $xoopsTpl->assign('displaytopictitle',false);
