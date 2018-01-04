@@ -41,7 +41,7 @@ class sFiles
      */
     public function __construct($fileid = -1)
     {
-        $this->db           = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db           = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table        = $this->db->prefix('news_stories_files');
         $this->storyid      = 0;
         $this->filerealname = '';
@@ -153,7 +153,7 @@ class sFiles
      */
     public function store()
     {
-        $myts         = MyTextSanitizer::getInstance();
+        $myts         = \MyTextSanitizer::getInstance();
         $fileRealName = $myts->addSlashes($this->filerealname);
         $downloadname = $myts->addSlashes($this->downloadname);
         $date         = time();
@@ -283,7 +283,7 @@ class sFiles
      */
     public function getFileRealName($format = 'S')
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'Show':
@@ -313,7 +313,7 @@ class sFiles
      */
     public function getMimetype($format = 'S')
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'Show':
@@ -343,7 +343,7 @@ class sFiles
      */
     public function getDownloadname($format = 'S')
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'Show':

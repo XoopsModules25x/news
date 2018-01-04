@@ -15,7 +15,7 @@
  * @package
  * @since
  * @author         XOOPS Development Team
- * @author         Herve Thouzard  URL: http://www.herve-thouzard.com
+ * @author         Hervé Thouzard  URL: http://www.herve-thouzard.com
  */
 
 /**

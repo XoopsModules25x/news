@@ -35,9 +35,12 @@
  * @template_name         This page does not use any template
  *
  */
+
+use XoopsModules\News;
+
 include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
@@ -72,7 +75,7 @@ $xoops_meta_description = '';
 if ('' !== trim($story->keywords())) {
     $xoops_meta_keywords = $story->keywords();
 } else {
-    $xoops_meta_keywords = NewsUtility::createMetaKeywords($story->hometext() . ' ' . $story->bodytext());
+    $xoops_meta_keywords = News\Utility::createMetaKeywords($story->hometext() . ' ' . $story->bodytext());
 }
 
 if ('' !== trim($story->description())) {
@@ -84,8 +87,8 @@ if ('' !== trim($story->description())) {
 function PrintPage()
 {
     global $xoopsConfig, $xoopsModule, $story, $xoops_meta_keywords, $xoops_meta_description;
-    $myts     = MyTextSanitizer::getInstance();
-    $datetime = formatTimestamp($story->published(), NewsUtility::getModuleOption('dateformat')); ?>
+    $myts     = \MyTextSanitizer::getInstance();
+    $datetime = formatTimestamp($story->published(), News\Utility::getModuleOption('dateformat')); ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
@@ -106,7 +109,7 @@ function PrintPage()
     }
     echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/news/assets/css/print.css">';
     $supplemental = '';
-    if (NewsUtility::getModuleOption('footNoteLinks')) {
+    if (News\Utility::getModuleOption('footNoteLinks')) {
         $supplemental = "footnoteLinks('content','content'); "; ?>
         <script type="text/javascript">
             // <![CDATA[

@@ -24,6 +24,9 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
+
+use XoopsModules\News;
+
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once __DIR__ . '/admin_header.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
@@ -37,15 +40,15 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
-$dateformat  = NewsUtility::getModuleOption('dateformat');
-$myts        = MyTextSanitizer::getInstance();
+$dateformat  = News\Utility::getModuleOption('dateformat');
+$myts        = \MyTextSanitizer::getInstance();
 $topicscount = 0;
 
 $storiesTableName = $xoopsDB->prefix('news_stories');
-if (!NewsUtility::existField('picture', $storiesTableName)) {
-    NewsUtility::addField('`picture` VARCHAR( 50 ) NOT NULL', $storiesTableName);
+if (!News\Utility::existField('picture', $storiesTableName)) {
+    News\Utility::addField('`picture` VARCHAR( 50 ) NOT NULL', $storiesTableName);
 }
 
 /**
@@ -64,9 +67,9 @@ function newSubmissions()
     global $dateformat, $pathIcon16;
     $start       = isset($_GET['startnew']) ? (int)$_GET['startnew'] : 0;
     $newsubcount = NewsStory:: getAllStoriesCount(3, false);
-    $storyarray  = NewsStory:: getAllSubmitted(NewsUtility::getModuleOption('storycountadmin'), true, NewsUtility::getModuleOption('restrictindex'), $start);
+    $storyarray  = NewsStory:: getAllSubmitted(News\Utility::getModuleOption('storycountadmin'), true, News\Utility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
-        $pagenav = new XoopsPageNav($newsubcount, NewsUtility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
+        $pagenav = new \XoopsPageNav($newsubcount, News\Utility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
         news_collapsableBar('newsub', 'topnewsubicon');
         echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topnewsubicon' name='topnewsubicon' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_NEWSUB . '</h4>';
         echo "<div id='newsub'>";
@@ -143,10 +146,10 @@ function autoStories()
 
     $start        = isset($_GET['startauto']) ? (int)$_GET['startauto'] : 0;
     $storiescount = NewsStory:: getAllStoriesCount(2, false);
-    $storyarray   = NewsStory:: getAllAutoStory(NewsUtility::getModuleOption('storycountadmin'), true, $start);
+    $storyarray   = NewsStory:: getAllAutoStory(News\Utility::getModuleOption('storycountadmin'), true, $start);
     $class        = '';
     if (count($storyarray) > 0) {
-        $pagenav = new XoopsPageNav($storiescount, NewsUtility::getModuleOption('storycountadmin'), $start, 'startauto', 'op=newarticle');
+        $pagenav = new \XoopsPageNav($storiescount, News\Utility::getModuleOption('storycountadmin'), $start, 'startauto', 'op=newarticle');
         news_collapsableBar('autostories', 'topautostories');
         echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topautostories' name='topautostories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_AUTOARTICLES . '</h4>';
         echo "<div id='autostories'>";
@@ -238,14 +241,14 @@ function lastStories()
 {
     global $dateformat, $pathIcon16;
     news_collapsableBar('laststories', 'toplaststories');
-    echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='toplaststories' name='toplaststories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . sprintf(_AM_LAST10ARTS, NewsUtility::getModuleOption('storycountadmin')) . '</h4>';
+    echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='toplaststories' name='toplaststories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . sprintf(_AM_LAST10ARTS, News\Utility::getModuleOption('storycountadmin')) . '</h4>';
     echo "<div id='laststories'>";
     echo '<br>';
     echo "<div class='center;'>";
     $start        = isset($_GET['start']) ? (int)$_GET['start'] : 0;
-    $storyarray   = NewsStory:: getAllPublished(NewsUtility::getModuleOption('storycountadmin'), $start, false, 0, 1);
+    $storyarray   = NewsStory:: getAllPublished(News\Utility::getModuleOption('storycountadmin'), $start, false, 0, 1);
     $storiescount = NewsStory:: getAllStoriesCount(4, false);
-    $pagenav      = new XoopsPageNav($storiescount, NewsUtility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
+    $pagenav      = new \XoopsPageNav($storiescount, News\Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
     $class        = '';
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'><tr class='bg3'><th align='center'>"
          . _AM_STORYID
@@ -311,8 +314,8 @@ function expStories()
     global $dateformat, $pathIcon16;
     $start        = isset($_GET['startexp']) ? (int)$_GET['startexp'] : 0;
     $expiredcount = NewsStory:: getAllStoriesCount(1, false);
-    $storyarray   = NewsStory:: getAllExpired(NewsUtility::getModuleOption('storycountadmin'), $start, 0, 1);
-    $pagenav      = new XoopsPageNav($expiredcount, NewsUtility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
+    $storyarray   = NewsStory:: getAllExpired(News\Utility::getModuleOption('storycountadmin'), $start, 0, 1);
+    $pagenav      = new \XoopsPageNav($expiredcount, News\Utility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
 
     if (count($storyarray) > 0) {
         $class = '';
@@ -390,13 +393,13 @@ function setPruneManager()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=prune');
     echo '<br><br><br>';
-    $sform = new XoopsThemeForm(_AM_NEWS_PRUNENEWS, 'pruneform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
-    $sform->addElement(new XoopsFormTextDateSelect(_AM_NEWS_PRUNE_BEFORE, 'prune_date', 15, time()), true);
+    $sform = new \XoopsThemeForm(_AM_NEWS_PRUNENEWS, 'pruneform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
+    $sform->addElement(new \XoopsFormTextDateSelect(_AM_NEWS_PRUNE_BEFORE, 'prune_date', 15, time()), true);
     $onlyexpired = new xoopsFormCheckBox('', 'onlyexpired');
     $onlyexpired->addOption(1, _AM_NEWS_PRUNE_EXPIREDONLY);
     $sform->addElement($onlyexpired, false);
-    $sform->addElement(new XoopsFormHidden('op', 'confirmbeforetoprune'), false);
-    $topiclist  = new XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'pruned_topics', '', 5, true);
+    $sform->addElement(new \XoopsFormHidden('op', 'confirmbeforetoprune'), false);
+    $topiclist  = new \XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'pruned_topics', '', 5, true);
     $topics_arr = [];
     $xt         = new NewsTopic();
     $allTopics  = $xt->getAllTopics(false); // The webmaster can see everything
@@ -409,8 +412,8 @@ function setPruneManager()
     }
     $topiclist->setDescription(_AM_NEWS_EXPORT_PRUNE_DSC);
     $sform->addElement($topiclist, false);
-    $button_tray = new XoopsFormElementTray('', '');
-    $submit_btn  = new XoopsFormButton('', 'post', _SUBMIT, 'submit');
+    $button_tray = new \XoopsFormElementTray('', '');
+    $submit_btn  = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
     $button_tray->addElement($submit_btn);
     $sform->addElement($button_tray);
     $sform->display();
@@ -468,7 +471,7 @@ function pruneNews()
         $msg   = sprintf(_AM_NEWS_PRUNE_DELETED, $count);
         $story->deleteBeforeDate($timestamp, $expired, $topiclist);
         unset($story);
-        NewsUtility::updateCache();
+        News\Utility::updateCache();
         redirect_header('index.php', 3, $msg);
     }
 }
@@ -490,15 +493,15 @@ function createNewsletter()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=configurenewsletter');
     echo '<br><br><br>';
-    $sform      = new XoopsThemeForm(_AM_NEWS_NEWSLETTER, 'newsletterform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
-    $dates_tray = new XoopsFormElementTray(_AM_NEWS_NEWSLETTER_BETWEEN);
-    $date1      = new XoopsFormTextDateSelect('', 'date1', 15, time());
-    $date2      = new XoopsFormTextDateSelect(_AM_NEWS_EXPORT_AND, 'date2', 15, time());
+    $sform      = new \XoopsThemeForm(_AM_NEWS_NEWSLETTER, 'newsletterform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
+    $dates_tray = new \XoopsFormElementTray(_AM_NEWS_NEWSLETTER_BETWEEN);
+    $date1      = new \XoopsFormTextDateSelect('', 'date1', 15, time());
+    $date2      = new \XoopsFormTextDateSelect(_AM_NEWS_EXPORT_AND, 'date2', 15, time());
     $dates_tray->addElement($date1);
     $dates_tray->addElement($date2);
     $sform->addElement($dates_tray);
 
-    $topiclist  = new XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics', '', 5, true);
+    $topiclist  = new \XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics', '', 5, true);
     $topics_arr = [];
     $xt         = new NewsTopic();
     $allTopics  = $xt->getAllTopics(false); // The webmaster can see everything
@@ -511,13 +514,13 @@ function createNewsletter()
     }
     $topiclist->setDescription(_AM_NEWS_EXPORT_PRUNE_DSC);
     $sform->addElement($topiclist, false);
-    $sform->addElement(new XoopsFormHidden('op', 'launchnewsletter'), false);
-    $sform->addElement(new XoopsFormRadioYN(_AM_NEWS_REMOVE_BR, 'removebr', 1), false);
-    $sform->addElement(new XoopsFormRadioYN(_AM_NEWS_NEWSLETTER_HTML_TAGS, 'removehtml', 0), false);
-    $sform->addElement(new XoopsFormTextArea(_AM_NEWS_NEWSLETTER_HEADER, 'header', '', 4, 70), false);
-    $sform->addElement(new XoopsFormTextArea(_AM_NEWS_NEWSLETTER_FOOTER, 'footer', '', 4, 70), false);
-    $button_tray = new XoopsFormElementTray('', '');
-    $submit_btn  = new XoopsFormButton('', 'post', _SUBMIT, 'submit');
+    $sform->addElement(new \XoopsFormHidden('op', 'launchnewsletter'), false);
+    $sform->addElement(new \XoopsFormRadioYN(_AM_NEWS_REMOVE_BR, 'removebr', 1), false);
+    $sform->addElement(new \XoopsFormRadioYN(_AM_NEWS_NEWSLETTER_HTML_TAGS, 'removehtml', 0), false);
+    $sform->addElement(new \XoopsFormTextArea(_AM_NEWS_NEWSLETTER_HEADER, 'header', '', 4, 70), false);
+    $sform->addElement(new \XoopsFormTextArea(_AM_NEWS_NEWSLETTER_FOOTER, 'footer', '', 4, 70), false);
+    $button_tray = new \XoopsFormElementTray('', '');
+    $submit_btn  = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
     $button_tray->addElement($submit_btn);
     $sform->addElement($button_tray);
     $sform->display();
@@ -642,15 +645,15 @@ function exportNews()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=export');
     echo '<br><br><br>';
-    $sform      = new XoopsThemeForm(_AM_NEWS_EXPORT_NEWS, 'exportform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
-    $dates_tray = new XoopsFormElementTray(_AM_NEWS_EXPORT_BETWEEN);
-    $date1      = new XoopsFormTextDateSelect('', 'date1', 15, time());
-    $date2      = new XoopsFormTextDateSelect(_AM_NEWS_EXPORT_AND, 'date2', 15, time());
+    $sform      = new \XoopsThemeForm(_AM_NEWS_EXPORT_NEWS, 'exportform', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
+    $dates_tray = new \XoopsFormElementTray(_AM_NEWS_EXPORT_BETWEEN);
+    $date1      = new \XoopsFormTextDateSelect('', 'date1', 15, time());
+    $date2      = new \XoopsFormTextDateSelect(_AM_NEWS_EXPORT_AND, 'date2', 15, time());
     $dates_tray->addElement($date1);
     $dates_tray->addElement($date2);
     $sform->addElement($dates_tray);
 
-    $topiclist  = new XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics', '', 5, true);
+    $topiclist  = new \XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics', '', 5, true);
     $topics_arr = [];
     $xt         = new NewsTopic();
     $allTopics  = $xt->getAllTopics(false); // The webmaster can see everything
@@ -663,10 +666,10 @@ function exportNews()
     }
     $topiclist->setDescription(_AM_NEWS_EXPORT_PRUNE_DSC);
     $sform->addElement($topiclist, false);
-    $sform->addElement(new XoopsFormRadioYN(_AM_NEWS_EXPORT_INCTOPICS, 'includetopics', 0), false);
-    $sform->addElement(new XoopsFormHidden('op', 'launchexport'), false);
-    $button_tray = new XoopsFormElementTray('', '');
-    $submit_btn  = new XoopsFormButton('', 'post', _SUBMIT, 'submit');
+    $sform->addElement(new \XoopsFormRadioYN(_AM_NEWS_EXPORT_INCTOPICS, 'includetopics', 0), false);
+    $sform->addElement(new \XoopsFormHidden('op', 'launchexport'), false);
+    $button_tray = new \XoopsFormElementTray('', '');
+    $submit_btn  = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
     $button_tray->addElement($submit_btn);
     $sform->addElement($button_tray);
     $sform->display();
@@ -867,7 +870,7 @@ function topicsmanager()
             } else {
                 $ok = false;
             }
-            if ($cpt >= NewsUtility::getModuleOption('storycountadmin')) {
+            if ($cpt >= News\Utility::getModuleOption('storycountadmin')) {
                 $ok = false;
             }
             ++$tmpcpt;
@@ -875,7 +878,7 @@ function topicsmanager()
         }
         echo $output;
     }
-    $pagenav = new XoopsPageNav($totaltopics, NewsUtility::getModuleOption('storycountadmin'), $start, 'start', 'op=topicsmanager');
+    $pagenav = new \XoopsPageNav($totaltopics, News\Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=topicsmanager');
     echo "</table><div align='right'>" . $pagenav->renderNav() . '</div><br>';
     echo "</div></div><br>\n";
 
@@ -912,20 +915,20 @@ function topicsmanager()
         $topic_color       = '000000';
     }
 
-    $sform = new XoopsThemeForm($formlabel, 'topicform', XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/index.php', 'post', true);
+    $sform = new \XoopsThemeForm($formlabel, 'topicform', XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/index.php', 'post', true);
     $sform->setExtra('enctype="multipart/form-data"');
-    $sform->addElement(new XoopsFormText(_AM_TOPICNAME, 'topic_title', 50, 255, $topic_title), true);
-    $editor = NewsUtility::getWysiwygForm(_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
+    $sform->addElement(new \XoopsFormText(_AM_TOPICNAME, 'topic_title', 50, 255, $topic_title), true);
+    $editor = News\Utility::getWysiwygForm(_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
     if ($editor) {
         $sform->addElement($editor, false);
     }
 
-    $sform->addElement(new XoopsFormHidden('op', $op), false);
-    $sform->addElement(new XoopsFormHidden('topic_id', $topic_id), false);
+    $sform->addElement(new \XoopsFormHidden('op', $op), false);
+    $sform->addElement(new \XoopsFormHidden('topic_id', $topic_id), false);
 
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $xt = new NewsTopic();
-    $sform->addElement(new XoopsFormLabel(_AM_PARENTTOPIC, $xt->makeMyTopicSelBox(1, $parent, 'topic_pid', '', false)));
+    $sform->addElement(new \XoopsFormLabel(_AM_PARENTTOPIC, $xt->makeMyTopicSelBox(1, $parent, 'topic_pid', '', false)));
     // Topic's color
     // Code stolen to Zoullou, thank you Zoullou ;-)
     $select_color = "\n<select name='topic_color'  onchange='xoopsGetElementById(\"NewsColorSelect\").style.backgroundColor = \"#\" + this.options[this.selectedIndex].value;'>\n<option value='000000'>" . _AM_NEWS_COLOR . "</option>\n";
@@ -1157,29 +1160,29 @@ function topicsmanager()
     }
 
     $select_color .= "</select>&nbsp;\n<span id='NewsColorSelect'>&nbsp;&nbsp;&nbsp;&nbsp;</span>";
-    $sform->addElement(new XoopsFormLabel(_AM_NEWS_TOPIC_COLOR, $select_color));
+    $sform->addElement(new \XoopsFormLabel(_AM_NEWS_TOPIC_COLOR, $select_color));
     // Sub menu ?
-    $sform->addElement(new XoopsFormRadioYN(_AM_SUB_MENU, 'submenu', $submenu, _YES, _NO));
-    $sform->addElement(new XoopsFormRadioYN(_AM_PUBLISH_FRONTPAGE, 'topic_frontpage', $topic_frontpage, _YES, _NO));
+    $sform->addElement(new \XoopsFormRadioYN(_AM_SUB_MENU, 'submenu', $submenu, _YES, _NO));
+    $sform->addElement(new \XoopsFormRadioYN(_AM_PUBLISH_FRONTPAGE, 'topic_frontpage', $topic_frontpage, _YES, _NO));
     // Unused for this moment... sorry
-    //$sform->addElement(new XoopsFormText(_AM_NEWS_RSS_URL, 'topic_rssfeed', 50, 255, $topic_rssfeed), false);
+    //$sform->addElement(new \XoopsFormText(_AM_NEWS_RSS_URL, 'topic_rssfeed', 50, 255, $topic_rssfeed), false);
     // ********** Picture
-    $imgtray = new XoopsFormElementTray(_AM_TOPICIMG, '<br>');
+    $imgtray = new \XoopsFormElementTray(_AM_TOPICIMG, '<br>');
 
     $imgpath      = sprintf(_AM_IMGNAEXLOC, 'uploads/news/image/');
-    $imageselect  = new XoopsFormSelect($imgpath, 'topic_imgurl', $topicimage);
-    $topics_array = XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/uploads/news/image/');
+    $imageselect  = new \XoopsFormSelect($imgpath, 'topic_imgurl', $topicimage);
+    $topics_array = \XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . '/uploads/news/image/');
     foreach ($topics_array as $image) {
         $imageselect->addOption("$image", $image);
     }
     $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"topic_imgurl\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
     $imgtray->addElement($imageselect, false);
-    $imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
+    $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
 
     $uploadfolder = sprintf(_AM_UPLOAD_WARNING, XOOPS_URL . '/uploads/news/image');
-    $fileseltray  = new XoopsFormElementTray('', '<br>');
-    $fileseltray->addElement(new XoopsFormFile(_AM_TOPIC_PICTURE, 'attachedfile', NewsUtility::getModuleOption('maxuploadsize')), false);
-    $fileseltray->addElement(new XoopsFormLabel($uploadfolder), false);
+    $fileseltray  = new \XoopsFormElementTray('', '<br>');
+    $fileseltray->addElement(new \XoopsFormFile(_AM_TOPIC_PICTURE, 'attachedfile', News\Utility::getModuleOption('maxuploadsize')), false);
+    $fileseltray->addElement(new \XoopsFormLabel($uploadfolder), false);
     $imgtray->addElement($fileseltray);
     $sform->addElement($imgtray);
 
@@ -1193,9 +1196,9 @@ function topicsmanager()
     if ($topic_id > 0) { // Edit mode
         $groups_ids                       = $gpermHandler->getGroupIds('news_approve', $topic_id, $xoopsModule->getVar('mid'));
         $groups_ids                       = array_values($groups_ids);
-        $groups_news_can_approve_checkbox = new XoopsFormCheckBox(_AM_APPROVEFORM, 'groups_news_can_approve[]', $groups_ids);
+        $groups_news_can_approve_checkbox = new \XoopsFormCheckBox(_AM_APPROVEFORM, 'groups_news_can_approve[]', $groups_ids);
     } else { // Creation mode
-        $groups_news_can_approve_checkbox = new XoopsFormCheckBox(_AM_APPROVEFORM, 'groups_news_can_approve[]', $full_list);
+        $groups_news_can_approve_checkbox = new \XoopsFormCheckBox(_AM_APPROVEFORM, 'groups_news_can_approve[]', $full_list);
     }
     $groups_news_can_approve_checkbox->addOptionArray($group_list);
     $sform->addElement($groups_news_can_approve_checkbox);
@@ -1204,9 +1207,9 @@ function topicsmanager()
     if ($topic_id > 0) { // Edit mode
         $groups_ids                      = $gpermHandler->getGroupIds('news_submit', $topic_id, $xoopsModule->getVar('mid'));
         $groups_ids                      = array_values($groups_ids);
-        $groups_news_can_submit_checkbox = new XoopsFormCheckBox(_AM_SUBMITFORM, 'groups_news_can_submit[]', $groups_ids);
+        $groups_news_can_submit_checkbox = new \XoopsFormCheckBox(_AM_SUBMITFORM, 'groups_news_can_submit[]', $groups_ids);
     } else { // Creation mode
-        $groups_news_can_submit_checkbox = new XoopsFormCheckBox(_AM_SUBMITFORM, 'groups_news_can_submit[]', $full_list);
+        $groups_news_can_submit_checkbox = new \XoopsFormCheckBox(_AM_SUBMITFORM, 'groups_news_can_submit[]', $full_list);
     }
     $groups_news_can_submit_checkbox->addOptionArray($group_list);
     $sform->addElement($groups_news_can_submit_checkbox);
@@ -1215,16 +1218,16 @@ function topicsmanager()
     if ($topic_id > 0) { // Edit mode
         $groups_ids                    = $gpermHandler->getGroupIds('news_view', $topic_id, $xoopsModule->getVar('mid'));
         $groups_ids                    = array_values($groups_ids);
-        $groups_news_can_view_checkbox = new XoopsFormCheckBox(_AM_VIEWFORM, 'groups_news_can_view[]', $groups_ids);
+        $groups_news_can_view_checkbox = new \XoopsFormCheckBox(_AM_VIEWFORM, 'groups_news_can_view[]', $groups_ids);
     } else { // Creation mode
-        $groups_news_can_view_checkbox = new XoopsFormCheckBox(_AM_VIEWFORM, 'groups_news_can_view[]', $full_list);
+        $groups_news_can_view_checkbox = new \XoopsFormCheckBox(_AM_VIEWFORM, 'groups_news_can_view[]', $full_list);
     }
     $groups_news_can_view_checkbox->addOptionArray($group_list);
     $sform->addElement($groups_news_can_view_checkbox);
 
     // Submit buttons
-    $button_tray = new XoopsFormElementTray('', '');
-    $submit_btn  = new XoopsFormButton('', 'post', $btnlabel, 'submit');
+    $button_tray = new \XoopsFormElementTray('', '');
+    $submit_btn  = new \XoopsFormButton('', 'post', $btnlabel, 'submit');
     $button_tray->addElement($submit_btn);
     $sform->addElement($button_tray);
     $sform->display();
@@ -1271,7 +1274,7 @@ function modTopicS()
             $dstpath        = XOOPS_ROOT_PATH . '/uploads/news/image';
             $destname       = $sfiles->createUploadName($dstpath, $fldname, true);
             $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
-            $uploader       = new XoopsMediaUploader($dstpath, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+            $uploader       = new \XoopsMediaUploader($dstpath, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
             $uploader->setTargetFileName($destname);
             if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                 if ($uploader->upload()) {
@@ -1288,22 +1291,22 @@ function modTopicS()
 
     // Permissions
     $gpermHandler = xoops_getHandler('groupperm');
-    $criteria     = new CriteriaCompo();
-    $criteria->add(new Criteria('gperm_itemid', $xt->topic_id(), '='));
-    $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
-    $criteria->add(new Criteria('gperm_name', 'news_approve', '='));
+    $criteria     = new \CriteriaCompo();
+    $criteria->add(new \Criteria('gperm_itemid', $xt->topic_id(), '='));
+    $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
+    $criteria->add(new \Criteria('gperm_name', 'news_approve', '='));
     $gpermHandler->deleteAll($criteria);
 
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('gperm_itemid', $xt->topic_id(), '='));
-    $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
-    $criteria->add(new Criteria('gperm_name', 'news_submit', '='));
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('gperm_itemid', $xt->topic_id(), '='));
+    $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
+    $criteria->add(new \Criteria('gperm_name', 'news_submit', '='));
     $gpermHandler->deleteAll($criteria);
 
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('gperm_itemid', $xt->topic_id(), '='));
-    $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
-    $criteria->add(new Criteria('gperm_name', 'news_view', '='));
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('gperm_itemid', $xt->topic_id(), '='));
+    $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
+    $criteria->add(new \Criteria('gperm_name', 'news_view', '='));
     $gpermHandler->deleteAll($criteria);
 
     if (isset($_POST['groups_news_can_approve'])) {
@@ -1324,7 +1327,7 @@ function modTopicS()
         }
     }
 
-    NewsUtility::updateCache();
+    News\Utility::updateCache();
     redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
 }
 
@@ -1363,7 +1366,7 @@ function delTopic()
             xoops_groupperm_deletebymoditem($xoopsModule->getVar('mid'), 'news_submit', $eachtopic->topic_id);
             xoops_groupperm_deletebymoditem($xoopsModule->getVar('mid'), 'news_view', $eachtopic->topic_id);
         }
-        NewsUtility::updateCache();
+        News\Utility::updateCache();
         redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
     }
 }
@@ -1398,7 +1401,7 @@ function addTopic()
                 $dstpath        = XOOPS_ROOT_PATH . '/uploads/news/image';
                 $destname       = $sfiles->createUploadName($dstpath, $fldname, true);
                 $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
-                $uploader       = new XoopsMediaUploader($dstpath, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+                $uploader       = new \XoopsMediaUploader($dstpath, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
                 $uploader->setTargetFileName($destname);
                 if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                     if ($uploader->upload()) {
@@ -1436,7 +1439,7 @@ function addTopic()
                 $gpermHandler->addRight('news_view', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
             }
         }
-        NewsUtility::updateCache();
+        News\Utility::updateCache();
 
         $notificationHandler = xoops_getHandler('notification');
         $tags                = [];
@@ -1479,7 +1482,7 @@ function getStats()
 {
     global $xoopsModule, $xoopsConfig;
     xoops_cp_header();
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
     } else {
@@ -1489,7 +1492,7 @@ function getStats()
     $adminObject->displayNavigation('index.php?op=stats');
     $news   = new NewsStory();
     $stats  = [];
-    $stats  = $news->getStats(NewsUtility::getModuleOption('storycountadmin'));
+    $stats  = $news->getStats(News\Utility::getModuleOption('storycountadmin'));
     $totals = [0, 0, 0, 0, 0];
     //printf("<h1>%s</h1>\n",_AM_NEWS_STATS);
 
@@ -1658,7 +1661,7 @@ function getMetagen()
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     global $xoopsModule, $xoopsConfig, $xoopsModuleConfig, $cfg;
     xoops_cp_header();
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
     } else {
@@ -1679,28 +1682,28 @@ function getMetagen()
         $keywordscount = $cfg['meta_keywords_count'];
         $keywordsorder = $cfg['meta_keywords_order'];
     }
-    $sform = new XoopsThemeForm(_OPTIONS, 'metagenoptions', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
-    $sform->addElement(new XoopsFormHidden('op', 'metagenoptions'), false);
-    $sform->addElement(new XoopsFormText(_AM_NEWS_META_KEYWORDS_CNT, 'keywordscount', 4, 6, $keywordscount), true);
-    $keywordsorder = new XoopsFormRadio(_AM_NEWS_META_KEYWORDS_ORDER, 'keywordsorder', $keywordsorder);
+    $sform = new \XoopsThemeForm(_OPTIONS, 'metagenoptions', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
+    $sform->addElement(new \XoopsFormHidden('op', 'metagenoptions'), false);
+    $sform->addElement(new \XoopsFormText(_AM_NEWS_META_KEYWORDS_CNT, 'keywordscount', 4, 6, $keywordscount), true);
+    $keywordsorder = new \XoopsFormRadio(_AM_NEWS_META_KEYWORDS_ORDER, 'keywordsorder', $keywordsorder);
     $keywordsorder->addOption(0, _AM_NEWS_META_KEYWORDS_INTEXT);
     $keywordsorder->addOption(1, _AM_NEWS_META_KEYWORDS_FREQ1);
     $keywordsorder->addOption(2, _AM_NEWS_META_KEYWORDS_FREQ2);
     $sform->addElement($keywordsorder, false);
-    $button_tray = new XoopsFormElementTray('', '');
-    $submit_btn  = new XoopsFormButton('', 'post', _AM_MODIFY, 'submit');
+    $button_tray = new \XoopsFormElementTray('', '');
+    $submit_btn  = new \XoopsFormButton('', 'post', _AM_MODIFY, 'submit');
     $button_tray->addElement($submit_btn);
     $sform->addElement($button_tray);
     $sform->display();
 
     // Blacklist
-    $sform = new XoopsThemeForm(_AM_NEWS_BLACKLIST, 'metagenblacklist', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
-    $sform->addElement(new XoopsFormHidden('op', 'metagenblacklist'), false);
+    $sform = new \XoopsThemeForm(_AM_NEWS_BLACKLIST, 'metagenblacklist', XOOPS_URL . '/modules/news/admin/index.php', 'post', true);
+    $sform->addElement(new \XoopsFormHidden('op', 'metagenblacklist'), false);
 
     // Remove words
-    $remove_tray = new XoopsFormElementTray(_AM_NEWS_BLACKLIST);
+    $remove_tray = new \XoopsFormElementTray(_AM_NEWS_BLACKLIST);
     $remove_tray->setDescription(_AM_NEWS_BLACKLIST_DESC);
-    $blacklist = new XoopsFormSelect('', 'blacklist', '', 5, true);
+    $blacklist = new \XoopsFormSelect('', 'blacklist', '', 5, true);
     $words     = [];
 
     $metablack = new news_blacklist();
@@ -1713,16 +1716,16 @@ function getMetagen()
 
     $blacklist->setDescription(_AM_NEWS_BLACKLIST_DESC);
     $remove_tray->addElement($blacklist, false);
-    $remove_btn = new XoopsFormButton('', 'go', _AM_DELETE, 'submit');
+    $remove_btn = new \XoopsFormButton('', 'go', _AM_DELETE, 'submit');
     $remove_tray->addElement($remove_btn, false);
     $sform->addElement($remove_tray);
 
     // Add some words
-    $add_tray = new XoopsFormElementTray(_AM_NEWS_BLACKLIST_ADD);
+    $add_tray = new \XoopsFormElementTray(_AM_NEWS_BLACKLIST_ADD);
     $add_tray->setDescription(_AM_NEWS_BLACKLIST_ADD_DSC);
-    $add_field = new XoopsFormTextArea('', 'keywords', '', 5, 70);
+    $add_field = new \XoopsFormTextArea('', 'keywords', '', 5, 70);
     $add_tray->addElement($add_field, false);
-    $add_btn = new XoopsFormButton('', 'go', _AM_ADD, 'submit');
+    $add_btn = new \XoopsFormButton('', 'go', _AM_ADD, 'submit');
     $add_tray->addElement($add_btn, false);
     $sform->addElement($add_tray);
     $sform->display();
@@ -1864,7 +1867,7 @@ switch ($op) {
             }
             xoops_comment_delete($xoopsModule->getVar('mid'), $storyid);
             xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'story', $storyid);
-            NewsUtility::updateCache();
+            News\Utility::updateCache();
             redirect_header('index.php?op=newarticle', 1, _AM_DBUPDATED);
         } else {
             $story = new NewsStory($storyid);
@@ -1969,31 +1972,31 @@ switch ($op) {
         //compte "total"
         $count_stories = $storiesHandler->getCount();
         //compte "attente"
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('ihome', 1));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('ihome', 1));
         $stories_ihome = $storiesHandler->getCount($criteria);
 
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('published', 0, '>'));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('published', 0, '>'));
         $stories_published = $storiesHandler->getCount($criteria);
 
         $stories_need_approval = $count_stories - $stories_published;
 
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('expired', 0, '>'));
-        $criteria->add(new Criteria('expired', time(), '<'));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('expired', 0, '>'));
+        $criteria->add(new \Criteria('expired', time(), '<'));
         $stories_expired = $storiesHandler->getCount($criteria);
 
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('expired', 0, '>'));
-        $criteria->add(new Criteria('expired', time(), '>'));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('expired', 0, '>'));
+        $criteria->add(new \Criteria('expired', time(), '>'));
         $stories_expired_soon = $storiesHandler->getCount($criteria);
 
         //compte "total"
         $count_topics = $topicsHandler->getCount();
         //compte "attente"
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('menu', 1));
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('menu', 1));
         $topics_menu = $topicsHandler->getCount($criteria);
 
         $clr_count_stories = (0 == $count_stories) ? 'red' : 'green';

@@ -48,7 +48,7 @@
         <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
         <br><br>
 
-        Please verify that the modules\news\images\topics directory is writable
+        Please verify that the modules\News\images\topics directory is writable
         on the
         server (read+write e.g. chmod=777).<br><br>
 

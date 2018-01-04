@@ -36,7 +36,7 @@ function b_news_archives_show($options)
 {
     global $xoopsDB, $xoopsConfig;
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    ;
     require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
@@ -176,7 +176,7 @@ function b_news_archives_onthefly($options)
     $options = explode('|', $options);
     $block   = &b_news_archives_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_archives.tpl');
 }

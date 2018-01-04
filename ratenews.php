@@ -56,16 +56,19 @@
  * @template_var                    string  title       story's title
  */
 
+
+use XoopsModules\News;
+
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 
 // Verify the perms
 // 1) Is the vote activated in the module ?
-$ratenews = NewsUtility::getModuleOption('ratenews');
+$ratenews = News\Utility::getModuleOption('ratenews');
 if (!$ratenews) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
@@ -168,7 +171,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsDB->query($sql) || ErrorHandler::show('0013');
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
-    NewsUtility::updateRating($storyid);
+    News\Utility::updateRating($storyid);
     $ratemessage = _NW_VOTEAPPRE . '<br>' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
@@ -181,7 +184,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     } else {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _ERRORS);
     }
-    $xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
+    $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
     $xoopsTpl->assign('news', ['storyid' => $storyid, 'title' => $title]);
     $xoopsTpl->assign('lang_voteonce', _NW_VOTEONCE);
     $xoopsTpl->assign('lang_ratingscale', _NW_RATINGSCALE);
@@ -190,7 +193,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsTpl->assign('lang_rateit', _NW_RATEIT);
     $xoopsTpl->assign('lang_cancel', _CANCEL);
     $xoopsTpl->assign('xoops_pagetitle', $title . ' - ' . _NW_RATETHISNEWS . ' - ' . $xoopsModule->name('s'));
-    NewsUtility::createMetaDatas();
+    News\Utility::createMetaDatas();
     require_once XOOPS_ROOT_PATH . '/footer.php';
 }
 require_once XOOPS_ROOT_PATH . '/footer.php';

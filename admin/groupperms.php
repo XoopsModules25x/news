@@ -71,7 +71,7 @@ switch ($permtoset) {
         break;
 }
 
-$permform  = new XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/groupperms.php');
+$permform  = new \XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/groupperms.php');
 $xt        = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
 $alltopics = $xt->getTopicsList();
 

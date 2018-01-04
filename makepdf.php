@@ -17,15 +17,22 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
+
+use XoopsModules\News;
+
 error_reporting(0);
 
 require_once __DIR__ . '/header.php';
 //2.5.8
-require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+    redirect_header(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/viewtopic.php?topic_id=' . $topic_id, 3, 'TCPDF for Xoops not installed');
+} else {
+    require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+}
 
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 
 if (empty($storyid)) {
@@ -53,14 +60,14 @@ if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoops
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
-$dateformat               = NewsUtility::getModuleOption('dateformat');
+$dateformat               = News\Utility::getModuleOption('dateformat');
 $article_data             = $article->hometext() . $article->bodytext();
 $article_title            = $article->title();
-$article_title            = NewsUtility::html2text($myts->undoHtmlSpecialChars($article_title));
+$article_title            = News\Utility::html2text($myts->undoHtmlSpecialChars($article_title));
 $forumdata['topic_title'] = $article_title;
 $pdf_data['title']        = $article->title();
 $topic_title              = $article->topic_title();
-$topic_title              = NewsUtility::html2text($myts->undoHtmlSpecialChars($topic_title));
+$topic_title              = News\Utility::html2text($myts->undoHtmlSpecialChars($topic_title));
 $pdf_data['subtitle']     = $topic_title;
 $pdf_data['subsubtitle']  = $article->subtitle();
 $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);

@@ -19,6 +19,8 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
+use XoopsModules\News;
+
 /**
  * @param $options
  *
@@ -26,14 +28,14 @@
  */
 function b_news_topicsnav_show($options)
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    ;
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-    $myts             = MyTextSanitizer::getInstance();
+    $myts             = \MyTextSanitizer::getInstance();
     $block            = [];
     $newscountbytopic = [];
     $perms            = '';
     $xt               = new NewsTopic();
-    $restricted       = NewsUtility::getModuleOption('restrictindex');
+    $restricted       = News\Utility::getModuleOption('restrictindex');
     if ($restricted) {
         global $xoopsUser;
         /** @var XoopsModuleHandler $moduleHandler */
@@ -104,7 +106,7 @@ function b_news_topicsnav_onthefly($options)
     $options = explode('|', $options);
     $block   = &b_news_topicsnav_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_topicnav.tpl');
 }

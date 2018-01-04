@@ -19,13 +19,15 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
+use XoopsModules\News;
+
 /**
  * @return mixed
  */
 function b_news_topics_show()
 {
     global $storytopic; // Don't know why this is used and where it's coming from ....
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    ;
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
@@ -34,14 +36,14 @@ function b_news_topics_show()
 
     $jump       = XOOPS_URL . '/modules/news/index.php?storytopic=';
     $storytopic = !empty($storytopic) ? $storytopic : 0;
-    $restricted = NewsUtility::getModuleOption('restrictindex');
+    $restricted = News\Utility::getModuleOption('restrictindex');
 
     $xt         = new NewsTopic();
     $allTopics  = $xt->getAllTopics($restricted);
     $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
     $additional = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";
 
-    if (NewsUtility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+    if (News\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
 //                $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
         $topicSelect = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', '', true, 0, $additional);
         $block['selectbox'] =  $topicSelect->render();
@@ -60,7 +62,7 @@ function b_news_topics_onthefly($options)
     $options = explode('|', $options);
     $block   =& b_news_topics_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_topics.tpl');
 }

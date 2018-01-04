@@ -30,16 +30,19 @@
  *
  * @param type $nomvariable description
  */
+
+use XoopsModules\News;
+
 include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
-if (!NewsUtility::getModuleOption('topicsrss')) {
+if (!News\Utility::getModuleOption('topicsrss')) {
     exit();
 }
 
@@ -52,14 +55,14 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 
-$restricted = NewsUtility::getModuleOption('restrictindex');
-$newsnumber = NewsUtility::getModuleOption('storyhome');
+$restricted = News\Utility::getModuleOption('restrictindex');
+$newsnumber = News\Utility::getModuleOption('storyhome');
 
 $charset = 'utf-8';
 
 header('Content-Type:text/xml; charset=' . $charset);
 $story        = new NewsStory();
-$tpl          = new XoopsTpl();
+$tpl          = new \XoopsTpl();
 $tpl->caching = 2;
 $tpl->xoops_setCacheTime(3600); // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {

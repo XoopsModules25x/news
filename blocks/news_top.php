@@ -17,6 +17,9 @@
  * @author         XOOPS Development Team
  */
 
+
+use XoopsModules\News;
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -38,11 +41,11 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 function b_news_top_show($options)
 {
     global $xoopsConfig;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    $myts        = MyTextSanitizer::getInstance();
+    ;
+    $myts        = \MyTextSanitizer::getInstance();
     $block       = [];
-    $displayname = NewsUtility::getModuleOption('displayname');
-    $tabskin     = NewsUtility::getModuleOption('tabskin');
+    $displayname = News\Utility::getModuleOption('displayname');
+    $tabskin     = News\Utility::getModuleOption('tabskin');
 
     if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
         require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
@@ -54,10 +57,10 @@ function b_news_top_show($options)
     $block['tabskin']     = $tabskin;
     $block['imagesurl']   = XOOPS_URL . '/modules/news/assets/images/';
 
-    $restricted = NewsUtility::getModuleOption('restrictindex');
-    $dateformat = NewsUtility::getModuleOption('dateformat');
-    $infotips   = NewsUtility::getModuleOption('infotips');
-    $newsrating = NewsUtility::getModuleOption('ratenews');
+    $restricted = News\Utility::getModuleOption('restrictindex');
+    $dateformat = News\Utility::getModuleOption('dateformat');
+    $infotips   = News\Utility::getModuleOption('infotips');
+    $newsrating = News\Utility::getModuleOption('ratenews');
     if ('' == $dateformat) {
         $dateformat = 's';
     }
@@ -67,7 +70,7 @@ function b_news_top_show($options)
     // Is the spotlight visible ?
     if (1 == $options[4] && $restricted && 0 == $options[5]) {
         $perm_verified   = true;
-        $permittedtopics = NewsUtility::getMyItemIds();
+        $permittedtopics = News\Utility::getMyItemIds();
         $permstory       = new NewsStory($options[6]);
         if (!in_array($permstory->topicid(), $permittedtopics)) {
             $usespotlight = false;
@@ -79,7 +82,7 @@ function b_news_top_show($options)
     // Try to see what tabs are visibles (if we are in restricted view of course)
     if (2 == $options[8] && $restricted && 0 != $options[14]) {
         $topics2         = [];
-        $permittedtopics = NewsUtility::getMyItemIds();
+        $permittedtopics = News\Utility::getMyItemIds();
         $topics          = array_slice($options, 14);
         foreach ($topics as $onetopic) {
             if (in_array($onetopic, $permittedtopics)) {
@@ -136,7 +139,7 @@ function b_news_top_show($options)
 
         if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
             if (!$perm_verified) {
-                $permittedtopics = NewsUtility::getMyItemIds();
+                $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $usespotlight = false;
@@ -210,7 +213,7 @@ function b_news_top_show($options)
 
             // Added 16 february 2007 *****************************************
             $story_user = null;
-            $story_user = new XoopsUser($tmpstory->uid());
+            $story_user = new \XoopsUser($tmpstory->uid());
             if (is_object($story_user)) {
                 $spotlight['avatar'] = XOOPS_UPLOAD_URL . '/' . $story_user->getVar('user_avatar');
             }
@@ -282,12 +285,12 @@ function b_news_top_show($options)
                     }
                     if ($options[3] > 0) {
                         $html           = 1 == $story->nohtml() ? 0 : 1;
-                        $news['teaser'] = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                        $news['teaser'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     } else {
                         $news['teaser'] = '';
                     }
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -319,14 +322,14 @@ function b_news_top_show($options)
                         $news  = [];
                         $title = $story->title();
                         if (strlen($title) > $options[2]) {
-                            $title = NewsUtility::truncateTagSafe($title, $options[2] + 3);
+                            $title = News\Utility::truncateTagSafe($title, $options[2] + 3);
                         }
                         if ('' !== $options[7]) {
                             $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
                         }
                         if ($options[3] > 0) {
                             $html         = 1 == $story->nohtml() ? 0 : 1;
-                            $news['text'] = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                            $news['text'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                         } else {
                             $news['text'] = '';
                         }
@@ -337,7 +340,7 @@ function b_news_top_show($options)
                             $news['number_votes'] = sprintf(_NW_NUMVOTES, $story->votes());
                         }
                         if ($infotips > 0) {
-                            $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
+                            $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
                         } else {
                             $news['infotips'] = '';
                         }
@@ -417,7 +420,7 @@ function b_news_top_show($options)
                 $spotlight = [];
                 $visible   = true;
                 if ($restricted) {
-                    $permittedtopics = NewsUtility::getMyItemIds();
+                    $permittedtopics = News\Utility::getMyItemIds();
                     if (!in_array($story->topicid(), $permittedtopics)) {
                         $visible = false;
                     }
@@ -430,7 +433,7 @@ function b_news_top_show($options)
                     }
                     // Added 16 february 2007 *****************************************
                     $story_user = null;
-                    $story_user = new XoopsUser($story->uid());
+                    $story_user = new \XoopsUser($story->uid());
                     if (is_object($story_user)) {
                         $spotlight['avatar'] = XOOPS_UPLOAD_URL . '/' . $story_user->getVar('user_avatar');
                     }
@@ -480,12 +483,12 @@ function b_news_top_show($options)
                 }
                 if ($options[3] > 0) {
                     $html             = 1 == $story->nohtml() ? 0 : 1;
-                    $news['teaser']   = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                    $news['teaser']   = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     $news['infotips'] = '';
                 } else {
                     $news['teaser'] = '';
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -499,7 +502,7 @@ function b_news_top_show($options)
             $block['use_spotlight'] = true;
             $visible                = true;
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
-                $permittedtopics = NewsUtility::getMyItemIds();
+                $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $visible = false;
@@ -531,7 +534,7 @@ function b_news_top_show($options)
                 }
                 // Added 16 february 2007 *****************************************
                 $story_user = null;
-                $story_user = new XoopsUser($spotlightArticle->uid());
+                $story_user = new \XoopsUser($spotlightArticle->uid());
                 if (is_object($story_user)) {
                     $spotlight['avatar'] = XOOPS_UPLOAD_URL . '/' . $story_user->getVar('user_avatar');
                 }
@@ -699,7 +702,7 @@ function b_news_top_onthefly($options)
     $options = explode('|', $options);
     $block   = &b_news_top_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_top.tpl');
 }

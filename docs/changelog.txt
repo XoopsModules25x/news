@@ -1,9 +1,15 @@
+<h5>1.72 Beta 3        (NOT RELEASED)</h5>
+<hr>
+- namespaces (mamba)
+
+
 <h5>1.72 Beta 2        (NOT RELEASED)</h5>
 <hr>
 - updated file headers for consistency (mamba)
 - renamed several $indexAdmin with $adminObject for consistency (mamba)
 - updated PayPal changes (zyspec)
 - updated deprecated makeSelBox() (mamba)
+
 
 <h5>1.72 Beta 1        (NOT RELEASED)</h5>
 <hr>
@@ -19,6 +25,7 @@
     - updated addInfoBoxLine entries (mamba)
     - displayNavigation(basename(__FILE__))  (mamba)
     - changed to ->displayButton('left') (mamba)
+
 
 <h5>1.71 FINAL        2016-10-18</h5>
 <hr>

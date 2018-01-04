@@ -26,8 +26,8 @@
  * NOTE : Please give credits if you copy this code !
  *
  * @package  ::    News
- * @author   ::     Herve Thouzard (http://www.herve-thouzard.com) & Dojo Javscript Toolkit
- * @copyright::  (c) Herve Thouzard (http://www.herve-thouzard.com)
+ * @author   ::     Hervé Thouzard (http://www.herve-thouzard.com) & Dojo Javscript Toolkit
+ * @copyright::  (c) Hervé Thouzard (http://www.herve-thouzard.com)
  * @param string $tablename
  * @param string $iconname
  */

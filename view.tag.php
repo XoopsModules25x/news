@@ -23,13 +23,16 @@
  * This page will display a list of articles which belong to a tag
  *
  * @package News
- * @author Herve Thouzard of Herve Thouzard
- * @copyright (c) Herve Thouzard (http://www.herve-thouzard.com)
+ * @author Hervé Thouzard of Hervé Thouzard
+ * @copyright (c) Hervé Thouzard (http://www.herve-thouzard.com)
  */
-require_once __DIR__ . '/header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
 
-if (!NewsUtility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
+use XoopsModules\News;
+
+require_once __DIR__ . '/header.php';
+;
+
+if (!News\Utility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 require XOOPS_ROOT_PATH . '/modules/tag/view.tag.php';

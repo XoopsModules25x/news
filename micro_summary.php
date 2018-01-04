@@ -24,20 +24,23 @@
  * For more information, see this page : http://wiki.mozilla.org/Microsummaries
  *
  * @package News
- * @author Herve Thouzard (http://www.herve-thouzard.com)
- * @copyright (c) Herve Thouzard
+ * @author Hervé Thouzard (http://www.herve-thouzard.com)
+ * @copyright (c) Hervé Thouzard
  *
  * NOTE : If you use this code, please make credit.
  *
  */
+
+use XoopsModules\News;
+
 include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-if (!NewsUtility::getModuleOption('firefox_microsummaries')) {
+;
+if (!News\Utility::getModuleOption('firefox_microsummaries')) {
     exit();
 }
 $story      = new NewsStory();
-$restricted = NewsUtility::getModuleOption('restrictindex');
+$restricted = News\Utility::getModuleOption('restrictindex');
 $sarray     = [];
 // Get the last news from all topics according to the module's restrictions
 $sarray = NewsStory::getAllPublished(1, 0, $restricted, 0);

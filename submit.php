@@ -17,6 +17,8 @@
  * @author         XOOPS Development Team
  */
 
+use XoopsModules\News;
+
 //defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 if (!defined('XOOPS_ROOT_PATH')) {
     include __DIR__ . '/../../mainfile.php';
@@ -27,13 +29,13 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php')) {
     require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php';
 } else {
     require_once XOOPS_ROOT_PATH . '/modules/news/language/english/admin.php';
 }
-$myts      = MyTextSanitizer::getInstance();
+$myts      = \MyTextSanitizer::getInstance();
 $module_id = $xoopsModule->getVar('mid');
 $storyid   = 0;
 
@@ -71,11 +73,11 @@ if (isset($_POST['preview'])) {
     if ('edit' === $_GET['op'] || 'delete' === $_GET['op']) {
         if (1 == $xoopsModuleConfig['authoredit']) {
             $tmpstory = new NewsStory((int)$_GET['storyid']);
-            if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !NewsUtility::isAdminGroup()) {
+            if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !News\Utility::isAdminGroup()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             }
         } else { // Users can't edit their articles
-            if (!NewsUtility::isAdminGroup()) {
+            if (!News\Utility::isAdminGroup()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             }
         }
@@ -88,7 +90,7 @@ if (isset($_POST['preview'])) {
         $op      = 'delete';
         $storyid = (int)$_GET['storyid'];
     } else {
-        if (NewsUtility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
+        if (News\Utility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
             && ('edit' === $_GET['op']
                 || 'preview' === $_POST['op']
                 || 'post' === $_POST['op'])) {
@@ -102,7 +104,7 @@ if (isset($_POST['preview'])) {
                     $approveprivilege = 1;
                 } else {
                     unset($tmpstory);
-                    if (!NewsUtility::isAdminGroup()) {
+                    if (!News\Utility::isAdminGroup()) {
                         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
                     } else {
                         $approveprivilege = 1;
@@ -110,7 +112,7 @@ if (isset($_POST['preview'])) {
                 }
             }
         } else {
-            if (!NewsUtility::isAdminGroup()) {
+            if (!News\Utility::isAdminGroup()) {
                 unset($tmpstory);
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             } else {
@@ -166,7 +168,7 @@ switch ($op) {
         $type         = $story->type();
         $topicdisplay = $story->topicdisplay();
         $topicalign   = $story->topicalign(false);
-        if (!NewsUtility::isAdminGroup()) {
+        if (!News\Utility::isAdminGroup()) {
             require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         } else {
             require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
@@ -225,7 +227,7 @@ switch ($op) {
             $story->setTopicdisplay($topicdisplay);
             $story->setTopicalign($topicalign);
             $story->setBodytext($_POST['bodytext']);
-            if (NewsUtility::getModuleOption('metadata')) {
+            if (News\Utility::getModuleOption('metadata')) {
                 $story->setKeywords($_POST['keywords']);
                 $story->setDescription($_POST['description']);
                 $story->setIhome((int)$_POST['ihome']);
@@ -347,7 +349,7 @@ switch ($op) {
         }
 
         if ($approveprivilege) {
-            if (NewsUtility::getModuleOption('metadata')) {
+            if (News\Utility::getModuleOption('metadata')) {
                 $story->setDescription($_POST['description']);
                 $story->setKeywords($_POST['keywords']);
             }
@@ -390,7 +392,7 @@ switch ($op) {
         $story->setApproved($approve);
 
         if ($approve) {
-            NewsUtility::updateCache();
+            News\Utility::updateCache();
         }
 
         // Increment author's posts count (only if it's a new article)
@@ -447,13 +449,13 @@ switch ($op) {
                     $sfiles         = new sFiles();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
                     $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
-                    $uploader       = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+                    $uploader       = new \XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
                     $uploader->setTargetFileName($destname);
                     if ($uploader->fetchMedia($_POST['xoops_upload_file'][1])) {
                         if ($uploader->upload()) {
                             $fullPictureName = XOOPS_ROOT_PATH . '/uploads/news/image/' . basename($destname);
                             $newName         = XOOPS_ROOT_PATH . '/uploads/news/image/redim_' . basename($destname);
-                            NewsUtility::resizePicture($fullPictureName, $newName, $xoopsModuleConfig['maxwidth'], $xoopsModuleConfig['maxheight']);
+                            News\Utility::resizePicture($fullPictureName, $newName, $xoopsModuleConfig['maxwidth'], $xoopsModuleConfig['maxheight']);
                             if (file_exists($newName)) {
                                 @unlink($fullPictureName);
                                 rename($newName, $fullPictureName);
@@ -473,7 +475,7 @@ switch ($op) {
 
         $result = $story->store();
         if ($result) {
-            if (xoops_isActiveModule('tag') && NewsUtility::getModuleOption('tags')) {
+            if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
                 $tagHandler = xoops_getModuleHandler('tag', 'tag');
                 $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
             }
@@ -520,9 +522,9 @@ switch ($op) {
                         /**
                          * You can attach files to your news
                          */
-                        $permittedtypes = explode("\n", str_replace("\r", '', NewsUtility::getModuleOption('mimetypes')));
+                        $permittedtypes = explode("\n", str_replace("\r", '', News\Utility::getModuleOption('mimetypes')));
                         array_walk($permittedtypes, 'trim');
-                        $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+                        $uploader = new \XoopsMediaUploader(XOOPS_UPLOAD_PATH, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
                         $uploader->setTargetFileName($destname);
                         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                             if ($uploader->upload()) {

@@ -68,12 +68,14 @@
 # [11-may-2001] Kenneth Lee - http://www.nexgear.com/
 ######################################################################
 
+use XoopsModules\News;
+
 include __DIR__ . '/../../mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 $lastyear  = 0;
 $lastmonth = 0;
 
@@ -99,13 +101,13 @@ $pgtitle = '';
 if ($fromyear && $frommonth) {
     $pgtitle = sprintf(' - %d - %d', $fromyear, $frommonth);
 }
-$infotips   = NewsUtility::getModuleOption('infotips');
-$restricted = NewsUtility::getModuleOption('restrictindex');
-$dateformat = NewsUtility::getModuleOption('dateformat');
+$infotips   = News\Utility::getModuleOption('infotips');
+$restricted = News\Utility::getModuleOption('restrictindex');
+$dateformat = News\Utility::getModuleOption('dateformat');
 if ('' === $dateformat) {
     $dateformat = 'm';
 }
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 $xoopsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars(_NW_NEWSARCHIVES) . $pgtitle . ' - ' . $xoopsModule->name('s'));
 
 $useroffset = '';
@@ -182,7 +184,7 @@ if (0 != $fromyear && 0 != $frommonth) {
             $story     = [];
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = NewsUtility::makeInfotips($article->hometext());
+                $story['infotips'] = News\Utility::makeInfotips($article->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
             $story['title']      = "<a href='"
@@ -219,6 +221,6 @@ $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 /**
  * Create the meta datas
  */
-NewsUtility::createMetaDatas();
+News\Utility::createMetaDatas();
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

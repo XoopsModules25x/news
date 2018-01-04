@@ -17,6 +17,8 @@
  * @author         XOOPS Development Team
  */
 
+use XoopsModules\News;
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
@@ -24,12 +26,12 @@
  */
 function b_news_bigstory_show()
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    ;
     require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    $myts       = MyTextSanitizer::getInstance();
-    $restricted = NewsUtility::getModuleOption('restrictindex');
-    $dateformat = NewsUtility::getModuleOption('dateformat');
-    $infotips   = NewsUtility::getModuleOption('infotips');
+    $myts       = \MyTextSanitizer::getInstance();
+    $restricted = News\Utility::getModuleOption('restrictindex');
+    $dateformat = News\Utility::getModuleOption('dateformat');
+    $infotips   = News\Utility::getModuleOption('infotips');
 
     $block    = [];
     $onestory = new NewsStory();
@@ -40,7 +42,7 @@ function b_news_bigstory_show()
         foreach ($stories as $key => $story) {
             $htmltitle = '';
             if ($infotips > 0) {
-                $block['infotips'] = NewsUtility::makeInfotips($story->hometext());
+                $block['infotips'] = News\Utility::makeInfotips($story->hometext());
                 $htmltitle         = ' title="' . $block['infotips'] . '"';
             } else {
                 $htmltitle = ' title="' . $story->title('Show') . '"';
@@ -73,7 +75,7 @@ function b_news_bigstory_onthefly($options)
     $options = explode('|', $options);
     $block   =& b_news_bigstory_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_bigstory.tpl');
 }

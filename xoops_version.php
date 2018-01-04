@@ -17,12 +17,15 @@
  * @author         XOOPS Development Team
  */
 
+use XoopsModules\News;
+include __DIR__ . '/preloads/autoloader.php';
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.72;
-$modversion['module_status'] = 'Beta 2';
-$modversion['release_date']  = '2017/05/20';
+$modversion['module_status'] = 'Beta 3';
+$modversion['release_date']  = '2017/12/20';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -231,10 +234,10 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+        ;
         $xt         = new NewsTopic();
-        $allTopics  = $xt->getAllTopics(NewsUtility::getModuleOption('restrictindex'));
-        $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+        $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
+        $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
             foreach ($topics_arr as $onetopic) {
@@ -259,8 +262,8 @@ if ($cansubmit) {
 }
 unset($cansubmit);
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-if (NewsUtility::getModuleOption('newsbythisauthor')) {
+//;
+if (News\Utility::getModuleOption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;
     $modversion['sub'][$i]['url']  = 'whoswho.php';
@@ -551,7 +554,7 @@ $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'dhtml';
 xoops_load('xoopseditorhandler');
-$editorHandler                       = XoopsEditorHandler::getInstance();
+$editorHandler                       = \XoopsEditorHandler::getInstance();
 $modversion['config'][$i]['options'] = array_flip($editorHandler->getList());
 
 /**

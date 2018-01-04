@@ -23,13 +23,13 @@
  * This script will import topics, articles, files, links, ratings, comments and notifications from AMS 2.41
  *
  * @package   News
- * @author    Herve Thouzard (http://www.herve-thouzard.com)
- * @copyright 2005, 2006 - Herve Thouzard
+ * @author    Hervé Thouzard (http://www.herve-thouzard.com)
+ * @copyright 2005, 2006 - Hervé Thouzard
  */
 
 require_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+;
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
@@ -57,7 +57,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         } else {
             require_once XOOPS_ROOT_PATH . '/modules/AMS/language/english/admin.php';
         }
-        $db = XoopsDatabaseFactory::getDatabaseConnection();
+        $db = \XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
         $use_forum    = (isset($_POST['useforum']) && 1 == $_POST['useforum']) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
@@ -86,7 +86,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
 
         // The import by itself
         // Read topics by their order
-        $mytree     = new XoopsTree($ams_topics, 'topic_id', 'topic_pid');
+        $mytree     = new \XoopsTree($ams_topics, 'topic_id', 'topic_pid');
         $ams_topics = $mytree->getChildTreeArray(0, 'weight');
         foreach ($ams_topics as $one_amstopic) {
             // First we create the topic
@@ -219,8 +219,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
 
                 // The notifications of this news
                 //$notifications =& $notificationHandler->getByItemId($ams_mid, $ams_newsid, 'ASC');
-                $criteria = new CriteriaCompo(new Criteria('not_modid', $ams_mid));
-                $criteria->add(new Criteria('not_itemid', $ams_newsid));
+                $criteria = new \CriteriaCompo(new \Criteria('not_modid', $ams_mid));
+                $criteria->add(new \Criteria('not_itemid', $ams_newsid));
                 $criteria->setOrder('ASC');
                 $notifications = $notificationHandler->getObjects($criteria);
                 if (is_array($notifications) && count($notifications) > 0) {
@@ -235,8 +235,8 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
             }
         }
         // Finally, import all the globals notifications
-        $criteria = new CriteriaCompo(new Criteria('not_modid', $ams_mid));
-        $criteria->add(new Criteria('not_category', 'global'));
+        $criteria = new \CriteriaCompo(new \Criteria('not_modid', $ams_mid));
+        $criteria->add(new \Criteria('not_category', 'global'));
         $criteria->setOrder('ASC');
         $notifications = $notificationHandler->getObjects($criteria);
         if (is_array($notifications) && count($notifications) > 0) {

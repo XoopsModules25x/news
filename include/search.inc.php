@@ -19,6 +19,8 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
+use XoopsModules\News;
+
 /**
  * @param $queryarray
  * @param $andor
@@ -31,10 +33,13 @@
 function news_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB, $xoopsUser;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    $restricted = NewsUtility::getModuleOption('restrictindex');
+
+
+
+    ;
+    $restricted = News\Utility::getModuleOption('restrictindex');
     $highlight  = false;
-    $highlight  = NewsUtility::getModuleOption('keywordshighlight'); // keywords highlighting
+    $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');

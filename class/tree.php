@@ -250,7 +250,7 @@ class MyXoopsObjectTree
         $caption = ''
     ) {
         xoops_load('xoopsformselect');
-        $element = new XoopsFormSelect($caption, $name, $selected);
+        $element = new \XoopsFormSelect($caption, $name, $selected);
         $element->setExtra($extra);
 
         if (false !== (bool)$addEmptyOption) {

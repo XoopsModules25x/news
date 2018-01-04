@@ -42,7 +42,7 @@ class MyXoopsTopic
      */
     public function __construct($table, $topicid = 0)
     {
-        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table;
         if (is_array($topicid)) {
             $this->makeTopic($topicid);
@@ -112,7 +112,7 @@ class MyXoopsTopic
      */
     public function store()
     {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
         if (isset($this->topic_title) && '' !== $this->topic_title) {
@@ -141,7 +141,7 @@ class MyXoopsTopic
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
-                    $moderate_topics = XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
+                    $moderate_topics = \XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
@@ -151,7 +151,7 @@ class MyXoopsTopic
                         }
                     }
                     if (true === $add) {
-                        $xp = new XoopsPerms();
+                        $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
                         $xp->setItemId($this->topic_id);
@@ -162,7 +162,7 @@ class MyXoopsTopic
             }
             if (!empty($this->s_groups) && is_array($this->s_groups)) {
                 foreach ($s_groups as $s_g) {
-                    $submit_topics = XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
+                    $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
                         if (!in_array($p_topic, $submit_topics)) {
@@ -171,7 +171,7 @@ class MyXoopsTopic
                         }
                     }
                     if (true === $add) {
-                        $xp = new XoopsPerms();
+                        $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
                         $xp->setItemId($this->topic_id);
@@ -182,7 +182,7 @@ class MyXoopsTopic
             }
             if (!empty($this->r_groups) && is_array($this->r_groups)) {
                 foreach ($r_groups as $r_g) {
-                    $read_topics = XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
+                    $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
                         if (!in_array($p_topic, $read_topics)) {
@@ -191,7 +191,7 @@ class MyXoopsTopic
                         }
                     }
                     if (true === $add) {
-                        $xp = new XoopsPerms();
+                        $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
                         $xp->setItemId($this->topic_id);
@@ -231,7 +231,7 @@ class MyXoopsTopic
      */
     public function topic_title($format = 'S')
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
@@ -253,7 +253,7 @@ class MyXoopsTopic
      */
     public function topic_imgurl($format = 'S')
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
@@ -382,7 +382,7 @@ class MyXoopsTopic
     {
         $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
         $ret    = [];
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         while ($myrow = $this->db->fetchArray($result)) {
             $ret[$myrow['topic_id']] = [
                 'title' => $myts->htmlspecialchars($myrow['topic_title']),

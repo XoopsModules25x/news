@@ -1,6 +1,6 @@
 <?php
 //  ------------------------------------------------------------------------ //
-//                  Copyright (c) 2005-2006 Herve Thouzard                     //
+//                  Copyright (c) 2005-2006 Hervé Thouzard                     //
 //                     <http://www.herve-thouzard.com>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -37,7 +37,7 @@ class news_blacklist
     public function getAllKeywords()
     {
         $ret      = $tbl_black_list = [];
-        $myts     = MyTextSanitizer::getInstance();
+        $myts     = \MyTextSanitizer::getInstance();
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (file_exists($filename)) {
             require_once $filename;
@@ -79,7 +79,7 @@ class news_blacklist
      */
     public function addkeywords($keyword)
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         if (is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
                 $onekeyword = xoops_trim($myts->htmlSpecialChars($onekeyword));
