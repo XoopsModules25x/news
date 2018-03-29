@@ -19,7 +19,7 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.mimetype.php';
+require_once XOOPS_ROOT_PATH . '/modules/news/class/Mimetype.php';
 
 /**
  * Class sFiles

@@ -1712,7 +1712,7 @@ class news_NewsStoryHandler extends XoopsPersistableObjectHandler
     /**
      * @param null|XoopsDatabase $db
      */
-    public function __construct(XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db)
     {
         parent::__construct($db, 'news_stories', 'stories', 'storieid', 'title');
     }
