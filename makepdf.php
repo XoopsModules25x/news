@@ -31,7 +31,7 @@ if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.p
 }
 
 $myts = \MyTextSanitizer::getInstance();
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 ;
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
 

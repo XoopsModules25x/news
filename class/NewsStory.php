@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -17,11 +18,15 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
-
 use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
+
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
 include __DIR__ . '/../preloads/autoloader.php';
@@ -33,7 +38,7 @@ $helper->loadLanguage('main');
 /**
  * Class NewsStory
  */
-class NewsStory extends MyXoopsStory
+class NewsStory extends News\XoopsStory
 {
     public $newstopic; // XoopsTopic object
     public $rating; // News rating
@@ -57,7 +62,7 @@ class NewsStory extends MyXoopsStory
         $this->topicstable = $this->db->prefix('news_topics');
         if (is_array($storyid)) {
             $this->makeStory($storyid);
-        } elseif ($storyid != -1) {
+        } elseif (-1 != $storyid) {
             $this->getStory((int)$storyid);
         }
     }
@@ -119,13 +124,13 @@ class NewsStory extends MyXoopsStory
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             xoops_comment_delete($mid, $myrow['storyid']); // Delete comments
             xoops_notification_deletebyitem($mid, 'story', $myrow['storyid']); // Delete notifications
             $db->queryF('DELETE FROM ' . $vote_prefix . ' WHERE storyid=' . $myrow['storyid']); // Delete votes
             // Remove files and records related to the files
             $result2 = $db->query('SELECT * FROM ' . $files_prefix . ' WHERE storyid=' . $myrow['storyid']);
-            while ($myrow2 = $db->fetchArray($result2)) {
+            while (false !== ($myrow2 = $db->fetchArray($result2))) {
                 $name = XOOPS_ROOT_PATH . '/uploads/' . $myrow2['downloadname'];
                 if (file_exists($name)) {
                     unlink($name);
@@ -170,7 +175,7 @@ class NewsStory extends MyXoopsStory
         $result = $db->query($sql, 1);
         if ($result) {
             $myts = \MyTextSanitizer::getInstance();
-            while ($row = $db->fetchArray($result)) {
+            while (false !== ($row = $db->fetchArray($result))) {
                 $ret = ['storyid' => $row['storyid'], 'title' => $myts->htmlSpecialChars($row['title'])];
             }
         }
@@ -269,7 +274,7 @@ class NewsStory extends MyXoopsStory
         $sql    .= " ORDER BY s.$order DESC";
         $result = $db->query($sql, (int)$limit, (int)$start);
 
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -312,7 +317,7 @@ class NewsStory extends MyXoopsStory
         }
         $sql    .= " ORDER BY $order DESC";
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -377,7 +382,7 @@ class NewsStory extends MyXoopsStory
         }
         $sql    .= " ORDER BY $order DESC";
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -435,7 +440,7 @@ class NewsStory extends MyXoopsStory
         }
         $sql    .= ' ORDER BY ' . $tbltopics . '.topic_title ASC, ' . $tblstory . '.published DESC';
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -493,7 +498,7 @@ class NewsStory extends MyXoopsStory
 
         $sql    .= ' ORDER BY expired DESC';
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -518,7 +523,7 @@ class NewsStory extends MyXoopsStory
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE published > ' . time() . ' ORDER BY published ASC';
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -561,7 +566,7 @@ class NewsStory extends MyXoopsStory
         $sql    = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t ';
         $sql    .= ' ' . $criteria->renderWhere() . ' AND (s.topicid=t.topic_id) ORDER BY created DESC';
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -625,7 +630,7 @@ class NewsStory extends MyXoopsStory
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql    = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE topicid=' . (int)$topicid . ' ORDER BY published DESC';
         $result = $db->query($sql, (int)$limit, 0);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret[] = new NewsStory($myrow);
         }
 
@@ -667,7 +672,6 @@ class NewsStory extends MyXoopsStory
      */
     public function adminlink()
     {
-
         global $xoopsModule;
         $dirname = basename(dirname(__DIR__));
         /** @var XoopsModuleHandler $moduleHandler */
@@ -792,7 +796,9 @@ class NewsStory extends MyXoopsStory
     public function prepare2show($filescount)
     {
         ;
-        global $xoopsUser, $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
+        global $xoopsUser, $xoopsConfig,  $xoopsModule;
+        /** @var News\Helper $helper */
+        $helper = News\Helper::getInstance();
 
         $dirname = basename(dirname(__DIR__));
         /** @var XoopsModuleHandler $moduleHandler */
@@ -810,11 +816,11 @@ class NewsStory extends MyXoopsStory
         if (false !== $story['poster']) {
             $story['poster'] = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $this->uid() . "'>" . $story['poster'] . '</a>';
         } else {
-            if (3 != $xoopsModuleConfig['displayname']) {
+            if (3 != $helper->getConfig('displayname')) {
                 $story['poster'] = $xoopsConfig['anonymous'];
             }
         }
-        if ($xoopsModuleConfig['ratenews']) {
+        if ($helper->getConfig('ratenews')) {
             $story['rating'] = number_format($this->rating(), 2);
             if (1 == $this->votes) {
                 $story['votes'] = _NW_ONEVOTE;
@@ -850,11 +856,11 @@ class NewsStory extends MyXoopsStory
             $morelink .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
             $morelink .= '">' . _NW_READMORE . '</a>';
             $morelink .= ' | ' . sprintf(_NW_BYTESMORE, $totalcount);
-            if (XOOPS_COMMENT_APPROVENONE != $xoopsModuleConfig['com_rule']) {
+            if (XOOPS_COMMENT_APPROVENONE != $helper->getConfig('com_rule')) {
                 $morelink .= ' | ';
             }
         }
-        if (XOOPS_COMMENT_APPROVENONE != $xoopsModuleConfig['com_rule']) {
+        if (XOOPS_COMMENT_APPROVENONE != $helper->getConfig('com_rule')) {
             $ccount    = $this->comments();
             $morelink  .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
             $morelink2 = '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
@@ -888,7 +894,7 @@ class NewsStory extends MyXoopsStory
             $approveprivilege = 1;
         }
 
-        if (1 == $xoopsModuleConfig['authoredit']
+        if (1 == $helper->getConfig('authoredit')
             && (is_object($xoopsUser)
                 && $xoopsUser->getVar('uid') == $this->uid())) {
             $approveprivilege = 1;
@@ -1014,7 +1020,7 @@ class NewsStory extends MyXoopsStory
                 $sql .= ' AND topicid IN (' . $topicslist . ')';
             }
             $result = $this->db->query($sql);
-            while ($myrow = $this->db->fetchArray($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $tbltopics[] = $myrow['topicid'];
             }
         }
@@ -1026,7 +1032,7 @@ class NewsStory extends MyXoopsStory
         }
         $sql    .= " ORDER BY $order DESC";
         $result = $this->db->query($sql);
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             if ($asobject) {
                 $ret[] = new NewsStory($myrow);
             } else {
@@ -1335,7 +1341,7 @@ class NewsStory extends MyXoopsStory
         $sql    .= " ORDER BY $order DESC";
         $result = $db->query($sql);
 
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret[] = $myrow['storyid'];
         }
         $cnt = count($ret);
@@ -1376,7 +1382,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT count(s.storyid) as cpt, s.topicid, t.topic_title FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id GROUP BY s.topicid ORDER BY t.topic_title";
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['topicid']] = $myrow;
         }
         $ret['storiespertopic'] = $ret2;
@@ -1386,7 +1392,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Sum(counter) as cpt, topicid FROM $tbls GROUP BY topicid ORDER BY topicid";
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['topicid']] = $myrow['cpt'];
         }
         $ret['readspertopic'] = $ret2;
@@ -1396,7 +1402,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Count(*) as cpt, s.topicid FROM $tblf f, $tbls s WHERE f.storyid=s.storyid GROUP BY s.topicid ORDER BY s.topicid";
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['topicid']] = $myrow['cpt'];
         }
         $ret['filespertopic'] = $ret2;
@@ -1406,7 +1412,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Count(storyid) as cpt, topicid FROM $tbls WHERE expired>0 AND expired<=" . time() . ' GROUP BY topicid ORDER BY topicid';
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['topicid']] = $myrow['cpt'];
         }
         $ret['expiredpertopic'] = $ret2;
@@ -1416,7 +1422,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Count(Distinct(uid)) as cpt, topicid FROM $tbls GROUP BY topicid ORDER BY topicid";
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['topicid']] = $myrow['cpt'];
         }
         $ret['authorspertopic'] = $ret2;
@@ -1426,7 +1432,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.counter, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.counter DESC";
         $result = $db->query($sql, (int)$limit);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['storyid']] = $myrow;
         }
         $ret['mostreadednews'] = $ret2;
@@ -1436,7 +1442,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.counter, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.counter";
         $result = $db->query($sql, (int)$limit);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['storyid']] = $myrow;
         }
         $ret['lessreadednews'] = $ret2;
@@ -1446,7 +1452,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.rating, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.rating DESC";
         $result = $db->query($sql, (int)$limit);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['storyid']] = $myrow;
         }
         $ret['besratednews'] = $ret2;
@@ -1456,7 +1462,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Sum(counter) as cpt, uid FROM $tbls GROUP BY uid ORDER BY cpt DESC";
         $result = $db->query($sql, (int)$limit);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['uid']] = $myrow['cpt'];
         }
         $ret['mostreadedauthors'] = $ret2;
@@ -1466,7 +1472,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Avg(rating) as cpt, uid FROM $tbls WHERE votes > 0 GROUP BY uid ORDER BY cpt DESC";
         $result = $db->query($sql, (int)$limit);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['uid']] = $myrow['cpt'];
         }
         $ret['bestratedauthors'] = $ret2;
@@ -1476,7 +1482,7 @@ class NewsStory extends MyXoopsStory
         $ret2   = [];
         $sql    = "SELECT Count(*) as cpt, uid FROM $tbls GROUP BY uid ORDER BY cpt DESC";
         $result = $db->query($sql, (int)$limit);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret2[$myrow['uid']] = $myrow['cpt'];
         }
         $ret['biggestcontributors'] = $ret2;
@@ -1528,7 +1534,7 @@ class NewsStory extends MyXoopsStory
         }
         $sql    .= ' ORDER BY uid';
         $result = $db->query($sql);
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             $ret[] = $myrow['uid'];
         }
 
@@ -1692,7 +1698,7 @@ class NewsStory extends MyXoopsStory
         $sql    .= " ORDER BY s.$order DESC";
         $result = $db->query($sql, $limit, $start);
 
-        while ($myrow = $db->fetchArray($result)) {
+        while (false !== ($myrow = $db->fetchArray($result))) {
             if ($asobject) {
                 $ret[$myrow['storyid']] = new NewsStory($myrow);
             } else {
@@ -1707,7 +1713,7 @@ class NewsStory extends MyXoopsStory
 /**
  * Class news_NewsStoryHandler
  */
-class news_NewsStoryHandler extends XoopsPersistableObjectHandler
+class news_NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
     /**
      * @param null|XoopsDatabase $db

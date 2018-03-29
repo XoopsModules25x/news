@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /**
  * XOOPS news story
  *
@@ -17,15 +18,15 @@
  * @deprecated
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 //$GLOBALS['xoopsLogger']->addDeprecated("'/class/xoopsstory.php' is deprecated since XOOPS 2.5.4, please create your own class instead.");
-require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/kernel/user.php';
 
 /**
- * Class MyXoopsStory
+ * Class XoopsStory
  */
-class MyXoopsStory
+class XoopsStory
 {
     public $table;
     public $storyid;
@@ -61,7 +62,7 @@ class MyXoopsStory
         $this->topicstable = '';
         if (is_array($storyid)) {
             $this->makeStory($storyid);
-        } elseif ($storyid != -1) {
+        } elseif (-1 != $storyid) {
             $this->getStory((int)$storyid);
         }
     }
@@ -385,11 +386,11 @@ class MyXoopsStory
     }
 
     /**
-     * @return MyXoopsTopic
+     * @return XoopsTopic
      */
     public function topic()
     {
-        return new MyXoopsTopic($this->topicstable, $this->topicid);
+        return new \XoopsTopic($this->topicstable, $this->topicid);
     }
 
     public function uid()

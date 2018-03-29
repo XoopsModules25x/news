@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -17,14 +18,14 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/Mimetype.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/Mimetype.php';
 
 /**
- * Class sFiles
+ * Class Files
  */
-class sFiles
+class Files
 {
     public $db;
     public $table;
@@ -51,7 +52,7 @@ class sFiles
         $this->counter      = 0;
         if (is_array($fileid)) {
             $this->makeFile($fileid);
-        } elseif ($fileid != -1) {
+        } elseif (-1 != $fileid) {
             $this->getFile((int)$fileid);
         }
     }
@@ -100,7 +101,7 @@ class sFiles
      */
     public function giveMimetype($filename = '')
     {
-        $cmimetype   = new cmimetype();
+        $cmimetype   = new Mimetype();
         $workingfile = $this->downloadname;
         if ('' !== xoops_trim($filename)) {
             $workingfile = $filename;
@@ -121,8 +122,8 @@ class sFiles
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
-        while ($myrow = $this->db->fetchArray($result)) {
-            $ret[] = new sFiles($myrow);
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
+            $ret[] = new Files($myrow);
         }
 
         return $ret;
@@ -394,7 +395,7 @@ class sFiles
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
             $sql    .= implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
-            while ($myrow = $this->db->fetchArray($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $ret[$myrow['storyid']] = $myrow['cnt'];
             }
         }

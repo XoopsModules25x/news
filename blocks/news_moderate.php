@@ -19,14 +19,14 @@
 
 use XoopsModules\News;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Dispay a block where news moderators can show news that need to be moderated.
  */
 function b_news_topics_moderate()
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     ;
     $block      = [];
     $dateformat = News\Utility::getModuleOption('dateformat');

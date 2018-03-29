@@ -19,8 +19,11 @@
 
 
 use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
 xoops_loadLanguage('calendar');
@@ -47,7 +50,7 @@ if (0 == $xt->getAllTopicsCount()) {
 }
 
 require_once XOOPS_ROOT_PATH . '/class/tree.php';
-$allTopics  = $xt->getAllTopics($xoopsModuleConfig['restrictindex'], 'news_submit');
+$allTopics  = $xt->getAllTopics($helper->getConfig('restrictindex'), 'news_submit');
 $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 
 if (News\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
@@ -118,7 +121,7 @@ if ($approveprivilege) {
 }
 // Manage upload(s)
 $allowupload = false;
-switch ($xoopsModuleConfig['uploadgroups']) {
+switch ($helper->getConfig('uploadgroups')) {
     case 1: //Submitters and Approvers
         $allowupload = true;
         break;
@@ -132,7 +135,7 @@ switch ($xoopsModuleConfig['uploadgroups']) {
 
 if ($allowupload) {
     if ('edit' === $op) {
-        $sfiles   = new sFiles();
+        $sfiles   = new Files();
         $filesarr = [];
         $filesarr = $sfiles->getAllbyStory($storyid);
         if (count($filesarr) > 0) {
@@ -149,7 +152,7 @@ if ($allowupload) {
             $sform->addElement($upl_tray);
         }
     }
-    $sform->addElement(new \XoopsFormFile(_AM_SELFILE, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
+    $sform->addElement(new \XoopsFormFile(_AM_SELFILE, 'attachedfile', $helper->getConfig('maxuploadsize')), false);
     if ('edit' === $op) {
         if (isset($picture) && '' !== xoops_trim($picture)) {
             $pictureTray = new \XoopsFormElementTray(_NW_CURENT_PICTURE, '<br>');
@@ -163,7 +166,7 @@ if ($allowupload) {
     if (!isset($pictureinfo)) {
         $pictureinfo = '';
     }
-    $sform->addElement(new \XoopsFormFile(_NW_SELECT_IMAGE, 'attachedimage', $xoopsModuleConfig['maxuploadsize']), false);
+    $sform->addElement(new \XoopsFormFile(_NW_SELECT_IMAGE, 'attachedimage', $helper->getConfig('maxuploadsize')), false);
     $sform->addElement(new \XoopsFormText(_NW_SELECT_IMAGE_DESC, 'pictureinfo', 50, 255, $pictureinfo), false);
 }
 

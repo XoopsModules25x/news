@@ -30,8 +30,8 @@
 use XoopsModules\News;
 
 include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 ;
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_topics_directory.tpl';

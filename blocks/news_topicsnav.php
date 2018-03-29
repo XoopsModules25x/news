@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 use XoopsModules\News;
 
@@ -29,7 +29,7 @@ use XoopsModules\News;
 function b_news_topicsnav_show($options)
 {
     ;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $myts             = \MyTextSanitizer::getInstance();
     $block            = [];
     $newscountbytopic = [];

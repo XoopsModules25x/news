@@ -18,15 +18,15 @@
  */
 
 include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 $fileid = isset($_GET['fileid']) ? (int)$_GET['fileid'] : 0;
 if (empty($fileid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _ERRORS);
 }
 $myts   = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
-$sfiles = new sFiles($fileid);
+$sfiles = new Files($fileid);
 
 // Do we have the right to see the file ?
 $article = new NewsStory($sfiles->getStoryid());

@@ -18,7 +18,7 @@
  * @author         Hervé Thouzard (http://www.herve-thouzard.com)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Returns a module's option
@@ -87,7 +87,7 @@ function news_updaterating($storyid)
     $voteresult  = $xoopsDB->query($query);
     $votesDB     = $xoopsDB->getRowsNum($voteresult);
     $totalrating = 0;
-    while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
+    while (false !== (list($rating) = $xoopsDB->fetchRow($voteresult))) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
@@ -313,7 +313,7 @@ function news_CreateMetaDatas($story = null)
     global $xoopsConfig, $xoTheme, $xoopsTpl;
     $content = '';
     $myts    = \MyTextSanitizer::getInstance();
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
     /**
      * Firefox and Opera Navigation's Bar
@@ -328,7 +328,7 @@ function news_CreateMetaDatas($story = null)
 
         // Create chapters
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         $xt         = new NewsTopic();
         $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
@@ -409,13 +409,13 @@ function news_CreateMetaDatas($story = null)
 function news_createmeta_keywords($content)
 {
     include XOOPS_ROOT_PATH . '/modules/news/config.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 
     if (!$cfg['meta_keywords_auto_generate']) {
         return '';
     }
-    $registry = new news_registryfile('news_metagen_options.txt');
+    $registry = new Registryfile('news_metagen_options.txt');
     //    $tcontent = '';
     $tcontent = $registry->getfile();
     if ('' !== xoops_trim($tcontent)) {
@@ -516,7 +516,7 @@ function news_createmeta_keywords($content)
             break;
     }
     // Remove black listed words
-    $metablack = new news_blacklist();
+    $metablack = new Blacklist();
     $words     = $metablack->getAllKeywords();
     $keywords  = $metablack->remove_blacklisted($keywords);
 

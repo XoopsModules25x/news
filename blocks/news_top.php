@@ -20,10 +20,10 @@
 
 use XoopsModules\News;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
 /**
  * Notes about the spotlight :
@@ -47,11 +47,9 @@ function b_news_top_show($options)
     $displayname = News\Utility::getModuleOption('displayname');
     $tabskin     = News\Utility::getModuleOption('tabskin');
 
-    if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
-    } else {
-        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
-    }
+    /** @var News\Helper $helper */
+    $helper = News\Helper::getInstance();
+    $helper->loadLanguage('main');
 
     $block['displayview'] = $options[8];
     $block['tabskin']     = $tabskin;
@@ -669,10 +667,10 @@ function b_news_top_edit($options)
     $form .= "</table>\n";
 
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $topics_arr = [];
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
-    $xt         = new MyXoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+//    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+    $xt         = new \XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr = $xt->getChildTreeArray(0, 'topic_title');
     $size       = count($options);
     foreach ($topics_arr as $onetopic) {

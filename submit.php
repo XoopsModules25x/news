@@ -17,24 +17,26 @@
  * @author         XOOPS Development Team
  */
 
+use XoopsModules\Tag;
 use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
-//defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+//defined('XOOPS_ROOT_PATH') || die('Restricted access');
 if (!defined('XOOPS_ROOT_PATH')) {
     include __DIR__ . '/../../mainfile.php';
 }
 require_once __DIR__ . '/header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/header.php';
-;
-if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php')) {
-    require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/admin.php';
-} else {
-    require_once XOOPS_ROOT_PATH . '/modules/news/language/english/admin.php';
-}
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+$helper->loadLanguage('admin');
+
 $myts      = \MyTextSanitizer::getInstance();
 $module_id = $xoopsModule->getVar('mid');
 $storyid   = 0;
@@ -71,7 +73,7 @@ if (isset($_POST['preview'])) {
 } elseif (isset($_GET['op']) && isset($_GET['storyid'])) {
     // Verify that the user can edit or delete an article
     if ('edit' === $_GET['op'] || 'delete' === $_GET['op']) {
-        if (1 == $xoopsModuleConfig['authoredit']) {
+        if (1 == $helper->getConfig('authoredit')) {
             $tmpstory = new NewsStory((int)$_GET['storyid']);
             if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !News\Utility::isAdminGroup()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
@@ -373,7 +375,7 @@ switch ($op) {
             if (!$approve) {
                 $story->setPublished(0);
             }
-        } elseif (1 == $xoopsModuleConfig['autoapprove'] && !$approveprivilege) {
+        } elseif (1 == $helper->getConfig('autoapprove') && !$approveprivilege) {
             if (empty($storyid)) {
                 $approve = 1;
             } else {
@@ -415,7 +417,7 @@ switch ($op) {
         }
 
         $allowupload = false;
-        switch ($xoopsModuleConfig['uploadgroups']) {
+        switch ($helper->getConfig('uploadgroups')) {
             case 1: //Submitters and Approvers
                 $allowupload = true;
                 break;
@@ -446,16 +448,16 @@ switch ($op) {
                 $fldname = $_FILES[$_POST['xoops_upload_file'][1]];
                 $fldname = $fldname['name'];
                 if (xoops_trim('' !== $fldname)) {
-                    $sfiles         = new sFiles();
+                    $sfiles         = new Files();
                     $destname       = $sfiles->createUploadName(XOOPS_ROOT_PATH . '/uploads/news/image', $fldname);
                     $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
-                    $uploader       = new \XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+                    $uploader       = new \XoopsMediaUploader(XOOPS_ROOT_PATH . '/uploads/news/image', $permittedtypes, $helper->getConfig('maxuploadsize'));
                     $uploader->setTargetFileName($destname);
                     if ($uploader->fetchMedia($_POST['xoops_upload_file'][1])) {
                         if ($uploader->upload()) {
                             $fullPictureName = XOOPS_ROOT_PATH . '/uploads/news/image/' . basename($destname);
                             $newName         = XOOPS_ROOT_PATH . '/uploads/news/image/redim_' . basename($destname);
-                            News\Utility::resizePicture($fullPictureName, $newName, $xoopsModuleConfig['maxwidth'], $xoopsModuleConfig['maxheight']);
+                            News\Utility::resizePicture($fullPictureName, $newName, $helper->getConfig('maxwidth'), $helper->getConfig('maxheight'));
                             if (file_exists($newName)) {
                                 @unlink($fullPictureName);
                                 rename($newName, $fullPictureName);
@@ -476,7 +478,7 @@ switch ($op) {
         $result = $story->store();
         if ($result) {
             if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-                $tagHandler = xoops_getModuleHandler('tag', 'tag');
+                $tagHandler = Tag\Handler::getInstance();
                 $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
             }
 
@@ -508,7 +510,7 @@ switch ($op) {
                 // Manage upload(s)
                 if (isset($_POST['delupload']) && count($_POST['delupload']) > 0) {
                     foreach ($_POST['delupload'] as $onefile) {
-                        $sfiles = new sFiles($onefile);
+                        $sfiles = new Files($onefile);
                         $sfiles->delete();
                     }
                 }
@@ -517,14 +519,14 @@ switch ($op) {
                     $fldname = $_FILES[$_POST['xoops_upload_file'][0]];
                     $fldname = $fldname['name'];
                     if (xoops_trim('' !== $fldname)) {
-                        $sfiles   = new sFiles();
+                        $sfiles   = new Files();
                         $destname = $sfiles->createUploadName(XOOPS_UPLOAD_PATH, $fldname);
                         /**
                          * You can attach files to your news
                          */
                         $permittedtypes = explode("\n", str_replace("\r", '', News\Utility::getModuleOption('mimetypes')));
                         array_walk($permittedtypes, 'trim');
-                        $uploader = new \XoopsMediaUploader(XOOPS_UPLOAD_PATH, $permittedtypes, $xoopsModuleConfig['maxuploadsize']);
+                        $uploader = new \XoopsMediaUploader(XOOPS_UPLOAD_PATH, $permittedtypes, $helper->getConfig('maxuploadsize'));
                         $uploader->setTargetFileName($destname);
                         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                             if ($uploader->upload()) {
@@ -577,7 +579,7 @@ switch ($op) {
             $expired      = 0;
             $published    = 0;
         }
-        if (1 == $xoopsModuleConfig['autoapprove']) {
+        if (1 == $helper->getConfig('autoapprove')) {
             $approve = 1;
         }
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';

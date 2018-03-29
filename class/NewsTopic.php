@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -17,19 +18,17 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-use Xmf\Module\Helper;
-
-require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 ;
 
 /**
  * Class NewsTopic
  */
-class NewsTopic extends MyXoopsTopic
+class NewsTopic extends News\XoopsTopic
 {
     public $menu;
     public $topic_description;
@@ -88,7 +87,7 @@ class NewsTopic extends MyXoopsTopic
             }
         }
 
-        if ($seltopic != -1) {
+        if (-1 != $seltopic) {
             return $this->makeMySelBox('topic_title', 'topic_title', $seltopic, $none, $selname, $onchange, $perms);
         } elseif (!empty($this->topic_id)) {
             return $this->makeMySelBox('topic_title', 'topic_title', $this->topic_id, $none, $selname, $onchange, $perms);
@@ -135,7 +134,7 @@ class NewsTopic extends MyXoopsTopic
         if ($none) {
             $outbuffer .= "<option value='0'>----</option>\n";
         }
-        while (list($catid, $name) = $this->db->fetchRow($result)) {
+        while (false !== (list($catid, $name) = $this->db->fetchRow($result))) {
             $sel = '';
             if ($catid == $preset_id) {
                 $sel = ' selected';
@@ -180,7 +179,7 @@ class NewsTopic extends MyXoopsTopic
         if (0 == $count) {
             return $parray;
         }
-        while ($row = $this->db->fetchArray($result)) {
+        while (false !== ($row = $this->db->fetchArray($result))) {
             $row['prefix'] = $r_prefix . '.';
             array_push($parray, $row);
             $parray = $this->getChildTreeArray($row['topic_id'], $order, $perms, $parray, $row['prefix']);
@@ -255,7 +254,7 @@ class NewsTopic extends MyXoopsTopic
         }
         $sql    .= ' ORDER BY topic_title';
         $result = $db->query($sql);
-        while ($array = $db->fetchArray($result)) {
+        while (false !== ($array = $db->fetchArray($result))) {
             $topic = new NewsTopic();
             $topic->makeTopic($array);
             $topics_arr[$array['topic_id']] = $topic;
@@ -273,7 +272,7 @@ class NewsTopic extends MyXoopsTopic
         $ret    = [];
         $sql    = 'SELECT count(storyid) AS cpt, topicid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ') GROUP BY topicid';
         $result = $this->db->query($sql);
-        while ($row = $this->db->fetchArray($result)) {
+        while (false !== ($row = $this->db->fetchArray($result))) {
             $ret[$row['topicid']] = $row['cpt'];
         }
 
@@ -405,7 +404,7 @@ class NewsTopic extends MyXoopsTopic
         }
 
         if (true === $this->use_permission) {
-            $xt            = new MyXoopsTree($this->table, 'topic_id', 'topic_pid');
+            $xt            = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
@@ -612,7 +611,7 @@ class NewsTopic extends MyXoopsTopic
             }
         }
         $result = $this->db->query($sql);
-        while ($row = $this->db->fetchArray($result)) {
+        while (false !== ($row = $this->db->fetchArray($result))) {
             $topicstitles[$row['topic_id']] = [
                 'title'   => $myts->displayTarea($row['topic_title']),
                 'picture' => XOOPS_URL . '/uploads/news/image/' . $row['topic_imgurl']
@@ -646,7 +645,7 @@ class NewsTopic extends MyXoopsTopic
         $result = $this->db->query($sql);
         $ret    = [];
         $myts   = \MyTextSanitizer::getInstance();
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $ret[$myrow['topic_id']] = [
                 'title' => $myts->displayTarea($myrow['topic_title']),
                 'pid'   => $myrow['topic_pid'],

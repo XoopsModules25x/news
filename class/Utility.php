@@ -5,17 +5,16 @@ use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\Common;
 
-
-    /**
+/**
  * Class Utility
      */
 class Utility
-    {
-    use common\VersionChecks; //checkVerXoops, checkVerPhp Traits
+{
+    use Common\VersionChecks; //checkVerXoops, checkVerPhp Traits
 
-    use common\ServerStats; // getServerStats Trait
+    use Common\ServerStats; // getServerStats Trait
 
-    use common\FilesManagement; // Files Management Trait
+    use Common\FilesManagement; // Files Management Trait
 
     //--------------- Custom module methods -----------------------------
 
@@ -71,7 +70,7 @@ class Utility
         $voteresult  = $xoopsDB->query($query);
         $votesDB     = $xoopsDB->getRowsNum($voteresult);
         $totalrating = 0;
-        while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
+        while (false !== (list($rating) = $xoopsDB->fetchRow($voteresult))) {
             $totalrating += $rating;
         }
         $finalrating = $totalrating / $votesDB;
@@ -297,7 +296,7 @@ class Utility
         global $xoopsConfig, $xoTheme, $xoopsTpl;
         $content = '';
         $myts    = \MyTextSanitizer::getInstance();
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
         /**
          * Firefox and Opera Navigation's Bar
@@ -312,7 +311,7 @@ class Utility
 
             // Create chapters
             require_once XOOPS_ROOT_PATH . '/class/tree.php';
-            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
             $xt         = new NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
             $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
@@ -393,13 +392,13 @@ class Utility
     public static function createMetaKeywords($content)
     {
         include XOOPS_ROOT_PATH . '/modules/news/config.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
+        // require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
+        // require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 
         if (!$cfg['meta_keywords_auto_generate']) {
             return '';
         }
-        $registry = new news_registryfile('news_metagen_options.txt');
+        $registry = new Registryfile('news_metagen_options.txt');
         //    $tcontent = '';
         $tcontent = $registry->getfile();
         if ('' !== xoops_trim($tcontent)) {
@@ -500,7 +499,7 @@ class Utility
                 break;
         }
         // Remove black listed words
-        $metablack = new news_blacklist();
+        $metablack = new Blacklist();
         $words     = $metablack->getAllKeywords();
         $keywords  = $metablack->remove_blacklisted($keywords);
 

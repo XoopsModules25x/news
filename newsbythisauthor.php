@@ -68,19 +68,19 @@
  */
 
 use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
 include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 ;
 global $xoopsUser;
 
-if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php')) {
-    require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php';
-} else {
-    require_once XOOPS_ROOT_PATH . '/modules/news/language/english/modinfo.php';
-}
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+$helper->loadLanguage('modinfo');
 
 $uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 if (empty($uid)) {
@@ -100,7 +100,7 @@ $dateformat = News\Utility::getModuleOption('dateformat');
 $infotips   = News\Utility::getModuleOption('infotips');
 $thisuser   = new \XoopsUser($uid);
 
-switch ($xoopsModuleConfig['displayname']) {
+switch ($helper->getConfig('displayname')) {
     case 1: // Username
         $authname = $thisuser->getVar('uname');
         break;
@@ -134,7 +134,7 @@ $oldtopictitle = '';
 $oldtopiccolor = '';
 $articlelist   = [];
 $articlestpl   = [];
-$articlelist   = $articles->getAllPublishedByAuthor($uid, $xoopsModuleConfig['restrictindex'], false);
+$articlelist   = $articles->getAllPublishedByAuthor($uid, $helper->getConfig('restrictindex'), false);
 $articlescount = count($articlelist);
 $xoopsTpl->assign('articles_count', $articlescount);
 $count_articles = $count_reads = 0;

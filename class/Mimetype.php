@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /**
  * Copyright (C) 2002 Jason Sheets <jsheets@shadonet.com>.
  * All rights reserved.
@@ -66,12 +67,12 @@
  * to use, or modify it however you like.  If you find this script useful please
  * e-mail me.
  **/
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class cmimetype
+ * Class Mimetype
  */
-class cmimetype
+class Mimetype
 {
     /**
      * @param $filename
@@ -106,7 +107,7 @@ class cmimetype
         // return mime type for extension
         if (isset($mimetypes[$ext])) {
             return $mimetypes[$ext];
-            // if the extension wasn't found return octet-stream
+        // if the extension wasn't found return octet-stream
         } else {
             return 'unknown';
         }

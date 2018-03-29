@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /**
  * ****************************************************************************
  * - Developers TEAM TDM Xoops - (https://xoops.org)
@@ -32,16 +33,13 @@
  * Version : 1.67 Tue 2012/02/13 22:29:36 : Timgno Exp $
  * ****************************************************************************
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-if (!class_exists('XoopsPersistableObjectHandler')) {
-    require_once XOOPS_ROOT_PATH . '/kernel/object.php';
-}
 
 /**
- * Class news_topics
+ * Class Topics
  */
-class news_topics extends XoopsObject
+class Topics extends \XoopsObject
 {
     //Constructor
     /**
@@ -65,13 +63,13 @@ class news_topics extends XoopsObject
 /**
  * Class newsnews_topicsHandler
  */
-class newsnews_topicsHandler extends XoopsPersistableObjectHandler
+class newsnews_topicsHandler extends \XoopsPersistableObjectHandler
 {
     /**
      * @param null|\XoopsDatabase $db
      */
     public function __construct(\XoopsDatabase $db)
     {
-        parent::__construct($db, 'news_topics', 'news_topics', 'topic_id', 'topic_pid');
+        parent::__construct($db, 'news_topics', Topics::class, 'topic_id', 'topic_pid');
     }
 }

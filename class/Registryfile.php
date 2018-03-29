@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -16,12 +17,12 @@
  * @since
  * @author     XOOPS Development Team
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class news_registryfile
+ * Class Registryfile
  */
-class news_registryfile
+class Registryfile
 {
     public $filename; // filename to manage
 

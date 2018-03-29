@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /**
  * XOOPS tree class
  *
@@ -16,7 +17,7 @@
  * @author              Kazumi Ono (http://www.myweb.ne.jp/, http://jp.xoops.org/)
  */
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * A tree structures with {@link XoopsObject}s as nodes
@@ -25,7 +26,7 @@ defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
  * @subpackage core
  * @author     Kazumi Ono <onokazu@xoops.org>
  */
-class MyXoopsObjectTree
+class ObjectTree
 {
     /**
      * @access private

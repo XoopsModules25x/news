@@ -35,8 +35,8 @@ use XoopsModules\News;
 
 include __DIR__ . '/../../mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 ;
 
 error_reporting(0);
@@ -98,7 +98,7 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
         foreach ($sarray as $story) {
             $storytitle = $story->title();
             //if we are allowing html, we need to use htmlspecialchars or any bug will break the output
-            $description = htmlspecialchars($story->hometext());
+            $description = htmlspecialchars($story->hometext(), ENT_QUOTES | ENT_HTML5);
             $tpl->append('items', [
                 'title'       => xoops_utf8_encode($storytitle),
                 'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),

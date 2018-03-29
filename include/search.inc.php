@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 use XoopsModules\News;
 
@@ -78,7 +78,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $result = $xoopsDB->query($sql, $limit, $offset);
     $ret    = [];
     $i      = 0;
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $display = true;
         if ($modid && $gpermHandler) {
             if ($restricted && !$gpermHandler->checkRight('news_view', $myrow['topicid'], $groups, $modid)) {
@@ -118,7 +118,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         $i      = $ind;
         $sql    .= 'ORDER BY com_created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
-        while ($myrow = $xoopsDB->fetchArray($result)) {
+        while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
             $display = true;
             if ($modid && $gpermHandler) {
                 if ($restricted && !$gpermHandler->checkRight('news_view', $myrow['com_itemid'], $groups, $modid)) {

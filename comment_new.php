@@ -18,21 +18,24 @@
  */
 
 use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+
 
 include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 ;
 
 // We verify that the user can post comments **********************************
-if (!isset($xoopsModuleConfig)) {
+if (null === ($helper->getModule())) {
     die();
 }
 
-if (0 == $xoopsModuleConfig['com_rule']) { // Comments are deactivated
+if (0 == $helper->getConfig('com_rule')) { // Comments are deactivated
     die();
 }
 
-if (0 == $xoopsModuleConfig['com_anonpost'] && !is_object($xoopsUser)) { // Anonymous users can't post
+if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) { // Anonymous users can't post
     die();
 }
 // ****************************************************************************

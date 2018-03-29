@@ -19,7 +19,7 @@
 
 use XoopsModules\News;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * @return array
@@ -27,7 +27,7 @@ use XoopsModules\News;
 function b_news_bigstory_show()
 {
     ;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     $myts       = \MyTextSanitizer::getInstance();
     $restricted = News\Utility::getModuleOption('restrictindex');
     $dateformat = News\Utility::getModuleOption('dateformat');

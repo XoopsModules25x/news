@@ -22,11 +22,16 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
+
+use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+
 $cfg = [];
 /**
  * How many items do you want to display in the Summary table visible in the article's page ?
  */
-$cfg['article_summary_items_count'] = isset($xoopsModuleConfig['storyhome']) ? $xoopsModuleConfig['storyhome'] : 10;
+$cfg['article_summary_items_count'] = ('' !== ($helper->getConfig('storyhome'))) ? $helper->getConfig('storyhome') : 10;
 
 /**
  * Auto generate meta keywords ?

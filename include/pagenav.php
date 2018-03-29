@@ -27,7 +27,7 @@
  * @copyright        (c) XOOPS Project (https://xoops.org)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class XoopsPageNav

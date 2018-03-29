@@ -20,10 +20,9 @@
 
 use XoopsModules\News;
 
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
-
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 /**
  * @param $options
@@ -125,8 +124,8 @@ function b_news_randomnews_edit($options)
     $form .= _MB_NEWS_TEASER . " <input type='text' name='options[]' value='" . $options[3] . "'>" . _MB_NEWS_LENGTH;
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select id='options[4]' name='options[]' multiple='multiple'>";
 
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-    $xt                    = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+    $xt                    = new \XoopsTopic($xoopsDB->prefix('news_topics'));
     $alltopics             = $xt->getTopicsList();
     $alltopics[0]['title'] = _MB_SPOTLIGHT_ALL_TOPICS;
     ksort($alltopics);

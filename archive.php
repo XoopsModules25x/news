@@ -73,7 +73,7 @@ use XoopsModules\News;
 include __DIR__ . '/../../mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
 ;
 $lastyear  = 0;
@@ -127,7 +127,7 @@ if (!$result) {
     $years  = [];
     $months = [];
     $i      = 0;
-    while (list($time) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($time) = $xoopsDB->fetchRow($result))) {
         $time = formatTimestamp($time, 'mysql', $useroffset);
         if (preg_match('/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/', $time, $datetime)) {
             $this_year  = (int)$datetime[1];

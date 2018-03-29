@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 //  ------------------------------------------------------------------------ //
 //                  Copyright (c) 2005-2006 Hervé Thouzard                     //
 //                     <http://www.herve-thouzard.com>                      //
@@ -22,12 +23,12 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class news_blacklist
+ * Class Blacklist
  */
-class news_blacklist
+class Blacklist
 {
     public $keywords; // Holds keywords
 

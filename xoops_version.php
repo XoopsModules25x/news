@@ -18,9 +18,10 @@
  */
 
 use XoopsModules\News;
+
 include __DIR__ . '/preloads/autoloader.php';
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.72;
@@ -223,7 +224,7 @@ global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
 if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['dirname']
     && $xoopsModule->getVar('isactive')) {
     // 2) If there's no topics to display as sub menus we can go on
-    if (!isset($_SESSION['items_count']) || $_SESSION['items_count'] == -1) {
+    if (!isset($_SESSION['items_count']) || -1 == $_SESSION['items_count']) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
         $result = $xoopsDB->query($sql);
         list($count) = $xoopsDB->fetchRow($result);
@@ -233,7 +234,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     }
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         ;
         $xt         = new NewsTopic();
         $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));

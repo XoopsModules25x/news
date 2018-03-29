@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 use XoopsModules\News;
 
@@ -28,8 +28,8 @@ function b_news_topics_show()
 {
     global $storytopic; // Don't know why this is used and where it's coming from ....
     ;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//    require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
     $moduleDirName = basename(dirname(__DIR__));
     xoops_load('utility', $moduleDirName);
@@ -40,7 +40,7 @@ function b_news_topics_show()
 
     $xt         = new NewsTopic();
     $allTopics  = $xt->getAllTopics($restricted);
-    $topic_tree = new MyXoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+    $topic_tree = new News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $additional = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";
 
     if (News\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {

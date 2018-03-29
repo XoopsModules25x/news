@@ -25,7 +25,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
 require_once __DIR__ . '/../../../include/cp_header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
@@ -72,7 +72,7 @@ switch ($permtoset) {
 }
 
 $permform  = new \XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/groupperms.php');
-$xt        = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
+$xt        = new News\XoopsTopic($xoopsDB->prefix('news_topics'));
 $alltopics = $xt->getTopicsList();
 
 if ($alltopics) {

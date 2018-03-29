@@ -18,7 +18,7 @@
 
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
-//require_once __DIR__ . '/../class/Utility.php';
+// require_once __DIR__ . '/../class/Utility.php';
 //require_once __DIR__ . '/../include/common.php';
 
 include __DIR__ . '/../preloads/autoloader.php';
@@ -49,8 +49,8 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
     $xoopsTpl = new \XoopsTpl();
 }
 
-$topicsHandler  = xoops_getModuleHandler('news_topics', 'news');
-$storiesHandler = xoops_getModuleHandler('news_stories', 'news');
+$topicsHandler  = xoops_getModuleHandler('Topics', 'news');
+$storiesHandler = xoops_getModuleHandler('Stories', 'news');
 
 if ($xoopsUser) {
     $modulepermHandler = xoops_getHandler('groupperm');

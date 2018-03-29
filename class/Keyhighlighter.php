@@ -1,25 +1,26 @@
-<?php
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+<?php namespace XoopsModules\News;
+
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * This file contains the keyhighlighter class that highlight the chosen keyword in the current output buffer.
+ * This file contains the Keyhighlighter class that highlight the chosen keyword in the current output buffer.
  *
- * @package keyhighlighter
+ * @package Keyhighlighter
  */
 
 /**
- * keyhighlighter class
+ * Keyhighlighter class
  *
  * This class highlight the chosen keywords in the current output buffer
  *
- * @package   keyhighlighter
+ * @package   Keyhighlighter
  * @author    Setec Astronomy
  * @abstract  Highlight specific keywords.
  * @copyright 2004
  * @example   sample.php A sample code.
  * @link      http://setecastronomy.stufftoread.com
  */
-class keyhighlighter
+class Keyhighlighter
 {
     /**
      * @access private
@@ -43,7 +44,7 @@ class keyhighlighter
     /**
      * Main constructor
      *
-     * This is the main constructor of keyhighlighter class. <br>
+     * This is the main constructor of Keyhighlighter class. <br>
      * It's the only public method of the class.
      *
      * @param string   $keywords         the keywords you want to highlight
@@ -51,13 +52,13 @@ class keyhighlighter
      * @param callback $replace_callback a custom callback for keyword highlight.
      *                                   <code>
      *                                   <?php
-     *                                   require ('keyhighlighter.class.php');
+     *                                   require ('Keyhighlighter.class.php');
      *
      * function my_highlighter ($matches) {
      *    return '<span style="font-weight: bolder; color: #FF0000;">' . $matches[0] . '</span>';
      * }
      *
-     * new keyhighlighter ('W3C', false, 'my_highlighter');
+     * new Keyhighlighter ('W3C', false, 'my_highlighter');
      * readfile ('http://www.w3c.org/');
      * ?>
      * </code>

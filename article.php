@@ -113,14 +113,16 @@
  */
 
 use XoopsModules\News;
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
 include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
-;
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/keyhighlighter.class.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
+//;
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/Keyhighlighter.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
 $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
@@ -243,7 +245,7 @@ $highlight = News\Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
     $keywords      = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
-    $h             = new keyhighlighter($keywords, true, 'my_highlighter');
+    $h             = new Keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }
 // ****************************************************************************************************************
@@ -311,7 +313,7 @@ if ('' !== xoops_trim($article->picture())) {
 }
 
 $xoopsTpl->assign('lang_attached_files', _NW_ATTACHEDFILES);
-$sfiles     = new sFiles();
+$sfiles     = new Files();
 $filesarr   = $newsfiles = [];
 $filesarr   = $sfiles->getAllbyStory($storyid);
 $filescount = count($filesarr);
@@ -352,7 +354,7 @@ if (News\Utility::getModuleOption('newsbythisauthor')) {
  * Uncomment the code to be able to use it
  */
 if ($cfg['create_clickable_path']) {
-    $mytree    = new MyXoopsObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $mytree    = new News\ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($article->topicid(), 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
     unset($mytree);
@@ -375,7 +377,7 @@ if (News\Utility::getModuleOption('showsummarytable')) {
     $count      = 0;
     $tmparticle = new NewsStory();
     $infotips   = News\Utility::getModuleOption('infotips');
-    $sarray     = NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $xoopsModuleConfig['restrictindex']);
+    $sarray     = NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $helper->getConfig('restrictindex'));
     if (count($sarray) > 0) {
         foreach ($sarray as $onearticle) {
             ++$count;
@@ -417,13 +419,13 @@ if (News\Utility::getModuleOption('showprevnextlink')) {
     $next          = $previous = [];
     $previousTitle = $nextTitle = '';
 
-    $next = $tmparticle->getNextArticle($storyid, $xoopsModuleConfig['restrictindex']);
+    $next = $tmparticle->getNextArticle($storyid, $helper->getConfig('restrictindex'));
     if (count($next) > 0) {
         $nextId    = $next['storyid'];
         $nextTitle = $next['title'];
     }
 
-    $previous = $tmparticle->getPreviousArticle($storyid, $xoopsModuleConfig['restrictindex']);
+    $previous = $tmparticle->getPreviousArticle($storyid, $helper->getConfig('restrictindex'));
     if (count($previous) > 0) {
         $previousId    = $previous['storyid'];
         $previousTitle = $previous['title'];
@@ -512,11 +514,11 @@ if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
     $xoopsTpl->assign('tags', false);
 }
 
-$xoopsTpl->assign('share', $xoopsModuleConfig['share']);
-$xoopsTpl->assign('showicons', $xoopsModuleConfig['showicons']);
+$xoopsTpl->assign('share', $helper->getConfig('share'));
+$xoopsTpl->assign('showicons', $helper->getConfig('showicons'));
 
 $canPdf = 1;
-if (!is_object($GLOBALS['xoopsUser']) && 0 == $xoopsModuleConfig['show_pdficon']) {
+if (!is_object($GLOBALS['xoopsUser']) && 0 == $helper->getConfig('show_pdficon')) {
     $canPdf = 0;
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);
