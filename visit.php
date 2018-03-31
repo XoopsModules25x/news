@@ -21,7 +21,7 @@ include __DIR__ . '/../../mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
-$fileid = isset($_GET['fileid']) ? (int)$_GET['fileid'] : 0;
+$fileid = \Xmf\Request::getInt('fileid', 0, 'GET');
 if (empty($fileid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _ERRORS);
 }

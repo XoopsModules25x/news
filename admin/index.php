@@ -67,7 +67,7 @@ if (!News\Utility::existField('picture', $storiesTableName)) {
 function newSubmissions()
 {
     global $dateformat, $pathIcon16;
-    $start       = isset($_GET['startnew']) ? (int)$_GET['startnew'] : 0;
+    $start       = \Xmf\Request::getInt('startnew', 0, 'GET');
     $newsubcount = NewsStory:: getAllStoriesCount(3, false);
     $storyarray  = NewsStory:: getAllSubmitted(News\Utility::getModuleOption('storycountadmin'), true, News\Utility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
@@ -146,7 +146,7 @@ function autoStories()
 {
     global $dateformat, $pathIcon16;
 
-    $start        = isset($_GET['startauto']) ? (int)$_GET['startauto'] : 0;
+    $start        = \Xmf\Request::getInt('startauto', 0, 'GET');
     $storiescount = NewsStory:: getAllStoriesCount(2, false);
     $storyarray   = NewsStory:: getAllAutoStory(News\Utility::getModuleOption('storycountadmin'), true, $start);
     $class        = '';
@@ -247,7 +247,7 @@ function lastStories()
     echo "<div id='laststories'>";
     echo '<br>';
     echo "<div class='center;'>";
-    $start        = isset($_GET['start']) ? (int)$_GET['start'] : 0;
+    $start        = \Xmf\Request::getInt('start', 0, 'GET');
     $storyarray   = NewsStory:: getAllPublished(News\Utility::getModuleOption('storycountadmin'), $start, false, 0, 1);
     $storiescount = NewsStory:: getAllStoriesCount(4, false);
     $pagenav      = new \XoopsPageNav($storiescount, News\Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
@@ -314,7 +314,7 @@ function lastStories()
 function expStories()
 {
     global $dateformat, $pathIcon16;
-    $start        = isset($_GET['startexp']) ? (int)$_GET['startexp'] : 0;
+    $start        = \Xmf\Request::getInt('startexp', 0, 'GET');
     $expiredcount = NewsStory:: getAllStoriesCount(1, false);
     $storyarray   = NewsStory:: getAllExpired(News\Utility::getModuleOption('storycountadmin'), $start, 0, 1);
     $pagenav      = new \XoopsPageNav($expiredcount, News\Utility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
@@ -546,10 +546,10 @@ function launchNewsletter()
     $exportedstories = [];
     $topiclist       = '';
     $removebr        = $removehtml = false;
-    $removebr        = isset($_POST['removebr']) ? (int)$_POST['removebr'] : 0;
-    $removehtml      = isset($_POST['removehtml']) ? (int)$_POST['removehtml'] : 0;
-    $header          = isset($_POST['header']) ? $_POST['header'] : '';
-    $footer          = isset($_POST['footer']) ? $_POST['footer'] : '';
+    $removebr        = \Xmf\Request::getInt('removebr', 0, 'POST');
+    $removehtml      = \Xmf\Request::getInt('removehtml', 0, 'POST');
+    $header          = \Xmf\Request::getString('header', '', 'POST');
+    $footer          = \Xmf\Request::getString('footer', '', 'POST');
     $date1           = $_POST['date1'];
     $date2           = $_POST['date2'];
     $timestamp1      = mktime(0, 0, 0, (int)substr($date1, 5, 2), (int)substr($date1, 8, 2), (int)substr($date1, 0, 4));
@@ -801,7 +801,7 @@ function topicsmanager()
 
     $uploadfolder   = sprintf(_AM_UPLOAD_WARNING, XOOPS_URL . '/uploads/news/image');
     $uploadirectory = '/uploads/news/image';
-    $start          = isset($_GET['start']) ? (int)$_GET['start'] : 0;
+    $start          = \Xmf\Request::getInt('start', 0, 'GET');
 
     $xt          = new News\NewsTopic($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr  = $xt->getChildTreeArray(0, 'topic_title');
@@ -882,7 +882,7 @@ function topicsmanager()
     echo "</table><div align='right'>" . $pagenav->renderNav() . '</div><br>';
     echo "</div></div><br>\n";
 
-    $topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
+    $topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
     if ($topic_id > 0) {
         $xtmod             = new News\NewsTopic($topic_id);
         $topic_title       = $xtmod->topic_title('E');
@@ -1380,7 +1380,7 @@ function addTopic()
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
 
-    $topicpid = isset($_POST['topic_pid']) ? (int)$_POST['topic_pid'] : 0;
+    $topicpid = \Xmf\Request::getInt('topic_pid', 0, 'POST');
     $xt       = new NewsTopic();
     if (!$xt->topicExists($topicpid, $_POST['topic_title'])) {
         $xt->setTopicPid($topicpid);

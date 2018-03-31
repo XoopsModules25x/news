@@ -97,7 +97,8 @@ if (isset($_POST['preview'])) {
                 || 'preview' === $_POST['op']
                 || 'post' === $_POST['op'])) {
             $storyid = 0;
-            $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : (int)$_POST['storyid'];
+//            $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : (int)$_POST['storyid'];
+            $storyid = \Xmf\Request::getInt('storyid', 0);
             if (!empty($storyid)) {
                 $tmpstory = new NewsStory($storyid);
                 if ($tmpstory->uid() == $xoopsUser->getVar('uid')) {
@@ -197,13 +198,13 @@ switch ($op) {
             $expired   = $story->expired();
         } else {
             $story     = new NewsStory();
-            $published = isset($_POST['publish_date']) ? $_POST['publish_date'] : 0;
+            $published = \Xmf\Request::getInt('publish_date', 0, POST);
             if (!empty($published) && isset($_POST['autodate']) && (int)(1 == $_POST['autodate'])) {
                 $published = strtotime($published['date']) + $published['time'];
             } else {
                 $published = 0;
             }
-            $expired = isset($_POST['expiry_date']) ? $_POST['expiry_date'] : 0;
+            $expired = \Xmf\Request::getInt('expiry_date', 0, POST);
             if (!empty($expired) && isset($_POST['autoexpdate']) && (int)(1 == $_POST['autoexpdate'])) {
                 $expired = strtotime($expired['date']) + $expired['time'];
             } else {
@@ -217,7 +218,7 @@ switch ($op) {
             $topicdisplay = 1;
         }
 
-        $approve    = isset($_POST['approve']) ? (int)$_POST['approve'] : 0;
+        $approve    = \Xmf\Request::getInt('approve', 0, 'POST');
         $topicalign = 'R';
         if (isset($_POST['topicalign'])) {
             $topicalign = $_POST['topicalign'];
@@ -235,7 +236,7 @@ switch ($op) {
                 $story->setIhome((int)$_POST['ihome']);
             }
         } else {
-            $noname = isset($_POST['noname']) ? (int)$_POST['noname'] : 0;
+            $noname = \Xmf\Request::getInt('noname', 0, 'POST');
         }
 
         if ($approveprivilege || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid()))) {
@@ -244,15 +245,15 @@ switch ($op) {
             }
         }
 
-        $notifypub = isset($_POST['notifypub']) ? (int)$_POST['notifypub'] : 0;
-        $nosmiley  = isset($_POST['nosmiley']) ? (int)$_POST['nosmiley'] : 0;
+        $notifypub = \Xmf\Request::getInt('notifypub', 0, 'POST');
+        $nosmiley  = \Xmf\Request::getInt('nosmiley', 0, 'POST');
         if (isset($nosmiley) && (0 == $nosmiley || 1 == $nosmiley)) {
             $story->setNosmiley($nosmiley);
         } else {
             $nosmiley = 0;
         }
         if ($approveprivilege) {
-            $nohtml = isset($_POST['nohtml']) ? (int)$_POST['nohtml'] : 0;
+            $nohtml = \Xmf\Request::getInt('nohtml', 0, 'POST');
             $story->setNohtml($nohtml);
             if (!isset($_POST['approve'])) {
                 $approve = 0;
@@ -290,7 +291,7 @@ switch ($op) {
         break;
 
     case 'post':
-        $nohtml_db = isset($_POST['nohtml']) ? $_POST['nohtml'] : 1;
+        $nohtml_db = \Xmf\Request::getInt('nohtml', 1, 'POST');
         if (is_object($xoopsUser)) {
             $uid = $xoopsUser->getVar('uid');
             if ($approveprivilege) {
@@ -327,9 +328,9 @@ switch ($op) {
         $story->setTopicId((int)$_POST['topic_id']);
         $story->setHostname(xoops_getenv('REMOTE_ADDR'));
         $story->setNohtml($nohtml_db);
-        $nosmiley = isset($_POST['nosmiley']) ? (int)$_POST['nosmiley'] : 0;
+        $nosmiley = \Xmf\Request::getInt('nosmiley', 0, 'POST');
         $story->setNosmiley($nosmiley);
-        $notifypub = isset($_POST['notifypub']) ? (int)$_POST['notifypub'] : 0;
+        $notifypub = \Xmf\Request::getInt('notifypub', 0, 'POST');
         $story->setNotifyPub($notifypub);
         $story->setType($_POST['type']);
 
@@ -363,7 +364,7 @@ switch ($op) {
             } else {
                 $story->setBodytext(' ');
             }
-            $approve = isset($_POST['approve']) ? (int)$_POST['approve'] : 0;
+            $approve = \Xmf\Request::getInt('approve', 0, 'POST');
 
             if (!$story->published() && $approve) {
                 $story->setPublished(time());
@@ -379,7 +380,7 @@ switch ($op) {
             if (empty($storyid)) {
                 $approve = 1;
             } else {
-                $approve = isset($_POST['approve']) ? (int)$_POST['approve'] : 0;
+                $approve = \Xmf\Request::getInt('approve', 0, 'POST');
             }
             if ($approve) {
                 $story->setPublished(time());
@@ -549,7 +550,7 @@ switch ($op) {
         } else {
             echo _ERRORS;
         }
-        $returnside = isset($_POST['returnside']) ? (int)$_POST['returnside'] : 0;
+        $returnside = \Xmf\Request::getInt('returnside', 0, 'POST');
         if (!$returnside) {
             redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_THANKS);
         } else {

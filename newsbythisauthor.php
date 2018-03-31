@@ -82,7 +82,7 @@ global $xoopsUser;
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('modinfo');
 
-$uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
+$uid = \Xmf\Request::getInt('uid', 0, 'GET');
 if (empty($uid)) {
     redirect_header('index.php', 2, _ERRORS);
 }

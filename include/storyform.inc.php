@@ -227,9 +227,9 @@ if (isset($storyid)) {
 }
 
 if (!isset($returnside)) {
-    $returnside = isset($_POST['returnside']) ? (int)$_POST['returnside'] : 0;
+    $returnside = \Xmf\Request::getInt('returnside', 0, 'POST');
     if (empty($returnside)) {
-        $returnside = isset($_GET['returnside']) ? (int)$_GET['returnside'] : 0;
+        $returnside = \Xmf\Request::getInt('returnside', 0, 'GET');
     }
 }
 

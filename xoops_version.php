@@ -20,6 +20,7 @@
 use XoopsModules\News;
 
 include __DIR__ . '/preloads/autoloader.php';
+$helper = News\Helper::getInstance();
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(__DIR__);

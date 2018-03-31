@@ -41,7 +41,7 @@ use XoopsModules\News;
 include __DIR__ . '/../../mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 ;
-$storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
+$storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }

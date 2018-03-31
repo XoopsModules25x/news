@@ -125,7 +125,7 @@ include __DIR__ . '/../../mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/Keyhighlighter.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
-$storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
+$storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
 
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
@@ -153,7 +153,7 @@ if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoops
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
-$storypage  = isset($_GET['page']) ? (int)$_GET['page'] : 0;
+$storypage  = \Xmf\Request::getInt('page', 0, 'GET');
 $dateformat = News\Utility::getModuleOption('dateformat');
 $hcontent   = '';
 

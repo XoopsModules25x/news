@@ -94,8 +94,8 @@ $months_arr = [
     12 => _CAL_DECEMBER
 ];
 
-$fromyear  = isset($_GET['year']) ? (int)$_GET['year'] : 0;
-$frommonth = isset($_GET['month']) ? (int)$_GET['month'] : 0;
+$fromyear  = \Xmf\Request::getInt('year', 0, 'GET');
+$frommonth = \Xmf\Request::getInt('month', 0, 'GET');
 
 $pgtitle = '';
 if ($fromyear && $frommonth) {

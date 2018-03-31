@@ -40,7 +40,7 @@ if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) { // Anon
 }
 // ****************************************************************************
 
-$com_itemid = isset($_GET['com_itemid']) ? (int)$_GET['com_itemid'] : 0;
+$com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
     $article = new NewsStory($com_itemid);
     if ($article->storyid > 0) {

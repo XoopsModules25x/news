@@ -35,7 +35,7 @@ $adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 
 echo '<br><br><br>';
-$permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
+$permtoset                = \Xmf\Request::getInt('permtoset', 1, 'POST');
 $selected                 = ['', '', ''];
 $selected[$permtoset - 1] = ' selected';
 echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='document.fselperm.submit()'><option value='1'"
