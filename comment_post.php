@@ -18,10 +18,11 @@
  */
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
 
 include __DIR__ . '/../../mainfile.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
 // We verify that the user can post comments **********************************
 if (null === $helper->getModule()) {

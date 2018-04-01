@@ -19,11 +19,9 @@
 
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
-
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 $moduleDirName = basename(dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
 xoops_loadLanguage('calendar');

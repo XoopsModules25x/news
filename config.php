@@ -24,6 +24,7 @@
 //  ------------------------------------------------------------------------ //
 
 use XoopsModules\News;
+
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 
