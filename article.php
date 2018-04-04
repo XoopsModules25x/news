@@ -143,13 +143,13 @@ if (0 != $article->expired() && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
-$gpermHandler = xoops_getHandler('groupperm');
+$grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
+if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
@@ -245,7 +245,7 @@ $highlight = News\Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
     $keywords      = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
-    $h             = new Keyhighlighter($keywords, true, 'my_highlighter');
+    $h             = new News\Keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }
 // ****************************************************************************************************************
@@ -313,7 +313,7 @@ if ('' !== xoops_trim($article->picture())) {
 }
 
 $xoopsTpl->assign('lang_attached_files', _NW_ATTACHEDFILES);
-$sfiles     = new Files();
+$sfiles     = new News\Files();
 $filesarr   = $newsfiles = [];
 $filesarr   = $sfiles->getAllbyStory($storyid);
 $filescount = count($filesarr);

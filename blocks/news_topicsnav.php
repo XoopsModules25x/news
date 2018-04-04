@@ -42,8 +42,8 @@ function b_news_topicsnav_show($options)
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gpermHandler  = xoops_getHandler('groupperm');
-        $topics        = $gpermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+        $grouppermHandler  = xoops_getHandler('groupperm');
+        $topics        = $grouppermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
         if (count($topics) > 0) {
             $topics = implode(',', $topics);
             $perms  = ' AND topic_id IN (' . $topics . ') ';

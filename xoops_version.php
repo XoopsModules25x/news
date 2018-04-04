@@ -211,8 +211,8 @@ if ($module) {
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
-    $gpermHandler = xoops_getHandler('groupperm');
-    if ($gpermHandler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
+    $grouppermHandler = xoops_getHandler('groupperm');
+    if ($grouppermHandler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
         $cansubmit = 1;
     }
 }
@@ -243,7 +243,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
             foreach ($topics_arr as $onetopic) {
-                if ($gpermHandler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
+                if ($grouppermHandler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
                     && $onetopic->menu()) {
                     $modversion['sub'][$i]['name'] = $onetopic->topic_title();
                     $modversion['sub'][$i]['url']  = 'index.php?storytopic=' . $onetopic->topic_id();

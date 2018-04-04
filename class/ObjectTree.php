@@ -238,7 +238,7 @@ class ObjectTree
      * @param  string  $extra          extra content to add to the element
      * @param  string  $caption        optional caption for form element
      *
-     * @return XoopsFormSelect form element
+     * @return \XoopsFormSelect form element
      */
     public function makeSelectElement(
         $name,

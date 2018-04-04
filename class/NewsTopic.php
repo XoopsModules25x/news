@@ -77,8 +77,8 @@ class NewsTopic extends News\XoopsTopic
             $moduleHandler = xoops_getHandler('module');
             $newsModule    = $moduleHandler->getByDirname('news');
             $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-            $gpermHandler  = xoops_getHandler('groupperm');
-            $topics        = $gpermHandler->getItemIds($perm_type, $groups, $newsModule->getVar('mid'));
+            $grouppermHandler  = xoops_getHandler('groupperm');
+            $topics        = $grouppermHandler->getItemIds($perm_type, $groups, $newsModule->getVar('mid'));
             if (count($topics) > 0) {
                 $topics = implode(',', $topics);
                 $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -216,8 +216,8 @@ class NewsTopic extends News\XoopsTopic
             $moduleHandler = xoops_getHandler('module');
             $newsModule    = $moduleHandler->getByDirname('news');
             $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-            $gpermHandler  = xoops_getHandler('groupperm');
-            $topics        = $gpermHandler->getItemIds('news_submit', $groups, $newsModule->getVar('mid'));
+            $grouppermHandler  = xoops_getHandler('groupperm');
+            $topics        = $grouppermHandler->getItemIds('news_submit', $groups, $newsModule->getVar('mid'));
             if (count($topics) > 0) {
                 $topics = implode(',', $topics);
                 $perms  = ' WHERE topic_id IN (' . $topics . ') ';

@@ -103,8 +103,8 @@ if (isset($_GET['storytopic'])) {
 
 if ($storytopic) {
     $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gpermHandler = xoops_getHandler('groupperm');
-    if (!$gpermHandler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
+    $grouppermHandler = xoops_getHandler('groupperm');
+    if (!$grouppermHandler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
     }
     $xoopsOption['storytopic'] = $storytopic;
@@ -135,14 +135,14 @@ if (empty($helper->getConfig('newsdisplay')) || 'Classic' === $helper->getConfig
 $firsttitle = '';
 $topictitle = '';
 $myts       = \MyTextSanitizer::getInstance();
-$sfiles     = new Files();
+$sfiles     = new News\Files();
 
 $column_count = $helper->getConfig('columnmode');
 
 if ($showclassic) {
     $GLOBALS['xoopsOption']['template_main'] = 'news_index.tpl';
     require_once XOOPS_ROOT_PATH . '/header.php';
-    $xt = new NewsTopic();
+    $xt = new News\NewsTopic();
 
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
     if ($helper->getConfig('ratenews')) {
@@ -259,7 +259,7 @@ if ($showclassic) {
         $xoopsTpl->assign('rates', false);
     }
 
-    $xt            = new NewsTopic();
+    $xt            = new News\NewsTopic();
     $alltopics     = $xt->getTopicsList(true, $helper->getConfig('restrictindex'));
     $smarty_topics = [];
     $topicstories  = [];

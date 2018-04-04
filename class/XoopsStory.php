@@ -344,7 +344,7 @@ class XoopsStory
      */
     public function delete()
     {
-        $sql = sprintf('DELETE FROM %s WHERE storyid = %u', $this->table, $this->storyid);
+        $sql = sprintf('DELETE FROM `%s` WHERE storyid = %u', $this->table, $this->storyid);
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -386,7 +386,7 @@ class XoopsStory
     }
 
     /**
-     * @return XoopsTopic
+     * @return \XoopsTopic
      */
     public function topic()
     {

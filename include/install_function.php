@@ -13,7 +13,7 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Voltan
  * @package     News
- * @param $xoopsModule
+ * @param \XoopsModule $module
  * @return bool
  */
 
@@ -41,14 +41,13 @@ function xoops_module_pre_install_news(\XoopsModule $module)
 }
 
 /**
- * @param XoopsModule $xoopsModule
- *
+ * @param \XoopsModule $module
  * @return bool
  */
 function xoops_module_install_news(\XoopsModule $module)
 {
     $module_id     = $module->getVar('mid');
-    $gpermHandler  = xoops_getHandler('groupperm');
+    $grouppermHandler  = xoops_getHandler('groupperm');
     $configHandler = xoops_getHandler('config');
 
     /**
@@ -56,12 +55,12 @@ function xoops_module_install_news(\XoopsModule $module)
      */
 
     // Access right
-    $gpermHandler->addRight('news_approve', 1, XOOPS_GROUP_ADMIN, $module_id);
-    $gpermHandler->addRight('news_submit', 1, XOOPS_GROUP_ADMIN, $module_id);
-    $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_ADMIN, $module_id);
+    $grouppermHandler->addRight('news_approve', 1, XOOPS_GROUP_ADMIN, $module_id);
+    $grouppermHandler->addRight('news_submit', 1, XOOPS_GROUP_ADMIN, $module_id);
+    $grouppermHandler->addRight('news_view', 1, XOOPS_GROUP_ADMIN, $module_id);
 
-    $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_USERS, $module_id);
-    $gpermHandler->addRight('news_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
+    $grouppermHandler->addRight('news_view', 1, XOOPS_GROUP_USERS, $module_id);
+    $grouppermHandler->addRight('news_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news';
     //    if (!is_dir($dir)) {

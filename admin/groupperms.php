@@ -24,6 +24,9 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
+
+use XoopsModules\News;
+
 require_once __DIR__ . '/../../../include/cp_header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';

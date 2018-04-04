@@ -104,8 +104,8 @@ class Utility
         $moduleHandler       = xoops_getHandler('module');
         $newsModule          = $moduleHandler->getByDirname('news');
         $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gpermHandler        = xoops_getHandler('groupperm');
-        $topics              = $gpermHandler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
+        $grouppermHandler        = xoops_getHandler('groupperm');
+        $topics              = $grouppermHandler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
         $tblperms[$permtype] = $topics;
 
         return $topics;

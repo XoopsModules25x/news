@@ -1716,7 +1716,7 @@ class NewsStory extends News\XoopsStory
 class news_NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
     /**
-     * @param null|XoopsDatabase $db
+     * @param \XoopsDatabase $db
      */
     public function __construct(\XoopsDatabase $db)
     {
