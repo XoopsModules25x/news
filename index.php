@@ -94,10 +94,10 @@ $module = \XoopsModule::getByDirname($moduleDirName);
 
 $storytopic = 0;
 if (isset($_GET['storytopic'])) {
-    $storytopic = (int)$_GET['storytopic'];
+    $storytopic = \Xmf\Request::getInt('storytopic', 0, GET);
 } else {
     if (isset($_GET['topic_id'])) {
-        $storytopic = (int)$_GET['topic_id'];
+        $storytopic = \Xmf\Request::getInt('topic_id', 0, GET);
     }
 }
 
@@ -112,7 +112,7 @@ if ($storytopic) {
     $xoopsOption['storytopic'] = 0;
 }
 if (isset($_GET['storynum'])) {
-    $xoopsOption['storynum'] = (int)$_GET['storynum'];
+    $xoopsOption['storynum'] = \Xmf\Request::getInt('storynum', 0, GET);
     if ($xoopsOption['storynum'] > 30) {
         $xoopsOption['storynum'] = $helper->getConfig('storyhome');
     }
@@ -121,7 +121,7 @@ if (isset($_GET['storynum'])) {
 }
 
 if (isset($_GET['start'])) {
-    $start = (int)$_GET['start'];
+    $start = \Xmf\Request::getInt('start', 0, GET);
 } else {
     $start = 0;
 }

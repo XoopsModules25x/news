@@ -434,7 +434,7 @@ function confirmBeforePrune()
     echo '<h4>' . _AM_NEWS_PRUNENEWS . '</h4>';
     $expired = 0;
     if (isset($_POST['onlyexpired'])) {
-        $expired = (int)$_POST['onlyexpired'];
+        $expired = \Xmf\Request::getInt('onlyexpired', 0, POST);
     }
     $date      = $_POST['prune_date'];
     $timestamp = mktime(0, 0, 0, (int)substr($date, 5, 2), (int)substr($date, 8, 2), (int)substr($date, 0, 4));
@@ -459,14 +459,14 @@ function confirmBeforePrune()
 function pruneNews()
 {
     $story     = new News\NewsStory();
-    $timestamp = (int)$_POST['prune_date'];
-    $expired   = (int)$_POST['expired'];
+    $timestamp = \Xmf\Request::getInt('prune_date', 0, POST);
+    $expired   = \Xmf\Request::getInt('expired', 0, POST);
     $topiclist = '';
     if (isset($_POST['pruned_topics'])) {
         $topiclist = $_POST['pruned_topics'];
     }
 
-    if (1 == (int)$_POST['ok']) {
+    if (1 == \Xmf\Request::getInt('ok', 0, POST)) {
         $story = new News\NewsStory();
         xoops_cp_header();
         $count = $story->getCountStoriesPublishedBefore($timestamp, $expired, $topiclist);
@@ -703,7 +703,7 @@ function launchExport()
     if (isset($_POST['export_topics'])) {
         $topiclist = implode(',', $_POST['export_topics']);
     }
-    $topicsexport    = (int)$_POST['includetopics'];
+    $topicsexport    = \Xmf\Request::getInt('includetopics', 0, POST);
     $tbltopics       = [];
     $exportedstories = $story->exportNews($timestamp1, $timestamp2, $topiclist, $topicsexport, $tbltopics);
     if (count($exportedstories)) {
@@ -1243,11 +1243,11 @@ function modTopicS()
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
 
-    $xt = new News\NewsTopic((int)$_POST['topic_id']);
-    if ((int)$_POST['topic_pid'] == (int)$_POST['topic_id']) {
+    $xt = new News\NewsTopic(\Xmf\Request::getInt('topic_id', 0, POST));
+    if (\Xmf\Request::getInt('topic_pid', 0, POST) == \Xmf\Request::getInt('topic_id', 0, POST)) {
         redirect_header('index.php?op=topicsmanager', 2, _AM_ADD_TOPIC_ERROR1);
     }
-    $xt->setTopicPid((int)$_POST['topic_pid']);
+    $xt->setTopicPid(\Xmf\Request::getInt('topic_pid', 0, POST));
     if (empty($_POST['topic_title'])) {
         redirect_header('index.php?op=topicsmanager', 2, _AM_ERRORTOPICNAME);
     }
@@ -1258,8 +1258,8 @@ function modTopicS()
     if (isset($_POST['topic_imgurl']) && '' !== $_POST['topic_imgurl']) {
         $xt->setTopicImgurl($_POST['topic_imgurl']);
     }
-    $xt->setMenu((int)$_POST['submenu']);
-    $xt->setTopicFrontpage((int)$_POST['topic_frontpage']);
+    $xt->setMenu(\Xmf\Request::getInt('submenu', 0, POST));
+    $xt->setTopicFrontpage(\Xmf\Request::getInt('topic_frontpage', 0, POST));
     if (isset($_POST['topic_description'])) {
         $xt->setTopicDescription($_POST['topic_description']);
     } else {
@@ -1340,11 +1340,11 @@ function delTopic()
     if (!isset($_POST['ok'])) {
         xoops_cp_header();
         echo '<h4>' . _AM_CONFIG . '</h4>';
-        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), (int)$_GET['topic_id']);
-        xoops_confirm(['op' => 'delTopic', 'topic_id' => (int)$_GET['topic_id'], 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
+        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, GET));
+        xoops_confirm(['op' => 'delTopic', 'topic_id' => \Xmf\Request::getInt('topic_id', 0, GET), 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
     } else {
         xoops_cp_header();
-        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), (int)$_POST['topic_id']);
+        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, POST));
         if (isset($_SESSION['items_count'])) {
             $_SESSION['items_count'] = -1;
         }
@@ -1393,8 +1393,8 @@ function addTopic()
         if (isset($_POST['topic_imgurl']) && '' !== $_POST['topic_imgurl']) {
             $xt->setTopicImgurl($_POST['topic_imgurl']);
         }
-        $xt->setMenu((int)$_POST['submenu']);
-        $xt->setTopicFrontpage((int)$_POST['topic_frontpage']);
+        $xt->setMenu(\Xmf\Request::getInt('submenu', 0, POST));
+        $xt->setTopicFrontpage(\Xmf\Request::getInt('topic_frontpage', 0, POST));
         if (isset($_SESSION['items_count'])) {
             $_SESSION['items_count'] = -1;
         }
@@ -1771,19 +1771,14 @@ function saveMetagenBlackList()
 function saveMetagenOptions()
 {
     $registry = new Registryfile('news_metagen_options.txt');
-    $registry->savefile((int)$_POST['keywordscount'] . ',' . (int)$_POST['keywordsorder']);
+    $registry->savefile(\Xmf\Request::getInt('keywordscount', 0, POST) . ',' . \Xmf\Request::getInt('keywordsorder', 0, POST));
     redirect_header('index.php?op=metagen', 0, _AM_DBUPDATED);
 }
 
 // **********************************************************************************************************************************************
 // **** Main
 // **********************************************************************************************************************************************
-$op = 'default';
-if (isset($_POST['op'])) {
-    $op = $_POST['op'];
-} elseif (isset($_GET['op'])) {
-    $op = $_GET['op'];
-}
+$op    = \Xmf\Request::getCmd('op', 'default');
 $adminObject = \Xmf\Module\Admin::getInstance();
 switch ($op) {
     case 'deletefile':
@@ -1850,9 +1845,9 @@ switch ($op) {
     case 'delete':
         $storyid = 0;
         if (isset($_GET['storyid'])) {
-            $storyid = (int)$_GET['storyid'];
+            $storyid = \Xmf\Request::getInt('storyid', 0, GET);
         } elseif (isset($_POST['storyid'])) {
-            $storyid = (int)$_POST['storyid'];
+            $storyid = \Xmf\Request::getInt('storyid', 0, POST);
         }
 
         if (!empty($_POST['ok'])) {

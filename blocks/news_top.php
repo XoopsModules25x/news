@@ -118,10 +118,10 @@ function b_news_top_show($options)
         $usespotlight = false;
 
         if (isset($_GET['NewsTab'])) {
-            $_SESSION['NewsTab'] = (int)$_GET['NewsTab'];
-            $currenttab          = (int)$_GET['NewsTab'];
+            $_SESSION['NewsTab'] = \Xmf\Request::getInt('NewsTab', 0, GET);
+            $currenttab          = \Xmf\Request::getInt('NewsTab', 0, GET);
         } elseif (isset($_SESSION['NewsTab'])) {
-            $currenttab = (int)$_SESSION['NewsTab'];
+            $currenttab = \Xmf\Request::getInt('NewsTab', 0, SESSION);
         } else {
             $currenttab = 0;
         }

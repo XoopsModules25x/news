@@ -50,7 +50,7 @@ if (is_object($xoopsUser)) {
 $grouppermHandler = xoops_getHandler('groupperm');
 
 if (isset($_POST['topic_id'])) {
-    $perm_itemid = (int)$_POST['topic_id'];
+    $perm_itemid = \Xmf\Request::getInt('topic_id', 0, POST);
 } else {
     $perm_itemid = 0;
 }
@@ -74,7 +74,7 @@ if (isset($_POST['preview'])) {
     // Verify that the user can edit or delete an article
     if ('edit' === $_GET['op'] || 'delete' === $_GET['op']) {
         if (1 == $helper->getConfig('authoredit')) {
-            $tmpstory = new NewsStory((int)$_GET['storyid']);
+            $tmpstory = new NewsStory(\Xmf\Request::getInt('storyid', 0, GET));
             if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !News\Utility::isAdminGroup()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             }
@@ -87,17 +87,17 @@ if (isset($_POST['preview'])) {
 
     if ($approveprivilege && 'edit' === $_GET['op']) {
         $op      = 'edit';
-        $storyid = (int)$_GET['storyid'];
+        $storyid = \Xmf\Request::getInt('storyid', 0, GET);
     } elseif ($approveprivilege && 'delete' === $_GET['op']) {
         $op      = 'delete';
-        $storyid = (int)$_GET['storyid'];
+        $storyid = \Xmf\Request::getInt('storyid', 0, GET);
     } else {
         if (News\Utility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
             && ('edit' === $_GET['op']
                 || 'preview' === $_POST['op']
                 || 'post' === $_POST['op'])) {
             $storyid = 0;
-//            $storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : (int)$_POST['storyid'];
+//            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, GET) : \Xmf\Request::getInt('storyid', 0, POST);
             $storyid = \Xmf\Request::getInt('storyid', 0);
             if (!empty($storyid)) {
                 $tmpstory = new NewsStory($storyid);
@@ -180,13 +180,13 @@ switch ($op) {
         break;
 
     case 'preview':
-        $topic_id = (int)$_POST['topic_id'];
+        $topic_id = \Xmf\Request::getInt('topic_id', 0, POST);
         $xt       = new NewsTopic($topic_id);
         if (isset($_GET['storyid'])) {
-            $storyid = (int)$_GET['storyid'];
+            $storyid = \Xmf\Request::getInt('storyid', 0, GET);
         } else {
             if (isset($_POST['storyid'])) {
-                $storyid = (int)$_POST['storyid'];
+                $storyid = \Xmf\Request::getInt('storyid', 0, POST);
             } else {
                 $storyid = 0;
             }
@@ -213,7 +213,7 @@ switch ($op) {
         }
         $topicid = $topic_id;
         if (isset($_POST['topicdisplay'])) {
-            $topicdisplay = (int)$_POST['topicdisplay'];
+            $topicdisplay = \Xmf\Request::getInt('topicdisplay', 0, POST);
         } else {
             $topicdisplay = 1;
         }
@@ -233,7 +233,7 @@ switch ($op) {
             if (News\Utility::getModuleOption('metadata')) {
                 $story->setKeywords($_POST['keywords']);
                 $story->setDescription($_POST['description']);
-                $story->setIhome((int)$_POST['ihome']);
+                $story->setIhome(\Xmf\Request::getInt('ihome', 0, POST));
             }
         } else {
             $noname = \Xmf\Request::getInt('noname', 0, 'POST');
@@ -241,7 +241,7 @@ switch ($op) {
 
         if ($approveprivilege || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid()))) {
             if (isset($_POST['author'])) {
-                $story->setUid((int)$_POST['author']);
+                $story->setUid(\Xmf\Request::getInt('author', 0, POST));
             }
         }
 
@@ -286,7 +286,7 @@ switch ($op) {
         themecenterposts($p_title, $p_hometext);
 
         //Display post edit form
-        $returnside = (int)$_POST['returnside'];
+        $returnside = \Xmf\Request::getInt('returnside', 0, POST);
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         break;
 
@@ -298,17 +298,17 @@ switch ($op) {
                 $nohtml_db = empty($_POST['nohtml']) ? 0 : 1;
             }
             if (isset($_POST['author']) && ($approveprivilege || $xoopsUser->isAdmin($xoopsModule->mid()))) {
-                $uid = (int)$_POST['author'];
+                $uid = \Xmf\Request::getInt('author', 0, POST);
             }
         } else {
             $uid = 0;
         }
 
         if (isset($_GET['storyid'])) {
-            $storyid = (int)$_GET['storyid'];
+            $storyid = \Xmf\Request::getInt('storyid', 0, GET);
         } else {
             if (isset($_POST['storyid'])) {
-                $storyid = (int)$_POST['storyid'];
+                $storyid = \Xmf\Request::getInt('storyid', 0, POST);
             } else {
                 $storyid = 0;
             }
@@ -325,7 +325,7 @@ switch ($op) {
         $story->setTitle($_POST['title']);
         $story->setSubtitle($_POST['subtitle']);
         $story->setHometext($_POST['hometext']);
-        $story->setTopicId((int)$_POST['topic_id']);
+        $story->setTopicId(\Xmf\Request::getInt('topic_id', 0, POST));
         $story->setHostname(xoops_getenv('REMOTE_ADDR'));
         $story->setNohtml($nohtml_db);
         $nosmiley = \Xmf\Request::getInt('nosmiley', 0, 'POST');
@@ -430,7 +430,7 @@ switch ($op) {
                 break;
         }
 
-        if ($allowupload && isset($_POST['deleteimage']) && 1 == (int)$_POST['deleteimage']) {
+        if ($allowupload && isset($_POST['deleteimage']) && 1 == \Xmf\Request::getInt('deleteimage', 0, POST)) {
             $currentPicture = $story->picture();
             if ('' !== xoops_trim($currentPicture)) {
                 $currentPicture = XOOPS_ROOT_PATH . '/uploads/news/image/' . xoops_trim($story->picture());
