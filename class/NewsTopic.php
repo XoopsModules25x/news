@@ -364,7 +364,7 @@ class NewsTopic extends News\XoopsTopic
             $insert         = true;
             $this->topic_id = $this->db->genId($this->table . '_topic_id_seq');
             $sql            = sprintf(
-                "INSERT INTO %s (topic_id, topic_pid, topic_imgurl, topic_title, menu, topic_description, topic_frontpage, topic_rssurl, topic_color) VALUES (%u, %u, '%s', '%s', %u, '%s', %d, '%s', '%s')",
+                "INSERT INTO `%s` (topic_id, topic_pid, topic_imgurl, topic_title, menu, topic_description, topic_frontpage, topic_rssurl, topic_color) VALUES (%u, %u, '%s', '%s', %u, '%s', %d, '%s', '%s')",
                 $this->table,
                 (int)$this->topic_id,
                 (int)$this->topic_pid,
@@ -378,7 +378,7 @@ class NewsTopic extends News\XoopsTopic
             );
         } else {
             $sql = sprintf(
-                "UPDATE %s SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s', menu=%d, topic_description='%s', topic_frontpage=%d, topic_rssurl='%s', topic_color='%s' WHERE topic_id = %u",
+                "UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s', menu=%d, topic_description='%s', topic_frontpage=%d, topic_rssurl='%s', topic_color='%s' WHERE topic_id = %u",
                 $this->table,
                 (int)$this->topic_pid,
                 $imgurl,

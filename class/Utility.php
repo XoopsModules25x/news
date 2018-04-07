@@ -75,7 +75,7 @@ class Utility
         }
         $finalrating = $totalrating / $votesDB;
         $finalrating = number_format($finalrating, 4);
-        $sql         = sprintf('UPDATE %s SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
+        $sql         = sprintf('UPDATE `%s` SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
         $xoopsDB->queryF($sql);
     }
 

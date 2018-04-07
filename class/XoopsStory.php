@@ -246,7 +246,7 @@ class XoopsStory
             $published  = $this->approved ? $this->published : 0;
 
             $sql = sprintf(
-                "INSERT INTO %s (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u)",
+                "INSERT INTO `%s` (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u)",
                            $this->table,
                 $newstoryid,
                 $this->uid,
@@ -271,7 +271,7 @@ class XoopsStory
         } else {
             if ($this->approved) {
                 $sql = sprintf(
-                    "UPDATE %s SET title = '%s', published = %u, expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
+                    "UPDATE `%s` SET title = '%s', published = %u, expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
                     $this->table,
                     $title,
                     $this->published,
@@ -289,7 +289,7 @@ class XoopsStory
                 );
             } else {
                 $sql = sprintf(
-                    "UPDATE %s SET title = '%s', expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
+                    "UPDATE `%s` SET title = '%s', expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
                     $this->table,
                     $title,
                     $expired,
@@ -357,7 +357,7 @@ class XoopsStory
      */
     public function updateCounter()
     {
-        $sql = sprintf('UPDATE %s SET counter = counter+1 WHERE storyid = %u', $this->table, $this->storyid);
+        $sql = sprintf('UPDATE `%s` SET counter = counter+1 WHERE storyid = %u', $this->table, $this->storyid);
         if (!$result = $this->db->queryF($sql)) {
             return false;
         }
@@ -372,7 +372,7 @@ class XoopsStory
      */
     public function updateComments($total)
     {
-        $sql = sprintf('UPDATE %s SET comments = %u WHERE storyid = %u', $this->table, $total, $this->storyid);
+        $sql = sprintf('UPDATE `%s` SET comments = %u WHERE storyid = %u', $this->table, $total, $this->storyid);
         if (!$result = $this->db->queryF($sql)) {
             return false;
         }

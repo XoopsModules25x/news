@@ -1850,7 +1850,7 @@ switch ($op) {
             $storyid = \Xmf\Request::getInt('storyid', 0, POST);
         }
 
-        if (!empty($_POST['ok'])) {
+       if (\Xmf\Request::hasVar('ok', 'POST')) {
             if (empty($storyid)) {
                 redirect_header('index.php?op=newarticle', 2, _AM_EMPTYNODELETE);
             }

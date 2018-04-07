@@ -167,7 +167,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     //All is well.  Add to Line Item Rate to DB.
     $newid    = $xoopsDB->genId($xoopsDB->prefix('news_stories_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
+    $sql      = sprintf("INSERT INTO `%s` (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
     $xoopsDB->query($sql) || ErrorHandler::show('0013');
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
