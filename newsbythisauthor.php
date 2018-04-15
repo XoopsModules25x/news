@@ -68,14 +68,15 @@
  */
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-;
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+
 global $xoopsUser;
 
 /** @var News\Helper $helper */

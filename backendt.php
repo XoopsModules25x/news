@@ -33,7 +33,7 @@
 
 use XoopsModules\News;
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';

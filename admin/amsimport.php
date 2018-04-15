@@ -29,7 +29,7 @@
 
 use XoopsModules\Ams;
 
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 xoops_cp_header();
 ;
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -78,6 +78,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
         $commentHandler      = xoops_getHandler('comment');
+        /** @var \XoopsNotificationHandler $notificationHandler */
         $notificationHandler = xoops_getHandler('notification');
         $ams_news_topics     = []; // Key => AMS Id,  Value => News ID
 

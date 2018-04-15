@@ -19,12 +19,10 @@
 
 use XoopsModules\Tag;
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
 
 //defined('XOOPS_ROOT_PATH') || die('Restricted access');
 if (!defined('XOOPS_ROOT_PATH')) {
-    include __DIR__ . '/../../mainfile.php';
+    include  dirname(dirname(__DIR__)) . '/mainfile.php';
 }
 require_once __DIR__ . '/header.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -32,6 +30,9 @@ require_once __DIR__ . '/header.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/header.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -486,6 +487,7 @@ switch ($op) {
             if (!$editmode) {
                 //  Notification
                 // TODO: modifier afin qu'en cas de pr�publication, la notification ne se fasse pas
+                /** @var \XoopsNotificationHandler $notificationHandler */
                 $notificationHandler = xoops_getHandler('notification');
                 $tags                = [];
                 $tags['STORY_NAME']  = $story->title();

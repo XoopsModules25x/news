@@ -19,7 +19,7 @@
 
 use XoopsModules\News;
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();

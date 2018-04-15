@@ -211,6 +211,7 @@ if ($module) {
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
     $grouppermHandler = xoops_getHandler('groupperm');
     if ($grouppermHandler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
         $cansubmit = 1;

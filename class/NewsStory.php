@@ -19,9 +19,6 @@
  */
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
-
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
@@ -29,7 +26,7 @@ $helper = News\Helper::getInstance();
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
-include __DIR__ . '/../preloads/autoloader.php';
+include  dirname(__DIR__) . '/preloads/autoloader.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();

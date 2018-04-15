@@ -73,10 +73,11 @@
  */
 
 use XoopsModules\News;
+
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
+
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
-
-include __DIR__ . '/../../mainfile.php';
 
 //$XOOPS_URL = XOOPS_URL;
 //$u=$XOOPS_URL.'/uploads/news_xml.php';

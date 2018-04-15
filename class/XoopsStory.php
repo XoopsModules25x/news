@@ -403,7 +403,7 @@ class XoopsStory
      */
     public function uname()
     {
-        return XoopsUser::getUnameFromId($this->uid);
+        return \XoopsUser::getUnameFromId($this->uid);
     }
 
     /**

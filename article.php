@@ -113,10 +113,8 @@
  */
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -124,6 +122,9 @@ include __DIR__ . '/../../mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/Keyhighlighter.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
 $storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
 

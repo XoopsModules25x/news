@@ -38,7 +38,7 @@
 
 use XoopsModules\News;
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 ;
 $storyid = \Xmf\Request::getInt('storyid', 0, 'GET');

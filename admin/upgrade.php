@@ -19,7 +19,7 @@
 
 use XoopsModules\News;
 
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 xoops_cp_header();
 ;
 

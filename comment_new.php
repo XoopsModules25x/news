@@ -18,11 +18,12 @@
  */
 
 use XoopsModules\News;
+
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
+
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 
-
-include __DIR__ . '/../../mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 ;
 

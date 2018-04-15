@@ -16,12 +16,12 @@
  * @author         XOOPS Development Team
  **/
 
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
-// require_once __DIR__ . '/../class/Utility.php';
-//require_once __DIR__ . '/../include/common.php';
+// require_once  dirname(__DIR__) . '/class/Utility.php';
+//require_once  dirname(__DIR__) . '/include/common.php';
 
-include __DIR__ . '/../preloads/autoloader.php';
+include  dirname(__DIR__) . '/preloads/autoloader.php';
 
 $moduleDirName = basename(dirname(__DIR__));
 /** @var News\Helper $helper */
@@ -53,8 +53,8 @@ $topicsHandler  = xoops_getModuleHandler('Topics', 'news');
 $storiesHandler = xoops_getModuleHandler('Stories', 'news');
 
 if ($xoopsUser) {
-    $modulepermHandler = xoops_getHandler('groupperm');
-    if (!$modulepermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
+    $grouppermHandler = xoops_getHandler('groupperm');
+    if (!$grouppermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
         redirect_header(XOOPS_URL, 1, _NOPERM);
     }
 } else {

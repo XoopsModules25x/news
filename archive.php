@@ -70,7 +70,7 @@
 
 use XoopsModules\News;
 
-include __DIR__ . '/../../mainfile.php';
+include  dirname(dirname(__DIR__)) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';

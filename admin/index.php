@@ -26,10 +26,8 @@
 // ------------------------------------------------------------------------ //
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
 
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require_once __DIR__ . '/admin_header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
@@ -42,7 +40,10 @@ require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
-;
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 $dateformat  = News\Utility::getModuleOption('dateformat');
 $myts        = \MyTextSanitizer::getInstance();
@@ -1445,7 +1446,7 @@ function addTopic()
             }
         }
         News\Utility::updateCache();
-
+        /** @var \XoopsNotificationHandler $notificationHandler */
         $notificationHandler = xoops_getHandler('notification');
         $tags                = [];
         $tags['TOPIC_NAME']  = $_POST['topic_title'];

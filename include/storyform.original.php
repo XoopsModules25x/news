@@ -20,14 +20,14 @@
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 use XoopsModules\News;
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
-
-xoops_loadLanguage('calendar');
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 ;
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+xoops_loadLanguage('calendar');
 
 if (!isset($subtitle)) {
     $subtitle = '';
