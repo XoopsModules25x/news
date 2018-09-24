@@ -69,7 +69,7 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
@@ -93,7 +93,7 @@ if (!News\Utility::getModuleOption('newsbythisauthor')) {
 }
 
 $myts                                    = \MyTextSanitizer::getInstance();
-$articles                                = new NewsStory();
+$articles                                = new \XoopsModules\News\NewsStory();
 $GLOBALS['xoopsOption']['template_main'] = 'news_by_this_author.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 

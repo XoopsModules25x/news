@@ -210,7 +210,7 @@ function news_isX23()
  * @param  string                                                                                                                         $width
  * @param  string                                                                                                                         $height
  * @param  string                                                                                                                         $supplemental
- * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|XoopsFormFckeditor|XoopsFormHtmlarea|XoopsFormTextArea|XoopsFormTinyeditorTextArea
+ * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|\XoopsFormFckeditor|\XoopsFormHtmlarea|\XoopsFormTextArea|\XoopsFormTinyeditorTextArea
  */
 function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
 {
@@ -329,7 +329,7 @@ function news_CreateMetaDatas($story = null)
         // Create chapters
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
 //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        $xt         = new NewsTopic();
+        $xt         = new  \XoopsModules\News\NewsTopic();
         $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
@@ -408,14 +408,14 @@ function news_CreateMetaDatas($story = null)
  */
 function news_createmeta_keywords($content)
 {
-    include XOOPS_ROOT_PATH . '/modules/news/config.php';
+    require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 
     if (!$cfg['meta_keywords_auto_generate']) {
         return '';
     }
-    $registry = new Registryfile('news_metagen_options.txt');
+    $registry = new \XoopsModules\News\Registryfile('news_metagen_options.txt');
     //    $tcontent = '';
     $tcontent = $registry->getfile();
     if ('' !== xoops_trim($tcontent)) {
@@ -427,7 +427,7 @@ function news_createmeta_keywords($content)
 
     $tmp = [];
     // Search for the "Minimum keyword length"
-    if (isset($_SESSION['news_keywords_limit'])) {
+    if (\Xmf\Request::hasVar('news_keywords_limit', 'SESSION')) {
         $limit = $_SESSION['news_keywords_limit'];
     } else {
         $configHandler                   = xoops_getHandler('config');
@@ -516,7 +516,7 @@ function news_createmeta_keywords($content)
             break;
     }
     // Remove black listed words
-    $metablack = new Blacklist();
+    $metablack = new \XoopsModules\News\Blacklist();
     $words     = $metablack->getAllKeywords();
     $keywords  = $metablack->remove_blacklisted($keywords);
 
@@ -652,7 +652,7 @@ function news_is_admin_group()
 /**
  * Verify if the current "user" is a bot or not
  *
- * If you have a problem with this function, insert the folowing code just before the line if (isset($_SESSION['news_cache_bot'])) { :
+ * If you have a problem with this function, insert the folowing code just before the line if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION'))) { :
  * return false;
  *
  * @package       News
@@ -661,7 +661,7 @@ function news_is_admin_group()
  */
 function news_isbot()
 {
-    if (isset($_SESSION['news_cache_bot'])) {
+    if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION')) {
         return $_SESSION['news_cache_bot'];
     } else {
         // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)

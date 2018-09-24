@@ -19,7 +19,7 @@
 
 use XoopsModules\News;
 
-include  dirname(__DIR__) . '/preloads/autoloader.php';
+require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
 $moduleDirName = basename(dirname(__DIR__));
 $moduleDirNameUpper   = strtoupper($moduleDirName); //$capsDirName
@@ -30,14 +30,14 @@ $moduleDirNameUpper   = strtoupper($moduleDirName); //$capsDirName
 /** @var News\Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
 $helper  = News\Helper::getInstance();
-$utility = new News\Utility();
-//$configurator = new News\Common\Configurator();
+$utility = new \XoopsModules\News\Utility();
+//$configurator = new \XoopsModules\News\Common\Configurator();
 
 $helper->loadLanguage('common');
 
 //handlers
-//$categoryHandler     = new News\CategoryHandler($db);
-//$downloadHandler     = new News\DownloadHandler($db);
+//$categoryHandler     = new \XoopsModules\News\CategoryHandler($db);
+//$downloadHandler     = new \XoopsModules\News\DownloadHandler($db);
 
 if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_DIRNAME', basename(dirname(__DIR__)));

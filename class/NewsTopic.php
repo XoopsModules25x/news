@@ -18,17 +18,18 @@
  * @author         XOOPS Development Team
  */
 
+use XoopsModules\News;
+
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
-;
 
 /**
  * Class NewsTopic
  */
-class NewsTopic extends News\XoopsTopic
+class NewsTopic extends XoopsTopic
 {
     public $menu;
     public $topic_description;
@@ -73,7 +74,7 @@ class NewsTopic extends News\XoopsTopic
         $perms = '';
         if ($checkRight) {
             global $xoopsUser;
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $newsModule    = $moduleHandler->getByDirname('news');
             $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -212,7 +213,7 @@ class NewsTopic extends News\XoopsTopic
         $perms = '';
         if ($checkRight) {
             global $xoopsUser;
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $newsModule    = $moduleHandler->getByDirname('news');
             $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -245,7 +246,7 @@ class NewsTopic extends News\XoopsTopic
         $table      = $db->prefix('news_topics');
         $sql        = 'SELECT * FROM ' . $table;
         if ($checkRight) {
-            $topics = News\Utility::getMyItemIds($permission);
+            $topics = \XoopsModules\News\Utility::getMyItemIds($permission);
             if (0 == count($topics)) {
                 return [];
             }
@@ -255,7 +256,7 @@ class NewsTopic extends News\XoopsTopic
         $sql    .= ' ORDER BY topic_title';
         $result = $db->query($sql);
         while (false !== ($array = $db->fetchArray($result))) {
-            $topic = new NewsTopic();
+            $topic = new  \XoopsModules\News\NewsTopic();
             $topic->makeTopic($array);
             $topics_arr[$array['topic_id']] = $topic;
             unset($topic);
@@ -635,7 +636,7 @@ class NewsTopic extends News\XoopsTopic
         }
         if ($perms) {
             $topicsids = [];
-            $topicsids = News\Utility::getMyItemIds();
+            $topicsids = \XoopsModules\News\Utility::getMyItemIds();
             if (0 == count($topicsids)) {
                 return '';
             }

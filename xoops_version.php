@@ -19,15 +19,18 @@
 
 use XoopsModules\News;
 
-include __DIR__ . '/preloads/autoloader.php';
+require_once __DIR__   . '/preloads/autoloader.php';
+/** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
+$helper->loadLanguage('common');
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 $moduleDirName = basename(__DIR__);
+$moduleDirNameUpper = strtoupper($moduleDirName);
 
 $modversion['version']       = 1.72;
 $modversion['module_status'] = 'Beta 3';
-$modversion['release_date']  = '2017/12/20';
+$modversion['release_date']  = '2018/09/22';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -48,7 +51,7 @@ $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
-$modversion['min_php']             = '5.5';
+$modversion['min_php']             = '5.6';
 $modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
 $modversion['min_db']              = ['mysql' => '5.5'];
@@ -237,8 +240,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
 //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        ;
-        $xt         = new NewsTopic();
+        $xt         = new  \XoopsModules\News\NewsTopic();
         $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
@@ -799,6 +801,19 @@ $modversion['config'][$i]['description'] = '_MI_NEWS_FACEBOOKCOMMENTS_DSC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 0;
+
+/**
+ * Make Sample button visible?
+ */
+$modversion['config'][] = [
+    'name'        => 'displaySampleButton',
+        'title'       => '_MI_NEWS_SHOW_SAMPLE_BUTTON',
+        'description' => '_MI_NEWS_SHOW_SAMPLE_BUTTON_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
+
 
 // Notification
 $modversion['hasNotification']             = 1;

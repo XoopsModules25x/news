@@ -31,7 +31,7 @@ use XoopsModules\Ams;
 
 require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 xoops_cp_header();
-;
+
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
@@ -49,10 +49,10 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
     } else {
         // Launch the import
-        /** @var Ams\Helper $helper */
-        $helper = Ams\Helper::getInstance();
-        $helper->loadLanguage('admin');
-        $helper->loadLanguage('main');
+        /** @var \XoopsModules\Ams\Helper $amsHelper */
+        $amsHelper = \XoopsModules\Ams\Helper::getInstance();
+        $amsHelper->loadLanguage('admin');
+        $amsHelper->loadLanguage('main');
 
         $db = \XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
@@ -94,7 +94,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                     $topicpid = $ams_news_topics[$one_amstopic['topic_pid']];
                 }
             }
-            $news_topic = new News\NewsTopic();
+            $news_topic = new \XoopsModules\News\NewsTopic();
             $news_topic->setTopicPid($topicpid);
             $news_topic->setTopicTitle($one_amstopic['topic_title']);
             $news_topic->setTopicImgurl($one_amstopic['topic_imgurl']);
@@ -141,7 +141,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 }
 
                 // We create the story
-                $news = new News\NewsStory();
+                $news = new \XoopsModules\News\NewsStory();
                 $news->setUid($text_lastversion['uid']);
                 $news->setTitle($article['title']);
                 $news->created = $article['created'];
@@ -173,7 +173,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 // The files
                 $result4 = $db->query('SELECT * FROM ' . $ams_files . ' WHERE storyid=' . $ams_newsid);
                 while (false !== ($file = $db->fetchArray($result4))) {
-                    $sfile = new News\Files();
+                    $sfile = new \XoopsModules\News\Files();
                     $sfile->setFileRealName($file['filerealname']);
                     $sfile->setStoryid($news_newsid);
                     $sfile->date = $file['date'];

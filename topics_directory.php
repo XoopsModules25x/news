@@ -29,10 +29,9 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-;
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_topics_directory.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
@@ -41,7 +40,7 @@ $myts = \MyTextSanitizer::getInstance();
 
 $newscountbytopic = $tbl_topics = [];
 $perms            = '';
-$xt               = new NewsTopic();
+$xt               = new  \XoopsModules\News\NewsTopic();
 $restricted       = News\Utility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;

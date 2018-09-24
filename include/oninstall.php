@@ -28,7 +28,7 @@ use XoopsModules\News;
  */
 function xoops_module_pre_install_news(\XoopsModule $module)
 {
-    include  dirname(__DIR__) . '/preloads/autoloader.php';
+    require_once dirname(__DIR__) . '/preloads/autoloader.php';
     /** @var News\Utility $utility */
     $utility = new \XoopsModules\News\Utility();
     $xoopsSuccess = $utility::checkVerXoops($module);
@@ -58,9 +58,10 @@ function xoops_module_install_news(\XoopsModule $module)
 
     $moduleDirName = basename(dirname(__DIR__));
 
-    $helper       = News\Helper::getInstance();
-    $utility      = new News\Utility();
-    $configurator = new News\Common\Configurator();
+    /** @var News\Helper $helper */
+    $helper = News\Helper::getInstance();
+    $utility      = new \XoopsModules\News\Utility();
+    $configurator = new \XoopsModules\News\Common\Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');

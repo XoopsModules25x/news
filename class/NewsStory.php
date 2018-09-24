@@ -26,7 +26,7 @@ use XoopsModules\News;
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
-include  dirname(__DIR__) . '/preloads/autoloader.php';
+require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -35,7 +35,7 @@ $helper->loadLanguage('main');
 /**
  * Class NewsStory
  */
-class NewsStory extends News\XoopsStory
+class NewsStory extends XoopsStory
 {
     public $newstopic; // XoopsTopic object
     public $rating; // News rating
@@ -671,7 +671,7 @@ class NewsStory extends News\XoopsStory
     {
         global $xoopsModule;
         $dirname = basename(dirname(__DIR__));
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dirname);
         $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
@@ -792,13 +792,12 @@ class NewsStory extends News\XoopsStory
      */
     public function prepare2show($filescount)
     {
-        ;
         global $xoopsUser, $xoopsConfig,  $xoopsModule;
         /** @var News\Helper $helper */
         $helper = News\Helper::getInstance();
 
         $dirname = basename(dirname(__DIR__));
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dirname);
         $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
@@ -934,7 +933,6 @@ class NewsStory extends News\XoopsStory
     public function uname($uid = 0)
     {
         global $xoopsConfig;
-        ;
         static $tblusers = [];
         $option = -1;
         if (0 == $uid) {
@@ -1704,19 +1702,5 @@ class NewsStory extends News\XoopsStory
         }
 
         return $ret;
-    }
-}
-
-/**
- * Class news_NewsStoryHandler
- */
-class news_NewsStoryHandler extends \XoopsPersistableObjectHandler
-{
-    /**
-     * @param \XoopsDatabase $db
-     */
-    public function __construct(\XoopsDatabase $db)
-    {
-        parent::__construct($db, 'news_stories', 'stories', 'storieid', 'title');
     }
 }

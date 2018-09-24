@@ -20,7 +20,7 @@
 function getConfig()
 {
     $moduleDirName = basename(dirname(__DIR__));
-    $capsDirName   = strtoupper($moduleDirName);
+    $moduleDirNameUpper   = strtoupper($moduleDirName);
     return (object)[
         'name'           => strtoupper($moduleDirName) . ' Module Configurator',
         'paths'          => [
@@ -75,6 +75,6 @@ function getConfig()
             '/images',
         ],
         'modCopyright'    => "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . constant($capsDirName . '_AUTHOR_LOGOIMG') . '\' alt=\'XOOPS Project\' /></a>',
+                     <img src='" . constant($moduleDirNameUpper . '_AUTHOR_LOGOIMG') . '\' alt=\'XOOPS Project\' /></a>',
     ];
 }

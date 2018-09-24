@@ -30,7 +30,7 @@
 use XoopsModules\News;
 
 require_once __DIR__ . '/header.php';
-;
+
 if (!News\Utility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
     redirect_header('index.php', 2, _ERRORS);
 }

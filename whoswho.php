@@ -29,11 +29,10 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-;
 
 if (!News\Utility::getModuleOption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
@@ -43,7 +42,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'news_whos_who.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 $option  = News\Utility::getModuleOption('displayname');
-$article = new NewsStory();
+$article = new \XoopsModules\News\NewsStory();
 $uid_ids = [];
 $uid_ids = $article->getWhosWho(News\Utility::getModuleOption('restrictindex'));
 if (count($uid_ids) > 0) {

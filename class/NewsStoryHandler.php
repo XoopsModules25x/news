@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -17,33 +18,31 @@
  * @author         XOOPS Development Team
  */
 
-// comment callback functions
+use XoopsModules\News;
+
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
+require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+
+require_once dirname(__DIR__) . '/preloads/autoloader.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+$helper->loadLanguage('main');
+
 
 /**
- * @param $story_id
- * @param $total_num
- *
- * @return bool
+ * Class news_NewsStoryHandler
  */
-function news_com_update($story_id, $total_num)
+class NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
-    $story_id  = (int)$story_id;
-    $total_num = (int)$total_num;
-    $article   = new \XoopsModules\News\NewsStory($story_id);
-    if (!$article->updateComments($total_num)) {
-        return false;
+    /**
+     * @param \XoopsDatabase|null $db
+     */
+    public function __construct(\XoopsDatabase $db = null)
+    {
+        parent::__construct($db, 'news_stories', 'stories', 'storieid', 'title');
     }
-
-    return true;
-}
-
-/**
- * @param $comment
- */
-function news_com_approve(&$comment)
-{
-    // notification mail here
 }

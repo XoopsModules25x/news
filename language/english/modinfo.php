@@ -192,3 +192,12 @@ define('_MI_NEWS_OVERVIEW', 'Overview');
 define('_MI_NEWS_DISCLAIMER', 'Disclaimer');
 define('_MI_NEWS_LICENSE', 'License');
 define('_MI_NEWS_SUPPORT', 'Support');
+
+define('_MI_NEWS_BLOCKS', 'Blocks Admin');
+
+//1.73 Beta 3
+define('_MI_NEWS_SHOW_SAMPLE_BUTTON', 'Show Sample Button?');
+define('_MI_NEWS_SHOW_SAMPLE_BUTTON_DESC', 'If yes, the "Add Sample Data" button will be visible to the Admin. It is Yes as a default for first installation.');
+
+
+

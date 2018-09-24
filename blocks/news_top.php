@@ -41,7 +41,6 @@ use XoopsModules\News;
 function b_news_top_show($options)
 {
     global $xoopsConfig;
-    ;
     $myts        = \MyTextSanitizer::getInstance();
     $block       = [];
     $displayname = News\Utility::getModuleOption('displayname');
@@ -69,7 +68,7 @@ function b_news_top_show($options)
     if (1 == $options[4] && $restricted && 0 == $options[5]) {
         $perm_verified   = true;
         $permittedtopics = News\Utility::getMyItemIds();
-        $permstory       = new NewsStory($options[6]);
+        $permstory       = new \XoopsModules\News\NewsStory($options[6]);
         if (!in_array($permstory->topicid(), $permittedtopics)) {
             $usespotlight = false;
             $news_visible = false;
@@ -117,17 +116,17 @@ function b_news_top_show($options)
         $tabscount    = 0;
         $usespotlight = false;
 
-        if (isset($_GET['NewsTab'])) {
-            $_SESSION['NewsTab'] = \Xmf\Request::getInt('NewsTab', 0, GET);
-            $currenttab          = \Xmf\Request::getInt('NewsTab', 0, GET);
-        } elseif (isset($_SESSION['NewsTab'])) {
-            $currenttab = \Xmf\Request::getInt('NewsTab', 0, SESSION);
+        if (\Xmf\Request::hasVar('NewsTab', 'GET')) {
+            $_SESSION['NewsTab'] = \Xmf\Request::getInt('NewsTab', 0, 'GET');
+            $currenttab          = \Xmf\Request::getInt('NewsTab', 0, 'GET');
+        } elseif (\Xmf\Request::hasVar('NewsTab', 'SESSION')) {
+            $currenttab = \Xmf\Request::getInt('NewsTab', 0, 'SESSION');
         } else {
             $currenttab = 0;
         }
 
-        $tmpstory     = new NewsStory();
-        $topic        = new NewsTopic();
+        $tmpstory     = new \XoopsModules\News\NewsStory();
+        $topic        = new  \XoopsModules\News\NewsTopic();
         $topicstitles = [];
         if (1 == $options[4]) { // Spotlight enabled
             $topicstitles[0] = _MB_NEWS_SPOTLIGHT_TITLE;
@@ -138,7 +137,7 @@ function b_news_top_show($options)
         if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
             if (!$perm_verified) {
                 $permittedtopics = News\Utility::getMyItemIds();
-                $permstory       = new NewsStory($options[6]);
+                $permstory       = new \XoopsModules\News\NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $usespotlight = false;
                     $topicstitles = [];
@@ -188,16 +187,16 @@ function b_news_top_show($options)
 
             if (0 == $options[5]) { // Use a specific news
                 if (!isset($permstory)) {
-                    $tmpstory = new NewsStory($options[6]);
+                    $tmpstory = new \XoopsModules\News\NewsStory($options[6]);
                 } else {
                     $tmpstory = $permstory;
                 }
             } else { // Use the most recent news
                 $stories = [];
-                $stories = NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
+                $stories = \XoopsModules\News\NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
                 if (count($stories) > 0) {
                     $firststory = $stories[0];
-                    $tmpstory = new NewsStory($firststory->storyid());
+                    $tmpstory = new \XoopsModules\News\NewsStory($firststory->storyid());
                 } else {
                     $block['use_spotlight'] = false;
                 }
@@ -253,10 +252,10 @@ function b_news_top_show($options)
 
             // Create the summary table under the spotlight text
             if (isset($options[14]) && 0 == $options[14]) { // Use all topics
-                $stories = NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
+                $stories = \XoopsModules\News\NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
             } else { // Use some topics
                 $topics  = array_slice($options, 14);
-                $stories = NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
+                $stories = \XoopsModules\News\NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
             }
             if (count($stories) > 0) {
                 foreach ($stories as $key => $story) {
@@ -303,7 +302,7 @@ function b_news_top_show($options)
             if ($tabscount > 0) {
                 $topics   = array_slice($options, 14);
                 $thetopic = $currenttab;
-                $stories  = NewsStory::getAllPublished($options[1], 0, $restricted, $thetopic, 1, true, $options[0]);
+                $stories  = \XoopsModules\News\NewsStory::getAllPublished($options[1], 0, $restricted, $thetopic, 1, true, $options[0]);
 
                 $topic->getTopic($thetopic);
                 // Added, topic's image and description
@@ -391,18 +390,18 @@ function b_news_top_show($options)
             $block['color5'] = $options[13];
         }
     } else { // ************************ Classical view **************************************************************************************************************
-        $tmpstory = new NewsStory;
+        $tmpstory = new \XoopsModules\News\NewsStory;
         if (isset($options[14]) && 0 == $options[14]) {
-            $stories = NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
+            $stories = \XoopsModules\News\NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
         } else {
             $topics  = array_slice($options, 14);
-            $stories = NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
+            $stories = \XoopsModules\News\NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
         }
 
         if (!count($stories)) {
             return '';
         }
-        $topic = new NewsTopic();
+        $topic = new  \XoopsModules\News\NewsTopic();
 
         foreach ($stories as $key => $story) {
             $news  = [];
@@ -501,7 +500,7 @@ function b_news_top_show($options)
             $visible                = true;
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
                 $permittedtopics = News\Utility::getMyItemIds();
-                $permstory       = new NewsStory($options[6]);
+                $permstory       = new \XoopsModules\News\NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $visible = false;
                 }
@@ -510,16 +509,16 @@ function b_news_top_show($options)
 
             if (0 == $options[5]) { // Use a specific news
                 if ($visible) {
-                    $spotlightArticle = new NewsStory($options[6]);
+                    $spotlightArticle = new \XoopsModules\News\NewsStory($options[6]);
                 } else {
                     $block['use_spotlight'] = false;
                 }
             } else { // Use the most recent news
                 $stories = [];
-                $stories = NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
+                $stories = \XoopsModules\News\NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
                 if (count($stories) > 0) {
                     $firststory       = $stories[0];
-                    $spotlightArticle = new NewsStory($firststory->storyid());
+                    $spotlightArticle = new \XoopsModules\News\NewsStory($firststory->storyid());
                 } else {
                     $block['use_spotlight'] = false;
                 }
@@ -584,7 +583,7 @@ function b_news_top_show($options)
 function b_news_top_edit($options)
 {
     global $xoopsDB;
-    $tmpstory = new NewsStory;
+    $tmpstory = new \XoopsModules\News\NewsStory;
     $form     = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";
     $form     .= "<option value='published'";
     if ('published' === $options[0]) {
@@ -633,7 +632,7 @@ function b_news_top_edit($options)
     $form .= '>' . _MB_NEWS_RECENT_SPECIFIC . '</option></select>';
 
     $form     .= '<br><br>' . _MB_NEWS_SPOTLIGHT_ARTICLE . '<br>';
-    $articles = NewsStory::getAllPublished(200, 0, false, 0, 0, false); // I have limited the listbox to the last 200 articles
+    $articles = \XoopsModules\News\NewsStory::getAllPublished(200, 0, false, 0, 0, false); // I have limited the listbox to the last 200 articles
     $form     .= "<select name ='options[]'>";
     $form     .= "<option value='0'>" . _MB_NEWS_FIRST . '</option>';
     foreach ($articles as $storyid => $storytitle) {

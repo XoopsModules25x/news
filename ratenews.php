@@ -61,7 +61,6 @@ use XoopsModules\News;
 
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-;
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 $myts = \MyTextSanitizer::getInstance();
@@ -82,16 +81,16 @@ if ($cfg['config_rating_registred_only']) {
 
 // 2) Is the story published ?
 $storyid = 0;
-if (isset($_GET['storyid'])) {
-    $storyid = \Xmf\Request::getInt('storyid', 0, GET);
+if (\Xmf\Request::hasVar('storyid', 'GET')) {
+    $storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
 } else {
-    if (isset($_POST['storyid'])) {
-        $storyid = \Xmf\Request::getInt('storyid', 0, POST);
+    if (\Xmf\Request::hasVar('storyid', 'POST')) {
+        $storyid = \Xmf\Request::getInt('storyid', 0, 'POST');
     }
 }
 
 if (!empty($storyid)) {
-    $article = new NewsStory($storyid);
+    $article = new \XoopsModules\News\NewsStory($storyid);
     if (0 == $article->published() || $article->published() > time()) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
     }
@@ -126,8 +125,8 @@ if (!empty($_POST['submit'])) { // The form was submited
     //Make sure only 1 anonymous from an IP in a single day.
     $anonwaitdays = 1;
     $ip           = getenv('REMOTE_ADDR');
-    $storyid      = \Xmf\Request::getInt('storyid', 0, POST);
-    $rating       = \Xmf\Request::getInt('rating', 0, POST);
+    $storyid      = \Xmf\Request::getInt('storyid', 0, 'POST');
+    $rating       = \Xmf\Request::getInt('rating', 0, 'POST');
 
     // Check if Rating is Null
     if ('--' == $rating) {
@@ -178,7 +177,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $GLOBALS['xoopsOption']['template_main'] = 'news_ratenews.tpl';
     require_once XOOPS_ROOT_PATH . '/header.php';
     $news = null;
-    $news = new NewsStory($storyid);
+    $news = new \XoopsModules\News\NewsStory($storyid);
     if (is_object($news)) {
         $title = $news->title('Show');
     } else {

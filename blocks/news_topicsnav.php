@@ -28,13 +28,12 @@ use XoopsModules\News;
  */
 function b_news_topicsnav_show($options)
 {
-    ;
-//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $myts             = \MyTextSanitizer::getInstance();
     $block            = [];
     $newscountbytopic = [];
     $perms            = '';
-    $xt               = new NewsTopic();
+    $xt               = new  \XoopsModules\News\NewsTopic();
     $restricted       = News\Utility::getModuleOption('restrictindex');
     if ($restricted) {
         global $xoopsUser;

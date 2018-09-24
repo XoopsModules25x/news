@@ -25,14 +25,14 @@
 
 use XoopsModules\News;
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var \XoopsModules\News\Helper $helper */
+$helper = \XoopsModules\News\Helper::getInstance();
 
 $cfg = [];
 /**
  * How many items do you want to display in the Summary table visible in the article's page ?
  */
-$cfg['article_summary_items_count'] = ('' !== ($helper->getConfig('storyhome'))) ? $helper->getConfig('storyhome') : 10;
+$cfg['article_summary_items_count'] = ('' !== $helper->getConfig('storyhome')) ? $helper->getConfig('storyhome') : 10;
 
 /**
  * Auto generate meta keywords ?

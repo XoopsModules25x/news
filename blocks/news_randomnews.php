@@ -31,12 +31,11 @@ use XoopsModules\News;
  */
 function b_news_randomnews_show($options)
 {
-    ;
     $myts          = \MyTextSanitizer::getInstance();
     $block         = [];
     $block['sort'] = $options[0];
 
-    $tmpstory   = new NewsStory;
+    $tmpstory   = new \XoopsModules\News\NewsStory;
     $restricted = News\Utility::getModuleOption('restrictindex');
     $dateformat = News\Utility::getModuleOption('dateformat');
     $infotips   = News\Utility::getModuleOption('infotips');
@@ -125,7 +124,7 @@ function b_news_randomnews_edit($options)
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select id='options[4]' name='options[]' multiple='multiple'>";
 
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-    $xt                    = new \XoopsTopic($xoopsDB->prefix('news_topics'));
+    $xt                    = new \XoopsModules\News\XoopsTopic($xoopsDB->prefix('news_topics'));
     $alltopics             = $xt->getTopicsList();
     $alltopics[0]['title'] = _MB_SPOTLIGHT_ALL_TOPICS;
     ksort($alltopics);

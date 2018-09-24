@@ -70,12 +70,12 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-;
+
 $lastyear  = 0;
 $lastmonth = 0;
 
@@ -176,7 +176,7 @@ if (0 != $fromyear && 0 != $frommonth) {
     $monthend   = ($monthend > time()) ? time() : $monthend;
 
     $count      = 0;
-    $news       = new NewsStory();
+    $news       = new \XoopsModules\News\NewsStory();
     $storyarray = $news->getArchive($monthstart, $monthend, $restricted);
     $count      = count($storyarray);
     if (is_array($storyarray) && $count > 0) {

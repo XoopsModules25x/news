@@ -291,7 +291,7 @@ class XoopsTopic
         $topic_arr = $xt->getFirstChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
             foreach ($topic_arr as $topic) {
-                $ret[] = new \XoopsTopic($this->table, $topic);
+                $ret[] = new \XoopsModules\News\XoopsTopic($this->table, $topic);
             }
         }
 
@@ -308,7 +308,7 @@ class XoopsTopic
         $topic_arr = $xt->getAllChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
             foreach ($topic_arr as $topic) {
-                $ret[] = new \XoopsTopic($this->table, $topic);
+                $ret[] = new \XoopsModules\News\XoopsTopic($this->table, $topic);
             }
         }
 
@@ -325,7 +325,7 @@ class XoopsTopic
         $topic_arr = $xt->getChildTreeArray($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
             foreach ($topic_arr as $topic) {
-                $ret[] = new \XoopsTopic($this->table, $topic);
+                $ret[] = new \XoopsModules\News\XoopsTopic($this->table, $topic);
             }
         }
 
@@ -340,7 +340,7 @@ class XoopsTopic
      */
     public function makeTopicSelBox($none = 0, $seltopic = -1, $selname = '', $onchange = '')
     {
-        $xt = new News\ObjectTree($this->table, 'topic_id', 'topic_pid');
+        $xt = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
         if (-1 != $seltopic) {
             $xt->makeMySelBox('topic_title', 'topic_title', $seltopic, $none, $selname, $onchange);
         } elseif (!empty($this->topic_id)) {
@@ -359,7 +359,7 @@ class XoopsTopic
      */
     public function getNiceTopicPathFromId($funcURL)
     {
-        $xt  = new News\ObjectTree($this->table, 'topic_id', 'topic_pid');
+        $xt  = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getNicePathFromId($this->topic_id, 'topic_title', $funcURL);
 
         return $ret;
@@ -370,7 +370,7 @@ class XoopsTopic
      */
     public function getAllChildTopicsId()
     {
-        $xt  = new News\ObjectTree($this->table, 'topic_id', 'topic_pid');
+        $xt  = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getAllChildId($this->topic_id, 'topic_title');
 
         return $ret;

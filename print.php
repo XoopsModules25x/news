@@ -38,16 +38,15 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-;
 $storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
 // Verify that the article is published
-$story = new NewsStory($storyid);
+$story = new \XoopsModules\News\NewsStory($storyid);
 // Not yet published
 if (0 == $story->published() || $story->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);

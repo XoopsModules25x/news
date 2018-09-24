@@ -265,7 +265,7 @@ class ObjectTree
     /**
      * Make options for a select box from
      *
-     * @param XoopsFormSelect $element     form element to receive tree values as options
+     * @param \XoopsFormSelect $element     form element to receive tree values as options
      * @param string          $fieldName   Name of the member variable from the node objects that
      *                                     should be used as the title for the options.
      * @param int             $key         ID of the object to display as the root of select options

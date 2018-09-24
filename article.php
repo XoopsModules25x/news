@@ -114,7 +114,7 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -135,7 +135,7 @@ if (empty($storyid)) {
 $myts = \MyTextSanitizer::getInstance();
 
 // Not yet published
-$article = new NewsStory($storyid);
+$article = new \XoopsModules\News\NewsStory($storyid);
 if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOTYETSTORY);
 }
@@ -246,7 +246,7 @@ $highlight = News\Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
     $keywords      = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
-    $h             = new News\Keyhighlighter($keywords, true, 'my_highlighter');
+    $h             = new \XoopsModules\News\Keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }
 // ****************************************************************************************************************
@@ -314,7 +314,7 @@ if ('' !== xoops_trim($article->picture())) {
 }
 
 $xoopsTpl->assign('lang_attached_files', _NW_ATTACHEDFILES);
-$sfiles     = new News\Files();
+$sfiles     = new \XoopsModules\News\Files();
 $filesarr   = $newsfiles = [];
 $filesarr   = $sfiles->getAllbyStory($storyid);
 $filescount = count($filesarr);
@@ -355,7 +355,7 @@ if (News\Utility::getModuleOption('newsbythisauthor')) {
  * Uncomment the code to be able to use it
  */
 if ($cfg['create_clickable_path']) {
-    $mytree    = new News\ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $mytree    = new \XoopsModules\News\ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($article->topicid(), 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
     unset($mytree);
@@ -376,9 +376,9 @@ if (News\Utility::getModuleOption('showsummarytable')) {
     $xoopsTpl->assign('showsummary', true);
     $xoopsTpl->assign('lang_other_story', _NW_OTHER_ARTICLES);
     $count      = 0;
-    $tmparticle = new NewsStory();
+    $tmparticle = new \XoopsModules\News\NewsStory();
     $infotips   = News\Utility::getModuleOption('infotips');
-    $sarray     = NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $helper->getConfig('restrictindex'));
+    $sarray     = \XoopsModules\News\NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $helper->getConfig('restrictindex'));
     if (count($sarray) > 0) {
         foreach ($sarray as $onearticle) {
             ++$count;
@@ -415,7 +415,7 @@ if (News\Utility::getModuleOption('showsummarytable')) {
  */
 if (News\Utility::getModuleOption('showprevnextlink')) {
     $xoopsTpl->assign('nav_links', true);
-    $tmparticle    = new NewsStory();
+    $tmparticle    = new \XoopsModules\News\NewsStory();
     $nextId        = $previousId = -1;
     $next          = $previous = [];
     $previousTitle = $nextTitle = '';

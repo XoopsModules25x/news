@@ -40,7 +40,7 @@ function news_tag_iteminfo(&$items)
         }
     }
 //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    $tempNews  = new News\NewsStory();
+    $tempNews  = new \XoopsModules\News\NewsStory();
     $items_obj = $tempNews->getStoriesByIds($items_id);
 
     foreach (array_keys($items) as $cat_id) {

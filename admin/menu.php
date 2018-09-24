@@ -19,12 +19,14 @@
 
 use XoopsModules\News;
 
-// require_once  dirname(__DIR__) . '/class/Helper.php';
 //require_once  dirname(__DIR__) . '/include/common.php';
+/** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+if (is_object($helper->getModule())) {
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+}
 
 $adminObject = [];
 $adminmenu[] = [
@@ -50,6 +52,15 @@ $adminmenu[] = [
     'link'  => 'admin/groupperms.php',
     'icon'  => $pathIcon32 . '/permissions.png'
 ];
+
+
+// Blocks Admin
+$adminmenu[] = [
+    'title' => _MI_NEWS_BLOCKS,
+    'link'  => 'admin/blocksadmin.php',
+    'icon'  => $pathIcon32 . '/block.png'
+];
+
 
 $adminmenu[] = [
     'title' => _MI_NEWS_PRUNENEWS,

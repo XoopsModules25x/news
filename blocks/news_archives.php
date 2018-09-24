@@ -38,7 +38,6 @@ function b_news_archives_show($options)
 {
     global $xoopsDB, $xoopsConfig;
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    ;
     require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
@@ -98,7 +97,7 @@ function b_news_archives_edit($options)
     $seleyear  = $options[3];
     $selemonth = $options[4];
 
-    $tmpstory = new NewsStory;
+    $tmpstory = new \XoopsModules\News\NewsStory;
     $tmpstory->getOlderRecentNews($older, $recent); // We are searching for the module's older and more recent article's date
 
     // Min and max value for the two dates selectors

@@ -19,16 +19,16 @@
 
 use XoopsModules\News;
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-;
+
 
 // We verify that the user can post comments **********************************
-if (null === ($helper->getModule())) {
+if (null === $helper->getModule()) {
     die();
 }
 
@@ -43,7 +43,7 @@ if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) { // Anon
 
 $com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
-    $article = new NewsStory($com_itemid);
+    $article = new \XoopsModules\News\NewsStory($com_itemid);
     if ($article->storyid > 0) {
         $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), News\Utility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
         $bodytext      = $article->bodytext();

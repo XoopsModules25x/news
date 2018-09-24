@@ -1,5 +1,5 @@
 ![alt XOOPS CMS](https://xoops.org/images/logoXoops4GithubRepository.png)
-## News module for [XOOPS CMS 2.5.8+](https://xoops.org)
+## News module for [XOOPS CMS 2.5.9+](https://xoops.org)
 [![XOOPS CMS Module](https://img.shields.io/badge/XOOPS%20CMS-Module-blue.svg)](https://xoops.org)
 [![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
  
@@ -12,7 +12,7 @@
 
 With the **News module** for [XOOPS CMS](https://xoops.org), you can create an unlimited number of news on your site. You can create all the articles you want and attach them to topics.
 
-[![Tutorial Available](https://xoops.org/images/tutorial-available-blue.svg)](https://www.gitbook.com/book/xoops/xoops-news-module/) Tutorial: see [GitBook](https://www.gitbook.com/book/xoops/xoops-news-module-tutorial/). 
+[![Tutorial Available](https://xoops.org/images/tutorial-available-blue.svg)](https://xoops.gitbook.io/xoops-news-module/) Tutorial: see [GitBook](https://xoops.gitbook.io/xoops-news-module-tutorial/).
 To contribute to the Tutorial, [fork it on GitHub](https://github.com/XoopsDocs/news-tutorial)
 
 [![Translations on Transifex](https://xoops.org/images/translations-transifex-blue.svg)](https://www.transifex.com/xoops) 

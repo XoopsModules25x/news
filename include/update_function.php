@@ -19,7 +19,6 @@ use XoopsModules\News;
 
 function xoops_module_update_news()
 {
-    ;
     global $xoopsDB;
     $errors = 0;
 

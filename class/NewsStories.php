@@ -39,7 +39,7 @@
 /**
  * Class news_stories
  */
-class Stories extends \XoopsObject
+class NewsStories extends \XoopsObject
 {
     //Constructor
     /**
@@ -74,19 +74,5 @@ class Stories extends \XoopsObject
         $this->initVar('picture', XOBJ_DTYPE_TXTBOX, null, false, 50);
         $this->initVar('pictureinfo', XOBJ_DTYPE_TXTBOX, null, false, 255);
         $this->initVar('subtitle', XOBJ_DTYPE_TXTBOX, null, false, 255);
-    }
-}
-
-/**
- * Class newsnews_storiesHandler
- */
-class newsnews_storiesHandler extends \XoopsPersistableObjectHandler
-{
-    /**
-     * @param null|\XoopsDatabase $db
-     */
-    public function __construct(\XoopsDatabase $db)
-    {
-        parent::__construct($db, 'news_stories', Stories::class, 'storyid', 'uid');
     }
 }

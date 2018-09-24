@@ -50,7 +50,7 @@ function xoops_module_pre_update_news(\XoopsModule $module)
     /** @var News\Helper $helper */
     /** @var News\Utility $utility */
     $helper       = News\Helper::getInstance();
-    $utility      = new News\Utility();
+    $utility      = new \XoopsModules\News\Utility();
 
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
@@ -69,14 +69,14 @@ function xoops_module_pre_update_news(\XoopsModule $module)
 function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
 {
     $moduleDirName = basename(dirname(__DIR__));
-    $capsDirName   = strtoupper($moduleDirName);
+    $moduleDirNameUpper   = strtoupper($moduleDirName);
 
     /** @var News\Helper $helper */
     /** @var News\Utility $utility */
     /** @var News\Common\Configurator $configurator */
     $helper  = News\Helper::getInstance();
-    $utility = new News\Utility();
-    $configurator = new News\Common\Configurator();
+    $utility = new \XoopsModules\News\Utility();
+    $configurator = new \XoopsModules\News\Common\Configurator();
 
     if ($previousVersion < 240) {
 

@@ -17,7 +17,7 @@
  * @author         XOOPS Development Team
  */
 
-include  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -26,10 +26,10 @@ if (empty($fileid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _ERRORS);
 }
 $myts   = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
-$sfiles = new Files($fileid);
+$sfiles = new \XoopsModules\News\Files($fileid);
 
 // Do we have the right to see the file ?
-$article = new NewsStory($sfiles->getStoryid());
+$article = new \XoopsModules\News\NewsStory($sfiles->getStoryid());
 // and the news, can we see it ?
 if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);

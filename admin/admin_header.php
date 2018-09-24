@@ -16,19 +16,20 @@
  * @author         XOOPS Development Team
  **/
 
+use XoopsModules\News;
+
 require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 // require_once  dirname(__DIR__) . '/class/Utility.php';
-//require_once  dirname(__DIR__) . '/include/common.php';
+require_once  dirname(__DIR__) . '/include/common.php';
 
-include  dirname(__DIR__) . '/preloads/autoloader.php';
+require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
 $moduleDirName = basename(dirname(__DIR__));
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var \XoopsModules\News\Helper $helper */
+$helper = \XoopsModules\News\Helper::getInstance();
 
 /** @var Xmf\Module\Admin $adminObject */
-$adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 $pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
@@ -49,8 +50,8 @@ if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl))
     $xoopsTpl = new \XoopsTpl();
 }
 
-$topicsHandler  = xoops_getModuleHandler('Topics', 'news');
-$storiesHandler = xoops_getModuleHandler('Stories', 'news');
+$topicsHandler  = $helper->getHandler('NewsTopics');
+$storiesHandler = $helper->getHandler('NewsStories');
 
 if ($xoopsUser) {
     $grouppermHandler = xoops_getHandler('groupperm');

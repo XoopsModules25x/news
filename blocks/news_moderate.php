@@ -27,12 +27,11 @@ use XoopsModules\News;
 function b_news_topics_moderate()
 {
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    ;
     $block      = [];
     $dateformat = News\Utility::getModuleOption('dateformat');
     $infotips   = News\Utility::getModuleOption('infotips');
 
-    $storyarray = NewsStory:: getAllSubmitted(0, true, News\Utility::getModuleOption('restrictindex'));
+    $storyarray = \XoopsModules\News\NewsStory:: getAllSubmitted(0, true, News\Utility::getModuleOption('restrictindex'));
     if (count($storyarray) > 0) {
         $block['lang_story_title']  = _MB_TITLE;
         $block['lang_story_date']   = _MB_POSTED;

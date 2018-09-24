@@ -1,6 +1,8 @@
 <h5>1.72 Beta 3        (NOT RELEASED)</h5>
 <hr>
-- namespaces (mamba)
+- added namespaces, class autoload (mamba)
+- added blocksadmin (mamba)
+- added testdata (mamba)
 
 
 <h5>1.72 Beta 2        (NOT RELEASED)</h5>

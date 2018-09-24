@@ -30,9 +30,8 @@
 use XoopsModules\News;
 
 require_once __DIR__ . '/header.php';
-;
 
 if (!News\Utility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
     redirect_header('index.php', 2, _ERRORS);
 }
-require XOOPS_ROOT_PATH . '/modules/tag/view.tag.php';
+require_once XOOPS_ROOT_PATH . '/modules/tag/view.tag.php';

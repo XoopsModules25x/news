@@ -36,10 +36,11 @@ function xoops_module_uninstall_news(\XoopsModule $module)
 
     $moduleDirName = basename(dirname(__DIR__));
     $moduleDirNameUpper = strtoupper($moduleDirName);
-     $helper      =News\Helper::getInstance();
+    /** @var News\Helper $helper */
+    $helper = News\Helper::getInstance();
 
     /** @var News\Utility $utility */
-    $utility     = new News\Utility();
+    $utility     = new \XoopsModules\News\Utility();
 
 
     $success = true;

@@ -27,7 +27,6 @@ xoops_load('utility', $moduleDirName);
 xoops_loadLanguage('calendar');
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-;
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
 if (!isset($subtitle)) {
@@ -41,7 +40,7 @@ $sform->addElement(new \XoopsFormText(_NW_SUBTITLE, 'subtitle', 50, 255, $subtit
 
 // Topic's selection box
 if (!isset($xt)) {
-    $xt = new NewsTopic();
+    $xt = new  \XoopsModules\News\NewsTopic();
 }
 if (0 == $xt->getAllTopicsCount()) {
     redirect_header('index.php', 4, _NW_POST_SORRY);
@@ -103,7 +102,7 @@ if ($approveprivilege) {
     if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
+        $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
     if (News\Utility::getModuleOption('metadata')) {
@@ -114,7 +113,7 @@ if ($approveprivilege) {
     if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new TagFormTag('item_tag', 60, 255, $itemIdForTag, 0));
+        $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 }
 // Manage upload(s)
@@ -133,7 +132,7 @@ switch ($helper->getConfig('uploadgroups')) {
 
 if ($allowupload) {
     if ('edit' === $op) {
-        $sfiles   = new Files();
+        $sfiles   = new \XoopsModules\News\Files();
         $filesarr = [];
         $filesarr = $sfiles->getAllbyStory($storyid);
         if (count($filesarr) > 0) {

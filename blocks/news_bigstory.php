@@ -26,7 +26,6 @@ use XoopsModules\News;
  */
 function b_news_bigstory_show()
 {
-    ;
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     $myts       = \MyTextSanitizer::getInstance();
     $restricted = News\Utility::getModuleOption('restrictindex');
@@ -34,7 +33,7 @@ function b_news_bigstory_show()
     $infotips   = News\Utility::getModuleOption('infotips');
 
     $block    = [];
-    $onestory = new NewsStory();
+    $onestory = new \XoopsModules\News\NewsStory();
     $stories  = $onestory->getBigStory(1, 0, $restricted, 0, 1, true, 'counter');
     if (0 == count($stories)) {
         $block['message'] = _MB_NEWS_NOTYET;

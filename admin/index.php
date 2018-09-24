@@ -41,8 +41,8 @@ require_once XOOPS_ROOT_PATH . '/class/uploader.php';
 require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var \XoopsModules\News\Helper $helper */
+$helper = \XoopsModules\News\Helper::getInstance();
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 $dateformat  = News\Utility::getModuleOption('dateformat');
@@ -69,8 +69,8 @@ function newSubmissions()
 {
     global $dateformat, $pathIcon16;
     $start       = \Xmf\Request::getInt('startnew', 0, 'GET');
-    $newsubcount = NewsStory:: getAllStoriesCount(3, false);
-    $storyarray  = NewsStory:: getAllSubmitted(News\Utility::getModuleOption('storycountadmin'), true, News\Utility::getModuleOption('restrictindex'), $start);
+    $newsubcount = \XoopsModules\News\NewsStory:: getAllStoriesCount(3, false);
+    $storyarray  = \XoopsModules\News\NewsStory:: getAllSubmitted(News\Utility::getModuleOption('storycountadmin'), true, News\Utility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
         $pagenav = new \XoopsPageNav($newsubcount, News\Utility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
         news_collapsableBar('newsub', 'topnewsubicon');
@@ -148,8 +148,8 @@ function autoStories()
     global $dateformat, $pathIcon16;
 
     $start        = \Xmf\Request::getInt('startauto', 0, 'GET');
-    $storiescount = NewsStory:: getAllStoriesCount(2, false);
-    $storyarray   = NewsStory:: getAllAutoStory(News\Utility::getModuleOption('storycountadmin'), true, $start);
+    $storiescount = \XoopsModules\News\NewsStory:: getAllStoriesCount(2, false);
+    $storyarray   = \XoopsModules\News\NewsStory:: getAllAutoStory(News\Utility::getModuleOption('storycountadmin'), true, $start);
     $class        = '';
     if (count($storyarray) > 0) {
         $pagenav = new \XoopsPageNav($storiescount, News\Utility::getModuleOption('storycountadmin'), $start, 'startauto', 'op=newarticle');
@@ -249,8 +249,8 @@ function lastStories()
     echo '<br>';
     echo "<div class='center;'>";
     $start        = \Xmf\Request::getInt('start', 0, 'GET');
-    $storyarray   = NewsStory:: getAllPublished(News\Utility::getModuleOption('storycountadmin'), $start, false, 0, 1);
-    $storiescount = NewsStory:: getAllStoriesCount(4, false);
+    $storyarray   = \XoopsModules\News\NewsStory:: getAllPublished(News\Utility::getModuleOption('storycountadmin'), $start, false, 0, 1);
+    $storiescount = \XoopsModules\News\NewsStory:: getAllStoriesCount(4, false);
     $pagenav      = new \XoopsPageNav($storiescount, News\Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
     $class        = '';
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'><tr class='bg3'><th align='center'>"
@@ -316,8 +316,8 @@ function expStories()
 {
     global $dateformat, $pathIcon16;
     $start        = \Xmf\Request::getInt('startexp', 0, 'GET');
-    $expiredcount = NewsStory:: getAllStoriesCount(1, false);
-    $storyarray   = NewsStory:: getAllExpired(News\Utility::getModuleOption('storycountadmin'), $start, 0, 1);
+    $expiredcount = \XoopsModules\News\NewsStory:: getAllStoriesCount(1, false);
+    $storyarray   = \XoopsModules\News\NewsStory:: getAllExpired(News\Utility::getModuleOption('storycountadmin'), $start, 0, 1);
     $pagenav      = new \XoopsPageNav($expiredcount, News\Utility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
 
     if (count($storyarray) > 0) {
@@ -404,9 +404,9 @@ function setPruneManager()
     $sform->addElement(new \XoopsFormHidden('op', 'confirmbeforetoprune'), false);
     $topiclist  = new \XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'pruned_topics', '', 5, true);
     $topics_arr = [];
-    $xt         = new News\NewsTopic();
+    $xt         = new \XoopsModules\News\NewsTopic();
     $allTopics  = $xt->getAllTopics(false); // The webmaster can see everything
-    $topic_tree = new News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
+    $topic_tree = new \XoopsModules\News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $topics_arr = $topic_tree->getAllChild(0);
     if (count($topics_arr)) {
         foreach ($topics_arr as $onetopic) {
@@ -426,16 +426,16 @@ function setPruneManager()
 function confirmBeforePrune()
 {
     global $dateformat;
-    $story = new News\NewsStory();
+    $story = new \XoopsModules\News\NewsStory();
     xoops_cp_header();
     $topiclist = '';
-    if (isset($_POST['pruned_topics'])) {
+    if (\Xmf\Request::hasVar('pruned_topics', 'POST')) {
         $topiclist = implode(',', $_POST['pruned_topics']);
     }
     echo '<h4>' . _AM_NEWS_PRUNENEWS . '</h4>';
     $expired = 0;
-    if (isset($_POST['onlyexpired'])) {
-        $expired = \Xmf\Request::getInt('onlyexpired', 0, POST);
+    if (\Xmf\Request::hasVar('onlyexpired', 'POST')) {
+        $expired = \Xmf\Request::getInt('onlyexpired', 0, 'POST');
     }
     $date      = $_POST['prune_date'];
     $timestamp = mktime(0, 0, 0, (int)substr($date, 5, 2), (int)substr($date, 8, 2), (int)substr($date, 0, 4));
@@ -459,16 +459,16 @@ function confirmBeforePrune()
 // Effectively delete stories (published before a date), no more confirmation
 function pruneNews()
 {
-    $story     = new News\NewsStory();
-    $timestamp = \Xmf\Request::getInt('prune_date', 0, POST);
-    $expired   = \Xmf\Request::getInt('expired', 0, POST);
+    $story     = new \XoopsModules\News\NewsStory();
+    $timestamp = \Xmf\Request::getInt('prune_date', 0, 'POST');
+    $expired   = \Xmf\Request::getInt('expired', 0, 'POST');
     $topiclist = '';
-    if (isset($_POST['pruned_topics'])) {
+    if (\Xmf\Request::hasVar('pruned_topics', 'POST')) {
         $topiclist = $_POST['pruned_topics'];
     }
 
-    if (1 == \Xmf\Request::getInt('ok', 0, POST)) {
-        $story = new News\NewsStory();
+    if (1 == \Xmf\Request::getInt('ok', 0, 'POST')) {
+        $story = new \XoopsModules\News\NewsStory();
         xoops_cp_header();
         $count = $story->getCountStoriesPublishedBefore($timestamp, $expired, $topiclist);
         $msg   = sprintf(_AM_NEWS_PRUNE_DELETED, $count);
@@ -506,9 +506,9 @@ function createNewsletter()
 
     $topiclist  = new \XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics', '', 5, true);
     $topics_arr = [];
-    $xt         = new News\NewsTopic();
+    $xt         = new \XoopsModules\News\NewsTopic();
     $allTopics  = $xt->getAllTopics(false); // The webmaster can see everything
-    $topic_tree = new News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
+    $topic_tree = new \XoopsModules\News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $topics_arr = $topic_tree->getAllChild(0);
     if (count($topics_arr)) {
         foreach ($topics_arr as $onetopic) {
@@ -543,7 +543,7 @@ function launchNewsletter()
     $helper = News\Helper::getInstance();
     $helper->loadLanguage('newsletter');
     echo '<br>';
-    $story           = new News\NewsStory();
+    $story           = new \XoopsModules\News\NewsStory();
     $exportedstories = [];
     $topiclist       = '';
     $removebr        = $removehtml = false;
@@ -555,7 +555,7 @@ function launchNewsletter()
     $date2           = $_POST['date2'];
     $timestamp1      = mktime(0, 0, 0, (int)substr($date1, 5, 2), (int)substr($date1, 8, 2), (int)substr($date1, 0, 4));
     $timestamp2      = mktime(23, 59, 59, (int)substr($date2, 5, 2), (int)substr($date2, 8, 2), (int)substr($date2, 0, 4));
-    if (isset($_POST['export_topics'])) {
+    if (\Xmf\Request::hasVar('export_topics', 'POST')) {
         $topiclist = implode(',', $_POST['export_topics']);
     }
     $tbltopics       = [];
@@ -656,9 +656,9 @@ function exportNews()
 
     $topiclist  = new \XoopsFormSelect(_AM_NEWS_PRUNE_TOPICS, 'export_topics', '', 5, true);
     $topics_arr = [];
-    $xt         = new News\NewsTopic();
+    $xt         = new \XoopsModules\News\NewsTopic();
     $allTopics  = $xt->getAllTopics(false); // The webmaster can see everything
-    $topic_tree = new News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
+    $topic_tree = new \XoopsModules\News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $topics_arr = $topic_tree->getAllChild(0);
     if (count($topics_arr)) {
         foreach ($topics_arr as $onetopic) {
@@ -693,18 +693,18 @@ function launchExport()
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=export');
     echo '<br>';
-    $story           = new News\NewsStory();
-    $topic           = new News\NewsTopic();
+    $story           = new \XoopsModules\News\NewsStory();
+    $topic           = new \XoopsModules\News\NewsTopic();
     $exportedstories = [];
     $date1           = $_POST['date1'];
     $date2           = $_POST['date2'];
     $timestamp1      = mktime(0, 0, 0, (int)substr($date1, 5, 2), (int)substr($date1, 8, 2), (int)substr($date1, 0, 4));
     $timestamp2      = mktime(23, 59, 59, (int)substr($date2, 5, 2), (int)substr($date2, 8, 2), (int)substr($date2, 0, 4));
     $topiclist       = '';
-    if (isset($_POST['export_topics'])) {
+    if (\Xmf\Request::hasVar('export_topics', 'POST')) {
         $topiclist = implode(',', $_POST['export_topics']);
     }
-    $topicsexport    = \Xmf\Request::getInt('includetopics', 0, POST);
+    $topicsexport    = \Xmf\Request::getInt('includetopics', 0, 'POST');
     $tbltopics       = [];
     $exportedstories = $story->exportNews($timestamp1, $timestamp2, $topiclist, $topicsexport, $tbltopics);
     if (count($exportedstories)) {
@@ -718,7 +718,7 @@ function launchExport()
         fwrite($fp, news_utf8_encode("<news_stories>\n"));
         if ($topicsexport) {
             foreach ($tbltopics as $onetopic) {
-                $topic   = new News\NewsTopic($onetopic);
+                $topic   = new \XoopsModules\News\NewsTopic($onetopic);
                 $content = "<news_topic>\n";
                 $content .= sprintf("\t<topic_id>%u</topic_id>\n", $topic->topic_id());
                 $content .= sprintf("\t<topic_pid>%u</topic_pid>\n", $topic->topic_pid());
@@ -804,7 +804,7 @@ function topicsmanager()
     $uploadirectory = '/uploads/news/image';
     $start          = \Xmf\Request::getInt('start', 0, 'GET');
 
-    $xt          = new News\NewsTopic($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $xt          = new \XoopsModules\News\NewsTopic($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr  = $xt->getChildTreeArray(0, 'topic_title');
     $totaltopics = count($topics_arr);
     $class       = '';
@@ -840,7 +840,7 @@ function topicsmanager()
 
                 $parent = '&nbsp;';
                 if ($topics_arr[$tmpcpt]['topic_pid'] > 0) {
-                    $xttmp  = new News\XoopsTopic($xoopsDB->prefix('news_topics'), $topics_arr[$tmpcpt]['topic_pid']);
+                    $xttmp  = new \XoopsModules\News\XoopsTopic($xoopsDB->prefix('news_topics'), $topics_arr[$tmpcpt]['topic_pid']);
                     $parent = $xttmp->topic_title();
                     unset($xttmp);
                 }
@@ -885,7 +885,7 @@ function topicsmanager()
 
     $topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
     if ($topic_id > 0) {
-        $xtmod             = new News\NewsTopic($topic_id);
+        $xtmod             = new \XoopsModules\News\NewsTopic($topic_id);
         $topic_title       = $xtmod->topic_title('E');
         $topic_description = $xtmod->topic_description('E');
         $topic_rssfeed     = $xtmod->topic_rssurl('E');
@@ -928,7 +928,7 @@ function topicsmanager()
     $sform->addElement(new \XoopsFormHidden('topic_id', $topic_id), false);
 
 //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-    $xt = new News\NewsTopic();
+    $xt = new \XoopsModules\News\NewsTopic();
     $sform->addElement(new \XoopsFormLabel(_AM_PARENTTOPIC, $xt->makeMyTopicSelBox(1, $parent, 'topic_pid', '', false)));
     // Topic's color
     // Code stolen to Zoullou, thank you Zoullou ;-)
@@ -1244,24 +1244,24 @@ function modTopicS()
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
 
-    $xt = new News\NewsTopic(\Xmf\Request::getInt('topic_id', 0, POST));
-    if (\Xmf\Request::getInt('topic_pid', 0, POST) == \Xmf\Request::getInt('topic_id', 0, POST)) {
+    $xt = new \XoopsModules\News\NewsTopic(\Xmf\Request::getInt('topic_id', 0, 'POST'));
+    if (\Xmf\Request::getInt('topic_pid', 0, 'POST') == \Xmf\Request::getInt('topic_id', 0, 'POST')) {
         redirect_header('index.php?op=topicsmanager', 2, _AM_ADD_TOPIC_ERROR1);
     }
-    $xt->setTopicPid(\Xmf\Request::getInt('topic_pid', 0, POST));
+    $xt->setTopicPid(\Xmf\Request::getInt('topic_pid', 0, 'POST'));
     if (empty($_POST['topic_title'])) {
         redirect_header('index.php?op=topicsmanager', 2, _AM_ERRORTOPICNAME);
     }
-    if (isset($_SESSION['items_count'])) {
+    if (\Xmf\Request::hasVar('items_count', 'SESSION')) {
         $_SESSION['items_count'] = -1;
     }
     $xt->setTopicTitle($_POST['topic_title']);
-    if (isset($_POST['topic_imgurl']) && '' !== $_POST['topic_imgurl']) {
+    if (\Xmf\Request::hasVar('topic_imgurl', 'POST') && '' !== $_POST['topic_imgurl']) {
         $xt->setTopicImgurl($_POST['topic_imgurl']);
     }
-    $xt->setMenu(\Xmf\Request::getInt('submenu', 0, POST));
-    $xt->setTopicFrontpage(\Xmf\Request::getInt('topic_frontpage', 0, POST));
-    if (isset($_POST['topic_description'])) {
+    $xt->setMenu(\Xmf\Request::getInt('submenu', 0, 'POST'));
+    $xt->setTopicFrontpage(\Xmf\Request::getInt('topic_frontpage', 0, 'POST'));
+    if (\Xmf\Request::hasVar('topic_description', 'POST')) {
         $xt->setTopicDescription($_POST['topic_description']);
     } else {
         $xt->setTopicDescription('');
@@ -1269,11 +1269,11 @@ function modTopicS()
     //$xt->setTopicRssUrl($_POST['topic_rssfeed']);
     $xt->setTopic_color($_POST['topic_color']);
 
-    if (isset($_POST['xoops_upload_file'])) {
+    if (\Xmf\Request::hasVar('xoops_upload_file', 'POST')) {
         $fldname = $_FILES[$_POST['xoops_upload_file'][0]];
         $fldname = $fldname['name'];
         if (xoops_trim('' !== $fldname)) {
-            $sfiles         = new News\Files();
+            $sfiles         = new \XoopsModules\News\Files();
             $dstpath        = XOOPS_ROOT_PATH . '/uploads/news/image';
             $destname       = $sfiles->createUploadName($dstpath, $fldname, true);
             $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
@@ -1312,19 +1312,19 @@ function modTopicS()
     $criteria->add(new \Criteria('gperm_name', 'news_view', '='));
     $grouppermHandler->deleteAll($criteria);
 
-    if (isset($_POST['groups_news_can_approve'])) {
+    if (\Xmf\Request::hasVar('groups_news_can_approve', 'POST')) {
         foreach ($_POST['groups_news_can_approve'] as $onegroup_id) {
             $grouppermHandler->addRight('news_approve', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
         }
     }
 
-    if (isset($_POST['groups_news_can_submit'])) {
+    if (\Xmf\Request::hasVar('groups_news_can_submit', 'POST')) {
         foreach ($_POST['groups_news_can_submit'] as $onegroup_id) {
             $grouppermHandler->addRight('news_submit', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
         }
     }
 
-    if (isset($_POST['groups_news_can_view'])) {
+    if (\Xmf\Request::hasVar('groups_news_can_view', 'POST')) {
         foreach ($_POST['groups_news_can_view'] as $onegroup_id) {
             $grouppermHandler->addRight('news_view', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
         }
@@ -1341,12 +1341,12 @@ function delTopic()
     if (!isset($_POST['ok'])) {
         xoops_cp_header();
         echo '<h4>' . _AM_CONFIG . '</h4>';
-        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, GET));
-        xoops_confirm(['op' => 'delTopic', 'topic_id' => \Xmf\Request::getInt('topic_id', 0, GET), 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
+        $xt = new \XoopsModules\News\XoopsModules\News\XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, 'GET'));
+        xoops_confirm(['op' => 'delTopic', 'topic_id' => \Xmf\Request::getInt('topic_id', 0, 'GET'), 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
     } else {
         xoops_cp_header();
-        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, POST));
-        if (isset($_SESSION['items_count'])) {
+        $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, 'POST'));
+        if (\Xmf\Request::hasVar('items_count', 'SESSION')) {
             $_SESSION['items_count'] = -1;
         }
         // get all subtopics under the specified topic
@@ -1354,7 +1354,7 @@ function delTopic()
         array_push($topic_arr, $xt);
         foreach ($topic_arr as $eachtopic) {
             // get all stories in each topic
-            $story_arr = NewsStory:: getByTopic($eachtopic->topic_id());
+            $story_arr = \XoopsModules\News\NewsStory:: getByTopic($eachtopic->topic_id());
             foreach ($story_arr as $eachstory) {
                 if (false !== $eachstory->delete()) {
                     xoops_comment_delete($xoopsModule->getVar('mid'), $eachstory->storyid());
@@ -1382,7 +1382,7 @@ function addTopic()
     $helper = News\Helper::getInstance();
 
     $topicpid = \Xmf\Request::getInt('topic_pid', 0, 'POST');
-    $xt       = new NewsTopic();
+    $xt       = new  \XoopsModules\News\NewsTopic();
     if (!$xt->topicExists($topicpid, $_POST['topic_title'])) {
         $xt->setTopicPid($topicpid);
         if (empty($_POST['topic_title']) || '' == xoops_trim($_POST['topic_title'])) {
@@ -1391,19 +1391,19 @@ function addTopic()
         $xt->setTopicTitle($_POST['topic_title']);
         //$xt->setTopicRssUrl($_POST['topic_rssfeed']);
         $xt->setTopic_color($_POST['topic_color']);
-        if (isset($_POST['topic_imgurl']) && '' !== $_POST['topic_imgurl']) {
+        if (\Xmf\Request::hasVar('topic_imgurl', 'POST') && '' !== $_POST['topic_imgurl']) {
             $xt->setTopicImgurl($_POST['topic_imgurl']);
         }
-        $xt->setMenu(\Xmf\Request::getInt('submenu', 0, POST));
-        $xt->setTopicFrontpage(\Xmf\Request::getInt('topic_frontpage', 0, POST));
-        if (isset($_SESSION['items_count'])) {
+        $xt->setMenu(\Xmf\Request::getInt('submenu', 0, 'POST'));
+        $xt->setTopicFrontpage(\Xmf\Request::getInt('topic_frontpage', 0, 'POST'));
+        if (\Xmf\Request::hasVar('items_count', 'SESSION')) {
             $_SESSION['items_count'] = -1;
         }
-        if (isset($_POST['xoops_upload_file'])) {
+        if (\Xmf\Request::hasVar('xoops_upload_file', 'POST')) {
             $fldname = $_FILES[$_POST['xoops_upload_file'][0]];
             $fldname = $fldname['name'];
-            if (xoops_trim('' !== $fldname)) {
-                $sfiles         = new Files();
+            if ('' !== xoops_trim($fldname)) {
+                $sfiles         = new \XoopsModules\News\Files();
                 $dstpath        = XOOPS_ROOT_PATH . '/uploads/news/image';
                 $destname       = $sfiles->createUploadName($dstpath, $fldname, true);
                 $permittedtypes = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'];
@@ -1420,7 +1420,7 @@ function addTopic()
                 }
             }
         }
-        if (isset($_POST['topic_description'])) {
+        if (\Xmf\Request::hasVar('topic_description', 'POST')) {
             $xt->setTopicDescription($_POST['topic_description']);
         } else {
             $xt->setTopicDescription('');
@@ -1428,19 +1428,19 @@ function addTopic()
         $xt->store();
         // Permissions
         $grouppermHandler = xoops_getHandler('groupperm');
-        if (isset($_POST['groups_news_can_approve'])) {
+        if (\Xmf\Request::hasVar('groups_news_can_approve', 'POST')) {
             foreach ($_POST['groups_news_can_approve'] as $onegroup_id) {
                 $grouppermHandler->addRight('news_approve', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
             }
         }
 
-        if (isset($_POST['groups_news_can_submit'])) {
+        if (\Xmf\Request::hasVar('groups_news_can_submit', 'POST')) {
             foreach ($_POST['groups_news_can_submit'] as $onegroup_id) {
                 $grouppermHandler->addRight('news_submit', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
             }
         }
 
-        if (isset($_POST['groups_news_can_view'])) {
+        if (\Xmf\Request::hasVar('groups_news_can_view', 'POST')) {
             foreach ($_POST['groups_news_can_view'] as $onegroup_id) {
                 $grouppermHandler->addRight('news_view', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
             }
@@ -1492,10 +1492,10 @@ function getStats()
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
     $helper->loadLanguage('main');
-    
+
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=stats');
-    $news   = new NewsStory();
+    $news   = new \XoopsModules\News\NewsStory();
     $stats  = [];
     $stats  = $news->getStats(News\Utility::getModuleOption('storycountadmin'));
     $totals = [0, 0, 0, 0, 0];
@@ -1673,14 +1673,14 @@ function getMetagen()
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
     $helper->loadLanguage('main');
-    
+
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=metagen');
     //echo "<h1>"._AM_NEWS_METAGEN."</h1>";
     echo _AM_NEWS_METAGEN_DESC . '<br><br>';
 
     // Metagen Options
-    $registry = new Registryfile('news_metagen_options.txt');
+    $registry = new \XoopsModules\News\Registryfile('news_metagen_options.txt');
     $content  = '';
     $content  = $registry->getfile();
     if ('' !== xoops_trim($content)) {
@@ -1713,7 +1713,7 @@ function getMetagen()
     $blacklist = new \XoopsFormSelect('', 'blacklist', '', 5, true);
     $words     = [];
 
-    $metablack = new Blacklist();
+    $metablack = new \XoopsModules\News\Blacklist();
     $words     = $metablack->getAllKeywords();
     if (is_array($words) && count($words) > 0) {
         foreach ($words as $key => $value) {
@@ -1743,16 +1743,16 @@ function getMetagen()
  */
 function saveMetagenBlackList()
 {
-    $blacklist = new Blacklist();
+    $blacklist = new \XoopsModules\News\Blacklist();
     $words     = $blacklist->getAllKeywords();
 
-    if (isset($_POST['go']) && _AM_DELETE == $_POST['go']) {
+    if (\Xmf\Request::hasVar('go', 'POST') && _AM_DELETE == $_POST['go']) {
         foreach ($_POST['blacklist'] as $black_id) {
             $blacklist->delete($black_id);
         }
         $blacklist->store();
     } else {
-        if (isset($_POST['go']) && _AM_ADD == $_POST['go']) {
+        if (\Xmf\Request::hasVar('go', 'POST') && _AM_ADD == $_POST['go']) {
             $p_keywords = $_POST['keywords'];
             $keywords   = explode("\n", $p_keywords);
             foreach ($keywords as $keyword) {
@@ -1771,15 +1771,15 @@ function saveMetagenBlackList()
  */
 function saveMetagenOptions()
 {
-    $registry = new Registryfile('news_metagen_options.txt');
-    $registry->savefile(\Xmf\Request::getInt('keywordscount', 0, POST) . ',' . \Xmf\Request::getInt('keywordsorder', 0, POST));
+    $registry = new \XoopsModules\News\Registryfile('news_metagen_options.txt');
+    $registry->savefile(\Xmf\Request::getInt('keywordscount', 0, 'POST') . ',' . \Xmf\Request::getInt('keywordsorder', 0, 'POST'));
     redirect_header('index.php?op=metagen', 0, _AM_DBUPDATED);
 }
 
 // **********************************************************************************************************************************************
 // **** Main
 // **********************************************************************************************************************************************
-$op    = \Xmf\Request::getCmd('op', 'default');
+$op    = \Xmf\Request::getString('op', 'default');
 $adminObject = \Xmf\Module\Admin::getInstance();
 switch ($op) {
     case 'deletefile':
@@ -1845,19 +1845,19 @@ switch ($op) {
 
     case 'delete':
         $storyid = 0;
-        if (isset($_GET['storyid'])) {
-            $storyid = \Xmf\Request::getInt('storyid', 0, GET);
-        } elseif (isset($_POST['storyid'])) {
-            $storyid = \Xmf\Request::getInt('storyid', 0, POST);
+        if (\Xmf\Request::hasVar('storyid', 'GET')) {
+            $storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
+        } elseif (\Xmf\Request::hasVar('storyid', 'POST')) {
+            $storyid = \Xmf\Request::getInt('storyid', 0, 'POST');
         }
 
        if (\Xmf\Request::hasVar('ok', 'POST')) {
             if (empty($storyid)) {
                 redirect_header('index.php?op=newarticle', 2, _AM_EMPTYNODELETE);
             }
-            $story = new NewsStory($storyid);
+            $story = new \XoopsModules\News\NewsStory($storyid);
             $story->delete();
-            $sfiles   = new Files();
+            $sfiles   = new \XoopsModules\News\Files();
             $filesarr = [];
             $filesarr = $sfiles->getAllbyStory($storyid);
             if (count($filesarr) > 0) {
@@ -1870,7 +1870,7 @@ switch ($op) {
             News\Utility::updateCache();
             redirect_header('index.php?op=newarticle', 1, _AM_DBUPDATED);
         } else {
-            $story = new NewsStory($storyid);
+            $story = new \XoopsModules\News\NewsStory($storyid);
             xoops_cp_header();
             echo '<h4>' . _AM_CONFIG . '</h4>';
             xoops_confirm(['op' => 'delete', 'storyid' => $storyid, 'ok' => 1], 'index.php', _AM_RUSUREDEL . '<br>' . $story->title());
@@ -1964,8 +1964,8 @@ switch ($op) {
             XOOPS_ROOT_PATH . '/uploads/news/image'
         ];
 
-        $topicsHandler  = xoops_getModuleHandler('Topics', 'news');
-        $storiesHandler = xoops_getModuleHandler('Stories', 'news');
+        $topicsHandler  = $helper->getHandler('NewsTopics');
+        $storiesHandler = $helper->getHandler('NewsStories');
 
         //compte "total"
         $count_stories = $storiesHandler->getCount();
@@ -2024,7 +2024,26 @@ switch ($op) {
         }
 
         $adminObject->displayNavigation(basename(__FILE__));
-        $adminObject->displayIndex();
+    //------------- Test Data ----------------------------
+
+    if ($helper->getConfig('displaySampleButton')) {
+        xoops_loadLanguage('admin/modulesadmin', 'system');
+        require  dirname(__DIR__) . '/testdata/index.php';
+
+        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=load', 'add');
+
+        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=save', 'add');
+
+        //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), '__DIR__ . /../../testdata/index.php?op=exportschema', 'add');
+
+        $adminObject->displayButton('left', '');
+    }
+
+    //------------- End Test Data ----------------------------
+
+    $adminObject->displayIndex();
+
+    echo $utility::getServerStats();
 
         break;
 

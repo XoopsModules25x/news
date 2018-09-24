@@ -39,7 +39,7 @@ class Utility
                 $retval = $xoopsModuleConfig[$option];
             }
         } else {
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $module        = $moduleHandler->getByDirname($repmodule);
             $configHandler = xoops_getHandler('config');
@@ -100,7 +100,7 @@ class Utility
             return $tblperms[$permtype];
         }
 
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler       = xoops_getHandler('module');
         $newsModule          = $moduleHandler->getByDirname('news');
         $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -193,7 +193,7 @@ class Utility
      * @param  string                                                                                                                         $width
      * @param  string                                                                                                                         $height
      * @param  string                                                                                                                         $supplemental
-     * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|XoopsFormFckeditor|XoopsFormHtmlarea|XoopsFormTextArea|XoopsFormTinyeditorTextArea
+     * @return bool|\XoopsFormDhtmlTextArea|\XoopsFormEditor|\XoopsFormFckeditor|\XoopsFormHtmlarea|\XoopsFormTextArea|\XoopsFormTinyeditorTextArea
      */
     public static function getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
     {
@@ -312,7 +312,7 @@ class Utility
             // Create chapters
             require_once XOOPS_ROOT_PATH . '/class/tree.php';
 //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-            $xt         = new NewsTopic();
+            $xt         = new  \XoopsModules\News\NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
             $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
             $topics_arr = $topic_tree->getAllChild(0);
@@ -391,7 +391,8 @@ class Utility
      */
     public static function createMetaKeywords($content)
     {
-        include XOOPS_ROOT_PATH . '/modules/news/config.php';
+        global $cfg;
+        require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
         // require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
         // require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 
@@ -410,7 +411,7 @@ class Utility
 
         $tmp = [];
         // Search for the "Minimum keyword length"
-        if (isset($_SESSION['news_keywords_limit'])) {
+        if (\Xmf\Request::hasVar('news_keywords_limit', 'SESSION')) {
             $limit = $_SESSION['news_keywords_limit'];
         } else {
             $configHandler                   = xoops_getHandler('config');
@@ -635,7 +636,7 @@ class Utility
     /**
      * Verify if the current "user" is a bot or not
      *
-     * If you have a problem with this function, insert the folowing code just before the line if (isset($_SESSION['news_cache_bot'])) { :
+     * If you have a problem with this function, insert the folowing code just before the line if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION'))) { :
      * return false;
      *
      * @package       News
@@ -644,7 +645,7 @@ class Utility
      */
     public static function isBot()
     {
-        if (isset($_SESSION['news_cache_bot'])) {
+        if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION')) {
             return $_SESSION['news_cache_bot'];
         } else {
             // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
