@@ -1,4 +1,4 @@
-<h5>1.72 Beta 3        (NOT RELEASED)</h5>
+<h5>1.72 Beta 3        [2018-09-22]</h5>
 <hr>
 - added namespaces, class autoload (mamba)
 - added blocksadmin (mamba)
@@ -29,7 +29,7 @@
     - changed to ->displayButton('left') (mamba)
 
 
-<h5>1.71 FINAL        2016-10-18</h5>
+<h5>1.71 FINAL        [2016-10-18]</h5>
 <hr>
 - code cosmetics (mamba)
 - removed @version (mamba)
