@@ -386,7 +386,7 @@ class XoopsStory
     }
 
     /**
-     * @return \XoopsTopic
+     * @return \XoopsModules\News\XoopsTopic
      */
     public function topic()
     {

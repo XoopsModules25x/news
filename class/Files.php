@@ -78,7 +78,7 @@ class Files
             $ipbits = explode('.', $_SERVER['REMOTE_ADDR']);
             list($usec, $sec) = explode(' ', microtime());
 
-            $usec = ($usec * 65536);
+            $usec *= 65536;
             $sec  = ((integer)$sec) & 0xFFFF;
 
             if ($trimname) {
