@@ -234,7 +234,7 @@ $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'
 function my_highlighter($matches)
 {
     $color = News\Utility::getModuleOption('highlightcolor');
-    if ('#' !== substr($color, 0, 1)) {
+    if (0 !== strpos($color, '#')) {
         $color = '#' . $color;
     }
 
