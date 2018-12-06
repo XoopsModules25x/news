@@ -17,6 +17,9 @@
 
 use XoopsModules\News;
 
+/**
+ * @return bool
+ */
 function xoops_module_update_news()
 {
     global $xoopsDB;

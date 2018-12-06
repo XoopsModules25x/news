@@ -35,6 +35,7 @@ class Configurator
     public $templateFolders = [];
     public $oldFiles        = [];
     public $oldFolders      = [];
+    public $renameTables    = [];
     public $modCopyright;
 
     /**
@@ -56,6 +57,7 @@ class Configurator
         $this->templateFolders = $config->templateFolders;
         $this->oldFiles        = $config->oldFiles;
         $this->oldFolders      = $config->oldFolders;
+        $this->renameTables    = $config->renameTables;
         $this->modCopyright    = $config->modCopyright;
     }
 }

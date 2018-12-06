@@ -386,7 +386,7 @@ class XoopsTopic
         $myts   = \MyTextSanitizer::getInstance();
         while (false !== ($myrow = $this->db->fetchArray($result))) {
             $ret[$myrow['topic_id']] = [
-                'title' => $myts->htmlspecialchars($myrow['topic_title']),
+                'title' => $myts->htmlSpecialChars($myrow['topic_title']),
                 'pid'   => $myrow['topic_pid']
             ];
         }

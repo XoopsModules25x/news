@@ -271,7 +271,7 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
             ";
             $class = ('even' === $class) ? 'odd' : 'even';
         }
-        echo "<tr><td class='foot' align='center' colspan='7'>
+        echo "<tr><td class='foot' align='center' colspan='8'>
         <input type='hidden' name='op' value='order'>
         " . $GLOBALS['xoopsSecurity']->getTokenHTML() . "
         <input type='submit' name='submit' value='" . _SUBMIT . "'>

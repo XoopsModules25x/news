@@ -27,6 +27,10 @@
 
 use XoopsModules\News;
 
+/**
+ * @param $items
+ * @return null
+ */
 function news_tag_iteminfo(&$items)
 {
     if (empty($items) || !is_array($items)) {

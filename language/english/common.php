@@ -80,6 +80,11 @@ define('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA', 'Export DB Schema to
 define('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_SUCCESS', 'Export DB Schema to YAML was a success');
 define('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_ERROR', 'ERROR: Export of DB Schema to YAML failed');
 
+//letter choice
+define('CO_'.$moduleDirNameUpper.'_'.'BROWSETOTOPIC', "<span style='font-weight: bold;'>Browse items alphabetically</span>");
+define('CO_'.$moduleDirNameUpper.'_'.'OTHER', 'Other');
+define('CO_'.$moduleDirNameUpper.'_'.'ALL', 'All');
+
 // block defines
 define('CO_' . $moduleDirNameUpper . '_' . 'ACCESSRIGHTS', 'Access Rights');
 define('CO_' . $moduleDirNameUpper . '_' . 'ACTION', 'Action');
@@ -96,3 +101,24 @@ define('CO_' . $moduleDirNameUpper . '_' . 'TITLE', 'Title');
 define('CO_' . $moduleDirNameUpper . '_' . 'VISIBLE', 'Visible');
 define('CO_' . $moduleDirNameUpper . '_' . 'VISIBLEIN', 'Visible In');
 define('CO_' . $moduleDirNameUpper . '_' . 'WEIGHT', 'Weight');
+
+define('CO_' . $moduleDirNameUpper . '_' . 'PERMISSIONS', 'Permissions');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS', 'Blocks Admin');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_DESC', 'Blocks/Group Admin');
+
+define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_MANAGMENT', 'Manage');
+define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_ADDBLOCK', 'Add a new block');
+define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_EDITBLOCK', 'Edit a block');
+define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_CLONEBLOCK', 'Clone a block');
+
+//myblocksadmin
+define('CO_' . $moduleDirNameUpper . '_' . 'AGDS', 'Admin Groups');
+define('CO_' . $moduleDirNameUpper . '_' . 'BCACHETIME', 'Cache Time');
+
+//Template Admin
+define('CO_' . $moduleDirNameUpper . '_' . 'TPLSETS', 'Template Management');
+define('CO_' . $moduleDirNameUpper . '_' . 'GENERATE', 'Generate');
+define('CO_' . $moduleDirNameUpper . '_' . 'FILENAME', 'File Name');
+
+//Menu
+define('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE', 'Migrate');
