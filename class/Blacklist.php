@@ -130,7 +130,7 @@ class Blacklist
         if (file_exists($filename)) {
             unlink($filename);
         }
-        $fd = fopen($filename, 'w') || die('Error unable to create the blacklist file');
+        $fd = fopen($filename, 'wb') || die('Error unable to create the blacklist file');
         fwrite($fd, "<?php\n");
         fwrite($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {

@@ -81,7 +81,7 @@ class Registryfile
         if (file_exists($fw)) {
             @unlink($fw);
         }
-        $fp = fopen($fw, 'w') || die(_ERRORS);
+        $fp = fopen($fw, 'wb') || die(_ERRORS);
         fwrite($fp, $content);
         fclose($fp);
 

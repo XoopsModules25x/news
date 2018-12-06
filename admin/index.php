@@ -562,7 +562,7 @@ function launchNewsletter()
     $exportedstories = $story->exportNews($timestamp1, $timestamp2, $topiclist, 0, $tbltopics);
     $newsfile        = XOOPS_ROOT_PATH . '/uploads/news/letter.txt';
     if (count($exportedstories)) {
-        $fp = fopen($newsfile, 'w');
+        $fp = fopen($newsfile, 'wb');
         if (!$fp) {
             redirect_header('index.php', 4, sprintf(_AM_NEWS_EXPORT_ERROR, $newsfile));
         }
@@ -709,7 +709,7 @@ function launchExport()
     $exportedstories = $story->exportNews($timestamp1, $timestamp2, $topiclist, $topicsexport, $tbltopics);
     if (count($exportedstories)) {
         $xmlfile = XOOPS_ROOT_PATH . '/uploads/news/stories.xml';
-        $fp      = fopen($xmlfile, 'w');
+        $fp      = fopen($xmlfile, 'wb');
         if (!$fp) {
             redirect_header('index.php', 4, sprintf(_AM_NEWS_EXPORT_ERROR, $xmlfile));
         }
