@@ -220,7 +220,7 @@ function b_news_top_show($options)
             $spotlight['hits']   = $tmpstory->counter();
             $spotlight['rating'] = number_format($tmpstory->rating(), 2);
             $spotlight['votes']  = $tmpstory->votes();
-            if (strlen(xoops_trim($tmpstory->bodytext())) > 0) {
+            if ('' !== xoops_trim($tmpstory->bodytext())) {
                 $spotlight['read_more'] = true;
             } else {
                 $spotlight['read_more'] = false;
@@ -447,7 +447,7 @@ function b_news_top_show($options)
                     // Added, topic's image and description
                     $spotlight['topic_image']       = XOOPS_URL . '/modules/news/assets/images/topics/' . $story->topic_imgurl();
                     $spotlight['topic_description'] = $myts->displayTarea($story->topic_description, 1);
-                    if (strlen(xoops_trim($story->bodytext())) > 0) {
+                    if ('' !== xoops_trim($story->bodytext())) {
                         $spotlight['read_more'] = true;
                     } else {
                         $spotlight['read_more'] = false;
@@ -553,7 +553,7 @@ function b_news_top_show($options)
                 } else {
                     $spotlight['author'] = '';
                 }
-                if (strlen(xoops_trim($spotlightArticle->bodytext())) > 0) {
+                if ('' !== xoops_trim($spotlightArticle->bodytext())) {
                     $spotlight['read_more'] = true;
                 } else {
                     $spotlight['read_more'] = false;

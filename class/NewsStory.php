@@ -78,7 +78,7 @@ class NewsStory extends XoopsStory
         if ($expired) {
             $sql .= ' AND (expired>0 AND expired<=' . time() . ')';
         }
-        if (strlen(trim($topicslist)) > 0) {
+        if ('' !== trim($topicslist)) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
         $result = $db->query($sql);
@@ -117,7 +117,7 @@ class NewsStory extends XoopsStory
         if ($expired) {
             $sql .= ' (AND expired>0 AND expired<=' . time() . ')';
         }
-        if (strlen(trim($topicslist)) > 0) {
+        if ('' !== trim($topicslist)) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
         $result = $db->query($sql);
@@ -1011,7 +1011,7 @@ class NewsStory extends XoopsStory
         if ($usetopicsdef) { // We firt begin by exporting topics definitions
             // Before all we must know wich topics to export
             $sql = 'SELECT DISTINCT topicid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published >=' . $fromdate . ' AND published <= ' . $todate . ')';
-            if (strlen(trim($topicslist)) > 0) {
+            if ('' !== trim($topicslist)) {
                 $sql .= ' AND topicid IN (' . $topicslist . ')';
             }
             $result = $this->db->query($sql);
@@ -1022,7 +1022,7 @@ class NewsStory extends XoopsStory
 
         // Now we can search for the stories
         $sql = 'SELECT s.*, t.* FROM ' . $this->table . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published >=' . $fromdate . ' AND s.published <= ' . $todate . ')';
-        if (strlen(trim($topicslist)) > 0) {
+        if ('' !== trim($topicslist)) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
         $sql    .= " ORDER BY $order DESC";
