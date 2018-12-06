@@ -54,6 +54,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $amsHelper->loadLanguage('admin');
         $amsHelper->loadLanguage('main');
 
+        /** @var \XoopsMySQLDatabase $db */
         $db = \XoopsDatabaseFactory::getDatabaseConnection();
         // User's choices
         $use_forum    = (isset($_POST['useforum']) && 1 == $_POST['useforum']) ? 1 : 0;

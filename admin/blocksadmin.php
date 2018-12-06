@@ -295,6 +295,7 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
 
         //        mpu_adm_menu();
         $myblock = new \XoopsBlock($bid);
+        /** @var \XoopsMySQLDatabase $db */
         $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql     = 'SELECT module_id FROM ' . $db->prefix('block_module_link') . ' WHERE block_id=' . (int)$bid;
         $result  = $db->query($sql);
@@ -434,6 +435,7 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         xoops_loadLanguage('admin/groups', 'system');
         //        mpu_adm_menu();
         $myblock = new \XoopsBlock($bid);
+        /** @var \XoopsMySQLDatabase $db */
         $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql     = 'SELECT module_id FROM ' . $db->prefix('block_module_link') . ' WHERE block_id=' . (int)$bid;
         $result  = $db->query($sql);

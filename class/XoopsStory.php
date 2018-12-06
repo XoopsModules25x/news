@@ -57,6 +57,7 @@ class XoopsStory
      */
     public function Story($storyid = -1)
     {
+        /** @var \XoopsMySQLDatabase $this->db */
         $this->db          = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table       = '';
         $this->topicstable = '';

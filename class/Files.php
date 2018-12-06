@@ -42,6 +42,7 @@ class Files
      */
     public function __construct($fileid = -1)
     {
+        /** @var \XoopsMySQLDatabase $db */
         $this->db           = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table        = $this->db->prefix('news_stories_files');
         $this->storyid      = 0;

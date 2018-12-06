@@ -1341,7 +1341,7 @@ function delTopic()
     if (!isset($_POST['ok'])) {
         xoops_cp_header();
         echo '<h4>' . _AM_CONFIG . '</h4>';
-        $xt = new \XoopsModules\News\XoopsModules\News\XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, 'GET'));
+        $xt = new \XoopsModules\News\XoopsTopic($xoopsDB->prefix('news_topics'), \Xmf\Request::getInt('topic_id', 0, 'GET'));
         xoops_confirm(['op' => 'delTopic', 'topic_id' => \Xmf\Request::getInt('topic_id', 0, 'GET'), 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
     } else {
         xoops_cp_header();

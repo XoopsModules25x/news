@@ -42,6 +42,7 @@ class NewsTopic extends XoopsTopic
      */
     public function __construct($topicid = 0)
     {
+        /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $this->db->prefix('news_topics');
         if (is_array($topicid)) {
@@ -242,6 +243,7 @@ class NewsTopic extends XoopsTopic
     public function getAllTopics($checkRight = true, $permission = 'news_view')
     {
         $topics_arr = [];
+        /** @var \XoopsMySQLDatabase $db */
         $db         = \XoopsDatabaseFactory::getDatabaseConnection();
         $table      = $db->prefix('news_topics');
         $sql        = 'SELECT * FROM ' . $table;
@@ -405,7 +407,7 @@ class NewsTopic extends XoopsTopic
         }
 
         if (true === $this->use_permission) {
-            $xt            = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
+            $xt            = new News\XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
@@ -635,7 +637,7 @@ class NewsTopic extends XoopsTopic
             $sql .= ' AND topic_frontpage=1';
         }
         if ($perms) {
-            $topicsids = [];
+//            $topicsids = [];
             $topicsids = \XoopsModules\News\Utility::getMyItemIds();
             if (0 == count($topicsids)) {
                 return '';

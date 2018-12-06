@@ -23,6 +23,8 @@
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
 
+use XoopsModules\News;
+
 /**
  * Class XoopsTopic
  */
@@ -43,6 +45,7 @@ class XoopsTopic
      */
     public function __construct($table, $topicid = 0)
     {
+        /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table;
         if (is_array($topicid)) {
@@ -132,7 +135,11 @@ class XoopsTopic
             $sql = sprintf("UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table, $this->topic_pid, $imgurl, $title, $this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
-            ErrorHandler::show('0022');
+            // TODO: Replace with something else
+            //            ErrorHandler::show('0022');
+
+            $helper = \XoopsModules\News\Helper::getHelper($dirname);
+            $helper->redirect('admin/index.php', 5, $this->db->error());
         }
         if (true === $this->use_permission) {
             if (empty($this->topic_id)) {
