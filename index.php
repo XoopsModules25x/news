@@ -103,7 +103,7 @@ if (\Xmf\Request::hasVar('storytopic', 'GET')) {
 }
 
 if ($storytopic) {
-    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
     $grouppermHandler = xoops_getHandler('groupperm');
     if (!$grouppermHandler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
@@ -284,7 +284,7 @@ if ($showclassic) {
                 'title'       => $topic['title'],
                 'stories'     => $topicstories[$topicid],
                 'id'          => $topicid,
-                'topic_color' => $topic['color']
+                'topic_color' => $topic['color'],
             ];
         }
     }
@@ -326,7 +326,7 @@ if ($xoopsOption['storytopic']) {
 /**
  * Create a link for the RSS feed (if the module's option is activated)
  */
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($helper->getConfig('topicsrss') && $xoopsOption['storytopic']) {

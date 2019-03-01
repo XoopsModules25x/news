@@ -26,7 +26,6 @@ $helper = News\Helper::getInstance();
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
-
 // We verify that the user can post comments **********************************
 if (null === $helper->getModule()) {
     die();

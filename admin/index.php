@@ -27,7 +27,6 @@
 
 use XoopsModules\News;
 
-require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require_once __DIR__ . '/admin_header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
@@ -415,10 +414,10 @@ function setPruneManager()
     }
     $topiclist->setDescription(_AM_NEWS_EXPORT_PRUNE_DSC);
     $sform->addElement($topiclist, false);
-    $button_tray = new \XoopsFormElementTray('', '');
-    $submit_btn  = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
-    $button_tray->addElement($submit_btn);
-    $sform->addElement($button_tray);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $submit_btn = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
+    $buttonTray->addElement($submit_btn);
+    $sform->addElement($buttonTray);
     $sform->display();
 }
 
@@ -438,7 +437,7 @@ function confirmBeforePrune()
         $expired = \Xmf\Request::getInt('onlyexpired', 0, 'POST');
     }
     $date      = $_POST['prune_date'];
-    $timestamp = mktime(0, 0, 0, (int)substr($date, 5, 2), (int)substr($date, 8, 2), (int)substr($date, 0, 4));
+    $timestamp = mktime(0, 0, 0, (int)mb_substr($date, 5, 2), (int)mb_substr($date, 8, 2), (int)mb_substr($date, 0, 4));
     $count     = $story->getCountStoriesPublishedBefore($timestamp, $expired, $topiclist);
     if ($count) {
         $displaydate = formatTimestamp($timestamp, $dateformat);
@@ -448,7 +447,7 @@ function confirmBeforePrune()
                           'expired'       => $expired,
                           'pruned_topics' => $topiclist,
                           'prune_date'    => $timestamp,
-                          'ok'            => 1
+                          'ok'            => 1,
                       ], 'index.php', $msg);
     } else {
         printf(_AM_NEWS_NOTHING_PRUNE);
@@ -522,10 +521,10 @@ function createNewsletter()
     $sform->addElement(new \XoopsFormRadioYN(_AM_NEWS_NEWSLETTER_HTML_TAGS, 'removehtml', 0), false);
     $sform->addElement(new \XoopsFormTextArea(_AM_NEWS_NEWSLETTER_HEADER, 'header', '', 4, 70), false);
     $sform->addElement(new \XoopsFormTextArea(_AM_NEWS_NEWSLETTER_FOOTER, 'footer', '', 4, 70), false);
-    $button_tray = new \XoopsFormElementTray('', '');
-    $submit_btn  = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
-    $button_tray->addElement($submit_btn);
-    $sform->addElement($button_tray);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $submit_btn = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
+    $buttonTray->addElement($submit_btn);
+    $sform->addElement($buttonTray);
     $sform->display();
 }
 
@@ -553,8 +552,8 @@ function launchNewsletter()
     $footer          = \Xmf\Request::getString('footer', '', 'POST');
     $date1           = $_POST['date1'];
     $date2           = $_POST['date2'];
-    $timestamp1      = mktime(0, 0, 0, (int)substr($date1, 5, 2), (int)substr($date1, 8, 2), (int)substr($date1, 0, 4));
-    $timestamp2      = mktime(23, 59, 59, (int)substr($date2, 5, 2), (int)substr($date2, 8, 2), (int)substr($date2, 0, 4));
+    $timestamp1      = mktime(0, 0, 0, (int)mb_substr($date1, 5, 2), (int)mb_substr($date1, 8, 2), (int)mb_substr($date1, 0, 4));
+    $timestamp2      = mktime(23, 59, 59, (int)mb_substr($date2, 5, 2), (int)mb_substr($date2, 8, 2), (int)mb_substr($date2, 0, 4));
     if (\Xmf\Request::hasVar('export_topics', 'POST')) {
         $topiclist = implode(',', $_POST['export_topics']);
     }
@@ -589,7 +588,7 @@ function launchNewsletter()
                 '%votes%',
                 '%publisher%',
                 '%publisher_id%',
-                '%link%'
+                '%link%',
             ];
             $replace_pattern = [
                 $onestory->title(),
@@ -609,7 +608,7 @@ function launchNewsletter()
                 $onestory->votes(),
                 $onestory->uname(),
                 $onestory->uid(),
-                XOOPS_URL . '/modules/news/article.php?storyid=' . $onestory->storyid()
+                XOOPS_URL . '/modules/news/article.php?storyid=' . $onestory->storyid(),
             ];
             $content         = str_replace($search_pattern, $replace_pattern, $content);
             if ($removebr) {
@@ -669,10 +668,10 @@ function exportNews()
     $sform->addElement($topiclist, false);
     $sform->addElement(new \XoopsFormRadioYN(_AM_NEWS_EXPORT_INCTOPICS, 'includetopics', 0), false);
     $sform->addElement(new \XoopsFormHidden('op', 'launchexport'), false);
-    $button_tray = new \XoopsFormElementTray('', '');
-    $submit_btn  = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
-    $button_tray->addElement($submit_btn);
-    $sform->addElement($button_tray);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $submit_btn = new \XoopsFormButton('', 'post', _SUBMIT, 'submit');
+    $buttonTray->addElement($submit_btn);
+    $sform->addElement($buttonTray);
     $sform->display();
 }
 
@@ -698,8 +697,8 @@ function launchExport()
     $exportedstories = [];
     $date1           = $_POST['date1'];
     $date2           = $_POST['date2'];
-    $timestamp1      = mktime(0, 0, 0, (int)substr($date1, 5, 2), (int)substr($date1, 8, 2), (int)substr($date1, 0, 4));
-    $timestamp2      = mktime(23, 59, 59, (int)substr($date2, 5, 2), (int)substr($date2, 8, 2), (int)substr($date2, 0, 4));
+    $timestamp1      = mktime(0, 0, 0, (int)mb_substr($date1, 5, 2), (int)mb_substr($date1, 8, 2), (int)mb_substr($date1, 0, 4));
+    $timestamp2      = mktime(23, 59, 59, (int)mb_substr($date2, 5, 2), (int)mb_substr($date2, 8, 2), (int)mb_substr($date2, 0, 4));
     $topiclist       = '';
     if (\Xmf\Request::hasVar('export_topics', 'POST')) {
         $topiclist = implode(',', $_POST['export_topics']);
@@ -927,7 +926,7 @@ function topicsmanager()
     $sform->addElement(new \XoopsFormHidden('op', $op), false);
     $sform->addElement(new \XoopsFormHidden('topic_id', $topic_id), false);
 
-//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $xt = new \XoopsModules\News\NewsTopic();
     $sform->addElement(new \XoopsFormLabel(_AM_PARENTTOPIC, $xt->makeMyTopicSelBox(1, $parent, 'topic_pid', '', false)));
     // Topic's color
@@ -1148,7 +1147,7 @@ function topicsmanager()
         'FFFF66',
         'FFFF99',
         'FFFFCC',
-        'FFFFFF'
+        'FFFFFF',
     ];
 
     foreach ($color_values as $color_value) {
@@ -1188,10 +1187,10 @@ function topicsmanager()
     $sform->addElement($imgtray);
 
     // Permissions
-    $memberHandler = xoops_getHandler('member');
-    $group_list    = $memberHandler->getGroupList();
-    $grouppermHandler  = xoops_getHandler('groupperm');
-    $full_list     = array_keys($group_list);
+    $memberHandler    = xoops_getHandler('member');
+    $group_list       = $memberHandler->getGroupList();
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $full_list        = array_keys($group_list);
 
     $groups_ids = [];
     if ($topic_id > 0) { // Edit mode
@@ -1227,10 +1226,10 @@ function topicsmanager()
     $sform->addElement($groups_news_can_view_checkbox);
 
     // Submit buttons
-    $button_tray = new \XoopsFormElementTray('', '');
-    $submit_btn  = new \XoopsFormButton('', 'post', $btnlabel, 'submit');
-    $button_tray->addElement($submit_btn);
-    $sform->addElement($button_tray);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $submit_btn = new \XoopsFormButton('', 'post', $btnlabel, 'submit');
+    $buttonTray->addElement($submit_btn);
+    $sform->addElement($buttonTray);
     $sform->display();
     echo "<script type='text/javascript'>\n";
     echo 'xoopsGetElementById("NewsColorSelect").style.backgroundColor = "#' . $topic_color . '";';
@@ -1294,7 +1293,7 @@ function modTopicS()
 
     // Permissions
     $grouppermHandler = xoops_getHandler('groupperm');
-    $criteria     = new \CriteriaCompo();
+    $criteria         = new \CriteriaCompo();
     $criteria->add(new \Criteria('gperm_itemid', $xt->topic_id(), '='));
     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
     $criteria->add(new \Criteria('gperm_name', 'news_approve', '='));
@@ -1536,16 +1535,8 @@ function getStats()
         $totals[2] += $attachedfiles;
         $totals[3] += $expired;
         $class     = ('even' === $class) ? 'odd' : 'even';
-        printf(
-            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td></tr>\n",
-            $url,
-            $myts->displayTarea($data['topic_title']),
-            $articles,
-               $views,
-            $attachedfiles,
-            $expired,
-            $authors
-        );
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td></tr>\n", $url, $myts->displayTarea($data['topic_title']), $articles,
+               $views, $attachedfiles, $expired, $authors);
     }
     $class = ('even' === $class) ? 'odd' : 'even';
     printf("<tr class='" . $class . "'><td align='center'><b>%s</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td>&nbsp;</td>\n", _AM_NEWS_STATS2, $totals[0], $totals[1], $totals[2], $totals[3]);
@@ -1561,16 +1552,8 @@ function getStats()
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf(
-            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",
-            $url1,
-            $myts->displayTarea($data['topic_title']),
-            $url2,
-               $myts->displayTarea($data['title']),
-            $url3,
-            $myts->htmlSpecialChars($news->uname($data['uid'])),
-            $data['counter']
-        );
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
+               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
     }
     echo '</table>';
 
@@ -1583,16 +1566,8 @@ function getStats()
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf(
-            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",
-            $url1,
-            $myts->displayTarea($data['topic_title']),
-            $url2,
-               $myts->displayTarea($data['title']),
-            $url3,
-            $myts->htmlSpecialChars($news->uname($data['uid'])),
-            $data['counter']
-        );
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
+               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
     }
     echo '</table>';
 
@@ -1605,16 +1580,8 @@ function getStats()
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf(
-            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n",
-            $url1,
-            $myts->displayTarea($data['topic_title']),
-            $url2,
-               $myts->displayTarea($data['title']),
-            $url3,
-            $myts->htmlSpecialChars($news->uname($data['uid'])),
-            number_format($data['rating'], 2)
-        );
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
+               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), number_format($data['rating'], 2));
     }
     echo '</table></div><br><br><br>';
 
@@ -1664,7 +1631,7 @@ function getStats()
 function getMetagen()
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-    global $xoopsModule, $xoopsConfig,  $cfg;
+    global $xoopsModule, $xoopsConfig, $cfg;
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
 
@@ -1697,10 +1664,10 @@ function getMetagen()
     $keywordsorder->addOption(1, _AM_NEWS_META_KEYWORDS_FREQ1);
     $keywordsorder->addOption(2, _AM_NEWS_META_KEYWORDS_FREQ2);
     $sform->addElement($keywordsorder, false);
-    $button_tray = new \XoopsFormElementTray('', '');
-    $submit_btn  = new \XoopsFormButton('', 'post', _AM_MODIFY, 'submit');
-    $button_tray->addElement($submit_btn);
-    $sform->addElement($button_tray);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $submit_btn = new \XoopsFormButton('', 'post', _AM_MODIFY, 'submit');
+    $buttonTray->addElement($submit_btn);
+    $sform->addElement($buttonTray);
     $sform->display();
 
     // Blacklist
@@ -1715,7 +1682,7 @@ function getMetagen()
 
     $metablack = new \XoopsModules\News\Blacklist();
     $words     = $metablack->getAllKeywords();
-    if (is_array($words) && count($words) > 0) {
+    if ($words && is_array($words)) {
         foreach ($words as $key => $value) {
             $blacklist->addOption($key, $value);
         }
@@ -1779,7 +1746,7 @@ function saveMetagenOptions()
 // **********************************************************************************************************************************************
 // **** Main
 // **********************************************************************************************************************************************
-$op    = \Xmf\Request::getString('op', 'default');
+$op          = \Xmf\Request::getString('op', 'default');
 $adminObject = \Xmf\Module\Admin::getInstance();
 switch ($op) {
     case 'deletefile':
@@ -1802,7 +1769,6 @@ switch ($op) {
             }
         }
         break;
-
     case 'newarticle':
         xoops_cp_header();
         $adminObject->displayNavigation('index.php?op=newarticle');
@@ -1842,7 +1808,6 @@ switch ($op) {
         $approveprivilege = 1;
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
         break;
-
     case 'delete':
         $storyid = 0;
         if (\Xmf\Request::hasVar('storyid', 'GET')) {
@@ -1851,7 +1816,7 @@ switch ($op) {
             $storyid = \Xmf\Request::getInt('storyid', 0, 'POST');
         }
 
-       if (\Xmf\Request::hasVar('ok', 'POST')) {
+        if (\Xmf\Request::hasVar('ok', 'POST')) {
             if (empty($storyid)) {
                 redirect_header('index.php?op=newarticle', 2, _AM_EMPTYNODELETE);
             }
@@ -1876,74 +1841,57 @@ switch ($op) {
             xoops_confirm(['op' => 'delete', 'storyid' => $storyid, 'ok' => 1], 'index.php', _AM_RUSUREDEL . '<br>' . $story->title());
         }
         break;
-
     case 'topicsmanager':
         topicsmanager();
         break;
-
     case 'addTopic':
         addTopic();
         break;
-
     case 'delTopic':
         delTopic();
         break;
-
     case 'modTopicS':
         modTopicS();
         break;
-
     case 'edit':
         /** @var News\Helper $helper */
         $helper = News\Helper::getInstance();
         $helper->loadLanguage('main');
         require_once XOOPS_ROOT_PATH . '/modules/news/submit.php';
         break;
-
     case 'prune':
         setPruneManager();
         break;
-
     case 'confirmbeforetoprune':
         confirmBeforePrune();
         break;
-
     case 'prunenews':
         pruneNews();
         break;
-
     case 'export':
         exportNews();
         break;
-
     case 'launchexport':
         launchExport();
         break;
-
     case 'configurenewsletter':
         createNewsletter();
         break;
-
     case 'launchnewsletter':
         launchNewsletter();
         break;
-
     case 'stats':
         getStats();
         break;
-
     case 'metagen':
         getMetagen();
         break;
-
     case 'metagenoptions':
         saveMetagenOptions();
         break;
-
     case 'metagenblacklist':
         saveMetagenBlackList();
         break;
-
     case 'verifydb':
         xoops_cp_header();
         //news_adminmenu();
@@ -1953,7 +1901,6 @@ switch ($op) {
         $xoopsDB->queryF('ANALYZE TABLE ' . $tbllist);
         redirect_header('index.php', 3, _AM_DBUPDATED);
         break;
-
     case 'default':
     default:
         xoops_cp_header();
@@ -1961,7 +1908,7 @@ switch ($op) {
         $folder = [
             XOOPS_ROOT_PATH . '/uploads/news/',
             XOOPS_ROOT_PATH . '/uploads/news/file',
-            XOOPS_ROOT_PATH . '/uploads/news/image'
+            XOOPS_ROOT_PATH . '/uploads/news/image',
         ];
 
         $topicsHandler  = $helper->getHandler('NewsTopics');
@@ -2024,28 +1971,34 @@ switch ($op) {
         }
 
         $adminObject->displayNavigation(basename(__FILE__));
-    //------------- Test Data ----------------------------
 
-    if ($helper->getConfig('displaySampleButton')) {
-        xoops_loadLanguage('admin/modulesadmin', 'system');
-        require  dirname(__DIR__) . '/testdata/index.php';
+//check for latest release
+$newRelease = $utility::checkVerModule($helper);
+if (!empty($newRelease)) {
+    $adminObject->addItemButton($newRelease[0], $newRelease[1], 'download', 'style="color : Red"');
+}
 
-        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=load', 'add');
+//------------- Test Data ----------------------------
 
-        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=save', 'add');
+        if ($helper->getConfig('displaySampleButton')) {
+            xoops_loadLanguage('admin/modulesadmin', 'system');
+            require dirname(__DIR__) . '/testdata/index.php';
 
-        //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), '__DIR__ . /../../testdata/index.php?op=exportschema', 'add');
+            $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=load', 'add');
 
-        $adminObject->displayButton('left', '');
-    }
+            $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=save', 'add');
 
-    //------------- End Test Data ----------------------------
+            //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), '__DIR__ . /../../testdata/index.php?op=exportschema', 'add');
 
-    $adminObject->displayIndex();
+            $adminObject->displayButton('left', '');
+        }
 
-    echo $utility::getServerStats();
+        //------------- End Test Data ----------------------------
+
+        $adminObject->displayIndex();
+
+        echo $utility::getServerStats();
 
         break;
-
 }
 require_once __DIR__ . '/admin_footer.php';

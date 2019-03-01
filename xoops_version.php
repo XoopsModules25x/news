@@ -19,14 +19,14 @@
 
 use XoopsModules\News;
 
-require_once __DIR__   . '/preloads/autoloader.php';
+require_once __DIR__ . '/preloads/autoloader.php';
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('common');
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
-$moduleDirName = basename(__DIR__);
-$moduleDirNameUpper = strtoupper($moduleDirName);
+$moduleDirName      = basename(__DIR__);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 $modversion['version']       = 1.72;
 $modversion['module_status'] = 'Beta 3';
@@ -51,7 +51,7 @@ $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
-$modversion['min_php']             = '5.6';
+$modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
 $modversion['min_db']              = ['mysql' => '5.5'];
@@ -204,7 +204,7 @@ $cansubmit = 0;
 /**
  * This part inserts the selected topics as sub items in the Xoops main menu
  */
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->getByDirname($modversion['dirname']);
 if ($module) {
@@ -239,7 +239,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     }
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
-//        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+        //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         $xt         = new  \XoopsModules\News\NewsTopic();
         $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
@@ -375,7 +375,7 @@ $modversion['config'][$i]['default']     = 1;
 $modversion['config'][$i]['options']     = [
     '_MI_DISPLAYNAME1' => 1,
     '_MI_DISPLAYNAME2' => 2,
-    '_MI_DISPLAYNAME3' => 3
+    '_MI_DISPLAYNAME3' => 3,
 ];
 
 /**
@@ -408,7 +408,7 @@ $modversion['config'][$i]['options']     = [
     '25' => 25,
     '30' => 30,
     '35' => 35,
-    '40' => 40
+    '40' => 40,
 ];
 
 /**
@@ -424,7 +424,7 @@ $modversion['config'][$i]['default']     = 2;
 $modversion['config'][$i]['options']     = [
     '_MI_UPLOAD_GROUP1' => 1,
     '_MI_UPLOAD_GROUP2' => 2,
-    '_MI_UPLOAD_GROUP3' => 3
+    '_MI_UPLOAD_GROUP3' => 3,
 ];
 
 /**
@@ -629,7 +629,7 @@ $modversion['config'][$i]['options']     = [
     _MI_NEWS_SKIN_5 => 5,
     _MI_NEWS_SKIN_6 => 6,
     _MI_NEWS_SKIN_7 => 7,
-    _MI_NEWS_SKIN_8 => 8
+    _MI_NEWS_SKIN_8 => 8,
 ];
 $modversion['config'][$i]['default']     = 6;
 
@@ -782,7 +782,6 @@ $modversion['config'][$i]['default']     = 1;
 /**
  * Display PDF icon in each article ?
  */
-
 ++$i;
 $modversion['config'][$i]['name']        = 'show_pdficon';
 $modversion['config'][$i]['title']       = '_MI_NEWS_SHOWICONS_PDF';
@@ -807,13 +806,12 @@ $modversion['config'][$i]['default']     = 0;
  */
 $modversion['config'][] = [
     'name'        => 'displaySampleButton',
-        'title'       => '_MI_NEWS_SHOW_SAMPLE_BUTTON',
-        'description' => '_MI_NEWS_SHOW_SAMPLE_BUTTON_DESC',
+    'title'       => '_MI_NEWS_SHOW_SAMPLE_BUTTON',
+    'description' => '_MI_NEWS_SHOW_SAMPLE_BUTTON_DESC',
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => 1,
 ];
-
 
 // Notification
 $modversion['hasNotification']             = 1;

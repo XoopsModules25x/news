@@ -105,7 +105,6 @@ switch ($helper->getConfig('displayname')) {
     case 1: // Username
         $authname = $thisuser->getVar('uname');
         break;
-
     case 2: // Display full name (if it is not empty)
         if ('' == xoops_trim($thisuser->getVar('name'))) {
             $authname = $thisuser->getVar('uname');
@@ -113,7 +112,6 @@ switch ($helper->getConfig('displayname')) {
             $authname = $thisuser->getVar('name');
         }
         break;
-
     case 3: // Nothing
         $authname = '';
         break;
@@ -152,7 +150,7 @@ if ($articlescount > 0) {
                     'topic_color'          => $oldtopiccolor,
                     'topic_title'          => $oldtopictitle,
                     'topic_link'           => $topic_link,
-                    'news'                 => $articlestpl
+                    'news'                 => $articlestpl,
                 ]);
             }
             $oldtopic       = $article['topicid'];
@@ -175,7 +173,7 @@ if ($articlescount > 0) {
             'created'      => formatTimestamp($article['created'], $dateformat),
             'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle, $article['title']),
             'published'    => formatTimestamp($article['published'], $dateformat),
-            'rating'       => $article['rating']
+            'rating'       => $article['rating'],
         ];
     }
 }
@@ -184,7 +182,7 @@ $xoopsTpl->append('topics', [
     'topic_id'    => $oldtopic,
     'topic_title' => $oldtopictitle,
     'topic_link'  => $topic_link,
-    'news'        => $articlestpl
+    'news'        => $articlestpl,
 ]);
 $xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
 $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));

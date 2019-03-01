@@ -206,14 +206,14 @@ $sform->addElement($option_tray);
 //TODO: Approve checkbox + "Move to top" if editing + Edit indicator
 
 //Submit buttons
-$button_tray = new \XoopsFormElementTray('', '');
+$buttonTray  = new \XoopsFormElementTray('', '');
 $preview_btn = new \XoopsFormButton('', 'preview', _PREVIEW, 'submit');
 $preview_btn->setExtra('accesskey="p"');
-$button_tray->addElement($preview_btn);
+$buttonTray->addElement($preview_btn);
 $submit_btn = new \XoopsFormButton('', 'post', _NW_POST, 'submit');
 $submit_btn->setExtra('accesskey="s"');
-$button_tray->addElement($submit_btn);
-$sform->addElement($button_tray);
+$buttonTray->addElement($submit_btn);
+$sform->addElement($buttonTray);
 
 //Hidden variables
 if (isset($storyid)) {

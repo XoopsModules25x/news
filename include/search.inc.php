@@ -37,7 +37,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $highlight  = false;
     $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname('news');
     $modid         = $module->getVar('mid');

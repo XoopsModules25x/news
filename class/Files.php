@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -68,7 +70,7 @@ class Files
     public function createUploadName($folder, $filename, $trimname = false)
     {
         $workingfolder = $folder;
-        if ('/' !== xoops_substr($workingfolder, strlen($workingfolder) - 1, 1)) {
+        if ('/' !== xoops_substr($workingfolder, mb_strlen($workingfolder) - 1, 1)) {
             $workingfolder .= '/';
         }
         $ext  = basename($filename);
@@ -80,7 +82,7 @@ class Files
             list($usec, $sec) = explode(' ', microtime());
 
             $usec *= 65536;
-            $sec  = ((integer)$sec) & 0xFFFF;
+            $sec  = ((int)$sec) & 0xFFFF;
 
             if ($trimname) {
                 $uid = sprintf('%06x%04x%04x', ($ipbits[0] << 24) | ($ipbits[1] << 16) | ($ipbits[2] << 8) | $ipbits[3], $sec, $usec);
@@ -108,9 +110,9 @@ class Files
             $workingfile = $filename;
 
             return $cmimetype->getType($workingfile);
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -124,7 +126,7 @@ class Files
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
         while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $ret[] = new Files($myrow);
+            $ret[] = new self($myrow);
         }
 
         return $ret;
@@ -211,6 +213,7 @@ class Files
     // ****************************************************************************************************************
     // All the Sets
     // ****************************************************************************************************************
+
     /**
      * @param $filename
      */
@@ -246,6 +249,7 @@ class Files
     // ****************************************************************************************************************
     // All the Gets
     // ****************************************************************************************************************
+
     /**
      * @return int
      */

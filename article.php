@@ -234,7 +234,7 @@ $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'
 function my_highlighter($matches)
 {
     $color = News\Utility::getModuleOption('highlightcolor');
-    if (0 !== strpos($color, '#')) {
+    if (0 !== mb_strpos($color, '#')) {
         $color = '#' . $color;
     }
 
@@ -327,7 +327,7 @@ if ($filescount > 0) {
             'file_realname'     => $onefile->getFileRealName(),
             'file_attacheddate' => formatTimestamp($onefile->getDate(), $dateformat),
             'file_mimetype'     => $onefile->getMimetype(),
-            'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname()
+            'file_downloadname' => XOOPS_UPLOAD_URL . '/' . $onefile->getDownloadname(),
         ];
     }
     $xoopsTpl->assign('attached_files', $newsfiles);
@@ -395,7 +395,7 @@ if (News\Utility::getModuleOption('showsummarytable')) {
                 'infotips'        => $tooltips,
                 'story_title'     => $onearticle->title(),
                 'story_hits'      => $onearticle->counter(),
-                'story_published' => formatTimestamp($onearticle->published, $dateformat)
+                'story_published' => formatTimestamp($onearticle->published, $dateformat),
             ]);
         }
     }
@@ -523,7 +523,6 @@ if (!is_object($GLOBALS['xoopsUser']) && 0 == $helper->getConfig('show_pdficon')
     $canPdf = 0;
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);
-
 
 if (1 == News\Utility::getModuleOption('displaytopictitle')) {
     $xoopsTpl->assign('displaytopictitle', true);

@@ -38,7 +38,6 @@ require_once XOOPS_ROOT_PATH . '/class/template.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
-
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
@@ -68,7 +67,7 @@ $tpl->xoops_setCacheTime(3600); // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
     $xt     = new  \XoopsModules\News\NewsTopic($topicid);
     $sarray = \XoopsModules\News\NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
-    if (is_array($sarray) && count($sarray) > 0) {
+    if ($sarray && is_array($sarray)) {
         $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);
         $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES);
         $tpl->assign('channel_title', xoops_utf8_encode($sitename));
@@ -104,7 +103,7 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
                 'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
                 'pubdate'     => formatTimestamp($story->published(), 'rss'),
-                'description' => xoops_utf8_encode($description)
+                'description' => xoops_utf8_encode($description),
             ]);
         }
     }

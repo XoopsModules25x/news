@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 //  ------------------------------------------------------------------------ //
 //                  Copyright (c) 2005-2006 Hervé Thouzard                     //

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /**
  * XOOPS tree class
@@ -16,7 +18,6 @@
  * @since               2.0.0
  * @author              Kazumi Ono (http://www.myweb.ne.jp/, http://jp.xoops.org/)
  */
-
 defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
@@ -169,7 +170,6 @@ class ObjectTree
      * @param string $prefix_orig String to indent items at deeper levels
      * @param string $prefix_curr String to indent the current item
      *
-     * @return void
      * @deprecated since 2.5.9, please use makeSelectElement() functionality
      */
     protected function makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = '')
@@ -193,14 +193,14 @@ class ObjectTree
     /**
      * Make a select box with options from the tree
      *
-     * @param  string  $name           Name of the select box
-     * @param  string  $fieldName      Name of the member variable from the
+     * @param  string $name            Name of the select box
+     * @param  string $fieldName       Name of the member variable from the
      *                                 node objects that should be used as the title for the options.
-     * @param  string  $prefix         String to indent deeper levels
-     * @param  string  $selected       Value to display as selected
-     * @param  bool    $addEmptyOption Set TRUE to add an empty option with value "0" at the top of the hierarchy
-     * @param  integer $key            ID of the object to display as the root of select options
-     * @param  string  $extra
+     * @param  string $prefix          String to indent deeper levels
+     * @param  string $selected        Value to display as selected
+     * @param  bool   $addEmptyOption  Set TRUE to add an empty option with value "0" at the top of the hierarchy
+     * @param  int    $key             ID of the object to display as the root of select options
+     * @param  string $extra
      * @return string  HTML select box
      *
      * @deprecated since 2.5.9, please use makeSelectElement()
@@ -212,8 +212,8 @@ class ObjectTree
         $selected = '',
         $addEmptyOption = false,
         $key = 0,
-        $extra = ''
-    ) {
+        $extra = '')
+    {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
         $ret = '<select name="' . $name . '" id="' . $name . '" ' . $extra . '>';
@@ -228,15 +228,15 @@ class ObjectTree
     /**
      * Make a select box with options from the tree
      *
-     * @param  string  $name           Name of the select box
-     * @param  string  $fieldName      Name of the member variable from the
+     * @param  string $name            Name of the select box
+     * @param  string $fieldName       Name of the member variable from the
      *                                 node objects that should be used as the title for the options.
-     * @param  string  $prefix         String to indent deeper levels
-     * @param  string  $selected       Value to display as selected
-     * @param  bool    $addEmptyOption Set TRUE to add an empty option with value "0" at the top of the hierarchy
-     * @param  integer $key            ID of the object to display as the root of select options
-     * @param  string  $extra          extra content to add to the element
-     * @param  string  $caption        optional caption for form element
+     * @param  string $prefix          String to indent deeper levels
+     * @param  string $selected        Value to display as selected
+     * @param  bool   $addEmptyOption  Set TRUE to add an empty option with value "0" at the top of the hierarchy
+     * @param  int    $key             ID of the object to display as the root of select options
+     * @param  string $extra           extra content to add to the element
+     * @param  string $caption         optional caption for form element
      *
      * @return \XoopsFormSelect form element
      */
@@ -248,8 +248,8 @@ class ObjectTree
         $addEmptyOption = false,
         $key = 0,
         $extra = '',
-        $caption = ''
-    ) {
+        $caption = '')
+    {
         xoops_load('xoopsformselect');
         $element = new \XoopsFormSelect($caption, $name, $selected);
         $element->setExtra($extra);
@@ -266,13 +266,12 @@ class ObjectTree
      * Make options for a select box from
      *
      * @param \XoopsFormSelect $element     form element to receive tree values as options
-     * @param string          $fieldName   Name of the member variable from the node objects that
-     *                                     should be used as the title for the options.
-     * @param int             $key         ID of the object to display as the root of select options
-     * @param string          $prefix_orig String to indent items at deeper levels
-     * @param string          $prefix_curr String to indent the current item
+     * @param string           $fieldName   Name of the member variable from the node objects that
+     *                                      should be used as the title for the options.
+     * @param int              $key         ID of the object to display as the root of select options
+     * @param string           $prefix_orig String to indent items at deeper levels
+     * @param string           $prefix_curr String to indent the current item
      *
-     * @return void
      * @access private
      */
     protected function addSelectOptions($element, $fieldName, $key, $prefix_orig, $prefix_curr = '')

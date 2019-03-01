@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
  * which is considered copyrighted (c) material of the original comment or credit authors.
@@ -56,9 +55,8 @@ function loadSampleData()
         \Xmf\Database\TableLoad::loadTableFromArray($table, $tabledata);
     }
 
-
     //  ---  COPY test folder files ---------------
-    if (is_array ($configurator->copyTestFolders) && count($configurator->copyTestFolders) > 0) {
+    if ($configurator->copyTestFolders && is_array($configurator->copyTestFolders)) {
         //        $file = __DIR__ . '/../testdata/images/';
         foreach (array_keys($configurator->copyTestFolders) as $i) {
             $src  = $configurator->copyTestFolders[$i][0];
@@ -73,7 +71,7 @@ function loadSampleData()
 function saveSampleData()
 {
     $moduleDirName      = basename(dirname(__DIR__));
-    $moduleDirNameUpper = strtoupper($moduleDirName);
+    $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
     $tables = \Xmf\Module\Helper::getHelper($moduleDirName)->getModule()->getInfo('tables');
 
@@ -88,13 +86,14 @@ function exportSchema()
 {
     try {
         $moduleDirName      = basename(dirname(__DIR__));
-        $moduleDirNameUpper = strtoupper($moduleDirName);
+        $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
         $migrate = new  \Xmf\Database\Migrate($moduleDirName);
         $migrate->saveCurrentSchema();
 
         redirect_header('../admin/index.php', 1, constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_SUCCESS'));
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
         exit(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_ERROR'));
     }
 }

@@ -55,7 +55,7 @@ function b_news_archives_show($options)
         9  => _CAL_SEPTEMBER,
         10 => _CAL_OCTOBER,
         11 => _CAL_NOVEMBER,
-        12 => _CAL_DECEMBER
+        12 => _CAL_DECEMBER,
     ];
     $block         = [];
     $sort_order    = 0 == $options[0] ? 'ASC' : 'DESC';
@@ -71,8 +71,8 @@ function b_news_archives_show($options)
         return '';
     }
     while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
-        $year                = (int)substr($myrow['published'], 0, 4);
-        $month               = (int)substr($myrow['published'], 5, 2);
+        $year                = (int)mb_substr($myrow['published'], 0, 4);
+        $month               = (int)mb_substr($myrow['published'], 5, 2);
         $formated_month      = $months_arr[$month];
         $block['archives'][] = ['month' => $month, 'year' => $year, 'formated_month' => $formated_month];
     }
@@ -97,7 +97,7 @@ function b_news_archives_edit($options)
     $seleyear  = $options[3];
     $selemonth = $options[4];
 
-    $tmpstory = new \XoopsModules\News\NewsStory;
+    $tmpstory = new \XoopsModules\News\NewsStory();
     $tmpstory->getOlderRecentNews($older, $recent); // We are searching for the module's older and more recent article's date
 
     // Min and max value for the two dates selectors

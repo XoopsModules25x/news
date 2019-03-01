@@ -15,6 +15,8 @@
  * @package
  * @since
  * @author         XOOPS Development Team
+ * @param mixed $tablename
+ * @param mixed $iconname
  */
 
 /**
@@ -31,7 +33,6 @@
  * @param string $tablename
  * @param string $iconname
  */
-
 function news_collapsableBar($tablename = '', $iconname = '')
 {
     ?>

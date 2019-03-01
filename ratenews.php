@@ -56,7 +56,6 @@
  * @template_var                    string  title       story's title
  */
 
-
 use XoopsModules\News;
 
 require_once __DIR__ . '/header.php';
@@ -115,7 +114,7 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
 }
 
 if (!empty($_POST['submit'])) { // The form was submited
-    $eh = new ErrorHandler; //ErrorHandler object
+    $eh = new ErrorHandler(); //ErrorHandler object
     if (!is_object($xoopsUser)) {
         $ratinguser = 0;
     } else {

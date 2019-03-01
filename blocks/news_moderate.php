@@ -61,7 +61,7 @@ function b_news_topics_moderate()
             $story['topic_color'] = '#' . $myts->displayTarea($newstory->topic_color);
             $block['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
             $block['pictureinfo'] = $story->pictureinfo();
-            $block['stories'][]   =& $story;
+            $block['stories'][]   = &$story;
             unset($story);
         }
     }
@@ -75,7 +75,7 @@ function b_news_topics_moderate()
 function b_news_topics_moderate_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   =& b_news_topics_moderate($options);
+    $block   = &b_news_topics_moderate($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

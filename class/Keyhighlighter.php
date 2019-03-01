@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
@@ -48,7 +50,7 @@ class Keyhighlighter
      * It's the only public method of the class.
      *
      * @param string   $keywords         the keywords you want to highlight
-     * @param boolean  $singlewords      specify if it has to highlight also the single words.
+     * @param bool     $singlewords      specify if it has to highlight also the single words.
      * @param callback $replace_callback a custom callback for keyword highlight.
      *                                   <code>
      *                                   <?php

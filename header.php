@@ -16,5 +16,4 @@
  * @since
  * @author         XOOPS Development Team
  */
-
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';

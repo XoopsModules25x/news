@@ -56,7 +56,6 @@ if (count($uid_ids) > 0) {
             case 1: // Username
                 $uname = $one_user->getVar('uname');
                 break;
-
             case 2: // Display full name (if it is not empty)
                 if ('' !== xoops_trim($one_user->getVar('name'))) {
                     $uname = $one_user->getVar('name');
@@ -68,7 +67,7 @@ if (count($uid_ids) > 0) {
         $xoopsTpl->append('whoswho', [
             'uid'            => $one_user->getVar('uid'),
             'name'           => $uname,
-            'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar')
+            'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar'),
         ]);
     }
 }

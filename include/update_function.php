@@ -35,7 +35,6 @@ function xoops_module_update_news()
             ++$errors;
         }
     } else {
-
         // 1) Create, if it does not exists, the stories_files table
         if (!News\Utility::existTable($xoopsDB->prefix('news_stories_files'))) {
             $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (

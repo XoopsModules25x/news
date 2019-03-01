@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /**
  * Copyright (C) 2002 Jason Sheets <jsheets@shadonet.com>.
@@ -107,10 +109,10 @@ class Mimetype
         // return mime type for extension
         if (isset($mimetypes[$ext])) {
             return $mimetypes[$ext];
-        // if the extension wasn't found return octet-stream
-        } else {
-            return 'unknown';
+            // if the extension wasn't found return octet-stream
         }
+
+        return 'unknown';
     }
 
     /**
@@ -119,7 +121,6 @@ class Mimetype
     public function privBuildMimeArray()
     {
         return [
-
             'ez'      => 'application/andrew-inset',
             'hqx'     => 'application/mac-binhex40',
             'cpt'     => 'application/mac-compactpro',
@@ -272,7 +273,7 @@ class Mimetype
             'php'     => 'text/php',
             'php3'    => 'text/php3',
             'ice'     => 'x-conference-xcooltalk',
-            'unknown' => 'application/octet-stream'
+            'unknown' => 'application/octet-stream',
         ];
     }
 }

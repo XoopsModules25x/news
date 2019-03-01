@@ -20,7 +20,6 @@
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
-
     /**
      * @param $options
      *

@@ -15,6 +15,8 @@
  * @package
  * @since
  * @author         XOOPS Development Team
+ * @param mixed $story_id
+ * @param mixed $total_num
  */
 
 // comment callback functions

@@ -33,7 +33,6 @@
  * @page_title            Story's title - Printer Friendly Page - Topic's title - Site's name
  *
  * @template_name         This page does not use any template
- *
  */
 
 use XoopsModules\News;

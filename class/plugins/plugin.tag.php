@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -29,7 +31,6 @@ use XoopsModules\News;
 
 /**
  * @param $items
- * @return null
  */
 function news_tag_iteminfo(&$items)
 {
@@ -43,21 +44,21 @@ function news_tag_iteminfo(&$items)
             $items_id[] = (int)$item_id;
         }
     }
-//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     $tempNews  = new \XoopsModules\News\NewsStory();
     $items_obj = $tempNews->getStoriesByIds($items_id);
 
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
             if (isset($items_obj[$item_id])) {
-                $item_obj                 =& $items_obj[$item_id];
+                $item_obj                 = &$items_obj[$item_id];
                 $items[$cat_id][$item_id] = [
                     'title'   => $item_obj->title(),
                     'uid'     => $item_obj->uid(),
                     'link'    => "article.php?storyid={$item_id}",
                     'time'    => $item_obj->published(),
                     'tags'    => '', // tag_parse_tag($item_obj->getVar("item_tags", "n")), // optional
-                    'content' => ''
+                    'content' => '',
                 ];
             }
         }
@@ -89,7 +90,8 @@ function news_tag_synchronization($mid)
                . "             FROM {$itemHandler_table} "
                . "                WHERE $where"
                . '           ) '
-               . '     )'; else:
+               . '     )';
+    else:
         $sql = "   DELETE {$linkHandler->table} FROM {$linkHandler->table}"
                . "  LEFT JOIN {$itemHandler_table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler_keyName} "
                . '   WHERE '

@@ -17,7 +17,6 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\Tag;
 use XoopsModules\News;
 
 //defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -98,7 +97,7 @@ if (\Xmf\Request::hasVar('preview', 'POST')) {
                 || 'preview' === $_POST['op']
                 || 'post' === $_POST['op'])) {
             $storyid = 0;
-//            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, GET) : \Xmf\Request::getInt('storyid', 0, POST);
+            //            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, GET) : \Xmf\Request::getInt('storyid', 0, POST);
             $storyid = \Xmf\Request::getInt('storyid', 0);
             if (!empty($storyid)) {
                 $tmpstory = new \XoopsModules\News\NewsStory($storyid);
@@ -179,7 +178,6 @@ switch ($op) {
         }
         echo '</td></tr></table>';
         break;
-
     case 'preview':
         $topic_id = \Xmf\Request::getInt('topic_id', 0, 'POST');
         $xt       = new  \XoopsModules\News\NewsTopic($topic_id);
@@ -290,7 +288,6 @@ switch ($op) {
         $returnside = \Xmf\Request::getInt('returnside', 0, 'POST');
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         break;
-
     case 'post':
         $nohtml_db = \Xmf\Request::getInt('nohtml', 1, 'POST');
         if (is_object($xoopsUser)) {
@@ -559,7 +556,6 @@ switch ($op) {
             redirect_header(XOOPS_URL . '/modules/news/admin/index.php?op=newarticle', 2, _NW_THANKS);
         }
         break;
-
     case 'form':
         $xt        = new  \XoopsModules\News\NewsTopic();
         $title     = '';

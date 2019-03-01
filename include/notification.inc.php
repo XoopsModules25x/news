@@ -15,6 +15,8 @@
  * @package
  * @since
  * @author         XOOPS Development Team
+ * @param mixed $category
+ * @param mixed $item_id
  */
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -22,8 +24,6 @@
 /**
  * @param $category
  * @param $item_id
- *
- * @return null
  */
 function news_notify_iteminfo($category, $item_id)
 {
@@ -46,9 +46,9 @@ function news_notify_iteminfo($category, $item_id)
             $item['url']  = XOOPS_URL . '/modules/news/article.php?storyid=' . (int)$item_id;
 
             return $item;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     // Added by Lankford on 2007/3/23
@@ -61,9 +61,9 @@ function news_notify_iteminfo($category, $item_id)
             $item['url']  = XOOPS_URL . '/modules/news/index.php?storytopic=' . (int)$item_id;
 
             return $item;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     return null;

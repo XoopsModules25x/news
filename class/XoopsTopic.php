@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /**
  * XOOPS news topic
@@ -153,7 +155,7 @@ class XoopsTopic
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $moderate_topics)) {
+                        if (!in_array($p_topic, $moderate_topics, true)) {
                             $add = false;
                             continue;
                         }
@@ -173,7 +175,7 @@ class XoopsTopic
                     $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $submit_topics)) {
+                        if (!in_array($p_topic, $submit_topics, true)) {
                             $add = false;
                             continue;
                         }
@@ -193,7 +195,7 @@ class XoopsTopic
                     $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $read_topics)) {
+                        if (!in_array($p_topic, $read_topics, true)) {
                             $add = false;
                             continue;
                         }
@@ -276,9 +278,6 @@ class XoopsTopic
         return $imgurl;
     }
 
-    /**
-     * @return null
-     */
     public function prefix()
     {
         if (isset($this->prefix)) {
@@ -298,7 +297,7 @@ class XoopsTopic
         $topic_arr = $xt->getFirstChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
             foreach ($topic_arr as $topic) {
-                $ret[] = new \XoopsModules\News\XoopsTopic($this->table, $topic);
+                $ret[] = new self($this->table, $topic);
             }
         }
 
@@ -315,7 +314,7 @@ class XoopsTopic
         $topic_arr = $xt->getAllChild($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
             foreach ($topic_arr as $topic) {
-                $ret[] = new \XoopsModules\News\XoopsTopic($this->table, $topic);
+                $ret[] = new self($this->table, $topic);
             }
         }
 
@@ -332,7 +331,7 @@ class XoopsTopic
         $topic_arr = $xt->getChildTreeArray($this->topic_id, 'topic_title');
         if (is_array($topic_arr) && count($topic_arr)) {
             foreach ($topic_arr as $topic) {
-                $ret[] = new \XoopsModules\News\XoopsTopic($this->table, $topic);
+                $ret[] = new self($this->table, $topic);
             }
         }
 
@@ -394,7 +393,7 @@ class XoopsTopic
         while (false !== ($myrow = $this->db->fetchArray($result))) {
             $ret[$myrow['topic_id']] = [
                 'title' => $myts->htmlSpecialChars($myrow['topic_title']),
-                'pid'   => $myrow['topic_pid']
+                'pid'   => $myrow['topic_pid'],
             ];
         }
 
@@ -414,8 +413,8 @@ class XoopsTopic
         list($count) = $this->db->fetchRow($rs);
         if ($count > 0) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

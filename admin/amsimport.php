@@ -29,7 +29,7 @@
 
 use XoopsModules\Ams;
 
-require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 xoops_cp_header();
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -60,7 +60,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $use_forum    = (isset($_POST['useforum']) && 1 == $_POST['useforum']) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
         // Retreive News module's ID
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $news_mid      = $newsModule->getVar('mid');
@@ -78,7 +78,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // Retreive News tables names
         $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
-        $commentHandler      = xoops_getHandler('comment');
+        $commentHandler = xoops_getHandler('comment');
         /** @var \XoopsNotificationHandler $notificationHandler */
         $notificationHandler = xoops_getHandler('notification');
         $ams_news_topics     = []; // Key => AMS Id,  Value => News ID
@@ -206,7 +206,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
 
                 // The comments
                 $comments = $commentHandler->getByItemId($ams_mid, $ams_newsid, 'ASC');
-                if (is_array($comments) && count($comments) > 0) {
+                if ($comments && is_array($comments)) {
                     foreach ($comments as $onecomment) {
                         $onecomment->setNew();
                         $onecomment->setVar('com_modid', $news_mid);
@@ -222,7 +222,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $criteria->add(new \Criteria('not_itemid', $ams_newsid));
                 $criteria->setOrder('ASC');
                 $notifications = $notificationHandler->getObjects($criteria);
-                if (is_array($notifications) && count($notifications) > 0) {
+                if ($notifications && is_array($notifications)) {
                     foreach ($notifications as $onenotification) {
                         $onenotification->setNew();
                         $onenotification->setVar('not_modid', $news_mid);
@@ -238,7 +238,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $criteria->add(new \Criteria('not_category', 'global'));
         $criteria->setOrder('ASC');
         $notifications = $notificationHandler->getObjects($criteria);
-        if (is_array($notifications) && count($notifications) > 0) {
+        if ($notifications && is_array($notifications)) {
             foreach ($notifications as $onenotification) {
                 $onenotification->setNew();
                 $onenotification->setVar('not_modid', $news_mid);

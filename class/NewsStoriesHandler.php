@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /**
  * ****************************************************************************
@@ -34,7 +36,6 @@
  * ****************************************************************************
  */
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
 
 /**
  * Class newsnews_storiesHandler

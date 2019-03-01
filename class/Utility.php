@@ -1,13 +1,13 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 use WideImage\WideImage;
-use Xmf\Request;
 use XoopsModules\News;
-use XoopsModules\News\Common;
 
 /**
  * Class Utility
-     */
+ */
 class Utility
 {
     use Common\VersionChecks; //checkVerXoops, checkVerPhp Traits
@@ -104,7 +104,7 @@ class Utility
         $moduleHandler       = xoops_getHandler('module');
         $newsModule          = $moduleHandler->getByDirname('news');
         $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $grouppermHandler        = xoops_getHandler('groupperm');
+        $grouppermHandler    = xoops_getHandler('groupperm');
         $topics              = $grouppermHandler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
         $tblperms[$permtype] = $topics;
 
@@ -137,14 +137,14 @@ class Utility
             "'&(iexcl|#161);'i",
             "'&(cent|#162);'i",
             "'&(pound|#163);'i",
-            "'&(copy|#169);'i"
+            "'&(copy|#169);'i",
         ]; // evaluate as php
 
         $replace = [
             '',
             '',
             '',
-            "\\1",
+            '\\1',
             '"',
             '&',
             '<',
@@ -168,13 +168,13 @@ class Utility
     /**
      * Is Xoops 2.3.x ?
      *
-     * @return boolean need to say it ?
+     * @return bool need to say it ?
      */
     public static function isX23()
     {
         $x23 = false;
         $xv  = str_replace('XOOPS ', '', XOOPS_VERSION);
-        if (substr($xv, 2, 1) >= '3') {
+        if (mb_substr($xv, 2, 1) >= '3') {
             $x23 = true;
         }
 
@@ -197,7 +197,7 @@ class Utility
      */
     public static function getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
     {
-        $editor_option            = strtolower(static::getModuleOption('form_options'));
+        $editor_option            = mb_strtolower(static::getModuleOption('form_options'));
         $editor                   = false;
         $editor_configs           = [];
         $editor_configs['name']   = $name;
@@ -222,37 +222,32 @@ class Utility
                     $editor = new \XoopsFormFckeditor($caption, $name, $value);
                 }
                 break;
-
             case 'htmlarea':
                 if (is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
                     $editor = new \XoopsFormHtmlarea($caption, $name, $value);
                 }
                 break;
-
             case 'dhtmltextarea':
             case 'dhtml':
                 $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
                 break;
-
             case 'textarea':
                 $editor = new \XoopsFormTextArea($caption, $name, $value);
                 break;
-
             case 'tinyeditor':
             case 'tinymce':
                 if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
                     $editor = new \XoopsFormTinyeditorTextArea([
-                                                                  'caption' => $caption,
-                                                                  'name'    => $name,
-                                                                  'value'   => $value,
-                                                                  'width'   => '100%',
-                                                                  'height'  => '400px'
-                                                              ]);
+                                                                   'caption' => $caption,
+                                                                   'name'    => $name,
+                                                                   'value'   => $value,
+                                                                   'width'   => '100%',
+                                                                   'height'  => '400px',
+                                                               ]);
                 }
                 break;
-
             case 'koivi':
                 if (is_readable(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php';
@@ -296,7 +291,7 @@ class Utility
         global $xoopsConfig, $xoTheme, $xoopsTpl;
         $content = '';
         $myts    = \MyTextSanitizer::getInstance();
-//        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+        //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
         /**
          * Firefox and Opera Navigation's Bar
@@ -311,7 +306,7 @@ class Utility
 
             // Create chapters
             require_once XOOPS_ROOT_PATH . '/class/tree.php';
-//            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+            //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
             $xt         = new  \XoopsModules\News\NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
             $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
@@ -423,7 +418,7 @@ class Utility
         $content         = str_replace('<br>', ' ', $content);
         $content         = $myts->undoHtmlSpecialChars($content);
         $content         = strip_tags($content);
-        $content         = strtolower($content);
+        $content         = mb_strtolower($content);
         $search_pattern  = [
             '&nbsp;',
             "\t",
@@ -451,7 +446,7 @@ class Utility
             '-',
             '_',
             '\\',
-            '*'
+            '*',
         ];
         $replace_pattern = [
             ' ',
@@ -480,7 +475,7 @@ class Utility
             '',
             '',
             '',
-            ''
+            '',
         ];
         $content         = str_replace($search_pattern, $replace_pattern, $content);
         $keywords        = explode(' ', $content);
@@ -505,24 +500,23 @@ class Utility
         $keywords  = $metablack->remove_blacklisted($keywords);
 
         foreach ($keywords as $keyword) {
-            if (strlen($keyword) >= $limit && !is_numeric($keyword)) {
+            if (mb_strlen($keyword) >= $limit && !is_numeric($keyword)) {
                 $tmp[] = $keyword;
             }
         }
         $tmp = array_slice($tmp, 0, $keywordscount);
         if (count($tmp) > 0) {
             return implode(',', $tmp);
-        } else {
-            if (!isset($configHandler) || !is_object($configHandler)) {
-                $configHandler = xoops_getHandler('config');
-            }
-            $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
-            if (isset($xoopsConfigMetaFooter['meta_keywords'])) {
-                return $xoopsConfigMetaFooter['meta_keywords'];
-            } else {
-                return '';
-            }
         }
+        if (!isset($configHandler) || !is_object($configHandler)) {
+            $configHandler = xoops_getHandler('config');
+        }
+        $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
+        if (isset($xoopsConfigMetaFooter['meta_keywords'])) {
+            return $xoopsConfigMetaFooter['meta_keywords'];
+        }
+
+        return '';
     }
 
     /**
@@ -619,18 +613,17 @@ class Utility
     {
         global $xoopsUser, $xoopsModule;
         if (is_object($xoopsUser)) {
-            if (in_array('1', $xoopsUser->getGroups())) {
+            if (in_array('1', $xoopsUser->getGroups(), true)) {
                 return true;
-            } else {
-                if ($xoopsUser->isAdmin($xoopsModule->mid())) {
-                    return true;
-                } else {
-                    return false;
-                }
             }
-        } else {
+            if ($xoopsUser->isAdmin($xoopsModule->mid())) {
+                return true;
+            }
+
             return false;
         }
+
+        return false;
     }
 
     /**
@@ -647,21 +640,21 @@ class Utility
     {
         if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION')) {
             return $_SESSION['news_cache_bot'];
-        } else {
-            // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
-            // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
-            $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
-            $botlist      = strtoupper($botlist);
-            $currentagent = strtoupper(xoops_getenv('HTTP_USER_AGENT'));
-            $retval       = false;
-            $botarray     = explode('|', $botlist);
-            foreach ($botarray as $onebot) {
-                if (false !== strpos($currentagent, $onebot)) {
-                    $retval = true;
-                    break;
-                }
+        }
+        // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
+        // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
+        $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
+        $botlist      = mb_strtoupper($botlist);
+        $currentagent = mb_strtoupper(xoops_getenv('HTTP_USER_AGENT'));
+        $retval       = false;
+        $botarray     = explode('|', $botlist);
+        foreach ($botarray as $onebot) {
+            if (false !== mb_strpos($currentagent, $onebot)) {
+                $retval = true;
+                break;
             }
         }
+
         $_SESSION['news_cache_bot'] = $retval;
 
         return $retval;
@@ -674,7 +667,6 @@ class Utility
      * @author        Hervé Thouzard (http://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      * @param $text
-     * @return null
      */
     public static function makeInfotips($text)
     {
@@ -705,7 +697,7 @@ class Utility
                 $end_tags      = $end_tags[1];
 
                 foreach ($start_tags as $key => $val) {
-                    $posb = array_search($val, $end_tags);
+                    $posb = array_search($val, $end_tags, true);
                     if (is_int($posb)) {
                         unset($end_tags[$posb]);
                     } else {
@@ -740,10 +732,14 @@ class Utility
      *           <amos dot robinson at gmail dot com>
      *
      * @param string
-     * @param integer
+     * @param int
      * @param string
-     * @param boolean
-     * @param boolean
+     * @param bool
+     * @param bool
+     * @param mixed $string
+     * @param mixed $length
+     * @param mixed $etc
+     * @param mixed $break_words
      *
      * @return string
      */
@@ -752,29 +748,29 @@ class Utility
         if (0 == $length) {
             return '';
         }
-        if (strlen($string) > $length) {
-            $length -= strlen($etc);
+        if (mb_strlen($string) > $length) {
+            $length -= mb_strlen($etc);
             if (!$break_words) {
-                $string = preg_replace('/\s+?(\S+)?$/', '', substr($string, 0, $length + 1));
+                $string = preg_replace('/\s+?(\S+)?$/', '', mb_substr($string, 0, $length + 1));
                 $string = preg_replace('/<[^>]*$/', '', $string);
                 $string = static::closeTags($string);
             }
 
             return $string . $etc;
-        } else {
-            return $string;
         }
+
+        return $string;
     }
 
     /**
      * Resize a Picture to some given dimensions (using the wideImage library)
      *
-     * @param string  $src_path      Picture's source
-     * @param string  $dst_path      Picture's destination
-     * @param integer $param_width   Maximum picture's width
-     * @param integer $param_height  Maximum picture's height
-     * @param boolean $keep_original Do we have to keep the original picture ?
-     * @param string  $fit           Resize mode (see the wideImage library for more information)
+     * @param string $src_path      Picture's source
+     * @param string $dst_path      Picture's destination
+     * @param int    $param_width   Maximum picture's width
+     * @param int    $param_height  Maximum picture's height
+     * @param bool   $keep_original Do we have to keep the original picture ?
+     * @param string $fit           Resize mode (see the wideImage library for more information)
      *
      * @return bool
      */
@@ -784,8 +780,8 @@ class Utility
         $param_width,
         $param_height,
         $keep_original = false,
-        $fit = 'inside'
-    ) {
+        $fit = 'inside')
+    {
         //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
         $resize            = true;
         $pictureDimensions = getimagesize($src_path);

@@ -72,7 +72,7 @@ function b_news_bigstory_show()
 function b_news_bigstory_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   =& b_news_bigstory_show($options);
+    $block   = &b_news_bigstory_show($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

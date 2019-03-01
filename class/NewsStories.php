@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /**
  * ****************************************************************************
@@ -35,16 +37,13 @@
  */
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-
 /**
  * Class news_stories
  */
 class NewsStories extends \XoopsObject
 {
     //Constructor
-    /**
-     *
-     */
+
     public function __construct()
     {
         parent::__construct();

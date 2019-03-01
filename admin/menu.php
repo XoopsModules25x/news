@@ -32,76 +32,74 @@ $adminObject = [];
 $adminmenu[] = [
     'title' => _MI_NEWS_HOME,
     'link'  => 'admin/index.php',
-    'icon'  => $pathIcon32 . '/home.png'
+    'icon'  => $pathIcon32 . '/home.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_ADMENU2,
     'link'  => 'admin/index.php?op=topicsmanager',
-    'icon'  => $pathIcon32 . '/category.png'
+    'icon'  => $pathIcon32 . '/category.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_ADMENU3,
     'link'  => 'admin/index.php?op=newarticle',
-    'icon'  => $pathIcon32 . '/content.png'
+    'icon'  => $pathIcon32 . '/content.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_GROUPPERMS,
     'link'  => 'admin/groupperms.php',
-    'icon'  => $pathIcon32 . '/permissions.png'
+    'icon'  => $pathIcon32 . '/permissions.png',
 ];
-
 
 // Blocks Admin
 $adminmenu[] = [
     'title' => _MI_NEWS_BLOCKS,
     'link'  => 'admin/blocksadmin.php',
-    'icon'  => $pathIcon32 . '/block.png'
+    'icon'  => $pathIcon32 . '/block.png',
 ];
-
 
 $adminmenu[] = [
     'title' => _MI_NEWS_PRUNENEWS,
     'link'  => 'admin/index.php?op=prune',
-    'icon'  => $pathIcon32 . '/prune.png'
+    'icon'  => $pathIcon32 . '/prune.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_EXPORT,
     'link'  => 'admin/index.php?op=export',
-    'icon'  => $pathIcon32 . '/export.png'
+    'icon'  => $pathIcon32 . '/export.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_NEWSLETTER,
     'link'  => 'admin/index.php?op=configurenewsletter',
-    'icon'  => $pathIcon32 . '/newsletter.png'
+    'icon'  => $pathIcon32 . '/newsletter.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_STATS,
     'link'  => 'admin/index.php?op=stats',
-    'icon'  => $pathIcon32 . '/stats.png'
+    'icon'  => $pathIcon32 . '/stats.png',
 ];
 
 if (isset($xoopsModule) && 167 != $xoopsModule->getVar('version')) {
     $adminmenu[] = [
         'title' => _MI_NEWS_UPGRADE,
         'link'  => 'admin/upgrade.php',
-        'icon'  => $pathIcon32 . '/update.png'
+        'icon'  => $pathIcon32 . '/update.png',
     ];
 }
 
 $adminmenu[] = [
     'title' => _MI_NEWS_METAGEN,
     'link'  => 'admin/index.php?op=metagen',
-    'icon'  => $pathIcon32 . '/metagen.png'
+    'icon'  => $pathIcon32 . '/metagen.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_NEWS_ABOUT,
     'link'  => 'admin/about.php',
-    'icon'  => $pathIcon32 . '/about.png'
+    'icon'  => $pathIcon32 . '/about.png',
 ];

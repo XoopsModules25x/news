@@ -16,7 +16,6 @@
  * @since
  * @author         XOOPS Development Team
  */
-
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';

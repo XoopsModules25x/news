@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -15,7 +17,7 @@
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
- * @author     XOOPS Development Team
+ * @author       XOOPS Development Team
  */
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
@@ -59,9 +61,9 @@ class Registryfile
         }
         if (file_exists($fw)) {
             return file_get_contents($fw);
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**

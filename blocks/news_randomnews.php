@@ -17,7 +17,6 @@
  * @author         XOOPS Development Team
  */
 
-
 use XoopsModules\News;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -35,7 +34,7 @@ function b_news_randomnews_show($options)
     $block         = [];
     $block['sort'] = $options[0];
 
-    $tmpstory   = new \XoopsModules\News\NewsStory;
+    $tmpstory   = new \XoopsModules\News\NewsStory();
     $restricted = News\Utility::getModuleOption('restrictindex');
     $dateformat = News\Utility::getModuleOption('dateformat');
     $infotips   = News\Utility::getModuleOption('infotips');
@@ -55,7 +54,7 @@ function b_news_randomnews_show($options)
     foreach ($stories as $story) {
         $news  = [];
         $title = $story->title();
-        if (strlen($title) > $options[2]) {
+        if (mb_strlen($title) > $options[2]) {
             $title = xoops_substr($title, 0, $options[2] + 3);
         }
         $news['title']       = $title;

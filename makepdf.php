@@ -17,7 +17,6 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
-
 use XoopsModules\News;
 
 error_reporting(0);

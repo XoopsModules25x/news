@@ -17,7 +17,6 @@
  * @author         XOOPS Development Team
  */
 
-
 use XoopsModules\News;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -69,7 +68,7 @@ function b_news_top_show($options)
         $perm_verified   = true;
         $permittedtopics = News\Utility::getMyItemIds();
         $permstory       = new \XoopsModules\News\NewsStory($options[6]);
-        if (!in_array($permstory->topicid(), $permittedtopics)) {
+        if (!in_array($permstory->topicid(), $permittedtopics, true)) {
             $usespotlight = false;
             $news_visible = false;
             $topicstitles = [];
@@ -82,7 +81,7 @@ function b_news_top_show($options)
         $permittedtopics = News\Utility::getMyItemIds();
         $topics          = array_slice($options, 14);
         foreach ($topics as $onetopic) {
-            if (in_array($onetopic, $permittedtopics)) {
+            if (in_array($onetopic, $permittedtopics, true)) {
                 $topics2[] = $onetopic;
             }
         }
@@ -101,7 +100,7 @@ function b_news_top_show($options)
         $defcolors[8] = ['#F90', '#FFFFFF', '#F90', '#930', '#C60']; // ZDnet
 
         $myurl = $_SERVER['PHP_SELF'];
-        if ('/' === substr($myurl, strlen($myurl) - 1, 1)) {
+        if ('/' === mb_substr($myurl, mb_strlen($myurl) - 1, 1)) {
             $myurl .= 'index.php';
         }
         $myurl .= '?';
@@ -138,7 +137,7 @@ function b_news_top_show($options)
             if (!$perm_verified) {
                 $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new \XoopsModules\News\NewsStory($options[6]);
-                if (!in_array($permstory->topicid(), $permittedtopics)) {
+                if (!in_array($permstory->topicid(), $permittedtopics, true)) {
                     $usespotlight = false;
                     $topicstitles = [];
                 }
@@ -168,7 +167,7 @@ function b_news_top_show($options)
                     $tabs[] = [
                         'id'      => $onetopic,
                         'title'   => $topicstitles[$onetopic]['title'],
-                        'picture' => $topicstitles[$onetopic]['picture']
+                        'picture' => $topicstitles[$onetopic]['picture'],
                     ];
                 }
             }
@@ -196,7 +195,7 @@ function b_news_top_show($options)
                 $stories = \XoopsModules\News\NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
                 if (count($stories) > 0) {
                     $firststory = $stories[0];
-                    $tmpstory = new \XoopsModules\News\NewsStory($firststory->storyid());
+                    $tmpstory   = new \XoopsModules\News\NewsStory($firststory->storyid());
                 } else {
                     $block['use_spotlight'] = false;
                 }
@@ -261,7 +260,7 @@ function b_news_top_show($options)
                 foreach ($stories as $key => $story) {
                     $news  = [];
                     $title = $story->title();
-                    if (strlen($title) > $options[2]) {
+                    if (mb_strlen($title) > $options[2]) {
                         $title = xoops_substr($title, 0, $options[2] + 3);
                     }
                     $news['title']       = $title;
@@ -318,7 +317,7 @@ function b_news_top_show($options)
                     foreach ($stories as $key => $story) {
                         $news  = [];
                         $title = $story->title();
-                        if (strlen($title) > $options[2]) {
+                        if (mb_strlen($title) > $options[2]) {
                             $title = News\Utility::truncateTagSafe($title, $options[2] + 3);
                         }
                         if ('' !== $options[7]) {
@@ -390,7 +389,7 @@ function b_news_top_show($options)
             $block['color5'] = $options[13];
         }
     } else { // ************************ Classical view **************************************************************************************************************
-        $tmpstory = new \XoopsModules\News\NewsStory;
+        $tmpstory = new \XoopsModules\News\NewsStory();
         if (isset($options[14]) && 0 == $options[14]) {
             $stories = \XoopsModules\News\NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
         } else {
@@ -406,7 +405,7 @@ function b_news_top_show($options)
         foreach ($stories as $key => $story) {
             $news  = [];
             $title = $story->title();
-            if (strlen($title) > $options[2]) {
+            if (mb_strlen($title) > $options[2]) {
                 $title = xoops_substr($title, 0, $options[2] + 3);
             }
 
@@ -418,7 +417,7 @@ function b_news_top_show($options)
                 $visible   = true;
                 if ($restricted) {
                     $permittedtopics = News\Utility::getMyItemIds();
-                    if (!in_array($story->topicid(), $permittedtopics)) {
+                    if (!in_array($story->topicid(), $permittedtopics, true)) {
                         $visible = false;
                     }
                 }
@@ -501,7 +500,7 @@ function b_news_top_show($options)
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
                 $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new \XoopsModules\News\NewsStory($options[6]);
-                if (!in_array($permstory->topicid(), $permittedtopics)) {
+                if (!in_array($permstory->topicid(), $permittedtopics, true)) {
                     $visible = false;
                 }
                 unset($permstory);
@@ -583,7 +582,7 @@ function b_news_top_show($options)
 function b_news_top_edit($options)
 {
     global $xoopsDB;
-    $tmpstory = new \XoopsModules\News\NewsStory;
+    $tmpstory = new \XoopsModules\News\NewsStory();
     $form     = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";
     $form     .= "<option value='published'";
     if ('published' === $options[0]) {
@@ -666,9 +665,9 @@ function b_news_top_edit($options)
     $form .= "</table>\n";
 
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
-//    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $topics_arr = [];
-//    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
     $xt         = new \XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr = $xt->getChildTreeArray(0, 'topic_title');
     $size       = count($options);

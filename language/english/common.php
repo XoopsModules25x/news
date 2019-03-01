@@ -17,9 +17,8 @@
  * @since           3.23
  * @author          Xoops Development Team
  */
-
 $moduleDirName      = basename(dirname(dirname(__DIR__)));
-$moduleDirNameUpper = strtoupper($moduleDirName);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 define('CO_' . $moduleDirNameUpper . '_GDLIBSTATUS', 'GD library support: ');
 define('CO_' . $moduleDirNameUpper . '_GDLIBVERSION', 'GD Library version: ');
@@ -40,7 +39,6 @@ define('CO_' . $moduleDirNameUpper . '_UPLOADPATHDSC', 'Note. Upload path *MUST*
 define('CO_' . $moduleDirNameUpper . '_PRINT', "<span style='font-weight: bold;'>Print</span>");
 define('CO_' . $moduleDirNameUpper . '_PDF', "<span style='font-weight: bold;'>Create PDF</span>");
 
-
 define('CO_' . $moduleDirNameUpper . '_UPGRADEFAILED0', "Update failed - couldn't rename field '%s'");
 define('CO_' . $moduleDirNameUpper . '_UPGRADEFAILED1', "Update failed - couldn't add new fields");
 define('CO_' . $moduleDirNameUpper . '_UPGRADEFAILED2', "Update failed - couldn't rename table '%s'");
@@ -56,10 +54,9 @@ define('CO_' . $moduleDirNameUpper . '_ERROR_BAD_DEL_PATH', 'Could not delete %s
 define('CO_' . $moduleDirNameUpper . '_ERROR_BAD_REMOVE', 'Could not delete %s');
 define('CO_' . $moduleDirNameUpper . '_ERROR_NO_PLUGIN', 'Could not load plugin');
 
-
 //Help
 define('CO_' . $moduleDirNameUpper . '_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('CO_' . $moduleDirNameUpper . '_HELP_HEADER', __DIR__.'/help/helpheader.tpl');
+define('CO_' . $moduleDirNameUpper . '_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('CO_' . $moduleDirNameUpper . '_BACK_2_ADMIN', 'Back to Administration of ');
 define('CO_' . $moduleDirNameUpper . '_OVERVIEW', 'Overview');
 
@@ -81,9 +78,9 @@ define('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_SUCCESS', 'Export DB S
 define('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA_ERROR', 'ERROR: Export of DB Schema to YAML failed');
 
 //letter choice
-define('CO_'.$moduleDirNameUpper.'_'.'BROWSETOTOPIC', "<span style='font-weight: bold;'>Browse items alphabetically</span>");
-define('CO_'.$moduleDirNameUpper.'_'.'OTHER', 'Other');
-define('CO_'.$moduleDirNameUpper.'_'.'ALL', 'All');
+define('CO_' . $moduleDirNameUpper . '_' . 'BROWSETOTOPIC', "<span style='font-weight: bold;'>Browse items alphabetically</span>");
+define('CO_' . $moduleDirNameUpper . '_' . 'OTHER', 'Other');
+define('CO_' . $moduleDirNameUpper . '_' . 'ALL', 'All');
 
 // block defines
 define('CO_' . $moduleDirNameUpper . '_' . 'ACCESSRIGHTS', 'Access Rights');
@@ -106,14 +103,15 @@ define('CO_' . $moduleDirNameUpper . '_' . 'PERMISSIONS', 'Permissions');
 define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS', 'Blocks Admin');
 define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_DESC', 'Blocks/Group Admin');
 
-define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_MANAGMENT', 'Manage');
-define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_ADDBLOCK', 'Add a new block');
-define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_EDITBLOCK', 'Edit a block');
-define('CO_' . $moduleDirNameUpper . '_' .'BLOCKS_CLONEBLOCK', 'Clone a block');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_MANAGMENT', 'Manage');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_ADDBLOCK', 'Add a new block');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_EDITBLOCK', 'Edit a block');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_CLONEBLOCK', 'Clone a block');
 
 //myblocksadmin
 define('CO_' . $moduleDirNameUpper . '_' . 'AGDS', 'Admin Groups');
 define('CO_' . $moduleDirNameUpper . '_' . 'BCACHETIME', 'Cache Time');
+define('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS_ADMIN', 'Blocks Admin');
 
 //Template Admin
 define('CO_' . $moduleDirNameUpper . '_' . 'TPLSETS', 'Template Management');
@@ -122,3 +120,12 @@ define('CO_' . $moduleDirNameUpper . '_' . 'FILENAME', 'File Name');
 
 //Menu
 define('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE', 'Migrate');
+define('CO_' . $moduleDirNameUpper . '_' . 'FOLDER_YES', 'Folder "%s" exist');
+define('CO_' . $moduleDirNameUpper . '_' . 'FOLDER_NO', 'Folder "%s" does not exist. Create the specified folder with CHMOD 777.');
+define('CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS', 'Show Development Tools Button?');
+define('CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS_DESC', 'If yes, the "Migrate" Tab and other Development tools will be visible to the Admin.');
+
+
+//Latest Version Check
+define('CO_' . $moduleDirNameUpper . '_' . 'NEW_VERSION', 'New Version: ');
+

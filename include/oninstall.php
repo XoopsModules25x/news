@@ -20,9 +20,8 @@
 use XoopsModules\News;
 
 /**
- *
  * Prepares system prior to attempting to install module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to install, false if not
  */
@@ -30,12 +29,12 @@ function xoops_module_pre_install_news(\XoopsModule $module)
 {
     require_once dirname(__DIR__) . '/preloads/autoloader.php';
     /** @var News\Utility $utility */
-    $utility = new \XoopsModules\News\Utility();
+    $utility      = new \XoopsModules\News\Utility();
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
 
-    if (false !== $xoopsSuccess && false !==  $phpSuccess) {
-        $moduleTables =& $module->getInfo('tables');
+    if (false !== $xoopsSuccess && false !== $phpSuccess) {
+        $moduleTables = &$module->getInfo('tables');
         foreach ($moduleTables as $table) {
             $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
         }
@@ -45,21 +44,20 @@ function xoops_module_pre_install_news(\XoopsModule $module)
 }
 
 /**
- *
  * Performs tasks required during installation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if installation successful, false if not
  */
 function xoops_module_install_news(\XoopsModule $module)
 {
-    require_once   dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    require_once   dirname(__DIR__) . '/include/config.php';
+    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+    require_once dirname(__DIR__) . '/include/config.php';
 
     $moduleDirName = basename(dirname(__DIR__));
 
     /** @var News\Helper $helper */
-    $helper = News\Helper::getInstance();
+    $helper       = News\Helper::getInstance();
     $utility      = new \XoopsModules\News\Utility();
     $configurator = new \XoopsModules\News\Common\Configurator();
     // Load language files
@@ -68,8 +66,8 @@ function xoops_module_install_news(\XoopsModule $module)
 
     // default Permission Settings ----------------------
     global $xoopsModule;
-    $moduleId     = $xoopsModule->getVar('mid');
-    $moduleId2    = $helper->getModule()->mid();
+    $moduleId         = $xoopsModule->getVar('mid');
+    // $moduleId2        = $helper->getModule()->mid();
     $grouppermHandler = xoops_getHandler('groupperm');
     // access rights ------------------------------------------
     $grouppermHandler->addRight($moduleDirName . '_approve', 1, XOOPS_GROUP_ADMIN, $moduleId);
@@ -88,15 +86,15 @@ function xoops_module_install_news(\XoopsModule $module)
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file =  dirname(__DIR__) . '/assets/images/blank.png';
+        $file = dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utility::copyFile($file, $dest);
         }
     }
     //delete .html entries from the tpl table
-$sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $xoopsModule->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
-$GLOBALS['xoopsDB']->queryF($sql);
+    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $xoopsModule->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
+    $GLOBALS['xoopsDB']->queryF($sql);
 
     return true;
 }

@@ -57,7 +57,7 @@ class XoopsPageNav
         $this->total   = (int)$total_items;
         $this->perpage = (int)$items_perpage;
         $this->current = (int)$current_start;
-        if ('' !== $extra_arg && ('&amp;' !== substr($extra_arg, -5) || '&' !== substr($extra_arg, -1))) {
+        if ('' !== $extra_arg && ('&amp;' !== mb_substr($extra_arg, -5) || '&' !== mb_substr($extra_arg, -1))) {
             $extra_arg .= '&amp;';
         }
         $this->url = $_SERVER['PHP_SELF'] . '?' . $extra_arg . trim($start_name) . '=';
@@ -66,7 +66,7 @@ class XoopsPageNav
     /**
      * Create text navigation
      *
-     * @param integer $offset
+     * @param int $offset
      *
      * @return string
      **/
@@ -111,7 +111,7 @@ class XoopsPageNav
     /**
      * Create a navigational dropdown list
      *
-     * @param boolean $showbutton Show the "Go" button?
+     * @param bool $showbutton Show the "Go" button?
      *
      * @return string
      **/
@@ -148,8 +148,8 @@ class XoopsPageNav
     /**
      * Create an enhanced navigational dropdown list
      *
-     * @param boolean $showbutton Show the "Go" button?
-     * @param null    $titles
+     * @param bool $showbutton Show the "Go" button?
+     * @param null $titles
      *
      * @return string
      */
@@ -191,7 +191,7 @@ class XoopsPageNav
     /**
      * Create navigation with images
      *
-     * @param integer $offset
+     * @param int $offset
      *
      * @return string
      **/

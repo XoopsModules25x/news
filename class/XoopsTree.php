@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /**
  * XOOPS tree handler
@@ -40,6 +42,7 @@ class XoopsTree
 
     //constructor of class XoopsTree
     //sets the names of table, unique id, and parend id
+
     /**
      * @param $table_name
      * @param $id_name
@@ -165,6 +168,7 @@ class XoopsTree
 
     //generates path from the root id to a given id($sel_id)
     // the path is delimetered with "/"
+
     /**
      * @param        $sel_id
      * @param        $title
@@ -194,6 +198,7 @@ class XoopsTree
     //makes a nicely ordered selection box
     //$preset_id is used to specify a preselected item
     //set $none to 1 to add a option with value 0
+
     /**
      * @param        $title
      * @param string $order
@@ -275,6 +280,7 @@ class XoopsTree
 
     //generates id path from the root id to a given id
     // the path is delimetered with "/"
+
     /**
      * @param        $sel_id
      * @param string $path

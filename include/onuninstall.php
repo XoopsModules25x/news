@@ -12,11 +12,10 @@ use XoopsModules\News;
 
 /**
  * Prepares system prior to attempting to uninstall module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if ready to uninstall, false if not
  */
-
 function xoops_module_pre_uninstall_news(\XoopsModule $module)
 {
     // Do some synchronization
@@ -24,28 +23,25 @@ function xoops_module_pre_uninstall_news(\XoopsModule $module)
 }
 
 /**
- *
  * Performs tasks required during uninstallation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if uninstallation successful, false if not
  */
 function xoops_module_uninstall_news(\XoopsModule $module)
 {
-//    return true;
+    //    return true;
 
-    $moduleDirName = basename(dirname(__DIR__));
-    $moduleDirNameUpper = strtoupper($moduleDirName);
+    $moduleDirName      = basename(dirname(__DIR__));
+    $moduleDirNameUpper = mb_strtoupper($moduleDirName);
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
 
     /** @var News\Utility $utility */
-    $utility     = new \XoopsModules\News\Utility();
-
+    $utility = new \XoopsModules\News\Utility();
 
     $success = true;
     $helper->loadLanguage('admin');
-
 
     //------------------------------------------------------------------
     // Remove uploads folder (and all subfolders) if they exist

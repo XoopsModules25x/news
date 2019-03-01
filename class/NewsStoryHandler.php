@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\News;
+<?php
+
+namespace XoopsModules\News;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -22,7 +24,6 @@ use XoopsModules\News;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
@@ -31,7 +32,6 @@ require_once dirname(__DIR__) . '/preloads/autoloader.php';
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('main');
-
 
 /**
  * Class news_NewsStoryHandler

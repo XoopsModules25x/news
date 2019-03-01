@@ -44,12 +44,12 @@ $xt               = new  \XoopsModules\News\NewsTopic();
 $restricted       = News\Utility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
-    /** @var XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
-    $newsModule    = $moduleHandler->getByDirname('news');
-    $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $grouppermHandler  = xoops_getHandler('groupperm');
-    $topics        = $grouppermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+    /** @var \XoopsModuleHandler $moduleHandler */
+    $moduleHandler    = xoops_getHandler('module');
+    $newsModule       = $moduleHandler->getByDirname('news');
+    $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $topics           = $grouppermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
     if (count($topics) > 0) {
         $topics = implode(',', $topics);
         $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -76,7 +76,7 @@ if (is_array($topics_arr) && count($topics_arr)) {
             'news_count'  => $count,
             'topic_color' => '#' . $onetopic['topic_color'],
             'prefix'      => $onetopic['prefix'],
-            'title'       => $myts->displayTarea($onetopic['topic_title'])
+            'title'       => $myts->displayTarea($onetopic['topic_title']),
         ];
     }
 }
