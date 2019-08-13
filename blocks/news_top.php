@@ -68,7 +68,7 @@ function b_news_top_show($options)
         $perm_verified   = true;
         $permittedtopics = News\Utility::getMyItemIds();
         $permstory       = new \XoopsModules\News\NewsStory($options[6]);
-        if (!in_array($permstory->topicid(), $permittedtopics, true)) {
+        if (!in_array($permstory->topicid(), $permittedtopics)) {
             $usespotlight = false;
             $news_visible = false;
             $topicstitles = [];
@@ -81,7 +81,7 @@ function b_news_top_show($options)
         $permittedtopics = News\Utility::getMyItemIds();
         $topics          = array_slice($options, 14);
         foreach ($topics as $onetopic) {
-            if (in_array($onetopic, $permittedtopics, true)) {
+            if (in_array($onetopic, $permittedtopics)) {
                 $topics2[] = $onetopic;
             }
         }
@@ -137,7 +137,7 @@ function b_news_top_show($options)
             if (!$perm_verified) {
                 $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new \XoopsModules\News\NewsStory($options[6]);
-                if (!in_array($permstory->topicid(), $permittedtopics, true)) {
+                if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $usespotlight = false;
                     $topicstitles = [];
                 }
@@ -417,7 +417,7 @@ function b_news_top_show($options)
                 $visible   = true;
                 if ($restricted) {
                     $permittedtopics = News\Utility::getMyItemIds();
-                    if (!in_array($story->topicid(), $permittedtopics, true)) {
+                    if (!in_array($story->topicid(), $permittedtopics)) {
                         $visible = false;
                     }
                 }
@@ -500,7 +500,7 @@ function b_news_top_show($options)
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
                 $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new \XoopsModules\News\NewsStory($options[6]);
-                if (!in_array($permstory->topicid(), $permittedtopics, true)) {
+                if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $visible = false;
                 }
                 unset($permstory);

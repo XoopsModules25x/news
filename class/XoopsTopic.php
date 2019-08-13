@@ -155,7 +155,7 @@ class XoopsTopic
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $moderate_topics, true)) {
+                        if (!in_array($p_topic, $moderate_topics)) {
                             $add = false;
                             continue;
                         }
@@ -175,7 +175,7 @@ class XoopsTopic
                     $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $submit_topics, true)) {
+                        if (!in_array($p_topic, $submit_topics)) {
                             $add = false;
                             continue;
                         }
@@ -195,7 +195,7 @@ class XoopsTopic
                     $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $read_topics, true)) {
+                        if (!in_array($p_topic, $read_topics)) {
                             $add = false;
                             continue;
                         }

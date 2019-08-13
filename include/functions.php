@@ -87,7 +87,7 @@ function news_updaterating($storyid)
     $voteresult  = $xoopsDB->query($query);
     $votesDB     = $xoopsDB->getRowsNum($voteresult);
     $totalrating = 0;
-    while (false !== (list($rating) = $xoopsDB->fetchRow($voteresult))) {
+    while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
@@ -629,7 +629,7 @@ function news_is_admin_group()
 {
     global $xoopsUser, $xoopsModule;
     if (is_object($xoopsUser)) {
-        if (in_array('1', $xoopsUser->getGroups(), true)) {
+        if (in_array('1', $xoopsUser->getGroups())) {
             return true;
         }
         if ($xoopsUser->isAdmin($xoopsModule->mid())) {

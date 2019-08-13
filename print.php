@@ -87,9 +87,8 @@ function PrintPage()
     global $xoopsConfig, $xoopsModule, $story, $xoops_meta_keywords, $xoops_meta_description;
     $myts     = \MyTextSanitizer::getInstance();
     $datetime = formatTimestamp($story->published(), News\Utility::getModuleOption('dateformat')); ?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
+    <!DOCTYPE html>
+<html xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
     <?php
     echo "<head>\n";
     echo '<title>' . $myts->htmlSpecialChars($story->title()) . ' - ' . _NW_PRINTER . ' - ' . $myts->htmlSpecialChars($story->topic_title()) . ' - ' . $xoopsConfig['sitename'] . '</title>';

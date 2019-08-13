@@ -138,7 +138,7 @@ class NewsTopic extends XoopsTopic
         if ($none) {
             $outbuffer .= "<option value='0'>----</option>\n";
         }
-        while (false !== (list($catid, $name) = $this->db->fetchRow($result))) {
+        while (list($catid, $name) = $this->db->fetchRow($result)) {
             $sel = '';
             if ($catid == $preset_id) {
                 $sel = ' selected';
@@ -394,7 +394,7 @@ class NewsTopic extends XoopsTopic
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $moderate_topics, true)) {
+                        if (!in_array($p_topic, $moderate_topics)) {
                             $add = false;
                             continue;
                         }
@@ -414,7 +414,7 @@ class NewsTopic extends XoopsTopic
                     $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $submit_topics, true)) {
+                        if (!in_array($p_topic, $submit_topics)) {
                             $add = false;
                             continue;
                         }
@@ -434,7 +434,7 @@ class NewsTopic extends XoopsTopic
                     $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $read_topics, true)) {
+                        if (!in_array($p_topic, $read_topics)) {
                             $add = false;
                             continue;
                         }

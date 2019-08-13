@@ -240,7 +240,7 @@ class NewsStory extends XoopsStory
             if (!is_array($topic)) {
                 if ($checkRight) {
                     $topics = News\Utility::getMyItemIds('news_view');
-                    if (!in_array($topic, $topics, true)) {
+                    if (!in_array($topic, $topics)) {
                         return null;
                     }
                     $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
@@ -1269,7 +1269,7 @@ class NewsStory extends XoopsStory
             if (!is_array($topic)) {
                 if ($checkRight) {
                     $topics = News\Utility::getMyItemIds('news_view');
-                    if (!in_array($topic, $topics, true)) {
+                    if (!in_array($topic, $topics)) {
                         return null;
                     }
                     $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
