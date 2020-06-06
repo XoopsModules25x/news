@@ -1174,7 +1174,7 @@ function topicsmanager()
     }
     $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"topic_imgurl\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
     $imgtray->addElement($imageselect, false);
-    $imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
+    $imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . XOOPS_URL . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
 
     $uploadfolder = sprintf(_AM_UPLOAD_WARNING, XOOPS_URL . '/uploads/news/image');
     $fileseltray  = new XoopsFormElementTray('', '<br>');
