@@ -22,7 +22,7 @@ $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.72;
 $modversion['module_status'] = 'Beta 2';
-$modversion['release_date']  = '2017/05/20';
+$modversion['release_date']  = '2020/06/06';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
