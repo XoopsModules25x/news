@@ -245,11 +245,11 @@ class XoopsTopic
         switch ($format) {
             case 'S':
             case 'E':
-                $title = $myts->htmlSpecialChars($this->topic_title);
+                $title = htmlspecialchars($this->topic_title);
                 break;
             case 'P':
             case 'F':
-                $title = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->topic_title));
+                $title = htmlspecialchars($myts->stripSlashesGPC($this->topic_title));
                 break;
         }
 
@@ -267,11 +267,11 @@ class XoopsTopic
         switch ($format) {
             case 'S':
             case 'E':
-                $imgurl = $myts->htmlSpecialChars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'P':
             case 'F':
-                $imgurl = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->topic_imgurl));
+                $imgurl = htmlspecialchars($myts->stripSlashesGPC($this->topic_imgurl));
                 break;
         }
 
@@ -392,7 +392,7 @@ class XoopsTopic
         $myts   = \MyTextSanitizer::getInstance();
         while (false !== ($myrow = $this->db->fetchArray($result))) {
             $ret[$myrow['topic_id']] = [
-                'title' => $myts->htmlSpecialChars($myrow['topic_title']),
+                'title' => htmlspecialchars($myrow['topic_title']),
                 'pid'   => $myrow['topic_pid'],
             ];
         }

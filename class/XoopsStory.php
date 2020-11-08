@@ -424,11 +424,11 @@ class XoopsStory
         switch ($format) {
             case 'Show':
             case 'Edit':
-                $title = $myts->htmlSpecialChars($this->title);
+                $title = htmlspecialchars($this->title);
                 break;
             case 'Preview':
             case 'InForm':
-                $title = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->title));
+                $title = htmlspecialchars($myts->stripSlashesGPC($this->title));
                 break;
         }
 

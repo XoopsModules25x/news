@@ -180,7 +180,7 @@ class NewsStory extends XoopsStory
         if ($result) {
             $myts = \MyTextSanitizer::getInstance();
             while (false !== ($row = $db->fetchArray($result))) {
-                $ret = ['storyid' => $row['storyid'], 'title' => $myts->htmlSpecialChars($row['title'])];
+                $ret = ['storyid' => $row['storyid'], 'title' => htmlspecialchars($row['title'])];
             }
         }
 
@@ -282,7 +282,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -326,7 +326,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -392,7 +392,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -510,7 +510,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -536,7 +536,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -580,7 +580,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -730,18 +730,18 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $imgurl = $myts->htmlSpecialChars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'E':
-                $imgurl = $myts->htmlSpecialChars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'P':
                 $imgurl = $myts->stripSlashesGPC($this->topic_imgurl);
-                $imgurl = $myts->htmlSpecialChars($imgurl);
+                $imgurl = htmlspecialchars($imgurl);
                 break;
             case 'F':
                 $imgurl = $myts->stripSlashesGPC($this->topic_imgurl);
-                $imgurl = $myts->htmlSpecialChars($imgurl);
+                $imgurl = htmlspecialchars($imgurl);
                 break;
         }
 
@@ -758,18 +758,18 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $title = $myts->htmlSpecialChars($this->topic_title);
+                $title = htmlspecialchars($this->topic_title);
                 break;
             case 'E':
-                $title = $myts->htmlSpecialChars($this->topic_title);
+                $title = htmlspecialchars($this->topic_title);
                 break;
             case 'P':
                 $title = $myts->stripSlashesGPC($this->topic_title);
-                $title = $myts->htmlSpecialChars($title);
+                $title = htmlspecialchars($title);
                 break;
             case 'F':
                 $title = $myts->stripSlashesGPC($this->topic_title);
-                $title = $myts->htmlSpecialChars($title);
+                $title = htmlspecialchars($title);
                 break;
         }
 
@@ -1047,7 +1047,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 
@@ -1252,14 +1252,14 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
             case 'S':
-                $description = $myts->htmlSpecialChars($this->description);
+                $description = htmlspecialchars($this->description);
                 break;
             case 'P':
             case 'F':
-                $description = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->description));
+                $description = htmlspecialchars($myts->stripSlashesGPC($this->description));
                 break;
             case 'E':
-                $description = $myts->htmlSpecialChars($this->description);
+                $description = htmlspecialchars($this->description);
                 break;
         }
 
@@ -1276,14 +1276,14 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
             case 'S':
-                $keywords = $myts->htmlSpecialChars($this->keywords);
+                $keywords = htmlspecialchars($this->keywords);
                 break;
             case 'P':
             case 'F':
-                $keywords = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->keywords));
+                $keywords = htmlspecialchars($myts->stripSlashesGPC($this->keywords));
                 break;
             case 'E':
-                $keywords = $myts->htmlSpecialChars($this->keywords);
+                $keywords = htmlspecialchars($this->keywords);
                 break;
         }
 
@@ -1616,14 +1616,14 @@ class NewsStory extends XoopsStory
                 $hometext     = \str_replace('[summary]', $auto_summary, $hometext);
                 break;
             case 'Edit':
-                $hometext = $myts->htmlSpecialChars($this->hometext);
+                $hometext = htmlspecialchars($this->hometext);
                 break;
             case 'Preview':
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
                 $hometext = $myts->stripSlashesGPC($this->hometext);
-                $hometext = $myts->htmlSpecialChars($hometext);
+                $hometext = htmlspecialchars($hometext);
                 break;
         }
 
@@ -1655,14 +1655,14 @@ class NewsStory extends XoopsStory
                 $bodytext     = \str_replace('[summary]', $auto_summary, $bodytext);
                 break;
             case 'Edit':
-                $bodytext = $myts->htmlSpecialChars($this->bodytext);
+                $bodytext = htmlspecialchars($this->bodytext);
                 break;
             case 'Preview':
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
                 $bodytext = $myts->stripSlashesGPC($this->bodytext);
-                $bodytext = $myts->htmlSpecialChars($bodytext);
+                $bodytext = htmlspecialchars($bodytext);
                 break;
         }
 
@@ -1716,7 +1716,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[$myrow['storyid']] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = $myts->htmlSpecialChars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
             }
         }
 

@@ -293,19 +293,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filerealname = $myts->htmlSpecialChars($this->filerealname);
+                $filerealname = htmlspecialchars($this->filerealname);
                 break;
             case 'E':
             case 'Edit':
-                $filerealname = $myts->htmlSpecialChars($this->filerealname);
+                $filerealname = htmlspecialchars($this->filerealname);
                 break;
             case 'P':
             case 'Preview':
-                $filerealname = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->filerealname));
+                $filerealname = htmlspecialchars($myts->stripSlashesGPC($this->filerealname));
                 break;
             case 'F':
             case 'InForm':
-                $filerealname = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->filerealname));
+                $filerealname = htmlspecialchars($myts->stripSlashesGPC($this->filerealname));
                 break;
         }
 
@@ -323,19 +323,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filemimetype = $myts->htmlSpecialChars($this->mimetype);
+                $filemimetype = htmlspecialchars($this->mimetype);
                 break;
             case 'E':
             case 'Edit':
-                $filemimetype = $myts->htmlSpecialChars($this->mimetype);
+                $filemimetype = htmlspecialchars($this->mimetype);
                 break;
             case 'P':
             case 'Preview':
-                $filemimetype = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->mimetype));
+                $filemimetype = htmlspecialchars($myts->stripSlashesGPC($this->mimetype));
                 break;
             case 'F':
             case 'InForm':
-                $filemimetype = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->mimetype));
+                $filemimetype = htmlspecialchars($myts->stripSlashesGPC($this->mimetype));
                 break;
         }
 
@@ -353,19 +353,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filedownname = $myts->htmlSpecialChars($this->downloadname);
+                $filedownname = htmlspecialchars($this->downloadname);
                 break;
             case 'E':
             case 'Edit':
-                $filedownname = $myts->htmlSpecialChars($this->downloadname);
+                $filedownname = htmlspecialchars($this->downloadname);
                 break;
             case 'P':
             case 'Preview':
-                $filedownname = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->downloadname));
+                $filedownname = htmlspecialchars($myts->stripSlashesGPC($this->downloadname));
                 break;
             case 'F':
             case 'InForm':
-                $filedownname = $myts->htmlSpecialChars($myts->stripSlashesGPC($this->downloadname));
+                $filedownname = htmlspecialchars($myts->stripSlashesGPC($this->downloadname));
                 break;
         }
 

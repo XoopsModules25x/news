@@ -118,7 +118,7 @@ use XoopsModules\News\Files;
 use XoopsModules\News\Keyhighlighter;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -250,7 +250,7 @@ $highlight = false;
 $highlight = News\Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
-    $keywords      = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
+    $keywords      = htmlspecialchars(trim(urldecode($_GET['keywords'])));
     $h             = new Keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }

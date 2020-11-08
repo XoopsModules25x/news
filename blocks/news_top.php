@@ -572,11 +572,11 @@ function b_news_top_show($options)
     if (isset($permstory)) {
         unset($permstory);
     }
-    $block['lang_read_more']      = $myts->htmlSpecialChars(_MB_READMORE); // Read More...
-    $block['lang_orderby']        = $myts->htmlSpecialChars(_MB_NEWS_ORDER); // "Order By"
-    $block['lang_orderby_date']   = $myts->htmlSpecialChars(_MB_NEWS_DATE); // Published date
-    $block['lang_orderby_hits']   = $myts->htmlSpecialChars(_MB_NEWS_HITS); // Number of Hits
-    $block['lang_orderby_rating'] = $myts->htmlSpecialChars(_MB_NEWS_RATE); // Rating
+    $block['lang_read_more']      = htmlspecialchars(_MB_READMORE); // Read More...
+    $block['lang_orderby']        = htmlspecialchars(_MB_NEWS_ORDER); // "Order By"
+    $block['lang_orderby_date']   = htmlspecialchars(_MB_NEWS_DATE); // Published date
+    $block['lang_orderby_hits']   = htmlspecialchars(_MB_NEWS_HITS); // Number of Hits
+    $block['lang_orderby_rating'] = htmlspecialchars(_MB_NEWS_RATE); // Rating
     $block['sort']                = $options[0]; // "published" or "counter" or "rating"
 
     return $block;

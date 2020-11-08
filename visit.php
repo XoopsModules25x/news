@@ -21,7 +21,7 @@ use Xmf\Request;
 use XoopsModules\News\Files;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(__DIR__, 2) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -59,5 +59,5 @@ $url = XOOPS_UPLOAD_URL . '/' . $sfiles->getDownloadname();
 if (!preg_match("/^ed2k*:\/\//i", $url)) {
     header("Location: $url");
 }
-echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . $myts->htmlSpecialChars($url) . '"></meta></head><body></body></html>';
+echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . htmlspecialchars($url) . '"></meta></head><body></body></html>';
 exit();

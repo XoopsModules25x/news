@@ -328,7 +328,7 @@ function news_CreateMetaDatas($story = null)
         $content .= sprintf("<link rel=\"Contents\" href=\"%s\">\n", XOOPS_URL . '/modules/news/index.php');
         $content .= sprintf("<link rel=\"Search\" href=\"%s\">\n", XOOPS_URL . '/search.php');
         $content .= sprintf("<link rel=\"Glossary\" href=\"%s\">\n", XOOPS_URL . '/modules/news/archive.php');
-        $content .= sprintf("<link rel=\"%s\" href=\"%s\">\n", $myts->htmlSpecialChars(_NW_SUBMITNEWS), XOOPS_URL . '/modules/news/submit.php');
+        $content .= sprintf("<link rel=\"%s\" href=\"%s\">\n", htmlspecialchars(_NW_SUBMITNEWS), XOOPS_URL . '/modules/news/submit.php');
         $content .= sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\">\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
 
         // Create chapters
@@ -705,7 +705,7 @@ function news_make_infotips($text)
     if ($infotips > 0) {
         $myts = \MyTextSanitizer::getInstance();
 
-        return $myts->htmlSpecialChars(xoops_substr(strip_tags($text), 0, $infotips));
+        return htmlspecialchars(xoops_substr(strip_tags($text), 0, $infotips));
     }
 
     return null;

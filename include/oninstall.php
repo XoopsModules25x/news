@@ -52,7 +52,7 @@ function xoops_module_pre_install_news(\XoopsModule $module)
  */
 function xoops_module_install_news(\XoopsModule $module)
 {
-    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+    require_once dirname(__DIR__, 3) . '/mainfile.php';
 
     $moduleDirName = basename(dirname(__DIR__));
 

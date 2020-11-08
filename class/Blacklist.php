@@ -44,7 +44,7 @@ class Blacklist
             require_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
                 if ('' !== \xoops_trim($onekeyword)) {
-                    $onekeyword       = $myts->htmlSpecialChars($onekeyword);
+                    $onekeyword       = htmlspecialchars($onekeyword);
                     $ret[$onekeyword] = $onekeyword;
                 }
             }
@@ -83,13 +83,13 @@ class Blacklist
         $myts = \MyTextSanitizer::getInstance();
         if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
-                $onekeyword = \xoops_trim($myts->htmlSpecialChars($onekeyword));
+                $onekeyword = \xoops_trim(htmlspecialchars($onekeyword));
                 if ('' !== $onekeyword) {
                     $this->keywords[$onekeyword] = $onekeyword;
                 }
             }
         } else {
-            $keyword = \xoops_trim($myts->htmlSpecialChars($keyword));
+            $keyword = \xoops_trim(htmlspecialchars($keyword));
             if ('' !== $keyword) {
                 $this->keywords[$keyword] = $keyword;
             }
@@ -130,7 +130,7 @@ class Blacklist
         if (\is_file($filename)) {
             \unlink($filename);
         }
-        $fd = \fopen($filename, 'wb') or exit('Error unable to create the blacklist file');
+        $fd = \fopen($filename, 'wb') || exit('Error unable to create the blacklist file');
         \fwrite($fd, "<?php\n");
         \fwrite($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {

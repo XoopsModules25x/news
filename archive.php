@@ -72,7 +72,7 @@ use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(__DIR__, 2) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -110,7 +110,7 @@ if ('' === $dateformat) {
     $dateformat = 'm';
 }
 $myts = \MyTextSanitizer::getInstance();
-$xoopsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars(_NW_NEWSARCHIVES) . $pgtitle . ' - ' . $xoopsModule->name('s'));
+$xoopsTpl->assign('xoops_pagetitle', htmlspecialchars(_NW_NEWSARCHIVES) . $pgtitle . ' - ' . $xoopsModule->name('s'));
 
 $useroffset = '';
 if (is_object($xoopsUser)) {
