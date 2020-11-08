@@ -1,0 +1,30 @@
+-
+    topic_id: '1'
+    topic_pid: '0'
+    topic_imgurl: ''
+    topic_title: PHP
+    menu: '0'
+    topic_frontpage: '1'
+    topic_rssurl: ''
+    topic_description: 'Topics about PHP'
+    topic_color: FF0000
+-
+    topic_id: '2'
+    topic_pid: '0'
+    topic_imgurl: ''
+    topic_title: XOOPS
+    menu: '1'
+    topic_frontpage: '1'
+    topic_rssurl: ''
+    topic_description: 'Topics about XOOPS'
+    topic_color: 0000CC
+-
+    topic_id: '3'
+    topic_pid: '0'
+    topic_imgurl: ''
+    topic_title: Test1
+    menu: '0'
+    topic_frontpage: '1'
+    topic_rssurl: ''
+    topic_description: '<p>nthsnthnsthnts</p>'
+    topic_color: '000000'
