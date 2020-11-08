@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -24,11 +24,11 @@
  * You can enable and disable this feature with the module's option named "Enable RSS feeds per topics?"
  * The script uses the permissions to know what to display.
  *
- * @package       News
+ * @param type $nomvariable description
  * @author        Xoops Modules Dev Team
  * @copyright (c) XOOPS Project (https://xoops.org)
  *
- * @param type $nomvariable description
+ * @package       News
  */
 
 use XoopsModules\News;
@@ -98,13 +98,16 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
             $storytitle = $story->title();
             //if we are allowing html, we need to use htmlspecialchars or any bug will break the output
             $description = htmlspecialchars($story->hometext(), ENT_QUOTES | ENT_HTML5);
-            $tpl->append('items', [
-                'title'       => xoops_utf8_encode($storytitle),
-                'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
-                'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
-                'pubdate'     => formatTimestamp($story->published(), 'rss'),
-                'description' => xoops_utf8_encode($description),
-            ]);
+            $tpl->append(
+                'items',
+                [
+                    'title'       => xoops_utf8_encode($storytitle),
+                    'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
+                    'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
+                    'pubdate'     => formatTimestamp($story->published(), 'rss'),
+                    'description' => xoops_utf8_encode($description),
+                ]
+            );
         }
     }
 }

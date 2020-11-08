@@ -11,13 +11,13 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 use XoopsModules\News;
 
@@ -38,12 +38,13 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
+$moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname('news');
     $modid         = $module->getVar('mid');
     $searchparam   = '';
 
-    $grouppermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
     if (is_object($xoopsUser)) {
         $groups = $xoopsUser->getGroups();
     } else {

@@ -14,13 +14,13 @@ namespace XoopsModules\News;
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/Mimetype.php';
 
@@ -53,7 +53,7 @@ class Files
         $this->mimetype     = '';
         $this->downloadname = 'downloadfile';
         $this->counter      = 0;
-        if (is_array($fileid)) {
+        if (\is_array($fileid)) {
             $this->makeFile($fileid);
         } elseif (-1 != $fileid) {
             $this->getFile((int)$fileid);
@@ -70,26 +70,26 @@ class Files
     public function createUploadName($folder, $filename, $trimname = false)
     {
         $workingfolder = $folder;
-        if ('/' !== xoops_substr($workingfolder, mb_strlen($workingfolder) - 1, 1)) {
+        if ('/' !== \xoops_substr($workingfolder, mb_strlen($workingfolder) - 1, 1)) {
             $workingfolder .= '/';
         }
-        $ext  = basename($filename);
-        $ext  = explode('.', $ext);
-        $ext  = '.' . $ext[count($ext) - 1];
+        $ext  = \basename($filename);
+        $ext  = \explode('.', $ext);
+        $ext  = '.' . $ext[\count($ext) - 1];
         $true = true;
         while ($true) {
-            $ipbits = explode('.', $_SERVER['REMOTE_ADDR']);
-            list($usec, $sec) = explode(' ', microtime());
+            $ipbits = \explode('.', $_SERVER['REMOTE_ADDR']);
+            [$usec, $sec] = \explode(' ', \microtime());
 
             $usec *= 65536;
             $sec  = ((int)$sec) & 0xFFFF;
 
             if ($trimname) {
-                $uid = sprintf('%06x%04x%04x', ($ipbits[0] << 24) | ($ipbits[1] << 16) | ($ipbits[2] << 8) | $ipbits[3], $sec, $usec);
+                $uid = \sprintf('%06x%04x%04x', ($ipbits[0] << 24) | ($ipbits[1] << 16) | ($ipbits[2] << 8) | $ipbits[3], $sec, $usec);
             } else {
-                $uid = sprintf('%08x-%04x-%04x', ($ipbits[0] << 24) | ($ipbits[1] << 16) | ($ipbits[2] << 8) | $ipbits[3], $sec, $usec);
+                $uid = \sprintf('%08x-%04x-%04x', ($ipbits[0] << 24) | ($ipbits[1] << 16) | ($ipbits[2] << 8) | $ipbits[3], $sec, $usec);
             }
-            if (!file_exists($workingfolder . $uid . $ext)) {
+            if (!\file_exists($workingfolder . $uid . $ext)) {
                 $true = false;
             }
         }
@@ -106,7 +106,7 @@ class Files
     {
         $cmimetype   = new Mimetype();
         $workingfile = $this->downloadname;
-        if ('' !== xoops_trim($filename)) {
+        if ('' !== \xoops_trim($filename)) {
             $workingfile = $filename;
 
             return $cmimetype->getType($workingfile);
@@ -160,7 +160,7 @@ class Files
         $myts         = \MyTextSanitizer::getInstance();
         $fileRealName = $myts->addSlashes($this->filerealname);
         $downloadname = $myts->addSlashes($this->downloadname);
-        $date         = time();
+        $date         = \time();
         $mimetype     = $myts->addSlashes($this->mimetype);
         $counter      = (int)$this->counter;
         $storyid      = (int)$this->storyid;
@@ -190,8 +190,8 @@ class Files
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        if (file_exists($workdir . '/' . $this->downloadname)) {
-            unlink($workdir . '/' . $this->downloadname);
+        if (\is_file($workdir . '/' . $this->downloadname)) {
+            \unlink($workdir . '/' . $this->downloadname);
         }
 
         return true;
@@ -396,9 +396,9 @@ class Files
     public function getCountbyStories($stories)
     {
         $ret = [];
-        if (count($stories) > 0) {
+        if (\count($stories) > 0) {
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
-            $sql    .= implode(',', $stories) . ') GROUP BY storyid';
+            $sql    .= \implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
             while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $ret[$myrow['storyid']] = $myrow['cnt'];

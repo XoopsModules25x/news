@@ -11,7 +11,7 @@
 
 /**
  * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
@@ -27,9 +27,7 @@
  * @copyright        (c) XOOPS Project (https://xoops.org)
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
-/**
+ /**
  * Class XoopsPageNav
  */
 class XoopsPageNav
@@ -60,7 +58,7 @@ class XoopsPageNav
         if ('' !== $extra_arg && ('&amp;' !== mb_substr($extra_arg, -5) || '&' !== mb_substr($extra_arg, -1))) {
             $extra_arg .= '&amp;';
         }
-        $this->url = $_SERVER['PHP_SELF'] . '?' . $extra_arg . trim($start_name) . '=';
+        $this->url = $_SERVER['SCRIPT_NAME'] . '?' . $extra_arg . trim($start_name) . '=';
     }
 
     /**

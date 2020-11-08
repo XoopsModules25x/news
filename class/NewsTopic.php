@@ -14,7 +14,7 @@ namespace XoopsModules\News;
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -22,7 +22,7 @@ namespace XoopsModules\News;
 
 use XoopsModules\News;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
@@ -47,7 +47,7 @@ class NewsTopic extends XoopsTopic
         /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $this->db->prefix('news_topics');
-        if (is_array($topicid)) {
+        if (\is_array($topicid)) {
             $this->makeTopic($topicid);
         } elseif (0 != $topicid) {
             $this->getTopic((int)$topicid);
@@ -72,19 +72,19 @@ class NewsTopic extends XoopsTopic
         $selname = '',
         $onchange = '',
         $checkRight = false,
-        $perm_type = 'news_view')
-    {
+        $perm_type = 'news_view'
+    ) {
         $perms = '';
         if ($checkRight) {
             global $xoopsUser;
             /** @var \XoopsModuleHandler $moduleHandler */
-            $moduleHandler    = xoops_getHandler('module');
+            $moduleHandler    = \xoops_getHandler('module');
             $newsModule       = $moduleHandler->getByDirname('news');
-            $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-            $grouppermHandler = xoops_getHandler('groupperm');
+            $groups           = \is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+            $grouppermHandler = \xoops_getHandler('groupperm');
             $topics           = $grouppermHandler->getItemIds($perm_type, $groups, $newsModule->getVar('mid'));
-            if (count($topics) > 0) {
-                $topics = implode(',', $topics);
+            if (\count($topics) > 0) {
+                $topics = \implode(',', $topics);
                 $perms  = ' AND topic_id IN (' . $topics . ') ';
             } else {
                 return null;
@@ -121,8 +121,8 @@ class NewsTopic extends XoopsTopic
         $none,
         $sel_name,
         $onchange,
-        $perms)
-    {
+        $perms
+    ) {
         $myts      = \MyTextSanitizer::getInstance();
         $outbuffer = '';
         $outbuffer = "<select name='" . $sel_name . "'";
@@ -148,7 +148,7 @@ class NewsTopic extends XoopsTopic
             $sel       = '';
             $arr       = $this->getChildTreeArray($catid, $order, $perms);
             foreach ($arr as $option) {
-                $option['prefix'] = str_replace('.', '--', $option['prefix']);
+                $option['prefix'] = \str_replace('.', '--', $option['prefix']);
                 $catpath          = $option['prefix'] . '&nbsp;' . $myts->displayTarea($option[$title]);
 
                 if ($option['topic_id'] == $preset_id) {
@@ -185,7 +185,7 @@ class NewsTopic extends XoopsTopic
         }
         while (false !== ($row = $this->db->fetchArray($result))) {
             $row['prefix'] = $r_prefix . '.';
-            array_push($parray, $row);
+            \array_push($parray, $row);
             $parray = $this->getChildTreeArray($row['topic_id'], $order, $perms, $parray, $row['prefix']);
         }
 
@@ -199,7 +199,7 @@ class NewsTopic extends XoopsTopic
      */
     public function getVar($var)
     {
-        if (method_exists($this, $var)) {
+        if (\method_exists($this, $var)) {
             return $this->{$var}();
         }
 
@@ -208,7 +208,8 @@ class NewsTopic extends XoopsTopic
 
     /**
      * Get the total number of topics in the base
-     * @param  bool $checkRight
+     * @param bool $checkRight
+     * @return |null
      */
     public function getAllTopicsCount($checkRight = true)
     {
@@ -216,13 +217,13 @@ class NewsTopic extends XoopsTopic
         if ($checkRight) {
             global $xoopsUser;
             /** @var \XoopsModuleHandler $moduleHandler */
-            $moduleHandler    = xoops_getHandler('module');
+            $moduleHandler    = \xoops_getHandler('module');
             $newsModule       = $moduleHandler->getByDirname('news');
-            $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-            $grouppermHandler = xoops_getHandler('groupperm');
+            $groups           = \is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+            $grouppermHandler = \xoops_getHandler('groupperm');
             $topics           = $grouppermHandler->getItemIds('news_submit', $groups, $newsModule->getVar('mid'));
-            if (count($topics) > 0) {
-                $topics = implode(',', $topics);
+            if (\count($topics) > 0) {
+                $topics = \implode(',', $topics);
                 $perms  = ' WHERE topic_id IN (' . $topics . ') ';
             } else {
                 return null;
@@ -250,10 +251,10 @@ class NewsTopic extends XoopsTopic
         $sql   = 'SELECT * FROM ' . $table;
         if ($checkRight) {
             $topics = \XoopsModules\News\Utility::getMyItemIds($permission);
-            if (0 == count($topics)) {
+            if (0 == \count($topics)) {
                 return [];
             }
-            $topics = implode(',', $topics);
+            $topics = \implode(',', $topics);
             $sql    .= ' WHERE topic_id IN (' . $topics . ')';
         }
         $sql    .= ' ORDER BY topic_title';
@@ -274,7 +275,7 @@ class NewsTopic extends XoopsTopic
     public function getNewsCountByTopic()
     {
         $ret    = [];
-        $sql    = 'SELECT count(storyid) AS cpt, topicid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ') GROUP BY topicid';
+        $sql    = 'SELECT count(storyid) AS cpt, topicid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ') GROUP BY topicid';
         $result = $this->db->query($sql);
         while (false !== ($row = $this->db->fetchArray($result))) {
             $ret[$row['topicid']] = $row['cpt'];
@@ -291,7 +292,7 @@ class NewsTopic extends XoopsTopic
     public function getTopicMiniStats($topicid)
     {
         $ret          = [];
-        $sql          = 'SELECT count(storyid) AS cpt1, sum(counter) AS cpt2 FROM ' . $this->db->prefix('news_stories') . ' WHERE (topicid=' . $topicid . ') AND (published>0 AND published <= ' . time() . ') AND (expired = 0 OR expired > ' . time() . ')';
+        $sql          = 'SELECT count(storyid) AS cpt1, sum(counter) AS cpt2 FROM ' . $this->db->prefix('news_stories') . ' WHERE (topicid=' . $topicid . ') AND (published>0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
         $result       = $this->db->query($sql);
         $row          = $this->db->fetchArray($result);
         $ret['count'] = $row['cpt1'];
@@ -331,7 +332,7 @@ class NewsTopic extends XoopsTopic
      */
     public function makeTopic($array)
     {
-        if (is_array($array)) {
+        if (\is_array($array)) {
             foreach ($array as $key => $value) {
                 $this->$key = $value;
             }
@@ -351,7 +352,7 @@ class NewsTopic extends XoopsTopic
         $topic_rssurl      = $myts->addSlashes($this->topic_rssurl);
         $topic_color       = $myts->addSlashes($this->topic_color);
 
-        $dirname = basename(dirname(__DIR__));
+        $dirname = \basename(\dirname(__DIR__));
 
         if (isset($this->topic_title) && '' !== $this->topic_title) {
             $title = $myts->addSlashes($this->topic_title);
@@ -359,7 +360,7 @@ class NewsTopic extends XoopsTopic
         if (isset($this->topic_imgurl) && '' !== $this->topic_imgurl) {
             $imgurl = $myts->addSlashes($this->topic_imgurl);
         }
-        if (!isset($this->topic_pid) || !is_numeric($this->topic_pid)) {
+        if (!isset($this->topic_pid) || !\is_numeric($this->topic_pid)) {
             $this->topic_pid = 0;
         }
         $topic_frontpage = (int)$this->topic_frontpage;
@@ -367,11 +368,33 @@ class NewsTopic extends XoopsTopic
         if (empty($this->topic_id)) {
             $insert         = true;
             $this->topic_id = $this->db->genId($this->table . '_topic_id_seq');
-            $sql            = sprintf("INSERT INTO `%s` (topic_id, topic_pid, topic_imgurl, topic_title, menu, topic_description, topic_frontpage, topic_rssurl, topic_color) VALUES (%u, %u, '%s', '%s', %u, '%s', %d, '%s', '%s')", $this->table, (int)$this->topic_id, (int)$this->topic_pid, $imgurl,
-                                      $title, (int)$this->menu, $topic_description, $topic_frontpage, $topic_rssurl, $topic_color);
+            $sql            = \sprintf(
+                "INSERT INTO `%s` (topic_id, topic_pid, topic_imgurl, topic_title, menu, topic_description, topic_frontpage, topic_rssurl, topic_color) VALUES (%u, %u, '%s', '%s', %u, '%s', %d, '%s', '%s')",
+                $this->table,
+                (int)$this->topic_id,
+                (int)$this->topic_pid,
+                $imgurl,
+                $title,
+                (int)$this->menu,
+                $topic_description,
+                $topic_frontpage,
+                $topic_rssurl,
+                $topic_color
+            );
         } else {
-            $sql = sprintf("UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s', menu=%d, topic_description='%s', topic_frontpage=%d, topic_rssurl='%s', topic_color='%s' WHERE topic_id = %u", $this->table, (int)$this->topic_pid, $imgurl, $title, (int)$this->menu,
-                           $topic_description, $topic_frontpage, $topic_rssurl, $topic_color, (int)$this->topic_id);
+            $sql = \sprintf(
+                "UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s', menu=%d, topic_description='%s', topic_frontpage=%d, topic_rssurl='%s', topic_color='%s' WHERE topic_id = %u",
+                $this->table,
+                (int)$this->topic_pid,
+                $imgurl,
+                $title,
+                (int)$this->menu,
+                $topic_description,
+                $topic_frontpage,
+                $topic_rssurl,
+                $topic_color,
+                (int)$this->topic_id
+            );
         }
         if (!$result = $this->db->query($sql)) {
             // TODO: Replace with something else
@@ -388,13 +411,13 @@ class NewsTopic extends XoopsTopic
         if (true === $this->use_permission) {
             $xt            = new News\XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
-            if (!empty($this->m_groups) && is_array($this->m_groups)) {
+            if (!empty($this->m_groups) && \is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
                     $moderate_topics = \XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $moderate_topics)) {
+                        if (!\in_array($p_topic, $moderate_topics)) {
                             $add = false;
                             continue;
                         }
@@ -409,12 +432,12 @@ class NewsTopic extends XoopsTopic
                     }
                 }
             }
-            if (!empty($this->s_groups) && is_array($this->s_groups)) {
+            if (!empty($this->s_groups) && \is_array($this->s_groups)) {
                 foreach ($this->s_groups as $s_g) {
                     $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $submit_topics)) {
+                        if (!\in_array($p_topic, $submit_topics)) {
                             $add = false;
                             continue;
                         }
@@ -429,12 +452,12 @@ class NewsTopic extends XoopsTopic
                     }
                 }
             }
-            if (!empty($this->r_groups) && is_array($this->r_groups)) {
+            if (!empty($this->r_groups) && \is_array($this->r_groups)) {
                 foreach ($this->s_groups as $r_g) {
                     $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!in_array($p_topic, $read_topics)) {
+                        if (!\in_array($p_topic, $read_topics)) {
                             $add = false;
                             continue;
                         }
@@ -549,7 +572,7 @@ class NewsTopic extends XoopsTopic
      */
     public function topic_imgurl($format = 'S')
     {
-        if ('' === trim($this->topic_imgurl)) {
+        if ('' === \trim($this->topic_imgurl)) {
             $this->topic_imgurl = 'blank.png';
         }
         $myts = \MyTextSanitizer::getInstance();
@@ -583,11 +606,11 @@ class NewsTopic extends XoopsTopic
     {
         $myts = \MyTextSanitizer::getInstance();
         $sql  = 'SELECT topic_id, topic_title, topic_imgurl FROM ' . $this->table . ' WHERE ';
-        if (!is_array($topic)) {
+        if (!\is_array($topic)) {
             $sql .= ' topic_id=' . (int)$topic;
         } else {
-            if (count($topic) > 0) {
-                $sql .= ' topic_id IN (' . implode(',', $topic) . ')';
+            if (\count($topic) > 0) {
+                $sql .= ' topic_id IN (' . \implode(',', $topic) . ')';
             } else {
                 return null;
             }
@@ -609,7 +632,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return array|string
      */
-    public function &getTopicsList($frontpage = false, $perms = false)
+    public function getTopicsList($frontpage = false, $perms = false)
     {
         $sql = 'SELECT topic_id, topic_pid, topic_title, topic_color FROM ' . $this->table . ' WHERE 1 ';
         if ($frontpage) {
@@ -618,10 +641,10 @@ class NewsTopic extends XoopsTopic
         if ($perms) {
             //            $topicsids = [];
             $topicsids = \XoopsModules\News\Utility::getMyItemIds();
-            if (0 == count($topicsids)) {
+            if (0 == \count($topicsids)) {
                 return '';
             }
-            $topics = implode(',', $topicsids);
+            $topics = \implode(',', $topicsids);
             $sql    .= ' AND topic_id IN (' . $topics . ')';
         }
         $result = $this->db->query($sql);

@@ -163,9 +163,12 @@ define('_MI_NEWS_HELP', 'Help');
 define('_MI_NEWS_ABOUT', 'About');
 define('_MI_NEWS_HOME', 'Home');
 define('_MI_NEWS_UPGRADE', 'Upgrade');
-define('_MI_NEWS_DESCRIPTION', 'With this Xoops module, you can create an unlimited number of news articles on your site. <br><br>
+define(
+    '_MI_NEWS_DESCRIPTION',
+    'With this Xoops module, you can create an unlimited number of news articles on your site. <br><br>
 You can create all articles you want and organize them in topics.<br><br>
-With a very powerful permissions management, you can create groups authorized to submit articles and a group authorized to approve them and decide who can see what.');
+With a very powerful permissions management, you can create groups authorized to submit articles and a group authorized to approve them and decide who can see what.'
+);
 define('_MI_NEWS_SHARE_ME', 'Display share icons?');
 define('_MI_NEWS_SHARE_ME_DSC', 'Share icons to Facebook, Twitter, Google Plus');
 define('_MI_NEWS_SHOWICONS', 'Display item icons?');

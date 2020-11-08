@@ -1,4 +1,5 @@
 <?php
+
 /**
  * News functions
  *
@@ -10,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright   {@link https://xoops.org/ XOOPS Project}
- * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license     GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Voltan
  * @package     News
  * @param \XoopsModule $module
@@ -46,8 +47,10 @@ function xoops_module_pre_install_news(\XoopsModule $module)
 function xoops_module_install_news(\XoopsModule $module)
 {
     $module_id        = $module->getVar('mid');
-    $grouppermHandler = xoops_getHandler('groupperm');
-    $configHandler    = xoops_getHandler('config');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsConfigHandler $configHandler */
+$configHandler = xoops_getHandler('config');
 
     /**
      * Default public category permission mask

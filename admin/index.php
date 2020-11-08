@@ -2,7 +2,7 @@
 //
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
-// Copyright (c) 2000-2016 XOOPS.org                                             //
+// Copyright (c) 2000-2020 XOOPS.org                                             //
 // <https://xoops.org>                                                  //
 // ------------------------------------------------------------------------ //
 // This program is free software; you can redistribute it and/or modify     //
@@ -442,13 +442,17 @@ function confirmBeforePrune()
     if ($count) {
         $displaydate = formatTimestamp($timestamp, $dateformat);
         $msg         = sprintf(_AM_NEWS_PRUNE_CONFIRM, $displaydate, $count);
-        xoops_confirm([
-                          'op'            => 'prunenews',
-                          'expired'       => $expired,
-                          'pruned_topics' => $topiclist,
-                          'prune_date'    => $timestamp,
-                          'ok'            => 1,
-                      ], 'index.php', $msg);
+        xoops_confirm(
+            [
+                'op'            => 'prunenews',
+                'expired'       => $expired,
+                'pruned_topics' => $topiclist,
+                'prune_date'    => $timestamp,
+                'ok'            => 1,
+            ],
+            'index.php',
+            $msg
+        );
     } else {
         printf(_AM_NEWS_NOTHING_PRUNE);
     }
@@ -1187,9 +1191,11 @@ function topicsmanager()
     $sform->addElement($imgtray);
 
     // Permissions
-    $memberHandler    = xoops_getHandler('member');
+    /** @var \XoopsMemberHandler $memberHandler */
+$memberHandler = xoops_getHandler('member');
     $group_list       = $memberHandler->getGroupList();
-    $grouppermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
     $full_list        = array_keys($group_list);
 
     $groups_ids = [];
@@ -1292,7 +1298,8 @@ function modTopicS()
     $xt->store();
 
     // Permissions
-    $grouppermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
     $criteria         = new \CriteriaCompo();
     $criteria->add(new \Criteria('gperm_itemid', $xt->topic_id(), '='));
     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
@@ -1426,7 +1433,8 @@ function addTopic()
         }
         $xt->store();
         // Permissions
-        $grouppermHandler = xoops_getHandler('groupperm');
+        /** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
         if (\Xmf\Request::hasVar('groups_news_can_approve', 'POST')) {
             foreach ($_POST['groups_news_can_approve'] as $onegroup_id) {
                 $grouppermHandler->addRight('news_approve', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));
@@ -1535,8 +1543,16 @@ function getStats()
         $totals[2] += $attachedfiles;
         $totals[3] += $expired;
         $class     = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td></tr>\n", $url, $myts->displayTarea($data['topic_title']), $articles,
-               $views, $attachedfiles, $expired, $authors);
+        printf(
+            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td><td align='right'>%u</td></tr>\n",
+            $url,
+            $myts->displayTarea($data['topic_title']),
+            $articles,
+            $views,
+            $attachedfiles,
+            $expired,
+            $authors
+        );
     }
     $class = ('even' === $class) ? 'odd' : 'even';
     printf("<tr class='" . $class . "'><td align='center'><b>%s</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td align='right'><b>%u</b></td><td>&nbsp;</td>\n", _AM_NEWS_STATS2, $totals[0], $totals[1], $totals[2], $totals[3]);
@@ -1552,8 +1568,16 @@ function getStats()
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
-               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
+        printf(
+            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",
+            $url1,
+            $myts->displayTarea($data['topic_title']),
+            $url2,
+            $myts->displayTarea($data['title']),
+            $url3,
+            $myts->htmlSpecialChars($news->uname($data['uid'])),
+            $data['counter']
+        );
     }
     echo '</table>';
 
@@ -1566,8 +1590,16 @@ function getStats()
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
-               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), $data['counter']);
+        printf(
+            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",
+            $url1,
+            $myts->displayTarea($data['topic_title']),
+            $url2,
+            $myts->displayTarea($data['title']),
+            $url3,
+            $myts->htmlSpecialChars($news->uname($data['uid'])),
+            $data['counter']
+        );
     }
     echo '</table>';
 
@@ -1580,8 +1612,16 @@ function getStats()
         $url2  = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $storyid;
         $url3  = XOOPS_URL . '/userinfo.php?uid=' . $data['uid'];
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n", $url1, $myts->displayTarea($data['topic_title']), $url2,
-               $myts->displayTarea($data['title']), $url3, $myts->htmlSpecialChars($news->uname($data['uid'])), number_format($data['rating'], 2));
+        printf(
+            "<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n",
+            $url1,
+            $myts->displayTarea($data['topic_title']),
+            $url2,
+            $myts->displayTarea($data['title']),
+            $url3,
+            $myts->htmlSpecialChars($news->uname($data['uid'])),
+            number_format($data['rating'], 2)
+        );
     }
     echo '</table></div><br><br><br>';
 
@@ -1972,13 +2012,13 @@ switch ($op) {
 
         $adminObject->displayNavigation(basename(__FILE__));
 
-//check for latest release
-$newRelease = $utility::checkVerModule($helper);
-if (!empty($newRelease)) {
-    $adminObject->addItemButton($newRelease[0], $newRelease[1], 'download', 'style="color : Red"');
-}
+        //check for latest release
+        //$newRelease = $utility::checkVerModule($helper);
+        //if (!empty($newRelease)) {
+        //    $adminObject->addItemButton($newRelease[0], $newRelease[1], 'download', 'style="color : Red"');
+        //}
 
-//------------- Test Data ----------------------------
+        //------------- Test Data ----------------------------
 
         if ($helper->getConfig('displaySampleButton')) {
             xoops_loadLanguage('admin/modulesadmin', 'system');

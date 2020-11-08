@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright      XOOPS Project (https://xoops.org)
- * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
+ * @license        https://www.gnu.org/licenses/gpl-2.0.html GNU Public License
  * @package        news
  * @since          1.6.7
  * @author         XOOPS Development Team
@@ -45,7 +45,7 @@ $helper->loadLanguage('main');
 
 $myts = \MyTextSanitizer::getInstance();
 
-if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof \XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
     $xoopsTpl = new \XoopsTpl();
 }
@@ -54,7 +54,8 @@ $topicsHandler  = $helper->getHandler('NewsTopics');
 $storiesHandler = $helper->getHandler('NewsStories');
 
 if ($xoopsUser) {
-    $grouppermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
     if (!$grouppermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
         redirect_header(XOOPS_URL, 1, _NOPERM);
     }

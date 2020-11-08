@@ -2,7 +2,7 @@
 
 namespace XoopsModules\News;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * This file contains the Keyhighlighter class that highlight the chosen keyword in the current output buffer.
@@ -82,7 +82,7 @@ class Keyhighlighter
     {
         $patterns = [];
         if ($this->singlewords) {
-            $keywords = explode(' ', $this->preg_keywords);
+            $keywords = \explode(' ', $this->preg_keywords);
             foreach ($keywords as $keyword) {
                 $patterns[] = '/(?' . '>' . $keyword . '+)/si';
             }
@@ -94,9 +94,9 @@ class Keyhighlighter
 
         foreach ($patterns as $pattern) {
             if (null !== $this->replace_callback) {
-                $result = preg_replace_callback($pattern, $this->replace_callback, $result);
+                $result = \preg_replace_callback($pattern, $this->replace_callback, $result);
             } else {
-                $result = preg_replace($pattern, '<span class="highlightedkey">\\0</span>', $result);
+                $result = \preg_replace($pattern, '<span class="highlightedkey">\\0</span>', $result);
             }
         }
 
@@ -111,9 +111,9 @@ class Keyhighlighter
     public function highlight($buffer)
     {
         $buffer              = '>' . $buffer . '<';
-        $this->preg_keywords = preg_replace('/[^\w ]/si', '', $this->keywords);
-        $buffer              = preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", [&$this, 'replace'], $buffer);
-        $buffer              = xoops_substr($buffer, 1, -1);
+        $this->preg_keywords = \preg_replace('/[^\w ]/si', '', $this->keywords);
+        $buffer              = \preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", [&$this, 'replace'], $buffer);
+        $buffer              = \xoops_substr($buffer, 1, -1);
 
         return $buffer;
     }

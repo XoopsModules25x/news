@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -61,7 +61,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
         // Retreive News module's ID
         /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler = xoops_getHandler('module');
+$moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $news_mid      = $newsModule->getVar('mid');
         // Retreive AMS module's ID
@@ -189,19 +189,9 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 // The ratings
                 $result5 = $db->query('SELECT * FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
                 while (false !== ($ratings = $db->fetchArray($result5))) {
-                    $result6 = $db->queryF('INSERT INTO '
-                                           . $news_stories_votedata
-                                           . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES ('
-                                           . $news_newsid
-                                           . ','
-                                           . $ratings['ratinguser']
-                                           . ','
-                                           . $ratings['rating']
-                                           . ','
-                                           . $ratings['ratinghostname']
-                                           . ','
-                                           . $ratings['ratingtimestamp']
-                                           . ')');
+                    $result6 = $db->queryF(
+                        'INSERT INTO ' . $news_stories_votedata . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (' . $news_newsid . ',' . $ratings['ratinguser'] . ',' . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')'
+                    );
                 }
 
                 // The comments

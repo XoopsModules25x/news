@@ -13,13 +13,13 @@ namespace XoopsModules\News;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       XOOPS Project (https://xoops.org)
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
  * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * Abstract base class for forms
@@ -50,7 +50,7 @@ class XoopsTree
      */
     public function __construct($table_name, $id_name, $pid_name)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php" . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -81,7 +81,7 @@ class XoopsTree
             return $arr;
         }
         while (false !== ($myrow = $this->db->fetchArray($result))) {
-            array_push($arr, $myrow);
+            \array_push($arr, $myrow);
         }
 
         return $arr;
@@ -104,7 +104,7 @@ class XoopsTree
             return $idarray;
         }
         while (list($id) = $this->db->fetchRow($result)) {
-            array_push($idarray, $id);
+            \array_push($idarray, $id);
         }
 
         return $idarray;
@@ -132,7 +132,7 @@ class XoopsTree
             return $idarray;
         }
         while (list($r_id) = $this->db->fetchRow($result)) {
-            array_push($idarray, $r_id);
+            \array_push($idarray, $r_id);
             $idarray = $this->getAllChildId($r_id, $order, $idarray);
         }
 
@@ -156,11 +156,11 @@ class XoopsTree
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
-        list($r_id) = $this->db->fetchRow($result);
+        [$r_id] = $this->db->fetchRow($result);
         if (0 == $r_id) {
             return $idarray;
         }
-        array_push($idarray, $r_id);
+        \array_push($idarray, $r_id);
         $idarray = $this->getAllParentId($r_id, $order, $idarray);
 
         return $idarray;
@@ -183,7 +183,7 @@ class XoopsTree
         if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
-        list($parentid, $name) = $this->db->fetchRow($result);
+        [$parentid, $name] = $this->db->fetchRow($result);
         $myts = \MyTextSanitizer::getInstance();
         $name = $myts->htmlSpecialChars($name);
         $path = '/' . $name . $path . '';
@@ -235,7 +235,7 @@ class XoopsTree
             $sel = '';
             $arr = $this->getChildTreeArray($catid, $order);
             foreach ($arr as $option) {
-                $option['prefix'] = str_replace('.', '--', $option['prefix']);
+                $option['prefix'] = \str_replace('.', '--', $option['prefix']);
                 $catpath          = $option['prefix'] . '&nbsp;' . $myts->htmlSpecialChars($option[$title]);
                 if ($option[$this->id] == $preset_id) {
                     $sel = ' selected';
@@ -266,7 +266,7 @@ class XoopsTree
         if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
-        list($parentid, $name) = $this->db->fetchRow($result);
+        [$parentid, $name] = $this->db->fetchRow($result);
         $myts = \MyTextSanitizer::getInstance();
         $name = $myts->htmlSpecialChars($name);
         $path = "<a href='" . $funcURL . '&amp;' . $this->id . '=' . $sel_id . "'>" . $name . '</a>' . $path . '';
@@ -294,7 +294,7 @@ class XoopsTree
         if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
-        list($parentid) = $this->db->fetchRow($result);
+        [$parentid] = $this->db->fetchRow($result);
         $path = '/' . $sel_id . $path . '';
         if (0 == $parentid) {
             return $path;
@@ -326,7 +326,7 @@ class XoopsTree
             return $parray;
         }
         while (false !== ($row = $this->db->fetchArray($result))) {
-            array_push($parray, $row);
+            \array_push($parray, $row);
             $parray = $this->getAllChild($row[$this->id], $order, $parray);
         }
 
@@ -357,7 +357,7 @@ class XoopsTree
         }
         while (false !== ($row = $this->db->fetchArray($result))) {
             $row['prefix'] = $r_prefix . '.';
-            array_push($parray, $row);
+            \array_push($parray, $row);
             $parray = $this->getChildTreeArray($row[$this->id], $order, $parray, $row['prefix']);
         }
 

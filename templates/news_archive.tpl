@@ -15,7 +15,7 @@
         <{/foreach}>
     </table>
 
-    <{if $show_articles == true}>
+    <{if $show_articles === true}>
         <table>
             <tr>
                 <th><{$lang_articles}></th>

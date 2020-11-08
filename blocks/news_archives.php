@@ -11,13 +11,14 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -39,8 +40,14 @@ function b_news_archives_show($options)
     global $xoopsDB, $xoopsConfig;
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-    /** @var News\Helper $helper */
-    $helper = News\Helper::getInstance();
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        //            throw new \RuntimeException('Unable to create the $helper directory');
+        return false;
+    }
+
+    $helper = Helper::getInstance();
     $helper->loadLanguage('main');
 
     $months_arr    = [
@@ -173,7 +180,7 @@ function b_news_archives_edit($options)
 function b_news_archives_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_archives_show($options);
+    $block   = b_news_archives_show($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

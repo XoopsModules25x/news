@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -27,11 +27,11 @@
  *
  * NOTE : Please give credits if you copy this code !
  *
- * @package  ::    News
- * @author   ::     Hervé Thouzard (http://www.herve-thouzard.com) & Dojo Javscript Toolkit
- * @copyright::  (c) Hervé Thouzard (http://www.herve-thouzard.com)
  * @param string $tablename
  * @param string $iconname
+ * @copyright::  (c) Hervé Thouzard (http://www.herve-thouzard.com)
+ * @package  ::    News
+ * @author   ::     Hervé Thouzard (http://www.herve-thouzard.com) & Dojo Javscript Toolkit
  */
 function news_collapsableBar($tablename = '', $iconname = '')
 {

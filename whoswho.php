@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -47,7 +47,8 @@ $uid_ids = [];
 $uid_ids = $article->getWhosWho(News\Utility::getModuleOption('restrictindex'));
 if (count($uid_ids) > 0) {
     $lst_uid       = implode(',', $uid_ids);
-    $memberHandler = xoops_getHandler('member');
+    /** @var \XoopsMemberHandler $memberHandler */
+$memberHandler = xoops_getHandler('member');
     $critere       = new \Criteria('uid', '(' . $lst_uid . ')', 'IN');
     $tbl_users     = $memberHandler->getUsers($critere);
     foreach ($tbl_users as $one_user) {
@@ -64,11 +65,14 @@ if (count($uid_ids) > 0) {
                 }
                 break;
         }
-        $xoopsTpl->append('whoswho', [
-            'uid'            => $one_user->getVar('uid'),
-            'name'           => $uname,
-            'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar'),
-        ]);
+        $xoopsTpl->append(
+            'whoswho',
+            [
+                'uid'            => $one_user->getVar('uid'),
+                'name'           => $uname,
+                'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar'),
+            ]
+        );
     }
 }
 

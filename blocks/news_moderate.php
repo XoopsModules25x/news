@@ -11,15 +11,16 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * Dispay a block where news moderators can show news that need to be moderated.
@@ -27,6 +28,14 @@ use XoopsModules\News;
 function b_news_topics_moderate()
 {
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
+
     $block      = [];
     $dateformat = News\Utility::getModuleOption('dateformat');
     $infotips   = News\Utility::getModuleOption('infotips');
@@ -75,7 +84,7 @@ function b_news_topics_moderate()
 function b_news_topics_moderate_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_topics_moderate($options);
+    $block   = b_news_topics_moderate($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

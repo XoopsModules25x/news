@@ -11,15 +11,16 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -30,6 +31,13 @@ use XoopsModules\News;
  */
 function b_news_randomnews_show($options)
 {
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
+
     $myts          = \MyTextSanitizer::getInstance();
     $block         = [];
     $block['sort'] = $options[0];
@@ -148,7 +156,7 @@ function b_news_randomnews_edit($options)
 function b_news_randomnews_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_randomnews_show($options);
+    $block   = b_news_randomnews_show($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

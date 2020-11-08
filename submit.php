@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -19,7 +19,7 @@
 
 use XoopsModules\News;
 
-//defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 if (!defined('XOOPS_ROOT_PATH')) {
     require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 }
@@ -47,6 +47,7 @@ if (is_object($xoopsUser)) {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
 
+/** @var \XoopsGroupPermHandler $grouppermHandler */
 $grouppermHandler = xoops_getHandler('groupperm');
 
 if (\Xmf\Request::hasVar('topic_id', 'POST')) {
@@ -97,7 +98,7 @@ if (\Xmf\Request::hasVar('preview', 'POST')) {
                 || 'preview' === $_POST['op']
                 || 'post' === $_POST['op'])) {
             $storyid = 0;
-            //            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, GET) : \Xmf\Request::getInt('storyid', 0, POST);
+            //            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, 'GET') : \Xmf\Request::getInt('storyid', 0, 'POST');
             $storyid = \Xmf\Request::getInt('storyid', 0);
             if (!empty($storyid)) {
                 $tmpstory = new \XoopsModules\News\NewsStory($storyid);
@@ -400,7 +401,8 @@ switch ($op) {
         // First case, it's not an anonyous, the story is approved and it's a new story
         if ($uid && $approve && empty($storyid)) {
             $tmpuser       = new xoopsUser($uid);
-            $memberHandler = xoops_getHandler('member');
+            /** @var \XoopsMemberHandler $memberHandler */
+$memberHandler = xoops_getHandler('member');
             $memberHandler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
         }
 
@@ -409,7 +411,8 @@ switch ($op) {
             $storytemp = new \XoopsModules\News\NewsStory($storyid);
             if (!$storytemp->published() && $storytemp->uid() > 0) { // the article has been submited but not approved
                 $tmpuser       = new xoopsUser($storytemp->uid());
-                $memberHandler = xoops_getHandler('member');
+                /** @var \XoopsMemberHandler $memberHandler */
+$memberHandler = xoops_getHandler('member');
                 $memberHandler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
             }
             unset($storytemp);
@@ -477,7 +480,7 @@ switch ($op) {
         $result = $story->store();
         if ($result) {
             if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-                $tagHandler = new \XoopsModules\Tag\TagHandler();
+                $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag');
                 $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
             }
 
@@ -525,7 +528,7 @@ switch ($op) {
                          * You can attach files to your news
                          */
                         $permittedtypes = explode("\n", str_replace("\r", '', News\Utility::getModuleOption('mimetypes')));
-                        array_walk($permittedtypes, 'trim');
+                        array_walk($permittedtypes, '\trim');
                         $uploader = new \XoopsMediaUploader(XOOPS_UPLOAD_PATH, $permittedtypes, $helper->getConfig('maxuploadsize'));
                         $uploader->setTargetFileName($destname);
                         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {

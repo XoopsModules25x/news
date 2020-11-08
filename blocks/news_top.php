@@ -11,15 +11,16 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
@@ -40,14 +41,20 @@ use XoopsModules\News;
 function b_news_top_show($options)
 {
     global $xoopsConfig;
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
+
+    $helper->loadLanguage('main');
+
     $myts        = \MyTextSanitizer::getInstance();
     $block       = [];
     $displayname = News\Utility::getModuleOption('displayname');
     $tabskin     = News\Utility::getModuleOption('tabskin');
-
-    /** @var News\Helper $helper */
-    $helper = News\Helper::getInstance();
-    $helper->loadLanguage('main');
 
     $block['displayview'] = $options[8];
     $block['tabskin']     = $tabskin;
@@ -99,7 +106,7 @@ function b_news_top_show($options)
         $defcolors[7] = ['#F90', '#FFFFFF', '', '', '']; // Rounded
         $defcolors[8] = ['#F90', '#FFFFFF', '#F90', '#930', '#C60']; // ZDnet
 
-        $myurl = $_SERVER['PHP_SELF'];
+        $myurl = $_SERVER['SCRIPT_NAME'];
         if ('/' === mb_substr($myurl, mb_strlen($myurl) - 1, 1)) {
             $myurl .= 'index.php';
         }
@@ -696,7 +703,7 @@ function b_news_top_edit($options)
 function b_news_top_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_top_show($options);
+    $block   = b_news_top_show($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

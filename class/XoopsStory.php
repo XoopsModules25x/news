@@ -13,14 +13,14 @@ namespace XoopsModules\News;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       XOOPS Project (https://xoops.org)
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
  * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
  * @deprecated
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 //$GLOBALS['xoopsLogger']->addDeprecated("'/class/xoopsstory.php' is deprecated since XOOPS 2.5.4, please create your own class instead.");
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/kernel/user.php';
@@ -63,7 +63,7 @@ class XoopsStory
         $this->db          = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table       = '';
         $this->topicstable = '';
-        if (is_array($storyid)) {
+        if (\is_array($storyid)) {
             $this->makeStory($storyid);
         } elseif (-1 != $storyid) {
             $this->getStory((int)$storyid);
@@ -245,18 +245,68 @@ class XoopsStory
         if (!isset($this->storyid)) {
             //$newpost = 1;
             $newstoryid = $this->db->genId($this->table . '_storyid_seq');
-            $created    = time();
+            $created    = \time();
             $published  = $this->approved ? $this->published : 0;
 
-            $sql = sprintf("INSERT INTO `%s` (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u)",
-                           $this->table, $newstoryid, $this->uid, $title, $created, $published, $expired, $this->hostname, $this->nohtml, $this->nosmiley, $hometext, $bodytext, 0, $this->topicid, $this->ihome, $this->notifypub, $this->type, $this->topicdisplay, $this->topicalign, $this->comments);
+            $sql = \sprintf(
+                "INSERT INTO `%s` (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u)",
+                $this->table,
+                $newstoryid,
+                $this->uid,
+                $title,
+                $created,
+                $published,
+                $expired,
+                $this->hostname,
+                $this->nohtml,
+                $this->nosmiley,
+                $hometext,
+                $bodytext,
+                0,
+                $this->topicid,
+                $this->ihome,
+                $this->notifypub,
+                $this->type,
+                $this->topicdisplay,
+                $this->topicalign,
+                $this->comments
+            );
         } else {
             if ($this->approved) {
-                $sql = sprintf("UPDATE `%s` SET title = '%s', published = %u, expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u", $this->table, $title, $this->published,
-                               $expired, $this->nohtml, $this->nosmiley, $hometext, $bodytext, $this->topicid, $this->ihome, $this->topicdisplay, $this->topicalign, $this->comments, $this->storyid);
+                $sql = \sprintf(
+                    "UPDATE `%s` SET title = '%s', published = %u, expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
+                    $this->table,
+                    $title,
+                    $this->published,
+                    $expired,
+                    $this->nohtml,
+                    $this->nosmiley,
+                    $hometext,
+                    $bodytext,
+                    $this->topicid,
+                    $this->ihome,
+                    $this->topicdisplay,
+                    $this->topicalign,
+                    $this->comments,
+                    $this->storyid
+                );
             } else {
-                $sql = sprintf("UPDATE `%s` SET title = '%s', expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u", $this->table, $title, $expired, $this->nohtml, $this->nosmiley,
-                               $hometext, $bodytext, $this->topicid, $this->ihome, $this->topicdisplay, $this->topicalign, $this->comments, $this->storyid);
+                $sql = \sprintf(
+                    "UPDATE `%s` SET title = '%s', expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
+                    $this->table,
+                    $title,
+                    $expired,
+                    $this->nohtml,
+                    $this->nosmiley,
+                    $hometext,
+                    $bodytext,
+                    $this->topicid,
+                    $this->ihome,
+                    $this->topicdisplay,
+                    $this->topicalign,
+                    $this->comments,
+                    $this->storyid
+                );
             }
             $newstoryid = $this->storyid;
         }
@@ -297,7 +347,7 @@ class XoopsStory
      */
     public function delete()
     {
-        $sql = sprintf('DELETE FROM `%s` WHERE storyid = %u', $this->table, $this->storyid);
+        $sql = \sprintf('DELETE FROM `%s` WHERE storyid = %u', $this->table, $this->storyid);
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -310,7 +360,7 @@ class XoopsStory
      */
     public function updateCounter()
     {
-        $sql = sprintf('UPDATE `%s` SET counter = counter+1 WHERE storyid = %u', $this->table, $this->storyid);
+        $sql = \sprintf('UPDATE `%s` SET counter = counter+1 WHERE storyid = %u', $this->table, $this->storyid);
         if (!$result = $this->db->queryF($sql)) {
             return false;
         }
@@ -325,7 +375,7 @@ class XoopsStory
      */
     public function updateComments($total)
     {
-        $sql = sprintf('UPDATE `%s` SET comments = %u WHERE storyid = %u', $this->table, $total, $this->storyid);
+        $sql = \sprintf('UPDATE `%s` SET comments = %u WHERE storyid = %u', $this->table, $total, $this->storyid);
         if (!$result = $this->db->queryF($sql)) {
             return false;
         }
@@ -407,13 +457,13 @@ class XoopsStory
                 $hometext = $myts->displayTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'Edit':
-                $hometext = htmlspecialchars($this->hometext, ENT_QUOTES);
+                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES);
                 break;
             case 'Preview':
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $hometext = htmlspecialchars($myts->stripSlashesGPC($this->hometext), ENT_QUOTES);
+                $hometext = \htmlspecialchars($myts->stripSlashesGPC($this->hometext), \ENT_QUOTES);
                 break;
         }
 
@@ -442,13 +492,13 @@ class XoopsStory
                 $bodytext = $myts->displayTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'Edit':
-                $bodytext = htmlspecialchars($this->bodytext, ENT_QUOTES);
+                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES);
                 break;
             case 'Preview':
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $bodytext = htmlspecialchars($myts->stripSlashesGPC($this->bodytext), ENT_QUOTES);
+                $bodytext = \htmlspecialchars($myts->stripSlashesGPC($this->bodytext), \ENT_QUOTES);
                 break;
         }
 

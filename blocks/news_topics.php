@@ -11,15 +11,16 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
 /**
  * @return mixed
@@ -31,7 +32,13 @@ function b_news_topics_show()
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
     $moduleDirName = basename(dirname(__DIR__));
-    xoops_load('utility', $moduleDirName);
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
 
     $jump       = XOOPS_URL . '/modules/news/index.php?storytopic=';
     $storytopic = !empty($storytopic) ? $storytopic : 0;
@@ -59,7 +66,7 @@ function b_news_topics_show()
 function b_news_topics_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_topics_show($options);
+    $block   = b_news_topics_show($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

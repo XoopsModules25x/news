@@ -1,4 +1,5 @@
 <?php
+
 $newslettertemplate = <<<contentend
 
 Title : %title%

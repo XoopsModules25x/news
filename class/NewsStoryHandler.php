@@ -14,7 +14,7 @@ namespace XoopsModules\News;
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -22,12 +22,12 @@ namespace XoopsModules\News;
 
 use XoopsModules\News;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
-require_once dirname(__DIR__) . '/preloads/autoloader.php';
+require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -43,6 +43,6 @@ class NewsStoryHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null)
     {
-        parent::__construct($db, 'news_stories', 'stories', 'storieid', 'title');
+        parent::__construct($db, 'news_stories', NewsStory::class, 'storieid', 'title');
     }
 }

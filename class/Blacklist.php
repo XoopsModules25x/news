@@ -25,9 +25,7 @@ namespace XoopsModules\News;
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
-/**
+ /**
  * Class Blacklist
  */
 class Blacklist
@@ -42,16 +40,16 @@ class Blacklist
         $ret      = $tbl_black_list = [];
         $myts     = \MyTextSanitizer::getInstance();
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
-        if (file_exists($filename)) {
+        if (\is_file($filename)) {
             require_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
-                if ('' !== xoops_trim($onekeyword)) {
+                if ('' !== \xoops_trim($onekeyword)) {
                     $onekeyword       = $myts->htmlSpecialChars($onekeyword);
                     $ret[$onekeyword] = $onekeyword;
                 }
             }
         }
-        asort($ret);
+        \asort($ret);
         $this->keywords = $ret;
 
         return $this->keywords;
@@ -63,7 +61,7 @@ class Blacklist
      */
     public function delete($keyword)
     {
-        if (is_array($keyword)) {
+        if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
                 if (isset($this->keywords[$onekeyword])) {
                     unset($this->keywords[$onekeyword]);
@@ -83,15 +81,15 @@ class Blacklist
     public function addkeywords($keyword)
     {
         $myts = \MyTextSanitizer::getInstance();
-        if (is_array($keyword)) {
+        if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
-                $onekeyword = xoops_trim($myts->htmlSpecialChars($onekeyword));
+                $onekeyword = \xoops_trim($myts->htmlSpecialChars($onekeyword));
                 if ('' !== $onekeyword) {
                     $this->keywords[$onekeyword] = $onekeyword;
                 }
             }
         } else {
-            $keyword = xoops_trim($myts->htmlSpecialChars($keyword));
+            $keyword = \xoops_trim($myts->htmlSpecialChars($keyword));
             if ('' !== $keyword) {
                 $this->keywords[$keyword] = $keyword;
             }
@@ -106,11 +104,11 @@ class Blacklist
     public function remove_blacklisted($keywords)
     {
         $ret       = [];
-        $tmp_array = array_values($this->keywords);
+        $tmp_array = \array_values($this->keywords);
         foreach ($keywords as $onekeyword) {
             $add = true;
             foreach ($tmp_array as $onebanned) {
-                if (preg_match('/' . $onebanned . '/i', $onekeyword)) {
+                if (\preg_match('/' . $onebanned . '/i', $onekeyword)) {
                     $add = false;
                     break;
                 }
@@ -129,17 +127,17 @@ class Blacklist
     public function store()
     {
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
-        if (file_exists($filename)) {
-            unlink($filename);
+        if (\is_file($filename)) {
+            \unlink($filename);
         }
-        $fd = fopen($filename, 'wb') || die('Error unable to create the blacklist file');
-        fwrite($fd, "<?php\n");
-        fwrite($fd, '$tbl_black_list=array(' . "\n");
+        $fd = \fopen($filename, 'wb') or exit('Error unable to create the blacklist file');
+        \fwrite($fd, "<?php\n");
+        \fwrite($fd, '$tbl_black_list=array(' . "\n");
         foreach ($this->keywords as $onekeyword) {
-            fwrite($fd, '"' . $onekeyword . "\",\n");
+            \fwrite($fd, '"' . $onekeyword . "\",\n");
         }
-        fwrite($fd, "'');\n");
-        fwrite($fd, "?>\n");
-        fclose($fd);
+        \fwrite($fd, "'');\n");
+        \fwrite($fd, "?>\n");
+        \fclose($fd);
     }
 }

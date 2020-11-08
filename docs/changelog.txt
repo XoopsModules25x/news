@@ -1,3 +1,12 @@
+<h5>1.72 Beta 4        [WORK IN PROGRESS - NOT RELEASED]</h5>  Dev: XOOPS 2.5.10, PHP 7.3.6
+<hr>
+- reverted in_array() true check (mamba)
+- reversed to while (list()) (mamba)
+- added 'common' language (mamba)
+- enhanced Helper's getHandler() (mamba)
+WORK IN PROGRESS
+
+
 <h5>1.72 Beta 3        [2018-09-22]</h5>
 <hr>
 - added namespaces, class autoload (mamba)

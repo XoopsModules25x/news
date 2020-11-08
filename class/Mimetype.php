@@ -69,9 +69,7 @@ namespace XoopsModules\News;
  * to use, or modify it however you like.  If you find this script useful please
  * e-mail me.
  **/
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
-/**
+ /**
  * Class Mimetype
  */
 class Mimetype
@@ -84,13 +82,13 @@ class Mimetype
     public function getType($filename)
     {
         // get base name of the filename provided by user
-        $filename = basename($filename);
+        $filename = \basename($filename);
 
         // break file into parts seperated by .
-        $filename = explode('.', $filename);
+        $filename = \explode('.', $filename);
 
         // take the last part of the file to get the file extension
-        $filename = $filename[count($filename) - 1];
+        $filename = $filename[\count($filename) - 1];
 
         // find mime type
         return $this->privFindType($filename);

@@ -12,13 +12,13 @@ namespace XoopsModules\News;
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       (c) 2000-2016 XOOPS Project (www.xoops.org)
- * @license             GNU GPL 2 (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @copyright       (c) 2000-2020 XOOPS Project (www.xoops.org)
+ * @license             GNU GPL 2 (https://www.gnu.org/licenses/gpl-2.0.html)
  * @package             kernel
  * @since               2.0.0
  * @author              Kazumi Ono (http://www.myweb.ne.jp/, http://jp.xoops.org/)
  */
-defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * A tree structures with {@link XoopsObject}s as nodes
@@ -46,7 +46,7 @@ class ObjectTree
      * @param string $parentId  field name of parent object ID
      * @param string $rootId    field name of root object ID
      */
-    public function __construct(&$objectArr, $myId, $parentId, $rootId = null)
+    public function __construct($objectArr, $myId, $parentId, $rootId = null)
     {
         $this->objects  = $objectArr;
         $this->myId     = $myId;
@@ -64,7 +64,7 @@ class ObjectTree
      */
     protected function initialize()
     {
-        foreach (array_keys($this->objects) as $i) {
+        foreach (\array_keys($this->objects) as $i) {
             $key1                         = $this->objects[$i]->getVar($this->myId);
             $this->tree[$key1]['obj']     = $this->objects[$i];
             $key2                         = $this->objects[$i]->getVar($this->parentId);
@@ -89,7 +89,7 @@ class ObjectTree
     /**
      * returns an object from the tree specified by its id
      *
-     * @param  string $key ID of the object to retrieve
+     * @param string $key ID of the object to retrieve
      * @return object Object within the tree
      */
     public function &getByKey($key)
@@ -100,7 +100,7 @@ class ObjectTree
     /**
      * returns an array of all the first child object of an object specified by its id
      *
-     * @param  string $key ID of the parent object
+     * @param string $key ID of the parent object
      * @return array  Array of children of the parent
      */
     public function getFirstChild($key)
@@ -118,8 +118,8 @@ class ObjectTree
     /**
      * returns an array of all child objects of an object specified by its id
      *
-     * @param  string $key ID of the parent
-     * @param  array  $ret (Empty when called from client) Array of children from previous recursions.
+     * @param string $key ID of the parent
+     * @param array  $ret (Empty when called from client) Array of children from previous recursions.
      * @return array  Array of child nodes.
      */
     public function getAllChild($key, $ret = [])
@@ -128,7 +128,7 @@ class ObjectTree
             foreach ($this->tree[$key]['child'] as $childKey) {
                 $ret[$childKey] = $this->tree[$childKey]['obj'];
                 $children       = $this->getAllChild($childKey, $ret);
-                foreach (array_keys($children) as $newKey) {
+                foreach (\array_keys($children) as $newKey) {
                     $ret[$newKey] = $children[$newKey];
                 }
             }
@@ -141,9 +141,9 @@ class ObjectTree
      * returns an array of all parent objects.
      * the key of returned array represents how many levels up from the specified object
      *
-     * @param  string $key     ID of the child object
-     * @param  array  $ret     (empty when called from outside) Result from previous recursions
-     * @param  int    $upLevel (empty when called from outside) level of recursion
+     * @param string $key     ID of the child object
+     * @param array  $ret     (empty when called from outside) Result from previous recursions
+     * @param int    $upLevel (empty when called from outside) level of recursion
      * @return array  Array of parent nodes.
      */
     public function getAllParent($key, $ret = [], $upLevel = 1)
@@ -151,7 +151,7 @@ class ObjectTree
         if (isset($this->tree[$key]['parent']) && isset($this->tree[$this->tree[$key]['parent']]['obj'])) {
             $ret[$upLevel] = $this->tree[$this->tree[$key]['parent']]['obj'];
             $parents       = $this->getAllParent($this->tree[$key]['parent'], $ret, $upLevel + 1);
-            foreach (array_keys($parents) as $newKey) {
+            foreach (\array_keys($parents) as $newKey) {
                 $ret[$newKey] = $parents[$newKey];
             }
         }
@@ -193,14 +193,14 @@ class ObjectTree
     /**
      * Make a select box with options from the tree
      *
-     * @param  string $name            Name of the select box
-     * @param  string $fieldName       Name of the member variable from the
+     * @param string $name             Name of the select box
+     * @param string $fieldName        Name of the member variable from the
      *                                 node objects that should be used as the title for the options.
-     * @param  string $prefix          String to indent deeper levels
-     * @param  string $selected        Value to display as selected
-     * @param  bool   $addEmptyOption  Set TRUE to add an empty option with value "0" at the top of the hierarchy
-     * @param  int    $key             ID of the object to display as the root of select options
-     * @param  string $extra
+     * @param string $prefix           String to indent deeper levels
+     * @param string $selected         Value to display as selected
+     * @param bool   $addEmptyOption   Set TRUE to add an empty option with value "0" at the top of the hierarchy
+     * @param int    $key              ID of the object to display as the root of select options
+     * @param string $extra
      * @return string  HTML select box
      *
      * @deprecated since 2.5.9, please use makeSelectElement()
@@ -212,10 +212,10 @@ class ObjectTree
         $selected = '',
         $addEmptyOption = false,
         $key = 0,
-        $extra = '')
-    {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
+        $extra = ''
+    ) {
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
         $ret = '<select name="' . $name . '" id="' . $name . '" ' . $extra . '>';
         if (false !== (bool)$addEmptyOption) {
             $ret .= '<option value="0"></option>';
@@ -228,15 +228,15 @@ class ObjectTree
     /**
      * Make a select box with options from the tree
      *
-     * @param  string $name            Name of the select box
-     * @param  string $fieldName       Name of the member variable from the
+     * @param string $name             Name of the select box
+     * @param string $fieldName        Name of the member variable from the
      *                                 node objects that should be used as the title for the options.
-     * @param  string $prefix          String to indent deeper levels
-     * @param  string $selected        Value to display as selected
-     * @param  bool   $addEmptyOption  Set TRUE to add an empty option with value "0" at the top of the hierarchy
-     * @param  int    $key             ID of the object to display as the root of select options
-     * @param  string $extra           extra content to add to the element
-     * @param  string $caption         optional caption for form element
+     * @param string $prefix           String to indent deeper levels
+     * @param string $selected         Value to display as selected
+     * @param bool   $addEmptyOption   Set TRUE to add an empty option with value "0" at the top of the hierarchy
+     * @param int    $key              ID of the object to display as the root of select options
+     * @param string $extra            extra content to add to the element
+     * @param string $caption          optional caption for form element
      *
      * @return \XoopsFormSelect form element
      */
@@ -248,9 +248,9 @@ class ObjectTree
         $addEmptyOption = false,
         $key = 0,
         $extra = '',
-        $caption = '')
-    {
-        xoops_load('xoopsformselect');
+        $caption = ''
+    ) {
+        \xoops_load('xoopsformselect');
         $element = new \XoopsFormSelect($caption, $name, $selected);
         $element->setExtra($extra);
 
@@ -302,13 +302,13 @@ class ObjectTree
      */
     public function __get($name)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         if ('_tree' === $name) {
-            trigger_error("XoopsObjectTree::\$_tree is deprecated, accessed from {$trace[0]['file']} line {$trace[0]['line']},");
+            \trigger_error("XoopsObjectTree::\$_tree is deprecated, accessed from {$trace[0]['file']} line {$trace[0]['line']},");
 
             return $this->tree;
         }
-        trigger_error('Undefined property: XoopsObjectTree::$' . $name . " in {$trace[0]['file']} line {$trace[0]['line']}, ", E_USER_NOTICE);
+        \trigger_error('Undefined property: XoopsObjectTree::$' . $name . " in {$trace[0]['file']} line {$trace[0]['line']}, ", \E_USER_NOTICE);
 
         return null;
     }

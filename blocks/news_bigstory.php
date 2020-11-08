@@ -11,22 +11,31 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
- * @return array
+ * @return array|null|false
  */
 function b_news_bigstory_show()
 {
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
+
     $myts       = \MyTextSanitizer::getInstance();
     $restricted = News\Utility::getModuleOption('restrictindex');
     $dateformat = News\Utility::getModuleOption('dateformat');
@@ -72,7 +81,7 @@ function b_news_bigstory_show()
 function b_news_bigstory_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_bigstory_show($options);
+    $block   = b_news_bigstory_show($options);
 
     $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);

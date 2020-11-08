@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -143,15 +143,18 @@ if ($articlescount > 0) {
         if ($oldtopic != $article['topicid']) {
             if (count($articlestpl) > 0) {
                 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-                $xoopsTpl->append('topics', [
-                    'topic_id'             => $oldtopic,
-                    'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
-                    'topic_count_reads'    => $count_reads,
-                    'topic_color'          => $oldtopiccolor,
-                    'topic_title'          => $oldtopictitle,
-                    'topic_link'           => $topic_link,
-                    'news'                 => $articlestpl,
-                ]);
+                $xoopsTpl->append(
+                    'topics',
+                    [
+                        'topic_id'             => $oldtopic,
+                        'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
+                        'topic_count_reads'    => $count_reads,
+                        'topic_color'          => $oldtopiccolor,
+                        'topic_title'          => $oldtopictitle,
+                        'topic_link'           => $topic_link,
+                        'news'                 => $articlestpl,
+                    ]
+                );
             }
             $oldtopic       = $article['topicid'];
             $oldtopictitle  = $article['topic_title'];
@@ -178,12 +181,15 @@ if ($articlescount > 0) {
     }
 }
 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-$xoopsTpl->append('topics', [
-    'topic_id'    => $oldtopic,
-    'topic_title' => $oldtopictitle,
-    'topic_link'  => $topic_link,
-    'news'        => $articlestpl,
-]);
+$xoopsTpl->append(
+    'topics',
+    [
+        'topic_id'    => $oldtopic,
+        'topic_title' => $oldtopictitle,
+        'topic_link'  => $topic_link,
+        'news'        => $articlestpl,
+    ]
+);
 $xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
 $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
 

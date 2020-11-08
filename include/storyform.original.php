@@ -11,13 +11,13 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 use XoopsModules\News;
 
@@ -84,7 +84,8 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     if (!isset($newsauthor)) {
         $newsauthor = $xoopsUser->getVar('uid');
     }
-    $memberHandler = xoops_getHandler('member');
+    /** @var \XoopsMemberHandler $memberHandler */
+$memberHandler = xoops_getHandler('member');
     $usercount     = $memberHandler->getUserCount();
     if ($usercount < $cfg['config_max_users_list']) {
         $sform->addElement(new \XoopsFormSelectUser(_NW_AUTHOR, 'author', true, $newsauthor), false);

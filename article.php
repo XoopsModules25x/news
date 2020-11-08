@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -39,12 +39,6 @@
  * - To create more than one page in your story, use the tag [pagebreak]
  * - If you are a module's admin, you have the possibility to see two links at the bottom
  *   of the article, "Edit & Delete"
- *
- * @package                         News
- * @author                          Xoops Modules Dev Team
- * @copyright (c)                   XOOPS Project (https://xoops.org)
- *
- * Parameters received by this page :
  *
  * @param int storyid    Id of the story we want to see
  * @param int page        page's number (in the case where there are more than one page)
@@ -110,6 +104,12 @@
  * @template_var                    float    rating    Article's rating
  * @template_var                    string    votes    "1 vote" or "X votes"
  * @template_var                    string    topic_path    A path from the root to the current topic (of the current news)
+ * @copyright (c)                   XOOPS Project (https://xoops.org)
+ *
+ * Parameters received by this page :
+ *
+ * @package                         News
+ * @author                          Xoops Modules Dev Team
  */
 
 use XoopsModules\News;
@@ -144,6 +144,7 @@ if (0 != $article->expired() && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
+/** @var \XoopsGroupPermHandler $grouppermHandler */
 $grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
@@ -389,14 +390,17 @@ if (News\Utility::getModuleOption('showsummarytable')) {
                 $tooltips  = News\Utility::makeInfotips($onearticle->hometext());
                 $htmltitle = ' title="' . $tooltips . '"';
             }
-            $xoopsTpl->append('summary', [
-                'story_id'        => $onearticle->storyid(),
-                'htmltitle'       => $htmltitle,
-                'infotips'        => $tooltips,
-                'story_title'     => $onearticle->title(),
-                'story_hits'      => $onearticle->counter(),
-                'story_published' => formatTimestamp($onearticle->published, $dateformat),
-            ]);
+            $xoopsTpl->append(
+                'summary',
+                [
+                    'story_id'        => $onearticle->storyid(),
+                    'htmltitle'       => $htmltitle,
+                    'infotips'        => $tooltips,
+                    'story_title'     => $onearticle->title(),
+                    'story_hits'      => $onearticle->counter(),
+                    'story_published' => formatTimestamp($onearticle->published, $dateformat),
+                ]
+            );
         }
     }
     $xoopsTpl->assign('summary_count', $count);
