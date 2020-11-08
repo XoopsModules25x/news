@@ -19,8 +19,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\Helper;
-
-
+use XoopsModules\News\NewsStory;
 
 /**
  * Dispay a block where news moderators can show news that need to be moderated.
@@ -40,7 +39,7 @@ function b_news_topics_moderate()
     $dateformat = News\Utility::getModuleOption('dateformat');
     $infotips   = News\Utility::getModuleOption('infotips');
 
-    $storyarray = \XoopsModules\News\NewsStory:: getAllSubmitted(0, true, News\Utility::getModuleOption('restrictindex'));
+    $storyarray = NewsStory:: getAllSubmitted(0, true, News\Utility::getModuleOption('restrictindex'));
     if (count($storyarray) > 0) {
         $block['lang_story_title']  = _MB_TITLE;
         $block['lang_story_date']   = _MB_POSTED;

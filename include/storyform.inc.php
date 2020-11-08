@@ -17,9 +17,11 @@
  * @author         XOOPS Development Team
  */
 
+use Xmf\Request;
 use XoopsModules\News;
-
-
+use XoopsModules\News\Files;
+use XoopsModules\News\NewsTopic;
+use XoopsModules\Tag\FormTag;
 
 $moduleDirName = basename(dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
@@ -39,7 +41,7 @@ $sform->addElement(new \XoopsFormText(_NW_SUBTITLE, 'subtitle', 50, 255, $subtit
 
 // Topic's selection box
 if (!isset($xt)) {
-    $xt = new  \XoopsModules\News\NewsTopic();
+    $xt = new  NewsTopic();
 }
 if (0 == $xt->getAllTopicsCount()) {
     redirect_header('index.php', 4, _NW_POST_SORRY);
@@ -102,7 +104,7 @@ if ($approveprivilege) {
     if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
+        $sform->addElement(new FormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
     if (News\Utility::getModuleOption('metadata')) {
@@ -113,7 +115,7 @@ if ($approveprivilege) {
     if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
         $itemIdForTag = isset($storyid) ? $storyid : 0;
         require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
+        $sform->addElement(new FormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 }
 // Manage upload(s)
@@ -132,7 +134,7 @@ switch ($helper->getConfig('uploadgroups')) {
 
 if ($allowupload) {
     if ('edit' === $op) {
-        $sfiles   = new \XoopsModules\News\Files();
+        $sfiles   = new Files();
         $filesarr = [];
         $filesarr = $sfiles->getAllbyStory($storyid);
         if (count($filesarr) > 0) {
@@ -224,9 +226,9 @@ if (isset($storyid)) {
 }
 
 if (!isset($returnside)) {
-    $returnside = \Xmf\Request::getInt('returnside', 0, 'POST');
+    $returnside = Request::getInt('returnside', 0, 'POST');
     if (empty($returnside)) {
-        $returnside = \Xmf\Request::getInt('returnside', 0, 'GET');
+        $returnside = Request::getInt('returnside', 0, 'GET');
     }
 }
 

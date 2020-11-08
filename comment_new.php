@@ -17,7 +17,9 @@
  * @author         XOOPS Development Team
  */
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
@@ -40,9 +42,9 @@ if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) { // Anon
 }
 // ****************************************************************************
 
-$com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
+$com_itemid = Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
-    $article = new \XoopsModules\News\NewsStory($com_itemid);
+    $article = new NewsStory($com_itemid);
     if ($article->storyid > 0) {
         $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), News\Utility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
         $bodytext      = $article->bodytext();

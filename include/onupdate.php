@@ -18,6 +18,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Common\Configurator;
 
 if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof \XoopsUser)
     || !$GLOBALS['xoopsUser']->isAdmin()) {
@@ -72,7 +73,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
     /** @var News\Common\Configurator $configurator */
     $helper       = News\Helper::getInstance();
     $utility      = new \XoopsModules\News\Utility();
-    $configurator = new \XoopsModules\News\Common\Configurator();
+    $configurator = new Configurator();
 
     if ($previousVersion < 240) {
         //delete old HTML templates

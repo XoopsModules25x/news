@@ -24,9 +24,10 @@
 //  ------------------------------------------------------------------------ //
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 
 /** @var \XoopsModules\News\Helper $helper */
-$helper = \XoopsModules\News\Helper::getInstance();
+$helper = Helper::getInstance();
 
 $cfg = [];
 /**

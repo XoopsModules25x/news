@@ -21,6 +21,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\Helper;
+use XoopsModules\News\NewsTopic;
 
 /**
  * @return mixed
@@ -44,7 +45,7 @@ function b_news_topics_show()
     $storytopic = !empty($storytopic) ? $storytopic : 0;
     $restricted = News\Utility::getModuleOption('restrictindex');
 
-    $xt         = new  \XoopsModules\News\NewsTopic();
+    $xt         = new  NewsTopic();
     $allTopics  = $xt->getAllTopics($restricted);
     $topic_tree = new \XoopsModules\News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $additional = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";

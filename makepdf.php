@@ -17,7 +17,9 @@
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
 
 error_reporting(0);
 
@@ -32,13 +34,13 @@ if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.p
 $myts = \MyTextSanitizer::getInstance();
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
-$storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
+$storyid = Request::getInt('storyid', 0, 'GET');
 
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
-$article = new \XoopsModules\News\NewsStory($storyid);
+$article = new NewsStory($storyid);
 // Not yet published
 if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);

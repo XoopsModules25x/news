@@ -67,7 +67,9 @@
  *                                                          int     rating          Rating for this news
  */
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -83,7 +85,7 @@ global $xoopsUser;
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('modinfo');
 
-$uid = \Xmf\Request::getInt('uid', 0, 'GET');
+$uid = Request::getInt('uid', 0, 'GET');
 if (empty($uid)) {
     redirect_header('index.php', 2, _ERRORS);
 }
@@ -93,7 +95,7 @@ if (!News\Utility::getModuleOption('newsbythisauthor')) {
 }
 
 $myts                                    = \MyTextSanitizer::getInstance();
-$articles                                = new \XoopsModules\News\NewsStory();
+$articles                                = new NewsStory();
 $GLOBALS['xoopsOption']['template_main'] = 'news_by_this_author.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 

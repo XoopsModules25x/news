@@ -31,7 +31,10 @@
  * @package       News
  */
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
+use XoopsModules\News\NewsTopic;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
@@ -45,7 +48,7 @@ if (!News\Utility::getModuleOption('topicsrss')) {
     exit();
 }
 
-$topicid = \Xmf\Request::getInt('topicid', 0, 'GET');
+$topicid = Request::getInt('topicid', 0, 'GET');
 if (0 == $topicid) {
     exit();
 }
@@ -60,13 +63,13 @@ $newsnumber = News\Utility::getModuleOption('storyhome');
 $charset = 'utf-8';
 
 header('Content-Type:text/xml; charset=' . $charset);
-$story        = new \XoopsModules\News\NewsStory();
+$story        = new NewsStory();
 $tpl          = new \XoopsTpl();
 $tpl->caching = 2;
 $tpl->xoops_setCacheTime(3600); // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
-    $xt     = new  \XoopsModules\News\NewsTopic($topicid);
-    $sarray = \XoopsModules\News\NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
+    $xt     = new  NewsTopic($topicid);
+    $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
     if ($sarray && is_array($sarray)) {
         $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);
         $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES);

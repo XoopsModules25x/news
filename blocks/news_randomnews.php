@@ -19,8 +19,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\Helper;
-
-
+use XoopsModules\News\NewsStory;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -42,7 +41,7 @@ function b_news_randomnews_show($options)
     $block         = [];
     $block['sort'] = $options[0];
 
-    $tmpstory   = new \XoopsModules\News\NewsStory();
+    $tmpstory   = new NewsStory();
     $restricted = News\Utility::getModuleOption('restrictindex');
     $dateformat = News\Utility::getModuleOption('dateformat');
     $infotips   = News\Utility::getModuleOption('infotips');

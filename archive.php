@@ -68,7 +68,9 @@
 # [11-may-2001] Kenneth Lee - http://www.nexgear.com/
 ######################################################################
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
@@ -94,8 +96,8 @@ $months_arr = [
     12 => _CAL_DECEMBER,
 ];
 
-$fromyear  = \Xmf\Request::getInt('year', 0, 'GET');
-$frommonth = \Xmf\Request::getInt('month', 0, 'GET');
+$fromyear  = Request::getInt('year', 0, 'GET');
+$frommonth = Request::getInt('month', 0, 'GET');
 
 $pgtitle = '';
 if ($fromyear && $frommonth) {
@@ -175,7 +177,7 @@ if (0 != $fromyear && 0 != $frommonth) {
     $monthend   = ($monthend > time()) ? time() : $monthend;
 
     $count      = 0;
-    $news       = new \XoopsModules\News\NewsStory();
+    $news       = new NewsStory();
     $storyarray = $news->getArchive($monthstart, $monthend, $restricted);
     $count      = count($storyarray);
     if (is_array($storyarray) && $count > 0) {

@@ -18,6 +18,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Common\Configurator;
 
 /**
  * Prepares system prior to attempting to install module
@@ -58,7 +59,7 @@ function xoops_module_install_news(\XoopsModule $module)
     /** @var News\Helper $helper */
     $helper       = News\Helper::getInstance();
     $utility      = new \XoopsModules\News\Utility();
-    $configurator = new \XoopsModules\News\Common\Configurator();
+    $configurator = new Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');

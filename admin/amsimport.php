@@ -28,6 +28,10 @@
  */
 
 use XoopsModules\Ams;
+use XoopsModules\Ams\Helper;
+use XoopsModules\News\Files;
+use XoopsModules\News\NewsStory;
+use XoopsModules\News\NewsTopic;
 
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 xoops_cp_header();
@@ -50,7 +54,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     } else {
         // Launch the import
         /** @var \XoopsModules\Ams\Helper $amsHelper */
-        $amsHelper = \XoopsModules\Ams\Helper::getInstance();
+        $amsHelper = Helper::getInstance();
         $amsHelper->loadLanguage('admin');
         $amsHelper->loadLanguage('main');
 
@@ -95,7 +99,7 @@ $moduleHandler = xoops_getHandler('module');
                     $topicpid = $ams_news_topics[$one_amstopic['topic_pid']];
                 }
             }
-            $news_topic = new \XoopsModules\News\NewsTopic();
+            $news_topic = new NewsTopic();
             $news_topic->setTopicPid($topicpid);
             $news_topic->setTopicTitle($one_amstopic['topic_title']);
             $news_topic->setTopicImgurl($one_amstopic['topic_imgurl']);
@@ -142,7 +146,7 @@ $moduleHandler = xoops_getHandler('module');
                 }
 
                 // We create the story
-                $news = new \XoopsModules\News\NewsStory();
+                $news = new NewsStory();
                 $news->setUid($text_lastversion['uid']);
                 $news->setTitle($article['title']);
                 $news->created = $article['created'];
@@ -174,7 +178,7 @@ $moduleHandler = xoops_getHandler('module');
                 // The files
                 $result4 = $db->query('SELECT * FROM ' . $ams_files . ' WHERE storyid=' . $ams_newsid);
                 while (false !== ($file = $db->fetchArray($result4))) {
-                    $sfile = new \XoopsModules\News\Files();
+                    $sfile = new Files();
                     $sfile->setFileRealName($file['filerealname']);
                     $sfile->setStoryid($news_newsid);
                     $sfile->date = $file['date'];

@@ -28,6 +28,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -42,7 +43,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'news_whos_who.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 $option  = News\Utility::getModuleOption('displayname');
-$article = new \XoopsModules\News\NewsStory();
+$article = new NewsStory();
 $uid_ids = [];
 $uid_ids = $article->getWhosWho(News\Utility::getModuleOption('restrictindex'));
 if (count($uid_ids) > 0) {

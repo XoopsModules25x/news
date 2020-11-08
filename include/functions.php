@@ -31,7 +31,11 @@
  */
 
 use WideImage\WideImage;
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\Blacklist;
+use XoopsModules\News\NewsTopic;
+use XoopsModules\News\Registryfile;
 
 /**
  * @param             $option
@@ -330,7 +334,7 @@ function news_CreateMetaDatas($story = null)
         // Create chapters
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        $xt         = new  \XoopsModules\News\NewsTopic();
+        $xt         = new  NewsTopic();
         $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
@@ -417,7 +421,7 @@ function news_createmeta_keywords($content)
     if (!$cfg['meta_keywords_auto_generate']) {
         return '';
     }
-    $registry = new \XoopsModules\News\Registryfile('news_metagen_options.txt');
+    $registry = new Registryfile('news_metagen_options.txt');
     //    $tcontent = '';
     $tcontent = $registry->getfile();
     if ('' !== xoops_trim($tcontent)) {
@@ -429,7 +433,7 @@ function news_createmeta_keywords($content)
 
     $tmp = [];
     // Search for the "Minimum keyword length"
-    if (\Xmf\Request::hasVar('news_keywords_limit', 'SESSION')) {
+    if (Request::hasVar('news_keywords_limit', 'SESSION')) {
         $limit = $_SESSION['news_keywords_limit'];
     } else {
         /** @var \XoopsConfigHandler $configHandler */
@@ -519,7 +523,7 @@ $configHandler = xoops_getHandler('config');
             break;
     }
     // Remove black listed words
-    $metablack = new \XoopsModules\News\Blacklist();
+    $metablack = new Blacklist();
     $words     = $metablack->getAllKeywords();
     $keywords  = $metablack->remove_blacklisted($keywords);
 
@@ -664,7 +668,7 @@ function news_is_admin_group()
  */
 function news_isbot()
 {
-    if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION')) {
+    if (Request::hasVar('news_cache_bot', 'SESSION')) {
         return $_SESSION['news_cache_bot'];
     }
     // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)

@@ -72,7 +72,12 @@
  * @template_var          string     topic_select    contains the topics selector
  */
 
+use Xmf\Module\Admin;
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\Files;
+use XoopsModules\News\NewsStory;
+use XoopsModules\News\NewsTopic;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
@@ -94,11 +99,11 @@ xoops_load('utility', $moduleDirName);
 $module = \XoopsModule::getByDirname($moduleDirName);
 
 $storytopic = 0;
-if (\Xmf\Request::hasVar('storytopic', 'GET')) {
-    $storytopic = \Xmf\Request::getInt('storytopic', 0, 'GET');
+if (Request::hasVar('storytopic', 'GET')) {
+    $storytopic = Request::getInt('storytopic', 0, 'GET');
 } else {
-    if (\Xmf\Request::hasVar('topic_id', 'GET')) {
-        $storytopic = \Xmf\Request::getInt('topic_id', 0, 'GET');
+    if (Request::hasVar('topic_id', 'GET')) {
+        $storytopic = Request::getInt('topic_id', 0, 'GET');
     }
 }
 
@@ -113,8 +118,8 @@ $grouppermHandler = xoops_getHandler('groupperm');
 } else {
     $xoopsOption['storytopic'] = 0;
 }
-if (\Xmf\Request::hasVar('storynum', 'GET')) {
-    $xoopsOption['storynum'] = \Xmf\Request::getInt('storynum', 0, 'GET');
+if (Request::hasVar('storynum', 'GET')) {
+    $xoopsOption['storynum'] = Request::getInt('storynum', 0, 'GET');
     if ($xoopsOption['storynum'] > 30) {
         $xoopsOption['storynum'] = $helper->getConfig('storyhome');
     }
@@ -122,8 +127,8 @@ if (\Xmf\Request::hasVar('storynum', 'GET')) {
     $xoopsOption['storynum'] = $helper->getConfig('storyhome');
 }
 
-if (\Xmf\Request::hasVar('start', 'GET')) {
-    $start = \Xmf\Request::getInt('start', 0, 'GET');
+if (Request::hasVar('start', 'GET')) {
+    $start = Request::getInt('start', 0, 'GET');
 } else {
     $start = 0;
 }
@@ -137,14 +142,14 @@ if (empty($helper->getConfig('newsdisplay')) || 'Classic' === $helper->getConfig
 $firsttitle = '';
 $topictitle = '';
 $myts       = \MyTextSanitizer::getInstance();
-$sfiles     = new \XoopsModules\News\Files();
+$sfiles     = new Files();
 
 $column_count = $helper->getConfig('columnmode');
 
 if ($showclassic) {
     $GLOBALS['xoopsOption']['template_main'] = 'news_index.tpl';
     require_once XOOPS_ROOT_PATH . '/header.php';
-    $xt = new \XoopsModules\News\NewsTopic();
+    $xt = new NewsTopic();
 
     $xoopsTpl->assign('columnwidth', (int)(1 / $column_count * 100));
     if ($helper->getConfig('ratenews')) {
@@ -193,7 +198,7 @@ if ($showclassic) {
     } else {
         $topic_frontpage = false;
     }
-    $sarray = \XoopsModules\News\NewsStory::getAllPublished($xoopsOption['storynum'], $start, $helper->getConfig('restrictindex'), $xoopsOption['storytopic'], 0, true, 'published', $topic_frontpage);
+    $sarray = NewsStory::getAllPublished($xoopsOption['storynum'], $start, $helper->getConfig('restrictindex'), $xoopsOption['storytopic'], 0, true, 'published', $topic_frontpage);
 
     $scount = count($sarray);
     $xoopsTpl->assign('story_count', $scount);
@@ -237,7 +242,7 @@ if ($showclassic) {
         $xoopsTpl->assign('displaytopictitle', false);
     }
 
-    $totalcount = \XoopsModules\News\NewsStory::countPublishedByTopic($xoopsOption['storytopic'], $helper->getConfig('restrictindex'));
+    $totalcount = NewsStory::countPublishedByTopic($xoopsOption['storytopic'], $helper->getConfig('restrictindex'));
     if ($totalcount > $scount) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new \XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
@@ -261,13 +266,13 @@ if ($showclassic) {
         $xoopsTpl->assign('rates', false);
     }
 
-    $xt            = new \XoopsModules\News\NewsTopic();
+    $xt            = new NewsTopic();
     $alltopics     = $xt->getTopicsList(true, $helper->getConfig('restrictindex'));
     $smarty_topics = [];
     $topicstories  = [];
 
     foreach ($alltopics as $topicid => $topic) {
-        $allstories  = \XoopsModules\News\NewsStory::getAllPublished($helper->getConfig('storyhome'), 0, $helper->getConfig('restrictindex'), $topicid);
+        $allstories  = NewsStory::getAllPublished($helper->getConfig('storyhome'), 0, $helper->getConfig('restrictindex'), $topicid);
         $storieslist = [];
         foreach ($allstories as $thisstory) {
             $storieslist[] = $thisstory->storyid();
@@ -331,7 +336,7 @@ if ($xoopsOption['storytopic']) {
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($helper->getConfig('topicsrss') && $xoopsOption['storytopic']) {
-    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, \Xmf\Module\Admin::iconUrl('', 16) . '/rss.gif', _NW_RSSFEED);
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, Admin::iconUrl('', 16) . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }
 

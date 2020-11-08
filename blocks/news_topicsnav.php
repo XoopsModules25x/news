@@ -21,6 +21,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\Helper;
+use XoopsModules\News\NewsTopic;
 
 /**
  * @param $options
@@ -40,7 +41,7 @@ function b_news_topicsnav_show($options)
     $block            = [];
     $newscountbytopic = [];
     $perms            = '';
-    $xt               = new  \XoopsModules\News\NewsTopic();
+    $xt               = new  NewsTopic();
     $restricted       = News\Utility::getModuleOption('restrictindex');
     if ($restricted) {
         global $xoopsUser;

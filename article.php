@@ -112,7 +112,11 @@
  * @author                          Xoops Modules Dev Team
  */
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\Files;
+use XoopsModules\News\Keyhighlighter;
+use XoopsModules\News\NewsStory;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -126,7 +130,7 @@ require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 
-$storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
+$storyid = Request::getInt('storyid', 0, 'GET');
 
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
@@ -135,7 +139,7 @@ if (empty($storyid)) {
 $myts = \MyTextSanitizer::getInstance();
 
 // Not yet published
-$article = new \XoopsModules\News\NewsStory($storyid);
+$article = new NewsStory($storyid);
 if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOTYETSTORY);
 }
@@ -155,7 +159,7 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
-$storypage  = \Xmf\Request::getInt('page', 0, 'GET');
+$storypage  = Request::getInt('page', 0, 'GET');
 $dateformat = News\Utility::getModuleOption('dateformat');
 $hcontent   = '';
 
@@ -247,7 +251,7 @@ $highlight = News\Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
     $keywords      = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
-    $h             = new \XoopsModules\News\Keyhighlighter($keywords, true, 'my_highlighter');
+    $h             = new Keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }
 // ****************************************************************************************************************
@@ -315,7 +319,7 @@ if ('' !== xoops_trim($article->picture())) {
 }
 
 $xoopsTpl->assign('lang_attached_files', _NW_ATTACHEDFILES);
-$sfiles     = new \XoopsModules\News\Files();
+$sfiles     = new Files();
 $filesarr   = $newsfiles = [];
 $filesarr   = $sfiles->getAllbyStory($storyid);
 $filescount = count($filesarr);
@@ -377,9 +381,9 @@ if (News\Utility::getModuleOption('showsummarytable')) {
     $xoopsTpl->assign('showsummary', true);
     $xoopsTpl->assign('lang_other_story', _NW_OTHER_ARTICLES);
     $count      = 0;
-    $tmparticle = new \XoopsModules\News\NewsStory();
+    $tmparticle = new NewsStory();
     $infotips   = News\Utility::getModuleOption('infotips');
-    $sarray     = \XoopsModules\News\NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $helper->getConfig('restrictindex'));
+    $sarray     = NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $helper->getConfig('restrictindex'));
     if (count($sarray) > 0) {
         foreach ($sarray as $onearticle) {
             ++$count;
@@ -419,7 +423,7 @@ if (News\Utility::getModuleOption('showsummarytable')) {
  */
 if (News\Utility::getModuleOption('showprevnextlink')) {
     $xoopsTpl->assign('nav_links', true);
-    $tmparticle    = new \XoopsModules\News\NewsStory();
+    $tmparticle    = new NewsStory();
     $nextId        = $previousId = -1;
     $next          = $previous = [];
     $previousTitle = $nextTitle = '';

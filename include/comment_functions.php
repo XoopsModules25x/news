@@ -23,6 +23,7 @@
 
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+use XoopsModules\News\NewsStory;
 
 /**
  * @param $story_id
@@ -34,7 +35,7 @@ function news_com_update($story_id, $total_num)
 {
     $story_id  = (int)$story_id;
     $total_num = (int)$total_num;
-    $article   = new \XoopsModules\News\NewsStory($story_id);
+    $article   = new NewsStory($story_id);
     if (!$article->updateComments($total_num)) {
         return false;
     }

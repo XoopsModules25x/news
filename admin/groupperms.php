@@ -25,6 +25,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
 
+use Xmf\Module\Admin;
+use Xmf\Request;
 use XoopsModules\News;
 
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
@@ -34,11 +36,11 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
-$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject = Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 
 echo '<br><br><br>';
-$permtoset                = \Xmf\Request::getInt('permtoset', 1, 'POST');
+$permtoset                = Request::getInt('permtoset', 1, 'POST');
 $selected                 = ['', '', ''];
 $selected[$permtoset - 1] = ' selected';
 echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='document.fselperm.submit()'><option value='1'"

@@ -19,6 +19,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\Helper;
+use XoopsModules\News\NewsStory;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -104,7 +105,7 @@ function b_news_archives_edit($options)
     $seleyear  = $options[3];
     $selemonth = $options[4];
 
-    $tmpstory = new \XoopsModules\News\NewsStory();
+    $tmpstory = new NewsStory();
     $tmpstory->getOlderRecentNews($older, $recent); // We are searching for the module's older and more recent article's date
 
     // Min and max value for the two dates selectors

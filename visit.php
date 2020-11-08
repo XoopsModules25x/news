@@ -16,19 +16,24 @@
  * @since
  * @author         XOOPS Development Team
  */
+
+use Xmf\Request;
+use XoopsModules\News\Files;
+use XoopsModules\News\NewsStory;
+
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
-$fileid = \Xmf\Request::getInt('fileid', 0, 'GET');
+$fileid = Request::getInt('fileid', 0, 'GET');
 if (empty($fileid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _ERRORS);
 }
 $myts   = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
-$sfiles = new \XoopsModules\News\Files($fileid);
+$sfiles = new Files($fileid);
 
 // Do we have the right to see the file ?
-$article = new \XoopsModules\News\NewsStory($sfiles->getStoryid());
+$article = new NewsStory($sfiles->getStoryid());
 // and the news, can we see it ?
 if (0 == $article->published() || $article->published() > time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);

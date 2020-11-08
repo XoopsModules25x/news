@@ -56,7 +56,9 @@
  * @template_var                    string  title       story's title
  */
 
+use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\NewsStory;
 
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
@@ -80,16 +82,16 @@ if ($cfg['config_rating_registred_only']) {
 
 // 2) Is the story published ?
 $storyid = 0;
-if (\Xmf\Request::hasVar('storyid', 'GET')) {
-    $storyid = \Xmf\Request::getInt('storyid', 0, 'GET');
+if (Request::hasVar('storyid', 'GET')) {
+    $storyid = Request::getInt('storyid', 0, 'GET');
 } else {
-    if (\Xmf\Request::hasVar('storyid', 'POST')) {
-        $storyid = \Xmf\Request::getInt('storyid', 0, 'POST');
+    if (Request::hasVar('storyid', 'POST')) {
+        $storyid = Request::getInt('storyid', 0, 'POST');
     }
 }
 
 if (!empty($storyid)) {
-    $article = new \XoopsModules\News\NewsStory($storyid);
+    $article = new NewsStory($storyid);
     if (0 == $article->published() || $article->published() > time()) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
     }
@@ -125,8 +127,8 @@ if (!empty($_POST['submit'])) { // The form was submited
     //Make sure only 1 anonymous from an IP in a single day.
     $anonwaitdays = 1;
     $ip           = getenv('REMOTE_ADDR');
-    $storyid      = \Xmf\Request::getInt('storyid', 0, 'POST');
-    $rating       = \Xmf\Request::getInt('rating', 0, 'POST');
+    $storyid      = Request::getInt('storyid', 0, 'POST');
+    $rating       = Request::getInt('rating', 0, 'POST');
 
     // Check if Rating is Null
     if ('--' == $rating) {
@@ -157,7 +159,7 @@ if (!empty($_POST['submit'])) { // The form was submited
         // Check if ANONYMOUS user is trying to vote more than once per day.
         $yesterday = (time() - (86400 * $anonwaitdays));
         $result    = $xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
-        list($anonvotecount) = $xoopsDB->fetchRow($result);
+        [$anonvotecount] = $xoopsDB->fetchRow($result);
         if ($anonvotecount >= 1) {
             redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
         }
@@ -177,7 +179,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $GLOBALS['xoopsOption']['template_main'] = 'news_ratenews.tpl';
     require_once XOOPS_ROOT_PATH . '/header.php';
     $news = null;
-    $news = new \XoopsModules\News\NewsStory($storyid);
+    $news = new NewsStory($storyid);
     if (is_object($news)) {
         $title = $news->title('Show');
     } else {

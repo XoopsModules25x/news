@@ -19,8 +19,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\Helper;
-
-
+use XoopsModules\News\NewsStory;
 
 /**
  * @return array|null|false
@@ -42,7 +41,7 @@ function b_news_bigstory_show()
     $infotips   = News\Utility::getModuleOption('infotips');
 
     $block    = [];
-    $onestory = new \XoopsModules\News\NewsStory();
+    $onestory = new NewsStory();
     $stories  = $onestory->getBigStory(1, 0, $restricted, 0, 1, true, 'counter');
     if (0 == count($stories)) {
         $block['message'] = _MB_NEWS_NOTYET;

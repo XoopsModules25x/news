@@ -17,6 +17,7 @@
  * @author         XOOPS Development Team
  */
 
+use Xmf\Module\Admin;
 use XoopsModules\News;
 
 //require_once  dirname(__DIR__) . '/include/common.php';
@@ -25,7 +26,7 @@ $helper = News\Helper::getInstance();
 $helper->loadLanguage('common');
 $helper->loadLanguage('feedback');
 
-$pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
+$pathIcon32 = Admin::menuIconPath('');
 if (is_object($helper->getModule())) {
     $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 }

@@ -18,6 +18,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\NewsTopic;
 
 require_once __DIR__ . '/preloads/autoloader.php';
 /** @var News\Helper $helper */
@@ -232,7 +233,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     if (!isset($_SESSION['items_count']) || -1 == $_SESSION['items_count']) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
         $result = $xoopsDB->query($sql);
-        list($count) = $xoopsDB->fetchRow($result);
+        [$count] = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
     } else {
         $count = $_SESSION['items_count'];
@@ -240,7 +241,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        $xt         = new  \XoopsModules\News\NewsTopic();
+        $xt         = new  NewsTopic();
         $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
