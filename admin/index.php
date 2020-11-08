@@ -1766,17 +1766,15 @@ function saveMetagenBlackList()
             $blacklist->delete($black_id);
         }
         $blacklist->store();
-    } else {
-        if (Request::hasVar('go', 'POST') && _AM_ADD == $_POST['go']) {
-            $p_keywords = $_POST['keywords'];
-            $keywords   = explode("\n", $p_keywords);
-            foreach ($keywords as $keyword) {
-                if ('' !== xoops_trim($keyword)) {
-                    $blacklist->addkeywords(xoops_trim($keyword));
-                }
+    } elseif (Request::hasVar('go', 'POST') && _AM_ADD == $_POST['go']) {
+        $p_keywords = $_POST['keywords'];
+        $keywords   = explode("\n", $p_keywords);
+        foreach ($keywords as $keyword) {
+            if ('' !== xoops_trim($keyword)) {
+                $blacklist->addkeywords(xoops_trim($keyword));
             }
-            $blacklist->store();
         }
+        $blacklist->store();
     }
     redirect_header('index.php?op=metagen', 0, _AM_DBUPDATED);
 }
@@ -1806,14 +1804,12 @@ switch ($op) {
             } else {
                 redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
             }
-        } else {
-            if ('xml' === $_GET['type']) {
-                $xmlfile = XOOPS_ROOT_PATH . '/uploads/news/stories.xml';
-                if (unlink($xmlfile)) {
-                    redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
-                } else {
-                    redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
-                }
+        } elseif ('xml' === $_GET['type']) {
+            $xmlfile = XOOPS_ROOT_PATH . '/uploads/news/stories.xml';
+            if (unlink($xmlfile)) {
+                redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
+            } else {
+                redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
             }
         }
         break;

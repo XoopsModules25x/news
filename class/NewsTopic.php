@@ -402,10 +402,8 @@ class NewsTopic extends XoopsTopic
 
             $helper = Helper::getHelper($dirname);
             $helper->redirect('admin/index.php', 5, $this->db->error());
-        } else {
-            if ($insert) {
-                $this->topic_id = $this->db->getInsertId();
-            }
+        } elseif ($insert) {
+            $this->topic_id = $this->db->getInsertId();
         }
 
         if (true === $this->use_permission) {
@@ -608,12 +606,10 @@ class NewsTopic extends XoopsTopic
         $sql  = 'SELECT topic_id, topic_title, topic_imgurl FROM ' . $this->table . ' WHERE ';
         if (!\is_array($topic)) {
             $sql .= ' topic_id=' . (int)$topic;
+        } elseif (\count($topic) > 0) {
+            $sql .= ' topic_id IN (' . \implode(',', $topic) . ')';
         } else {
-            if (\count($topic) > 0) {
-                $sql .= ' topic_id IN (' . \implode(',', $topic) . ')';
-            } else {
-                return null;
-            }
+            return null;
         }
         $result = $this->db->query($sql);
         while (false !== ($row = $this->db->fetchArray($result))) {

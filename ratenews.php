@@ -84,10 +84,8 @@ if ($cfg['config_rating_registred_only']) {
 $storyid = 0;
 if (Request::hasVar('storyid', 'GET')) {
     $storyid = Request::getInt('storyid', 0, 'GET');
-} else {
-    if (Request::hasVar('storyid', 'POST')) {
-        $storyid = Request::getInt('storyid', 0, 'POST');
-    }
+} elseif (Request::hasVar('storyid', 'POST')) {
+    $storyid = Request::getInt('storyid', 0, 'POST');
 }
 
 if (!empty($storyid)) {

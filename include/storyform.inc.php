@@ -111,12 +111,10 @@ if ($approveprivilege) {
         $sform->addElement(new xoopsFormText(_NW_META_DESCRIPTION, 'description', 50, 255, $description), false);
         $sform->addElement(new xoopsFormText(_NW_META_KEYWORDS, 'keywords', 50, 255, $keywords), false);
     }
-} else {
-    if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-        $itemIdForTag = isset($storyid) ? $storyid : 0;
-        require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new FormTag('item_tag', 60, 255, $itemIdForTag, 0));
-    }
+} elseif (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
+    $itemIdForTag = isset($storyid) ? $storyid : 0;
+    require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
+    $sform->addElement(new FormTag('item_tag', 60, 255, $itemIdForTag, 0));
 }
 // Manage upload(s)
 $allowupload = false;

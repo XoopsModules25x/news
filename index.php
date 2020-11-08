@@ -101,11 +101,10 @@ $module = \XoopsModule::getByDirname($moduleDirName);
 $storytopic = 0;
 if (Request::hasVar('storytopic', 'GET')) {
     $storytopic = Request::getInt('storytopic', 0, 'GET');
-} else {
-    if (Request::hasVar('topic_id', 'GET')) {
-        $storytopic = Request::getInt('topic_id', 0, 'GET');
-    }
+} elseif (Request::hasVar('topic_id', 'GET')) {
+    $storytopic = Request::getInt('topic_id', 0, 'GET');
 }
+
 
 if ($storytopic) {
     $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
@@ -345,12 +344,10 @@ if ($helper->getConfig('topicsrss') && $xoopsOption['storytopic']) {
  */
 if ('' !== $firsttitle) {
     $xoopsTpl->assign('xoops_pagetitle', $firsttitle . ' - ' . $xoopsModule->name('s'));
+} elseif ('' !== $topictitle) {
+    $xoopsTpl->assign('xoops_pagetitle', $topictitle);
 } else {
-    if ('' !== $topictitle) {
-        $xoopsTpl->assign('xoops_pagetitle', $topictitle);
-    } else {
-        $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->name('s'));
-    }
+    $xoopsTpl->assign('xoops_pagetitle', $xoopsModule->name('s'));
 }
 
 $xoopsTpl->assign('lang_go', _GO);

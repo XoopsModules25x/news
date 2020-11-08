@@ -67,10 +67,8 @@ class Blacklist
                     unset($this->keywords[$onekeyword]);
                 }
             }
-        } else {
-            if (isset($this->keywords[$keyword])) {
-                unset($this->keywords[$keyword]);
-            }
+        } elseif (isset($this->keywords[$keyword])) {
+            unset($this->keywords[$keyword]);
         }
     }
 

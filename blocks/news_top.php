@@ -150,11 +150,9 @@ function b_news_top_show($options)
                     $topicstitles = [];
                 }
                 //unset($permstory);
-            } else {
-                if (!$news_visible) {
-                    $usespotlight = false;
-                    $topicstitles = [];
-                }
+            } elseif (!$news_visible) {
+                $usespotlight = false;
+                $topicstitles = [];
             }
         }
 
@@ -305,71 +303,69 @@ function b_news_top_show($options)
             }
 
             $block['spotlight'] = $spotlight;
-        } else {
-            if ($tabscount > 0) {
-                $topics   = array_slice($options, 14);
-                $thetopic = $currenttab;
-                $stories  = NewsStory::getAllPublished($options[1], 0, $restricted, $thetopic, 1, true, $options[0]);
+        } elseif ($tabscount > 0) {
+            $topics   = array_slice($options, 14);
+            $thetopic = $currenttab;
+            $stories  = NewsStory::getAllPublished($options[1], 0, $restricted, $thetopic, 1, true, $options[0]);
 
-                $topic->getTopic($thetopic);
-                // Added, topic's image and description
-                $block['topic_image']       = XOOPS_URL . '/modules/news/assets/images/topics/' . $topic->topic_imgurl();
-                $block['topic_description'] = $topic->topic_description();
+            $topic->getTopic($thetopic);
+            // Added, topic's image and description
+            $block['topic_image']       = XOOPS_URL . '/modules/news/assets/images/topics/' . $topic->topic_imgurl();
+            $block['topic_description'] = $topic->topic_description();
 
-                $smallheader   = [];
-                $stats         = $topic->getTopicMiniStats($thetopic);
-                $smallheader[] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $thetopic, _MB_READMORE);
-                $smallheader[] = sprintf('%u %s', $stats['count'], _NW_ARTICLES);
-                $smallheader[] = sprintf('%u %s', $stats['reads'], _READS);
-                if (count($stories) > 0) {
-                    foreach ($stories as $key => $story) {
-                        $news  = [];
-                        $title = $story->title();
-                        if (mb_strlen($title) > $options[2]) {
-                            $title = News\Utility::truncateTagSafe($title, $options[2] + 3);
-                        }
-                        if ('' !== $options[7]) {
-                            $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
-                        }
-                        if ($options[3] > 0) {
-                            $html         = 1 == $story->nohtml() ? 0 : 1;
-                            $news['text'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
-                        } else {
-                            $news['text'] = '';
-                        }
-
-                        if (1 == $story->votes()) {
-                            $news['number_votes'] = _NW_ONEVOTE;
-                        } else {
-                            $news['number_votes'] = sprintf(_NW_NUMVOTES, $story->votes());
-                        }
-                        if ($infotips > 0) {
-                            $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
-                        } else {
-                            $news['infotips'] = '';
-                        }
-                        $news['title']       = sprintf("<a href='%s' %s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
-                        $news['id']          = $story->storyid();
-                        $news['date']        = formatTimestamp($story->published(), $dateformat);
-                        $news['hits']        = $story->counter();
-                        $news['rating']      = number_format($story->rating(), 2);
-                        $news['votes']       = $story->votes();
-                        $news['topicid']     = $story->topicid();
-                        $news['topic_title'] = $story->topic_title();
-                        $news['topic_color'] = '#' . $myts->displayTarea($story->topic_color);
-                        $news['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
-                        $news['pictureinfo'] = $story->pictureinfo();
-
-                        if (3 != $displayname) {
-                            $news['author'] = sprintf('%s %s', _POSTEDBY, $story->uname());
-                        } else {
-                            $news['author'] = '';
-                        }
-                        $news['title_with_link'] = sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
-                        $block['news'][]         = $news;
+            $smallheader   = [];
+            $stats         = $topic->getTopicMiniStats($thetopic);
+            $smallheader[] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $thetopic, _MB_READMORE);
+            $smallheader[] = sprintf('%u %s', $stats['count'], _NW_ARTICLES);
+            $smallheader[] = sprintf('%u %s', $stats['reads'], _READS);
+            if (count($stories) > 0) {
+                foreach ($stories as $key => $story) {
+                    $news  = [];
+                    $title = $story->title();
+                    if (mb_strlen($title) > $options[2]) {
+                        $title = News\Utility::truncateTagSafe($title, $options[2] + 3);
                     }
-                    $block['smallheader'] = $smallheader;
+                    if ('' !== $options[7]) {
+                        $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
+                    }
+                    if ($options[3] > 0) {
+                        $html         = 1 == $story->nohtml() ? 0 : 1;
+                        $news['text'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                    } else {
+                        $news['text'] = '';
+                    }
+
+                    if (1 == $story->votes()) {
+                        $news['number_votes'] = _NW_ONEVOTE;
+                    } else {
+                        $news['number_votes'] = sprintf(_NW_NUMVOTES, $story->votes());
+                    }
+                    if ($infotips > 0) {
+                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
+                    } else {
+                        $news['infotips'] = '';
+                    }
+                    $news['title']       = sprintf("<a href='%s' %s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
+                    $news['id']          = $story->storyid();
+                    $news['date']        = formatTimestamp($story->published(), $dateformat);
+                    $news['hits']        = $story->counter();
+                    $news['rating']      = number_format($story->rating(), 2);
+                    $news['votes']       = $story->votes();
+                    $news['topicid']     = $story->topicid();
+                    $news['topic_title'] = $story->topic_title();
+                    $news['topic_color'] = '#' . $myts->displayTarea($story->topic_color);
+                    $news['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
+                    $news['pictureinfo'] = $story->pictureinfo();
+
+                    if (3 != $displayname) {
+                        $news['author'] = sprintf('%s %s', _POSTEDBY, $story->uname());
+                    } else {
+                        $news['author'] = '';
+                    }
+                    $news['title_with_link'] = sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
+                    $block['news'][]         = $news;
                 }
+                $block['smallheader'] = $smallheader;
             }
         }
         $block['lang_on']    = _ON; // on

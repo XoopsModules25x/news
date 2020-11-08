@@ -210,12 +210,10 @@ if ('' !== xoops_trim($bodytext)) {
         $pagenav = new \XoopsPageNav($story_pages, 1, $storypage, 'page', 'storyid=' . $storyid);
         if (News\Utility::isBot()) { // A bot is reading the articles, we are going to show him all the links to the pages
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($story_pages));
+        } elseif (News\Utility::getModuleOption('enhanced_pagenav')) {
+            $xoopsTpl->assign('pagenav', $pagenav->renderEnhancedSelect(true, $arr_titles));
         } else {
-            if (News\Utility::getModuleOption('enhanced_pagenav')) {
-                $xoopsTpl->assign('pagenav', $pagenav->renderEnhancedSelect(true, $arr_titles));
-            } else {
-                $xoopsTpl->assign('pagenav', $pagenav->renderNav());
-            }
+            $xoopsTpl->assign('pagenav', $pagenav->renderNav());
         }
 
         if (0 == $storypage) {

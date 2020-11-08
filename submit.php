@@ -83,10 +83,9 @@ if (Request::hasVar('preview', 'POST')) {
             if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !News\Utility::isAdminGroup()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             }
-        } else { // Users can't edit their articles
-            if (!News\Utility::isAdminGroup()) {
+        } elseif (!News\Utility::isAdminGroup()) {
+                // Users can't edit their articles
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-            }
         }
     }
 
@@ -96,37 +95,33 @@ if (Request::hasVar('preview', 'POST')) {
     } elseif ($approveprivilege && 'delete' === $_GET['op']) {
         $op      = 'delete';
         $storyid = Request::getInt('storyid', 0, 'GET');
-    } else {
-        if (News\Utility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
-            && ('edit' === $_GET['op']
-                || 'preview' === $_POST['op']
-                || 'post' === $_POST['op'])) {
-            $storyid = 0;
-            //            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, 'GET') : \Xmf\Request::getInt('storyid', 0, 'POST');
-            $storyid = Request::getInt('storyid', 0);
-            if (!empty($storyid)) {
-                $tmpstory = new NewsStory($storyid);
-                if ($tmpstory->uid() == $xoopsUser->getVar('uid')) {
-                    $op = isset($_GET['op']) ? $_GET['op'] : $_POST['post'];
-                    unset($tmpstory);
-                    $approveprivilege = 1;
+    } elseif (News\Utility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
+              && ('edit' === $_GET['op']
+                  || 'preview' === $_POST['op']
+                  || 'post' === $_POST['op'])) {
+        $storyid = 0;
+        //            $storyid = isset($_GET['storyid']) ? \Xmf\Request::getInt('storyid', 0, 'GET') : \Xmf\Request::getInt('storyid', 0, 'POST');
+        $storyid = Request::getInt('storyid', 0);
+        if (!empty($storyid)) {
+            $tmpstory = new NewsStory($storyid);
+            if ($tmpstory->uid() == $xoopsUser->getVar('uid')) {
+                $op = isset($_GET['op']) ? $_GET['op'] : $_POST['post'];
+                unset($tmpstory);
+                $approveprivilege = 1;
+            } else {
+                unset($tmpstory);
+                if (!News\Utility::isAdminGroup()) {
+                    redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
                 } else {
-                    unset($tmpstory);
-                    if (!News\Utility::isAdminGroup()) {
-                        redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-                    } else {
-                        $approveprivilege = 1;
-                    }
+                    $approveprivilege = 1;
                 }
             }
-        } else {
-            if (!News\Utility::isAdminGroup()) {
-                unset($tmpstory);
-                redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-            } else {
-                $approveprivilege = 1;
-            }
         }
+    } elseif (!News\Utility::isAdminGroup()) {
+        unset($tmpstory);
+        redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
+    } else {
+        $approveprivilege = 1;
     }
 }
 
@@ -188,12 +183,10 @@ switch ($op) {
         $xt       = new  NewsTopic($topic_id);
         if (Request::hasVar('storyid', 'GET')) {
             $storyid = Request::getInt('storyid', 0, 'GET');
+        } elseif (Request::hasVar('storyid', 'POST')) {
+            $storyid = Request::getInt('storyid', 0, 'POST');
         } else {
-            if (Request::hasVar('storyid', 'POST')) {
-                $storyid = Request::getInt('storyid', 0, 'POST');
-            } else {
-                $storyid = 0;
-            }
+            $storyid = 0;
         }
 
         if (!empty($storyid)) {
@@ -309,12 +302,10 @@ switch ($op) {
 
         if (Request::hasVar('storyid', 'GET')) {
             $storyid = Request::getInt('storyid', 0, 'GET');
+        } elseif (Request::hasVar('storyid', 'POST')) {
+            $storyid = Request::getInt('storyid', 0, 'POST');
         } else {
-            if (Request::hasVar('storyid', 'POST')) {
-                $storyid = Request::getInt('storyid', 0, 'POST');
-            } else {
-                $storyid = 0;
-            }
+            $storyid = 0;
         }
 
         if (empty($storyid)) {

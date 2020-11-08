@@ -34,10 +34,9 @@ function xoops_module_update_news()
             echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
             ++$errors;
         }
-    } else {
+    } elseif (!News\Utility::existTable($xoopsDB->prefix('news_stories_files'))) {
         // 1) Create, if it does not exists, the stories_files table
-        if (!News\Utility::existTable($xoopsDB->prefix('news_stories_files'))) {
-            $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (
+        $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (
               fileid INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
               filerealname VARCHAR(255) NOT NULL DEFAULT '',
               storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
@@ -48,10 +47,9 @@ function xoops_module_update_news()
               PRIMARY KEY  (fileid),
               KEY storyid (storyid)
             ) ENGINE=MyISAM;";
-            if (!$xoopsDB->queryF($sql)) {
-                echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED1;
-                ++$errors;
-            }
+        if (!$xoopsDB->queryF($sql)) {
+            echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED1;
+            ++$errors;
         }
     }
 

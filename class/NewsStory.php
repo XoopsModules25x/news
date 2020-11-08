@@ -22,8 +22,6 @@ namespace XoopsModules\News;
 
 use XoopsModules\News;
 
-
-
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
@@ -365,12 +363,10 @@ class NewsStory extends XoopsStory
         if (0 != (int)$topic) {
             if (!\is_array($topic)) {
                 $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
+            } elseif (\count($topic) > 0) {
+                $sql .= ' AND topicid IN (' . \implode(',', $topic) . ')';
             } else {
-                if (\count($topic) > 0) {
-                    $sql .= ' AND topicid IN (' . \implode(',', $topic) . ')';
-                } else {
-                    return null;
-                }
+                return null;
             }
         } else {
             if ($checkRight) {
@@ -498,10 +494,8 @@ class NewsStory extends XoopsStory
         $sql  = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE expired <= ' . \time() . ' AND expired > 0';
         if (!empty($topic)) {
             $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
-        } else {
-            if (0 == (int)$ihome) {
-                $sql .= ' AND ihome=0';
-            }
+        } elseif (0 == (int)$ihome) {
+            $sql .= ' AND ihome=0';
         }
 
         $sql    .= ' ORDER BY expired DESC';
@@ -701,7 +695,8 @@ class NewsStory extends XoopsStory
                . '/edit.png'
                . ' '
                . 'title='
-               . \_NW_EDIT . '></a>'
+               . \_NW_EDIT
+               . '></a>'
                . '<a href='
                . XOOPS_URL
                . '/modules/news/admin/index.php?op=delete&amp;storyid='
@@ -826,10 +821,8 @@ class NewsStory extends XoopsStory
         $story['author_uid']  = $this->uid();
         if (false !== $story['poster']) {
             $story['poster'] = "<a href='" . XOOPS_URL . '/userinfo.php?uid=' . $this->uid() . "'>" . $story['poster'] . '</a>';
-        } else {
-            if (3 != $helper->getConfig('displayname')) {
-                $story['poster'] = $xoopsConfig['anonymous'];
-            }
+        } elseif (3 != $helper->getConfig('displayname')) {
+            $story['poster'] = $xoopsConfig['anonymous'];
         }
         if ($helper->getConfig('ratenews')) {
             $story['rating'] = \number_format($this->rating(), 2);
@@ -877,24 +870,20 @@ class NewsStory extends XoopsStory
             $morelink2 = '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
             if (0 == $ccount) {
                 $morelink .= '">' . _NW_COMMENTS . '</a>';
-            } else {
-                if ($fullcount < 1) {
-                    if (1 == $ccount) {
-                        $morelink .= '">' . _NW_READMORE . '</a> | ' . $morelink2 . '">' . _NW_ONECOMMENT . '</a>';
-                    } else {
-                        $morelink .= '">' . _NW_READMORE . '</a> | ' . $morelink2 . '">';
-                        $morelink .= \sprintf(_NW_NUMCOMMENTS, $ccount);
-                        $morelink .= '</a>';
-                    }
+            } elseif ($fullcount < 1) {
+                if (1 == $ccount) {
+                    $morelink .= '">' . _NW_READMORE . '</a> | ' . $morelink2 . '">' . _NW_ONECOMMENT . '</a>';
                 } else {
-                    if (1 == $ccount) {
-                        $morelink .= '">' . _NW_ONECOMMENT . '</a>';
-                    } else {
-                        $morelink .= '">';
-                        $morelink .= \sprintf(_NW_NUMCOMMENTS, $ccount);
-                        $morelink .= '</a>';
-                    }
+                    $morelink .= '">' . _NW_READMORE . '</a> | ' . $morelink2 . '">';
+                    $morelink .= \sprintf(_NW_NUMCOMMENTS, $ccount);
+                    $morelink .= '</a>';
                 }
+            } elseif (1 == $ccount) {
+                $morelink .= '">' . _NW_ONECOMMENT . '</a>';
+            } else {
+                $morelink .= '">';
+                $morelink .= \sprintf(_NW_NUMCOMMENTS, $ccount);
+                $morelink .= '</a>';
             }
         }
         $story['morelink']  = $morelink;
@@ -971,10 +960,8 @@ class NewsStory extends XoopsStory
                 $tblusers[$uid] = \XoopsUser::getUnameFromId($uid);
 
                 return $tblusers[$uid];
-            case 2: // Display full name (if it is not empty)
-                /** @var \XoopsMemberHandler $memberHandler */
-                $memberHandler = xoops_getHandler('member');
-                $thisuser = $memberHandler->getUser($uid);
+            case 2: // Display full name (if it is not empty) /** @var \XoopsMemberHandler $memberHandler */ $memberHandler = xoops_getHandler('member');
+                $thisuser                                                                                                   = $memberHandler->getUser($uid);
                 if (\is_object($thisuser)) {
                     $return = $thisuser->getVar('name');
                     if ('' === $return) {
@@ -1325,12 +1312,10 @@ class NewsStory extends XoopsStory
                 } else {
                     $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
                 }
+            } elseif (\count($topic) > 0) {
+                $sql .= ' AND topicid IN (' . \implode(',', $topic) . ')';
             } else {
-                if (\count($topic) > 0) {
-                    $sql .= ' AND topicid IN (' . \implode(',', $topic) . ')';
-                } else {
-                    return null;
-                }
+                return null;
             }
         } else {
             if ($checkRight) {
