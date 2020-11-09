@@ -185,8 +185,8 @@ class NewsTopic extends XoopsTopic
         }
         while (false !== ($row = $this->db->fetchArray($result))) {
             $row['prefix'] = $r_prefix . '.';
-            \array_push($parray, $row);
-            $parray = $this->getChildTreeArray($row['topic_id'], $order, $perms, $parray, $row['prefix']);
+            $parray[]      = $row;
+            $parray        = $this->getChildTreeArray($row['topic_id'], $order, $perms, $parray, $row['prefix']);
         }
 
         return $parray;

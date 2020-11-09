@@ -1364,8 +1364,8 @@ function delTopic()
             $_SESSION['items_count'] = -1;
         }
         // get all subtopics under the specified topic
-        $topic_arr = $xt->getAllChildTopics();
-        array_push($topic_arr, $xt);
+        $topic_arr   = $xt->getAllChildTopics();
+        $topic_arr[] = $xt;
         foreach ($topic_arr as $eachtopic) {
             // get all stories in each topic
             $story_arr = NewsStory:: getByTopic($eachtopic->topic_id());
