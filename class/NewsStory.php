@@ -731,12 +731,10 @@ class NewsStory extends XoopsStory
                 $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'P':
-                $imgurl = $myts->stripSlashesGPC($this->topic_imgurl);
-                $imgurl = htmlspecialchars($imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'F':
-                $imgurl = $myts->stripSlashesGPC($this->topic_imgurl);
-                $imgurl = htmlspecialchars($imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
         }
 
@@ -759,11 +757,11 @@ class NewsStory extends XoopsStory
                 $title = htmlspecialchars($this->topic_title);
                 break;
             case 'P':
-                $title = $myts->stripSlashesGPC($this->topic_title);
+                $title = $this->topic_title;
                 $title = htmlspecialchars($title);
                 break;
             case 'F':
-                $title = $myts->stripSlashesGPC($this->topic_title);
+                $title = $this->topic_title;
                 $title = htmlspecialchars($title);
                 break;
         }
@@ -1243,7 +1241,7 @@ class NewsStory extends XoopsStory
                 break;
             case 'P':
             case 'F':
-                $description = htmlspecialchars($myts->stripSlashesGPC($this->description));
+                $description = htmlspecialchars($this->description);
                 break;
             case 'E':
                 $description = htmlspecialchars($this->description);
@@ -1267,7 +1265,7 @@ class NewsStory extends XoopsStory
                 break;
             case 'P':
             case 'F':
-                $keywords = htmlspecialchars($myts->stripSlashesGPC($this->keywords));
+                $keywords = htmlspecialchars($this->keywords);
                 break;
             case 'E':
                 $keywords = htmlspecialchars($this->keywords);
@@ -1607,8 +1605,7 @@ class NewsStory extends XoopsStory
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $hometext = $myts->stripSlashesGPC($this->hometext);
-                $hometext = htmlspecialchars($hometext);
+                $hometext = htmlspecialchars($this->hometext);
                 break;
         }
 
@@ -1646,8 +1643,7 @@ class NewsStory extends XoopsStory
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $bodytext = $myts->stripSlashesGPC($this->bodytext);
-                $bodytext = htmlspecialchars($bodytext);
+                $bodytext = htmlspecialchars($this->bodytext);
                 break;
         }
 

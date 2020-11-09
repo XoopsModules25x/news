@@ -428,7 +428,7 @@ class XoopsStory
                 break;
             case 'Preview':
             case 'InForm':
-                $title = htmlspecialchars($myts->stripSlashesGPC($this->title));
+                $title = htmlspecialchars($this->title);
                 break;
         }
 
@@ -463,7 +463,7 @@ class XoopsStory
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $hometext = \htmlspecialchars($myts->stripSlashesGPC($this->hometext), \ENT_QUOTES);
+                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES);
                 break;
         }
 
@@ -498,7 +498,7 @@ class XoopsStory
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $bodytext = \htmlspecialchars($myts->stripSlashesGPC($this->bodytext), \ENT_QUOTES);
+                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES);
                 break;
         }
 

@@ -556,7 +556,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_description = htmlspecialchars($myts->stripSlashesGPC($this->topic_description));
+                $topic_description = htmlspecialchars($this->topic_description);
                 break;
         }
 
@@ -582,12 +582,10 @@ class NewsTopic extends XoopsTopic
                 $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'P':
-                $imgurl = $myts->stripSlashesGPC($this->topic_imgurl);
-                $imgurl = htmlspecialchars($imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
             case 'F':
-                $imgurl = $myts->stripSlashesGPC($this->topic_imgurl);
-                $imgurl = htmlspecialchars($imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl);
                 break;
         }
 

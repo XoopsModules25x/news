@@ -20,8 +20,6 @@ namespace XoopsModules\News;
  * @author         XOOPS Development Team
  */
 
-
-
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/Mimetype.php';
 
 /**
@@ -301,11 +299,11 @@ class Files
                 break;
             case 'P':
             case 'Preview':
-                $filerealname = htmlspecialchars($myts->stripSlashesGPC($this->filerealname));
+                $filerealname = htmlspecialchars($this->filerealname);
                 break;
             case 'F':
             case 'InForm':
-                $filerealname = htmlspecialchars($myts->stripSlashesGPC($this->filerealname));
+                $filerealname = htmlspecialchars($this->filerealname);
                 break;
         }
 
@@ -331,11 +329,11 @@ class Files
                 break;
             case 'P':
             case 'Preview':
-                $filemimetype = htmlspecialchars($myts->stripSlashesGPC($this->mimetype));
+                $filemimetype = htmlspecialchars($this->mimetype);
                 break;
             case 'F':
             case 'InForm':
-                $filemimetype = htmlspecialchars($myts->stripSlashesGPC($this->mimetype));
+                $filemimetype = htmlspecialchars($this->mimetype);
                 break;
         }
 
@@ -361,11 +359,11 @@ class Files
                 break;
             case 'P':
             case 'Preview':
-                $filedownname = htmlspecialchars($myts->stripSlashesGPC($this->downloadname));
+                $filedownname = htmlspecialchars($this->downloadname);
                 break;
             case 'F':
             case 'InForm':
-                $filedownname = htmlspecialchars($myts->stripSlashesGPC($this->downloadname));
+                $filedownname = htmlspecialchars($this->downloadname);
                 break;
         }
 
