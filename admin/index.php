@@ -452,10 +452,10 @@ function confirmBeforePrune()
         $msg         = sprintf(_AM_NEWS_PRUNE_CONFIRM, $displaydate, $count);
         xoops_confirm(
             [
-                'op'            => 'prunenews',
-                'expired'       => $expired,
-                'pruned_topics' => $topiclist,
-                'prune_date'    => $timestamp,
+                          'op'            => 'prunenews',
+                          'expired'       => $expired,
+                          'pruned_topics' => $topiclist,
+                          'prune_date'    => $timestamp,
                 'ok'            => 1,
             ],
             'index.php',
@@ -1189,7 +1189,7 @@ function topicsmanager()
     }
     $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"topic_imgurl\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
     $imgtray->addElement($imageselect, false);
-    $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
+    $imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . XOOPS_URL . $uploadirectory . '/' . $topicimage . "' name='image3' id='image3' alt=''>"));
 
     $uploadfolder = sprintf(_AM_UPLOAD_WARNING, XOOPS_URL . '/uploads/news/image');
     $fileseltray  = new \XoopsFormElementTray('', '<br>');
@@ -1204,7 +1204,7 @@ function topicsmanager()
     $group_list    = $memberHandler->getGroupList();
     /** @var \XoopsGroupPermHandler $grouppermHandler */
     $grouppermHandler = xoops_getHandler('groupperm');
-    $full_list        = array_keys($group_list);
+    $full_list     = array_keys($group_list);
 
     $groups_ids = [];
     if ($topic_id > 0) { // Edit mode
@@ -1364,7 +1364,7 @@ function delTopic()
             $_SESSION['items_count'] = -1;
         }
         // get all subtopics under the specified topic
-        $topic_arr   = $xt->getAllChildTopics();
+        $topic_arr = $xt->getAllChildTopics();
         $topic_arr[] = $xt;
         foreach ($topic_arr as $eachtopic) {
             // get all stories in each topic
@@ -1396,7 +1396,7 @@ function addTopic()
     $helper = Helper::getInstance();
 
     $topicpid = Request::getInt('topic_pid', 0, 'POST');
-    $xt       = new  NewsTopic();
+    $xt       = new NewsTopic();
     if (!$xt->topicExists($topicpid, $_POST['topic_title'])) {
         $xt->setTopicPid($topicpid);
         if (empty($_POST['topic_title']) || '' == xoops_trim($_POST['topic_title'])) {
@@ -1556,7 +1556,7 @@ function getStats()
             $url,
             $myts->displayTarea($data['topic_title']),
             $articles,
-            $views,
+               $views,
             $attachedfiles,
             $expired,
             $authors
@@ -1581,7 +1581,7 @@ function getStats()
             $url1,
             $myts->displayTarea($data['topic_title']),
             $url2,
-            $myts->displayTarea($data['title']),
+               $myts->displayTarea($data['title']),
             $url3,
             htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
             $data['counter']
@@ -1603,7 +1603,7 @@ function getStats()
             $url1,
             $myts->displayTarea($data['topic_title']),
             $url2,
-            $myts->displayTarea($data['title']),
+               $myts->displayTarea($data['title']),
             $url3,
             htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
             $data['counter']
@@ -1625,7 +1625,7 @@ function getStats()
             $url1,
             $myts->displayTarea($data['topic_title']),
             $url2,
-            $myts->displayTarea($data['title']),
+               $myts->displayTarea($data['title']),
             $url3,
             htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
             number_format($data['rating'], 2)
@@ -1767,15 +1767,15 @@ function saveMetagenBlackList()
         }
         $blacklist->store();
     } elseif (Request::hasVar('go', 'POST') && _AM_ADD == $_POST['go']) {
-        $p_keywords = $_POST['keywords'];
-        $keywords   = explode("\n", $p_keywords);
-        foreach ($keywords as $keyword) {
-            if ('' !== xoops_trim($keyword)) {
-                $blacklist->addkeywords(xoops_trim($keyword));
+            $p_keywords = $_POST['keywords'];
+            $keywords   = explode("\n", $p_keywords);
+            foreach ($keywords as $keyword) {
+                if ('' !== xoops_trim($keyword)) {
+                    $blacklist->addkeywords(xoops_trim($keyword));
+                }
             }
+            $blacklist->store();
         }
-        $blacklist->store();
-    }
     redirect_header('index.php?op=metagen', 0, _AM_DBUPDATED);
 }
 
@@ -1805,13 +1805,13 @@ switch ($op) {
                 redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
             }
         } elseif ('xml' === $_GET['type']) {
-            $xmlfile = XOOPS_ROOT_PATH . '/uploads/news/stories.xml';
-            if (unlink($xmlfile)) {
-                redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
-            } else {
-                redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
+                $xmlfile = XOOPS_ROOT_PATH . '/uploads/news/stories.xml';
+                if (unlink($xmlfile)) {
+                    redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
+                } else {
+                    redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
+                }
             }
-        }
         break;
     case 'newarticle':
         xoops_cp_header();

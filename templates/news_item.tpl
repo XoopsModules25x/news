@@ -8,7 +8,7 @@
 
     <div class="itemInfo">
         <{if $story.files_attached}><{$story.attached_link}>&nbsp;<{/if}>
-        <{if $story.poster != ''}><span class="itemPoster"><{$lang_postedby}> <{$story.poster}></span><{/if}>
+        <{if $story.poster != ''}><span class="itemPoster"><{$lang_postedby}> <{$story.poster}> </span><{/if}>
         <span class="itemPostDate"><{$lang_on}> <{$story.posttime}></span>
         (<span class="itemStats"><{$story.hits}> <{$lang_reads}></span>)
         <{$news_by_the_same_author_link}>

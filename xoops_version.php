@@ -25,7 +25,7 @@ require_once __DIR__ . '/preloads/autoloader.php';
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('common');
 
-$moduleDirName      = basename(__DIR__);
+$moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 $modversion['version']       = 1.72;
@@ -240,7 +240,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        $xt         = new  NewsTopic();
+        $xt         = new NewsTopic();
         $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
@@ -376,8 +376,8 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 1,
     'options'     => [
-        '_MI_DISPLAYNAME1' => 1,
-        '_MI_DISPLAYNAME2' => 2,
+    '_MI_DISPLAYNAME1' => 1,
+    '_MI_DISPLAYNAME2' => 2,
         '_MI_DISPLAYNAME3' => 3,
     ],
 ];
@@ -404,13 +404,13 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 10,
     'options'     => [
-        '5'  => 5,
-        '10' => 10,
-        '15' => 15,
-        '20' => 20,
-        '25' => 25,
-        '30' => 30,
-        '35' => 35,
+    '5'  => 5,
+    '10' => 10,
+    '15' => 15,
+    '20' => 20,
+    '25' => 25,
+    '30' => 30,
+    '35' => 35,
         '40' => 40,
     ],
 ];
@@ -426,8 +426,8 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 2,
     'options'     => [
-        '_MI_UPLOAD_GROUP1' => 1,
-        '_MI_UPLOAD_GROUP2' => 2,
+    '_MI_UPLOAD_GROUP1' => 1,
+    '_MI_UPLOAD_GROUP2' => 2,
         '_MI_UPLOAD_GROUP3' => 3,
     ],
 ];
@@ -642,13 +642,13 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'options'     => [
-        _MI_NEWS_SKIN_1 => 1,
-        _MI_NEWS_SKIN_2 => 2,
-        _MI_NEWS_SKIN_3 => 3,
-        _MI_NEWS_SKIN_4 => 4,
-        _MI_NEWS_SKIN_5 => 5,
-        _MI_NEWS_SKIN_6 => 6,
-        _MI_NEWS_SKIN_7 => 7,
+    _MI_NEWS_SKIN_1 => 1,
+    _MI_NEWS_SKIN_2 => 2,
+    _MI_NEWS_SKIN_3 => 3,
+    _MI_NEWS_SKIN_4 => 4,
+    _MI_NEWS_SKIN_5 => 5,
+    _MI_NEWS_SKIN_6 => 6,
+    _MI_NEWS_SKIN_7 => 7,
         _MI_NEWS_SKIN_8 => 8,
     ],
     'default'     => 6,
