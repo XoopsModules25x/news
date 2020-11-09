@@ -94,7 +94,7 @@ function PrintPage()
 <html xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
     <?php
     echo "<head>\n";
-    echo '<title>' . htmlspecialchars($story->title()) . ' - ' . _NW_PRINTER . ' - ' . htmlspecialchars($story->topic_title()) . ' - ' . $xoopsConfig['sitename'] . '</title>';
+    echo '<title>' . htmlspecialchars($story->title(), ENT_QUOTES | ENT_HTML5) . ' - ' . _NW_PRINTER . ' - ' . htmlspecialchars($story->topic_title(), ENT_QUOTES | ENT_HTML5) . ' - ' . $xoopsConfig['sitename'] . '</title>';
     echo '<meta http-equiv="Content-Type" content="text/html; charset=' . _CHARSET . '">';
     echo '<meta name="author" content="XOOPS">';
     echo '<meta name="keywords" content="' . $xoops_meta_keywords . '">';
@@ -266,7 +266,7 @@ function PrintPage()
         <table border="0" width="100%" cellpadding="20" cellspacing="1" bgcolor="#ffffff"><tr><td align="center">
         <img src="' . XOOPS_URL . '/images/logo.png" border="0" alt=""><br><br>
         <h3>' . $story->title() . '</h3>
-        <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . htmlspecialchars($story->topic_title()) . '</small><br><br></td></tr>';
+        <small><b>' . _NW_DATE . '</b>&nbsp;' . $datetime . ' | <b>' . _NW_TOPICC . '</b>&nbsp;' . htmlspecialchars($story->topic_title(), ENT_QUOTES | ENT_HTML5) . '</small><br><br></td></tr>';
     echo '<tr valign="top" style="font:12px;"><td>' . $story->hometext() . '<br>';
     $bodytext = $story->bodytext();
     $bodytext = str_replace('[pagebreak]', '<br style="page-break-after:always;">', $bodytext);

@@ -291,19 +291,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filerealname = htmlspecialchars($this->filerealname);
+                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
             case 'Edit':
-                $filerealname = htmlspecialchars($this->filerealname);
+                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
             case 'Preview':
-                $filerealname = htmlspecialchars($this->filerealname);
+                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'F':
             case 'InForm':
-                $filerealname = htmlspecialchars($this->filerealname);
+                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -321,19 +321,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filemimetype = htmlspecialchars($this->mimetype);
+                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
             case 'Edit':
-                $filemimetype = htmlspecialchars($this->mimetype);
+                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
             case 'Preview':
-                $filemimetype = htmlspecialchars($this->mimetype);
+                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'F':
             case 'InForm':
-                $filemimetype = htmlspecialchars($this->mimetype);
+                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -351,19 +351,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filedownname = htmlspecialchars($this->downloadname);
+                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
             case 'Edit':
-                $filedownname = htmlspecialchars($this->downloadname);
+                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
             case 'Preview':
-                $filedownname = htmlspecialchars($this->downloadname);
+                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'F':
             case 'InForm':
-                $filedownname = htmlspecialchars($this->downloadname);
+                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 

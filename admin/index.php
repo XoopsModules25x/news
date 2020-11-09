@@ -1583,7 +1583,7 @@ function getStats()
             $url2,
             $myts->displayTarea($data['title']),
             $url3,
-            htmlspecialchars($news->uname($data['uid'])),
+            htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
             $data['counter']
         );
     }
@@ -1605,7 +1605,7 @@ function getStats()
             $url2,
             $myts->displayTarea($data['title']),
             $url3,
-            htmlspecialchars($news->uname($data['uid'])),
+            htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
             $data['counter']
         );
     }
@@ -1627,7 +1627,7 @@ function getStats()
             $url2,
             $myts->displayTarea($data['title']),
             $url3,
-            htmlspecialchars($news->uname($data['uid'])),
+            htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
             number_format($data['rating'], 2)
         );
     }
@@ -1641,7 +1641,7 @@ function getStats()
     foreach ($mostreadedauthors as $uid => $reads) {
         $url   = XOOPS_URL . '/userinfo.php?uid=' . $uid;
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url, htmlspecialchars($news->uname($uid)), $reads);
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url, htmlspecialchars($news->uname($uid), ENT_QUOTES | ENT_HTML5), $reads);
     }
     echo '</table>';
 
@@ -1652,7 +1652,7 @@ function getStats()
     foreach ($bestratedauthors as $uid => $rating) {
         $url   = XOOPS_URL . '/userinfo.php?uid=' . $uid;
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url, htmlspecialchars($news->uname($uid)), $rating);
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url, htmlspecialchars($news->uname($uid), ENT_QUOTES | ENT_HTML5), $rating);
     }
     echo '</table>';
 
@@ -1663,7 +1663,7 @@ function getStats()
     foreach ($biggestcontributors as $uid => $count) {
         $url   = XOOPS_URL . '/userinfo.php?uid=' . $uid;
         $class = ('even' === $class) ? 'odd' : 'even';
-        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url, htmlspecialchars($news->uname($uid)), $count);
+        printf("<tr class='" . $class . "'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n", $url, htmlspecialchars($news->uname($uid), ENT_QUOTES | ENT_HTML5), $count);
     }
     echo '</table></div><br>';
 }

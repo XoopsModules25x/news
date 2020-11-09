@@ -44,7 +44,7 @@ class Blacklist
             require_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
                 if ('' !== \xoops_trim($onekeyword)) {
-                    $onekeyword       = htmlspecialchars($onekeyword);
+                    $onekeyword       = htmlspecialchars($onekeyword, ENT_QUOTES | ENT_HTML5);
                     $ret[$onekeyword] = $onekeyword;
                 }
             }
@@ -81,13 +81,13 @@ class Blacklist
         $myts = \MyTextSanitizer::getInstance();
         if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
-                $onekeyword = \xoops_trim(htmlspecialchars($onekeyword));
+                $onekeyword = \xoops_trim(htmlspecialchars($onekeyword, ENT_QUOTES | ENT_HTML5));
                 if ('' !== $onekeyword) {
                     $this->keywords[$onekeyword] = $onekeyword;
                 }
             }
         } else {
-            $keyword = \xoops_trim(htmlspecialchars($keyword));
+            $keyword = \xoops_trim(htmlspecialchars($keyword, ENT_QUOTES | ENT_HTML5));
             if ('' !== $keyword) {
                 $this->keywords[$keyword] = $keyword;
             }

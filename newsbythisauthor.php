@@ -191,7 +191,7 @@ $xoopsTpl->append(
         'news'        => $articlestpl,
     ]
 );
-$xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . htmlspecialchars($xoopsModule->name()));
+$xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . htmlspecialchars($xoopsModule->name(), ENT_QUOTES | ENT_HTML5));
 $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
 
 /**

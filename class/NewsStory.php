@@ -178,7 +178,7 @@ class NewsStory extends XoopsStory
         if ($result) {
             $myts = \MyTextSanitizer::getInstance();
             while (false !== ($row = $db->fetchArray($result))) {
-                $ret = ['storyid' => $row['storyid'], 'title' => htmlspecialchars($row['title'])];
+                $ret = ['storyid' => $row['storyid'], 'title' => htmlspecialchars($row['title'], ENT_QUOTES | ENT_HTML5)];
             }
         }
 
@@ -280,7 +280,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -324,7 +324,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -388,7 +388,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -504,7 +504,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -530,7 +530,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -574,7 +574,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -725,16 +725,16 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -751,18 +751,18 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $title = htmlspecialchars($this->topic_title);
+                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
-                $title = htmlspecialchars($this->topic_title);
+                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
                 $title = $this->topic_title;
-                $title = htmlspecialchars($title);
+                $title = htmlspecialchars($title, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'F':
                 $title = $this->topic_title;
-                $title = htmlspecialchars($title);
+                $title = htmlspecialchars($title, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -1032,7 +1032,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 
@@ -1237,14 +1237,14 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
             case 'S':
-                $description = htmlspecialchars($this->description);
+                $description = htmlspecialchars($this->description, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $description = htmlspecialchars($this->description);
+                $description = htmlspecialchars($this->description, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
-                $description = htmlspecialchars($this->description);
+                $description = htmlspecialchars($this->description, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -1261,14 +1261,14 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
             case 'S':
-                $keywords = htmlspecialchars($this->keywords);
+                $keywords = htmlspecialchars($this->keywords, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $keywords = htmlspecialchars($this->keywords);
+                $keywords = htmlspecialchars($this->keywords, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
-                $keywords = htmlspecialchars($this->keywords);
+                $keywords = htmlspecialchars($this->keywords, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -1599,13 +1599,13 @@ class NewsStory extends XoopsStory
                 $hometext     = \str_replace('[summary]', $auto_summary, $hometext);
                 break;
             case 'Edit':
-                $hometext = htmlspecialchars($this->hometext);
+                $hometext = htmlspecialchars($this->hometext, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'Preview':
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $hometext = htmlspecialchars($this->hometext);
+                $hometext = htmlspecialchars($this->hometext, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -1637,13 +1637,13 @@ class NewsStory extends XoopsStory
                 $bodytext     = \str_replace('[summary]', $auto_summary, $bodytext);
                 break;
             case 'Edit':
-                $bodytext = htmlspecialchars($this->bodytext);
+                $bodytext = htmlspecialchars($this->bodytext, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'Preview':
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $bodytext = htmlspecialchars($this->bodytext);
+                $bodytext = htmlspecialchars($this->bodytext, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -1697,7 +1697,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[$myrow['storyid']] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title']);
+                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
             }
         }
 

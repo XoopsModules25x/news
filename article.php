@@ -248,7 +248,7 @@ $highlight = false;
 $highlight = News\Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
-    $keywords      = htmlspecialchars(trim(urldecode($_GET['keywords'])));
+    $keywords      = htmlspecialchars(trim(urldecode($_GET['keywords'])), ENT_QUOTES | ENT_HTML5);
     $h             = new Keyhighlighter($keywords, true, 'my_highlighter');
     $story['text'] = $h->highlight($story['text']);
 }

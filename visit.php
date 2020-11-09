@@ -59,5 +59,5 @@ $url = XOOPS_UPLOAD_URL . '/' . $sfiles->getDownloadname();
 if (!preg_match("/^ed2k*:\/\//i", $url)) {
     header("Location: $url");
 }
-echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . htmlspecialchars($url) . '"></meta></head><body></body></html>';
+echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . htmlspecialchars($url, ENT_QUOTES | ENT_HTML5) . '"></meta></head><body></body></html>';
 exit();

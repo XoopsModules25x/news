@@ -500,7 +500,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_rssurl = htmlspecialchars($this->topic_rssurl);
+                $topic_rssurl = htmlspecialchars($this->topic_rssurl, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -524,7 +524,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_color = htmlspecialchars($this->topic_color);
+                $topic_color = htmlspecialchars($this->topic_color, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -556,7 +556,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_description = htmlspecialchars($this->topic_description);
+                $topic_description = htmlspecialchars($this->topic_description, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -576,16 +576,16 @@ class NewsTopic extends XoopsTopic
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'P':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl);
+                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
