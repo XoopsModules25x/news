@@ -751,8 +751,8 @@ class Utility extends Common\SysUtility
             }
 
             $complete_tags = \array_reverse($complete_tags);
-            for ($i = 0, $iMax = \count($complete_tags); $i < $iMax; ++$i) {
-                $string .= '</' . $complete_tags[$i] . '>';
+            foreach ($complete_tags as $iValue) {
+                $string .= '</' . $iValue . '>';
             }
         }
 

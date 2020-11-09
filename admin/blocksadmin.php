@@ -393,9 +393,8 @@ $moduleHandler = xoops_getHandler('module');
             $db->query($sql);
         }
         $groups = &$GLOBALS['xoopsUser']->getGroups();
-        $count  = count($groups);
-        for ($i = 0; $i < $count; ++$i) {
-            $sql = 'INSERT INTO ' . $db->prefix('group_permission') . ' (gperm_groupid, gperm_itemid, gperm_modid, gperm_name) VALUES (' . $groups[$i] . ', ' . $newid . ", 1, 'block_read')";
+        foreach ($groups as $iValue) {
+            $sql = 'INSERT INTO ' . $db->prefix('group_permission') . ' (gperm_groupid, gperm_itemid, gperm_modid, gperm_name) VALUES (' . $iValue . ', ' . $newid . ", 1, 'block_read')";
             $db->query($sql);
         }
         redirect_header('blocksadmin.php?op=listar', 1, _AM_DBUPDATED);
