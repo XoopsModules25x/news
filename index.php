@@ -105,11 +105,10 @@ if (Request::hasVar('storytopic', 'GET')) {
     $storytopic = Request::getInt('topic_id', 0, 'GET');
 }
 
-
 if ($storytopic) {
-    $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
     /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     if (!$grouppermHandler->checkRight('news_view', $storytopic, $groups, $xoopsModule->getVar('mid'))) {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
     }

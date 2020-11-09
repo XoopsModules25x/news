@@ -22,8 +22,6 @@ namespace XoopsModules\News;
 
 use XoopsModules\News;
 
-
-
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
 

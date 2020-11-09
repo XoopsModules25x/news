@@ -19,8 +19,6 @@
 
 use XoopsModules\News\Helper;
 
-
-
 if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
     /**
      * @param $options

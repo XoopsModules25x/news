@@ -19,6 +19,7 @@ namespace XoopsModules\News;
  * @since
  * @author       XOOPS Development Team
  */
+
 /**
  * Class Helper
  */

@@ -84,8 +84,8 @@ if (Request::hasVar('preview', 'POST')) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             }
         } elseif (!News\Utility::isAdminGroup()) {
-                // Users can't edit their articles
-                redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
+            // Users can't edit their articles
+            redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
         }
     }
 
@@ -395,9 +395,9 @@ switch ($op) {
         // Increment author's posts count (only if it's a new article)
         // First case, it's not an anonyous, the story is approved and it's a new story
         if ($uid && $approve && empty($storyid)) {
-            $tmpuser       = new xoopsUser($uid);
+            $tmpuser = new xoopsUser($uid);
             /** @var \XoopsMemberHandler $memberHandler */
-$memberHandler = xoops_getHandler('member');
+            $memberHandler = xoops_getHandler('member');
             $memberHandler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
         }
 
@@ -405,9 +405,9 @@ $memberHandler = xoops_getHandler('member');
         if (is_object($xoopsUser) && $approve && !empty($storyid)) {
             $storytemp = new NewsStory($storyid);
             if (!$storytemp->published() && $storytemp->uid() > 0) { // the article has been submited but not approved
-                $tmpuser       = new xoopsUser($storytemp->uid());
+                $tmpuser = new xoopsUser($storytemp->uid());
                 /** @var \XoopsMemberHandler $memberHandler */
-$memberHandler = xoops_getHandler('member');
+                $memberHandler = xoops_getHandler('member');
                 $memberHandler->updateUserByField($tmpuser, 'posts', $tmpuser->getVar('posts') + 1);
             }
             unset($storytemp);

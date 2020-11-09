@@ -2,8 +2,6 @@
 
 namespace XoopsModules\News;
 
-
-
 /**
  * This file contains the Keyhighlighter class that highlight the chosen keyword in the current output buffer.
  *
@@ -40,9 +38,7 @@ class Keyhighlighter
      * @access private
      */
     public $replace_callback = null;
-
     public $content;
-
     /**
      * Main constructor
      *

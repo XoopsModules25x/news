@@ -16,7 +16,9 @@
  * @since        1.71
  * @author       XOOPS Development Team
  **/
+
 use Xmf\Module\Admin;
+
 /** @var Admin $adminObject */
 
 require __DIR__ . '/admin_header.php';

@@ -16,8 +16,7 @@
 
 use Xmf\Database\TableLoad;
 use \Xmf\Request;
-use XoopsModules\News\{
-    Helper,
+use XoopsModules\News\{Helper,
     Common,
     Utility
 };

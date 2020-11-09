@@ -69,7 +69,8 @@ namespace XoopsModules\News;
  * to use, or modify it however you like.  If you find this script useful please
  * e-mail me.
  **/
- /**
+
+/**
  * Class Mimetype
  */
 class Mimetype

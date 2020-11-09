@@ -46,11 +46,11 @@ function xoops_module_pre_install_news(\XoopsModule $module)
  */
 function xoops_module_install_news(\XoopsModule $module)
 {
-    $module_id        = $module->getVar('mid');
+    $module_id = $module->getVar('mid');
     /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     /** @var \XoopsConfigHandler $configHandler */
-$configHandler = xoops_getHandler('config');
+    $configHandler = xoops_getHandler('config');
 
     /**
      * Default public category permission mask

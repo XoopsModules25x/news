@@ -67,7 +67,7 @@ if ($block['is_custom']) {
 } else {
     if ('' !== $block['template']) {
         /** @var \XoopsTplfileHandler $tplfileHandler */
-$tplfileHandler   = xoops_getHandler('tplfile');
+        $tplfileHandler = xoops_getHandler('tplfile');
         $btemplate      = $tplfileHandler->find($GLOBALS['xoopsConfig']['template_set'], 'block', $block['bid']);
         if (count($btemplate) > 0) {
             $form->addElement(new \XoopsFormLabel(_AM_SYSTEM_BLOCKS_CONTENT, '<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id=' . $btemplate[0]->getVar('tpl_id') . '">' . _AM_SYSTEM_BLOCKS_EDITTPL . '</a>'));

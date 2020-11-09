@@ -35,7 +35,8 @@ namespace XoopsModules\News;
  * Version : 1.67 Tue 2012/02/13 22:29:36 : Timgno Exp $
  * ****************************************************************************
  */
- /**
+
+/**
  * Class newsnews_topicsHandler
  */
 class NewsTopicsHandler extends \XoopsPersistableObjectHandler

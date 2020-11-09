@@ -17,8 +17,6 @@
  * @author         XOOPS Development Team
  */
 
-
-
 use XoopsModules\News;
 use XoopsModules\News\Helper;
 use XoopsModules\News\NewsTopic;

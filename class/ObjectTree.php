@@ -19,7 +19,6 @@ namespace XoopsModules\News;
  * @author              Kazumi Ono (http://www.myweb.ne.jp/, http://jp.xoops.org/)
  */
 
-
 /**
  * A tree structures with {@link XoopsObject}s as nodes
  *

@@ -13,7 +13,6 @@ use XoopsModules\News\Constants;
 class Utility extends Common\SysUtility
 {
     //--------------- Custom module methods -----------------------------
-
     /**
      * @param             $option
      * @param string      $repmodule

@@ -373,7 +373,7 @@ function news_CreateMetaDatas($story = null)
      */
     if (news_getmoduleoption('dublincore') && isset($story) && is_object($story)) {
         /** @var \XoopsConfigHandler $configHandler */
-$configHandler = xoops_getHandler('config');
+        $configHandler         = xoops_getHandler('config');
         $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
         $content               .= '<meta name="DC.Title" content="' . News\Utility::getDublinQuotes($story->title()) . "\">\n";
         $content               .= '<meta name="DC.Creator" content="' . News\Utility::getDublinQuotes($story->uname()) . "\">\n";
@@ -437,7 +437,7 @@ function news_createmeta_keywords($content)
         $limit = $_SESSION['news_keywords_limit'];
     } else {
         /** @var \XoopsConfigHandler $configHandler */
-$configHandler = xoops_getHandler('config');
+        $configHandler                   = xoops_getHandler('config');
         $xoopsConfigSearch               = $configHandler->getConfigsByCat(XOOPS_CONF_SEARCH);
         $limit                           = $xoopsConfigSearch['keyword_min'];
         $_SESSION['news_keywords_limit'] = $limit;
@@ -538,7 +538,7 @@ $configHandler = xoops_getHandler('config');
     }
     if (!isset($configHandler) || !is_object($configHandler)) {
         /** @var \XoopsConfigHandler $configHandler */
-$configHandler = xoops_getHandler('config');
+        $configHandler = xoops_getHandler('config');
     }
     $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
     if (isset($xoopsConfigMetaFooter['meta_keywords'])) {
@@ -563,7 +563,7 @@ function news_updateCache()
     require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     /** @var \XoopsTplfileHandler $tplfileHandler */
-$tplfileHandler   = xoops_getHandler('tplfile');
+    $tplfileHandler = xoops_getHandler('tplfile');
     $tpllist        = $tplfileHandler->find(null, null, null, $folder);
     $xoopsTpl       = new \XoopsTpl();
     xoops_template_clear_module_cache($xoopsModule->getVar('mid')); // Clear module's blocks cache

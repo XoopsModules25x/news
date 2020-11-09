@@ -47,9 +47,9 @@ $article = new NewsStory();
 $uid_ids = [];
 $uid_ids = $article->getWhosWho(News\Utility::getModuleOption('restrictindex'));
 if (count($uid_ids) > 0) {
-    $lst_uid       = implode(',', $uid_ids);
+    $lst_uid = implode(',', $uid_ids);
     /** @var \XoopsMemberHandler $memberHandler */
-$memberHandler = xoops_getHandler('member');
+    $memberHandler = xoops_getHandler('member');
     $critere       = new \Criteria('uid', '(' . $lst_uid . ')', 'IN');
     $tbl_users     = $memberHandler->getUsers($critere);
     foreach ($tbl_users as $one_user) {

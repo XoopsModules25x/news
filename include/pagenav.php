@@ -27,7 +27,7 @@
  * @copyright        (c) XOOPS Project (https://xoops.org)
  */
 
- /**
+/**
  * Class XoopsPageNav
  */
 class XoopsPageNav

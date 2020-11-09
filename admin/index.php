@@ -1200,10 +1200,10 @@ function topicsmanager()
 
     // Permissions
     /** @var \XoopsMemberHandler $memberHandler */
-$memberHandler = xoops_getHandler('member');
-    $group_list       = $memberHandler->getGroupList();
+    $memberHandler = xoops_getHandler('member');
+    $group_list    = $memberHandler->getGroupList();
     /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     $full_list        = array_keys($group_list);
 
     $groups_ids = [];
@@ -1307,7 +1307,7 @@ function modTopicS()
 
     // Permissions
     /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     $criteria         = new \CriteriaCompo();
     $criteria->add(new \Criteria('gperm_itemid', $xt->topic_id(), '='));
     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
@@ -1442,7 +1442,7 @@ function addTopic()
         $xt->store();
         // Permissions
         /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+        $grouppermHandler = xoops_getHandler('groupperm');
         if (Request::hasVar('groups_news_can_approve', 'POST')) {
             foreach ($_POST['groups_news_can_approve'] as $onegroup_id) {
                 $grouppermHandler->addRight('news_approve', $xt->topic_id(), $onegroup_id, $xoopsModule->getVar('mid'));

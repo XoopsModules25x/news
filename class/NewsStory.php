@@ -959,7 +959,7 @@ class NewsStory extends XoopsStory
 
                 return $tblusers[$uid];
             case 2: // Display full name (if it is not empty) /** @var \XoopsMemberHandler $memberHandler */ $memberHandler = xoops_getHandler('member');
-                $thisuser                                                                                                   = $memberHandler->getUser($uid);
+                $thisuser = $memberHandler->getUser($uid);
                 if (\is_object($thisuser)) {
                     $return = $thisuser->getVar('name');
                     if ('' === $return) {

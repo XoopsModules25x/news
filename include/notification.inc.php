@@ -19,8 +19,6 @@
  * @param mixed $item_id
  */
 
-
-
 /**
  * @param $category
  * @param $item_id

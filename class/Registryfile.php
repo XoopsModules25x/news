@@ -19,7 +19,8 @@ namespace XoopsModules\News;
  * @since
  * @author       XOOPS Development Team
  */
- /**
+
+/**
  * Class Registryfile
  */
 class Registryfile

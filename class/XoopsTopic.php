@@ -20,7 +20,6 @@ namespace XoopsModules\News;
  * @deprecated
  */
 
-
 //$GLOBALS['xoopsLogger']->addDeprecated("'/class/xoopstopic.php' is deprecated since XOOPS 2.5.4, please create your own class instead.");
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
