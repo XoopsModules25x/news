@@ -47,7 +47,7 @@ to your site as administrator, go to System Admin > Modules, look for the News
 icon in the list of uninstalled modules and click in the install icon. Follow
 the directions in the screen and you'll be ready to go.
 
-Please verify that the modules\news\images\topics directory is writable on the
+Please verify that the modules\News\images\topics directory is writable on the
 server (read+write e.g. chmod=777).
 
 After having created your first topic (category), and before creating your first

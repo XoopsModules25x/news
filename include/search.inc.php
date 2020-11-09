@@ -11,13 +11,13 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\News;
 
 /**
  * @param $queryarray
@@ -31,18 +31,18 @@
 function news_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB, $xoopsUser;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    $restricted = NewsUtility::getModuleOption('restrictindex');
+    $restricted = News\Utility::getModuleOption('restrictindex');
     $highlight  = false;
-    $highlight  = NewsUtility::getModuleOption('keywordshighlight'); // keywords highlighting
+    $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname('news');
     $modid         = $module->getVar('mid');
     $searchparam   = '';
 
-    $gpermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
     if (is_object($xoopsUser)) {
         $groups = $xoopsUser->getGroups();
     } else {
@@ -73,10 +73,10 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $result = $xoopsDB->query($sql, $limit, $offset);
     $ret    = [];
     $i      = 0;
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $display = true;
-        if ($modid && $gpermHandler) {
-            if ($restricted && !$gpermHandler->checkRight('news_view', $myrow['topicid'], $groups, $modid)) {
+        if ($modid && $grouppermHandler) {
+            if ($restricted && !$grouppermHandler->checkRight('news_view', $myrow['topicid'], $groups, $modid)) {
                 $display = false;
             }
         }
@@ -113,10 +113,10 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         $i      = $ind;
         $sql    .= 'ORDER BY com_created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
-        while ($myrow = $xoopsDB->fetchArray($result)) {
+        while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
             $display = true;
-            if ($modid && $gpermHandler) {
-                if ($restricted && !$gpermHandler->checkRight('news_view', $myrow['com_itemid'], $groups, $modid)) {
+            if ($modid && $grouppermHandler) {
+                if ($restricted && !$grouppermHandler->checkRight('news_view', $myrow['com_itemid'], $groups, $modid)) {
                     $display = false;
                 }
             }

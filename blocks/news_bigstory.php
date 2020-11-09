@@ -11,25 +11,34 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\News;
+use XoopsModules\News\Helper;
+use XoopsModules\News\NewsStory;
 
 /**
- * @return array
+ * @return array|null|false
  */
 function b_news_bigstory_show()
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    $myts       = MyTextSanitizer::getInstance();
-    $restricted = NewsUtility::getModuleOption('restrictindex');
-    $dateformat = NewsUtility::getModuleOption('dateformat');
-    $infotips   = NewsUtility::getModuleOption('infotips');
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
+
+    $myts       = \MyTextSanitizer::getInstance();
+    $restricted = News\Utility::getModuleOption('restrictindex');
+    $dateformat = News\Utility::getModuleOption('dateformat');
+    $infotips   = News\Utility::getModuleOption('infotips');
 
     $block    = [];
     $onestory = new NewsStory();
@@ -40,7 +49,7 @@ function b_news_bigstory_show()
         foreach ($stories as $key => $story) {
             $htmltitle = '';
             if ($infotips > 0) {
-                $block['infotips'] = NewsUtility::makeInfotips($story->hometext());
+                $block['infotips'] = News\Utility::makeInfotips($story->hometext());
                 $htmltitle         = ' title="' . $block['infotips'] . '"';
             } else {
                 $htmltitle = ' title="' . $story->title('Show') . '"';
@@ -71,9 +80,9 @@ function b_news_bigstory_show()
 function b_news_bigstory_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   =& b_news_bigstory_show($options);
+    $block   = b_news_bigstory_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_bigstory.tpl');
 }

@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -68,12 +68,16 @@
 # [11-may-2001] Kenneth Lee - http://www.nexgear.com/
 ######################################################################
 
-include __DIR__ . '/../../mainfile.php';
+use Xmf\Request;
+use XoopsModules\News;
+use XoopsModules\News\NewsStory;
+
+require_once dirname(__DIR__, 2) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+
 $lastyear  = 0;
 $lastmonth = 0;
 
@@ -89,24 +93,24 @@ $months_arr = [
     9  => _CAL_SEPTEMBER,
     10 => _CAL_OCTOBER,
     11 => _CAL_NOVEMBER,
-    12 => _CAL_DECEMBER
+    12 => _CAL_DECEMBER,
 ];
 
-$fromyear  = isset($_GET['year']) ? (int)$_GET['year'] : 0;
-$frommonth = isset($_GET['month']) ? (int)$_GET['month'] : 0;
+$fromyear  = Request::getInt('year', 0, 'GET');
+$frommonth = Request::getInt('month', 0, 'GET');
 
 $pgtitle = '';
 if ($fromyear && $frommonth) {
     $pgtitle = sprintf(' - %d - %d', $fromyear, $frommonth);
 }
-$infotips   = NewsUtility::getModuleOption('infotips');
-$restricted = NewsUtility::getModuleOption('restrictindex');
-$dateformat = NewsUtility::getModuleOption('dateformat');
+$infotips   = News\Utility::getModuleOption('infotips');
+$restricted = News\Utility::getModuleOption('restrictindex');
+$dateformat = News\Utility::getModuleOption('dateformat');
 if ('' === $dateformat) {
     $dateformat = 'm';
 }
-$myts = MyTextSanitizer::getInstance();
-$xoopsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars(_NW_NEWSARCHIVES) . $pgtitle . ' - ' . $xoopsModule->name('s'));
+$myts = \MyTextSanitizer::getInstance();
+$xoopsTpl->assign('xoops_pagetitle', htmlspecialchars(_NW_NEWSARCHIVES, ENT_QUOTES | ENT_HTML5) . $pgtitle . ' - ' . $xoopsModule->name('s'));
 
 $useroffset = '';
 if (is_object($xoopsUser)) {
@@ -121,42 +125,41 @@ $result = $xoopsDB->query('SELECT published FROM ' . $xoopsDB->prefix('news_stor
 if (!$result) {
     echo _ERRORS;
     exit();
-} else {
-    $years  = [];
-    $months = [];
-    $i      = 0;
-    while (list($time) = $xoopsDB->fetchRow($result)) {
-        $time = formatTimestamp($time, 'mysql', $useroffset);
-        if (preg_match('/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/', $time, $datetime)) {
-            $this_year  = (int)$datetime[1];
-            $this_month = (int)$datetime[2];
-            if (empty($lastyear)) {
-                $lastyear = $this_year;
-            }
-            if (0 == $lastmonth) {
-                $lastmonth                    = $this_month;
-                $months[$lastmonth]['string'] = $months_arr[$lastmonth];
-                $months[$lastmonth]['number'] = $lastmonth;
-            }
-            if ($lastyear != $this_year) {
-                $years[$i]['number'] = $lastyear;
-                $years[$i]['months'] = $months;
-                $months              = [];
-                $lastmonth           = 0;
-                $lastyear            = $this_year;
-                ++$i;
-            }
-            if ($lastmonth != $this_month) {
-                $lastmonth                    = $this_month;
-                $months[$lastmonth]['string'] = $months_arr[$lastmonth];
-                $months[$lastmonth]['number'] = $lastmonth;
-            }
+}
+$years  = [];
+$months = [];
+$i      = 0;
+while (list($time) = $xoopsDB->fetchRow($result)) {
+    $time = formatTimestamp($time, 'mysql', $useroffset);
+    if (preg_match('/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/', $time, $datetime)) {
+        $this_year  = (int)$datetime[1];
+        $this_month = (int)$datetime[2];
+        if (empty($lastyear)) {
+            $lastyear = $this_year;
+        }
+        if (0 == $lastmonth) {
+            $lastmonth                    = $this_month;
+            $months[$lastmonth]['string'] = $months_arr[$lastmonth];
+            $months[$lastmonth]['number'] = $lastmonth;
+        }
+        if ($lastyear != $this_year) {
+            $years[$i]['number'] = $lastyear;
+            $years[$i]['months'] = $months;
+            $months              = [];
+            $lastmonth           = 0;
+            $lastyear            = $this_year;
+            ++$i;
+        }
+        if ($lastmonth != $this_month) {
+            $lastmonth                    = $this_month;
+            $months[$lastmonth]['string'] = $months_arr[$lastmonth];
+            $months[$lastmonth]['number'] = $lastmonth;
         }
     }
-    $years[$i]['number'] = $this_year;
-    $years[$i]['months'] = $months;
-    $xoopsTpl->assign('years', $years);
 }
+$years[$i]['number'] = $this_year;
+$years[$i]['months'] = $months;
+$xoopsTpl->assign('years', $years);
 
 if (0 != $fromyear && 0 != $frommonth) {
     $xoopsTpl->assign('show_articles', true);
@@ -182,7 +185,7 @@ if (0 != $fromyear && 0 != $frommonth) {
             $story     = [];
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = NewsUtility::makeInfotips($article->hometext());
+                $story['infotips'] = News\Utility::makeInfotips($article->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
             $story['title']      = "<a href='"
@@ -219,6 +222,6 @@ $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 /**
  * Create the meta datas
  */
-NewsUtility::createMetaDatas();
+News\Utility::createMetaDatas();
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

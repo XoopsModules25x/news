@@ -11,25 +11,30 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-include __DIR__ . '/../../mainfile.php';
+use XoopsModules\News;
+
+require_once dirname(__DIR__, 2) . '/mainfile.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
 
 // We verify that the user can post comments **********************************
-if (!isset($xoopsModuleConfig)) {
-    die();
+if (null === $helper->getModule()) {
+    exit();
 }
 
-if (0 == $xoopsModuleConfig['com_rule']) { // Comments are deactivated
-    die();
+if (0 == $helper->getConfig('com_rule')) { // Comments are deactivated
+    exit();
 }
 
-if (0 == $xoopsModuleConfig['com_anonpost'] && !is_object($xoopsUser)) { // Anonymous users can't post
-    die();
+if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) { // Anonymous users can't post
+    exit();
 }
 // ****************************************************************************
 require_once XOOPS_ROOT_PATH . '/include/comment_post.php';

@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -23,31 +23,35 @@
  * This page is used to display a maps of the topics (with articles count)
  *
  * @package News
- * @author Herve Thouzard
- * @copyright (c) Herve Thouzard - http://www.herve-thouzard.com
+ * @author Hervé Thouzard
+ * @copyright (c) Hervé Thouzard - http://www.herve-thouzard.com
  */
-include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+
+use XoopsModules\News;
+use XoopsModules\News\NewsTopic;
+
+require_once dirname(__DIR__, 2) . '/mainfile.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_topics_directory.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 
 $newscountbytopic = $tbl_topics = [];
 $perms            = '';
-$xt               = new NewsTopic();
-$restricted       = NewsUtility::getModuleOption('restrictindex');
+$xt               = new  NewsTopic();
+$restricted       = News\Utility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $newsModule    = $moduleHandler->getByDirname('news');
     $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gpermHandler  = xoops_getHandler('groupperm');
-    $topics        = $gpermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $topics           = $grouppermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
     if (count($topics) > 0) {
         $topics = implode(',', $topics);
         $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -74,18 +78,18 @@ if (is_array($topics_arr) && count($topics_arr)) {
             'news_count'  => $count,
             'topic_color' => '#' . $onetopic['topic_color'],
             'prefix'      => $onetopic['prefix'],
-            'title'       => $myts->displayTarea($onetopic['topic_title'])
+            'title'       => $myts->displayTarea($onetopic['topic_title']),
         ];
     }
 }
 $xoopsTpl->assign('topics', $tbl_topics);
 
-$xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
+$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
 
 /**
  * Manage all the meta datas
  */
-NewsUtility::createMetaDatas();
+News\Utility::createMetaDatas();
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_TOPICS_DIRECTORY);
 $meta_description = _AM_NEWS_TOPICS_DIRECTORY . ' - ' . $xoopsModule->name('s');

@@ -73,7 +73,7 @@ CREATE TABLE news_topics (
   topic_color       VARCHAR(6)           NOT NULL DEFAULT '000000',
   PRIMARY KEY (topic_id),
   KEY pid (topic_pid),
-  KEY topic_title (topic_title),
+  KEY topic_title (topic_title(100)),
   KEY menu (menu)
 )
   ENGINE = MyISAM;

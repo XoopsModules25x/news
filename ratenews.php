@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -56,16 +56,19 @@
  * @template_var                    string  title       story's title
  */
 
+use Xmf\Request;
+use XoopsModules\News;
+use XoopsModules\News\NewsStory;
+
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 
 // Verify the perms
 // 1) Is the vote activated in the module ?
-$ratenews = NewsUtility::getModuleOption('ratenews');
+$ratenews = News\Utility::getModuleOption('ratenews');
 if (!$ratenews) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
@@ -79,12 +82,10 @@ if ($cfg['config_rating_registred_only']) {
 
 // 2) Is the story published ?
 $storyid = 0;
-if (isset($_GET['storyid'])) {
-    $storyid = (int)$_GET['storyid'];
-} else {
-    if (isset($_POST['storyid'])) {
-        $storyid = (int)$_POST['storyid'];
-    }
+if (Request::hasVar('storyid', 'GET')) {
+    $storyid = Request::getInt('storyid', 0, 'GET');
+} elseif (Request::hasVar('storyid', 'POST')) {
+    $storyid = Request::getInt('storyid', 0, 'POST');
 }
 
 if (!empty($storyid)) {
@@ -102,18 +103,19 @@ if (!empty($storyid)) {
 }
 
 // 3) Does the user can see this news ? If he can't see it, he can't vote for
-$gpermHandler = xoops_getHandler('groupperm');
+/** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
+if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
 if (!empty($_POST['submit'])) { // The form was submited
-    $eh = new ErrorHandler; //ErrorHandler object
+    $eh = new ErrorHandler(); //ErrorHandler object
     if (!is_object($xoopsUser)) {
         $ratinguser = 0;
     } else {
@@ -123,8 +125,8 @@ if (!empty($_POST['submit'])) { // The form was submited
     //Make sure only 1 anonymous from an IP in a single day.
     $anonwaitdays = 1;
     $ip           = getenv('REMOTE_ADDR');
-    $storyid      = (int)$_POST['storyid'];
-    $rating       = (int)$_POST['rating'];
+    $storyid      = Request::getInt('storyid', 0, 'POST');
+    $rating       = Request::getInt('rating', 0, 'POST');
 
     // Check if Rating is Null
     if ('--' == $rating) {
@@ -132,7 +134,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     }
 
     if ($rating < 1 || $rating > 10) {
-        die(_ERRORS);
+        exit(_ERRORS);
     }
 
     // Check if News POSTER is voting (UNLESS Anonymous users allowed to post)
@@ -155,7 +157,7 @@ if (!empty($_POST['submit'])) { // The form was submited
         // Check if ANONYMOUS user is trying to vote more than once per day.
         $yesterday = (time() - (86400 * $anonwaitdays));
         $result    = $xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
-        list($anonvotecount) = $xoopsDB->fetchRow($result);
+        [$anonvotecount] = $xoopsDB->fetchRow($result);
         if ($anonvotecount >= 1) {
             redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
         }
@@ -164,11 +166,11 @@ if (!empty($_POST['submit'])) { // The form was submited
     //All is well.  Add to Line Item Rate to DB.
     $newid    = $xoopsDB->genId($xoopsDB->prefix('news_stories_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
+    $sql      = sprintf("INSERT INTO `%s` (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
     $xoopsDB->query($sql) || ErrorHandler::show('0013');
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
-    NewsUtility::updateRating($storyid);
+    News\Utility::updateRating($storyid);
     $ratemessage = _NW_VOTEAPPRE . '<br>' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
@@ -181,7 +183,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     } else {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _ERRORS);
     }
-    $xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
+    $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
     $xoopsTpl->assign('news', ['storyid' => $storyid, 'title' => $title]);
     $xoopsTpl->assign('lang_voteonce', _NW_VOTEONCE);
     $xoopsTpl->assign('lang_ratingscale', _NW_RATINGSCALE);
@@ -190,7 +192,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsTpl->assign('lang_rateit', _NW_RATEIT);
     $xoopsTpl->assign('lang_cancel', _CANCEL);
     $xoopsTpl->assign('xoops_pagetitle', $title . ' - ' . _NW_RATETHISNEWS . ' - ' . $xoopsModule->name('s'));
-    NewsUtility::createMetaDatas();
+    News\Utility::createMetaDatas();
     require_once XOOPS_ROOT_PATH . '/footer.php';
 }
 require_once XOOPS_ROOT_PATH . '/footer.php';

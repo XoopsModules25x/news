@@ -10,49 +10,54 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright      XOOPS Project (https://xoops.org)
- * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU Public License
+ * @license        https://www.gnu.org/licenses/gpl-2.0.html GNU Public License
  * @package        news
  * @since          1.6.7
  * @author         XOOPS Development Team
  **/
 
-require_once __DIR__ . '/../../../include/cp_header.php';
+use Xmf\Module\Admin;
+use XoopsModules\News;
+use XoopsModules\News\Helper;
+
+require_once dirname(__DIR__, 3) . '/include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
-//require_once __DIR__ . '/../class/utility.php';
-//require_once __DIR__ . '/../include/common.php';
+// require_once  dirname(__DIR__) . '/class/Utility.php';
+require_once dirname(__DIR__) . '/include/common.php';
+
+require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
 $moduleDirName = basename(dirname(__DIR__));
+/** @var \XoopsModules\News\Helper $helper */
+$helper = Helper::getInstance();
 
-if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
-} else {
-    $moduleHelper = Xmf\Module\Helper::getHelper('system');
-}
-$adminObject = \Xmf\Module\Admin::getInstance();
+/** @var Xmf\Module\Admin $adminObject */
+$adminObject = Admin::getInstance();
 
-$pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32 = \Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16 = Admin::iconUrl('', 16);
+$pathIcon32 = Admin::iconUrl('', 32);
 
-/** @var Xmf\Module\Helper\GenericHelper $moduleHelper */
-$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
+$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
 // Load language files
-$moduleHelper->loadLanguage('admin');
-$moduleHelper->loadLanguage('modinfo');
-$moduleHelper->loadLanguage('main');
+$helper->loadLanguage('admin');
+$helper->loadLanguage('modinfo');
+$helper->loadLanguage('main');
 
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 
-if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof \XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
-    $xoopsTpl = new XoopsTpl();
+    $xoopsTpl = new \XoopsTpl();
 }
 
-$topicsHandler  = xoops_getModuleHandler('news_topics', 'news');
-$storiesHandler = xoops_getModuleHandler('news_stories', 'news');
+$topicsHandler  = $helper->getHandler('NewsTopics');
+$storiesHandler = $helper->getHandler('NewsStories');
 
 if ($xoopsUser) {
-    $modulepermHandler = xoops_getHandler('groupperm');
-    if (!$modulepermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    if (!$grouppermHandler->checkRight('module_admin', $xoopsModule->getVar('mid'), $xoopsUser->getGroups())) {
         redirect_header(XOOPS_URL, 1, _NOPERM);
     }
 } else {

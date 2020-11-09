@@ -163,9 +163,12 @@ define('_MI_NEWS_HELP', 'Help');
 define('_MI_NEWS_ABOUT', 'About');
 define('_MI_NEWS_HOME', 'Home');
 define('_MI_NEWS_UPGRADE', 'Upgrade');
-define('_MI_NEWS_DESCRIPTION', 'With this Xoops module, you can create an unlimited number of news articles on your site. <br><br>
+define(
+    '_MI_NEWS_DESCRIPTION',
+    'With this Xoops module, you can create an unlimited number of news articles on your site. <br><br>
 You can create all articles you want and organize them in topics.<br><br>
-With a very powerful permissions management, you can create groups authorized to submit articles and a group authorized to approve them and decide who can see what.');
+With a very powerful permissions management, you can create groups authorized to submit articles and a group authorized to approve them and decide who can see what.'
+);
 define('_MI_NEWS_SHARE_ME', 'Display share icons?');
 define('_MI_NEWS_SHARE_ME_DSC', 'Share icons to Facebook, Twitter, Google Plus');
 define('_MI_NEWS_SHOWICONS', 'Display item icons?');
@@ -181,7 +184,7 @@ define('_MI_DISPLAYTOPIC_TITLE', 'Display Topic with news_title');
 define('_MI_DISPLAYTOPIC_TITLEDSC', 'display Topic title link right before the news title');
 //1.72
 //Help
-define('_MI_NEWS_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_NEWS_DIRNAME', basename(dirname(__DIR__, 2)));
 define('_MI_NEWS_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_NEWS_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_NEWS_OVERVIEW', 'Overview');
@@ -192,3 +195,9 @@ define('_MI_NEWS_OVERVIEW', 'Overview');
 define('_MI_NEWS_DISCLAIMER', 'Disclaimer');
 define('_MI_NEWS_LICENSE', 'License');
 define('_MI_NEWS_SUPPORT', 'Support');
+
+define('_MI_NEWS_BLOCKS', 'Blocks Admin');
+
+//1.73 Beta 3
+define('_MI_NEWS_SHOW_SAMPLE_BUTTON', 'Show Sample Button?');
+define('_MI_NEWS_SHOW_SAMPLE_BUTTON_DESC', 'If yes, the "Add Sample Data" button will be visible to the Admin. It is Yes as a default for first installation.');

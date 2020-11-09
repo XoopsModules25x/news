@@ -11,16 +11,20 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use Xmf\Request;
+use XoopsModules\News;
+use XoopsModules\News\Helper;
+use XoopsModules\News\NewsStory;
+use XoopsModules\News\NewsTopic;
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
 /**
  * Notes about the spotlight :
@@ -38,26 +42,29 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 function b_news_top_show($options)
 {
     global $xoopsConfig;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    $myts        = MyTextSanitizer::getInstance();
-    $block       = [];
-    $displayname = NewsUtility::getModuleOption('displayname');
-    $tabskin     = NewsUtility::getModuleOption('tabskin');
 
-    if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
-    } else {
-        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
     }
+
+    $helper = Helper::getInstance();
+
+    $helper->loadLanguage('main');
+
+    $myts        = \MyTextSanitizer::getInstance();
+    $block       = [];
+    $displayname = News\Utility::getModuleOption('displayname');
+    $tabskin     = News\Utility::getModuleOption('tabskin');
 
     $block['displayview'] = $options[8];
     $block['tabskin']     = $tabskin;
     $block['imagesurl']   = XOOPS_URL . '/modules/news/assets/images/';
 
-    $restricted = NewsUtility::getModuleOption('restrictindex');
-    $dateformat = NewsUtility::getModuleOption('dateformat');
-    $infotips   = NewsUtility::getModuleOption('infotips');
-    $newsrating = NewsUtility::getModuleOption('ratenews');
+    $restricted = News\Utility::getModuleOption('restrictindex');
+    $dateformat = News\Utility::getModuleOption('dateformat');
+    $infotips   = News\Utility::getModuleOption('infotips');
+    $newsrating = News\Utility::getModuleOption('ratenews');
     if ('' == $dateformat) {
         $dateformat = 's';
     }
@@ -67,7 +74,7 @@ function b_news_top_show($options)
     // Is the spotlight visible ?
     if (1 == $options[4] && $restricted && 0 == $options[5]) {
         $perm_verified   = true;
-        $permittedtopics = NewsUtility::getMyItemIds();
+        $permittedtopics = News\Utility::getMyItemIds();
         $permstory       = new NewsStory($options[6]);
         if (!in_array($permstory->topicid(), $permittedtopics)) {
             $usespotlight = false;
@@ -79,7 +86,7 @@ function b_news_top_show($options)
     // Try to see what tabs are visibles (if we are in restricted view of course)
     if (2 == $options[8] && $restricted && 0 != $options[14]) {
         $topics2         = [];
-        $permittedtopics = NewsUtility::getMyItemIds();
+        $permittedtopics = News\Utility::getMyItemIds();
         $topics          = array_slice($options, 14);
         foreach ($topics as $onetopic) {
             if (in_array($onetopic, $permittedtopics)) {
@@ -100,8 +107,8 @@ function b_news_top_show($options)
         $defcolors[7] = ['#F90', '#FFFFFF', '', '', '']; // Rounded
         $defcolors[8] = ['#F90', '#FFFFFF', '#F90', '#930', '#C60']; // ZDnet
 
-        $myurl = $_SERVER['PHP_SELF'];
-        if ('/' === substr($myurl, strlen($myurl) - 1, 1)) {
+        $myurl = $_SERVER['SCRIPT_NAME'];
+        if ('/' === mb_substr($myurl, mb_strlen($myurl) - 1, 1)) {
             $myurl .= 'index.php';
         }
         $myurl .= '?';
@@ -116,17 +123,17 @@ function b_news_top_show($options)
         $tabscount    = 0;
         $usespotlight = false;
 
-        if (isset($_GET['NewsTab'])) {
-            $_SESSION['NewsTab'] = (int)$_GET['NewsTab'];
-            $currenttab          = (int)$_GET['NewsTab'];
-        } elseif (isset($_SESSION['NewsTab'])) {
-            $currenttab = (int)$_SESSION['NewsTab'];
+        if (Request::hasVar('NewsTab', 'GET')) {
+            $_SESSION['NewsTab'] = Request::getInt('NewsTab', 0, 'GET');
+            $currenttab          = Request::getInt('NewsTab', 0, 'GET');
+        } elseif (Request::hasVar('NewsTab', 'SESSION')) {
+            $currenttab = Request::getInt('NewsTab', 0, 'SESSION');
         } else {
             $currenttab = 0;
         }
 
         $tmpstory     = new NewsStory();
-        $topic        = new NewsTopic();
+        $topic        = new  NewsTopic();
         $topicstitles = [];
         if (1 == $options[4]) { // Spotlight enabled
             $topicstitles[0] = _MB_NEWS_SPOTLIGHT_TITLE;
@@ -136,18 +143,16 @@ function b_news_top_show($options)
 
         if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
             if (!$perm_verified) {
-                $permittedtopics = NewsUtility::getMyItemIds();
+                $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $usespotlight = false;
                     $topicstitles = [];
                 }
                 //unset($permstory);
-            } else {
-                if (!$news_visible) {
-                    $usespotlight = false;
-                    $topicstitles = [];
-                }
+            } elseif (!$news_visible) {
+                $usespotlight = false;
+                $topicstitles = [];
             }
         }
 
@@ -168,7 +173,7 @@ function b_news_top_show($options)
                     $tabs[] = [
                         'id'      => $onetopic,
                         'title'   => $topicstitles[$onetopic]['title'],
-                        'picture' => $topicstitles[$onetopic]['picture']
+                        'picture' => $topicstitles[$onetopic]['picture'],
                     ];
                 }
             }
@@ -196,7 +201,7 @@ function b_news_top_show($options)
                 $stories = NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
                 if (count($stories) > 0) {
                     $firststory = $stories[0];
-                    $tmpstory = new NewsStory($firststory->storyid());
+                    $tmpstory   = new NewsStory($firststory->storyid());
                 } else {
                     $block['use_spotlight'] = false;
                 }
@@ -210,7 +215,7 @@ function b_news_top_show($options)
 
             // Added 16 february 2007 *****************************************
             $story_user = null;
-            $story_user = new XoopsUser($tmpstory->uid());
+            $story_user = new \XoopsUser($tmpstory->uid());
             if (is_object($story_user)) {
                 $spotlight['avatar'] = XOOPS_UPLOAD_URL . '/' . $story_user->getVar('user_avatar');
             }
@@ -220,7 +225,7 @@ function b_news_top_show($options)
             $spotlight['hits']   = $tmpstory->counter();
             $spotlight['rating'] = number_format($tmpstory->rating(), 2);
             $spotlight['votes']  = $tmpstory->votes();
-            if (strlen(xoops_trim($tmpstory->bodytext())) > 0) {
+            if ('' !== xoops_trim($tmpstory->bodytext())) {
                 $spotlight['read_more'] = true;
             } else {
                 $spotlight['read_more'] = false;
@@ -261,7 +266,7 @@ function b_news_top_show($options)
                 foreach ($stories as $key => $story) {
                     $news  = [];
                     $title = $story->title();
-                    if (strlen($title) > $options[2]) {
+                    if (mb_strlen($title) > $options[2]) {
                         $title = xoops_substr($title, 0, $options[2] + 3);
                     }
                     $news['title']       = $title;
@@ -282,12 +287,12 @@ function b_news_top_show($options)
                     }
                     if ($options[3] > 0) {
                         $html           = 1 == $story->nohtml() ? 0 : 1;
-                        $news['teaser'] = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                        $news['teaser'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     } else {
                         $news['teaser'] = '';
                     }
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -298,71 +303,69 @@ function b_news_top_show($options)
             }
 
             $block['spotlight'] = $spotlight;
-        } else {
-            if ($tabscount > 0) {
-                $topics   = array_slice($options, 14);
-                $thetopic = $currenttab;
-                $stories  = NewsStory::getAllPublished($options[1], 0, $restricted, $thetopic, 1, true, $options[0]);
+        } elseif ($tabscount > 0) {
+            $topics   = array_slice($options, 14);
+            $thetopic = $currenttab;
+            $stories  = NewsStory::getAllPublished($options[1], 0, $restricted, $thetopic, 1, true, $options[0]);
 
-                $topic->getTopic($thetopic);
-                // Added, topic's image and description
-                $block['topic_image']       = XOOPS_URL . '/modules/news/assets/images/topics/' . $topic->topic_imgurl();
-                $block['topic_description'] = $topic->topic_description();
+            $topic->getTopic($thetopic);
+            // Added, topic's image and description
+            $block['topic_image']       = XOOPS_URL . '/modules/news/assets/images/topics/' . $topic->topic_imgurl();
+            $block['topic_description'] = $topic->topic_description();
 
-                $smallheader   = [];
-                $stats         = $topic->getTopicMiniStats($thetopic);
-                $smallheader[] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $thetopic, _MB_READMORE);
-                $smallheader[] = sprintf('%u %s', $stats['count'], _NW_ARTICLES);
-                $smallheader[] = sprintf('%u %s', $stats['reads'], _READS);
-                if (count($stories) > 0) {
-                    foreach ($stories as $key => $story) {
-                        $news  = [];
-                        $title = $story->title();
-                        if (strlen($title) > $options[2]) {
-                            $title = NewsUtility::truncateTagSafe($title, $options[2] + 3);
-                        }
-                        if ('' !== $options[7]) {
-                            $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
-                        }
-                        if ($options[3] > 0) {
-                            $html         = 1 == $story->nohtml() ? 0 : 1;
-                            $news['text'] = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
-                        } else {
-                            $news['text'] = '';
-                        }
-
-                        if (1 == $story->votes()) {
-                            $news['number_votes'] = _NW_ONEVOTE;
-                        } else {
-                            $news['number_votes'] = sprintf(_NW_NUMVOTES, $story->votes());
-                        }
-                        if ($infotips > 0) {
-                            $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
-                        } else {
-                            $news['infotips'] = '';
-                        }
-                        $news['title']       = sprintf("<a href='%s' %s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
-                        $news['id']          = $story->storyid();
-                        $news['date']        = formatTimestamp($story->published(), $dateformat);
-                        $news['hits']        = $story->counter();
-                        $news['rating']      = number_format($story->rating(), 2);
-                        $news['votes']       = $story->votes();
-                        $news['topicid']     = $story->topicid();
-                        $news['topic_title'] = $story->topic_title();
-                        $news['topic_color'] = '#' . $myts->displayTarea($story->topic_color);
-                        $news['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
-                        $news['pictureinfo'] = $story->pictureinfo();
-
-                        if (3 != $displayname) {
-                            $news['author'] = sprintf('%s %s', _POSTEDBY, $story->uname());
-                        } else {
-                            $news['author'] = '';
-                        }
-                        $news['title_with_link'] = sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
-                        $block['news'][]         = $news;
+            $smallheader   = [];
+            $stats         = $topic->getTopicMiniStats($thetopic);
+            $smallheader[] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $thetopic, _MB_READMORE);
+            $smallheader[] = sprintf('%u %s', $stats['count'], _NW_ARTICLES);
+            $smallheader[] = sprintf('%u %s', $stats['reads'], _READS);
+            if (count($stories) > 0) {
+                foreach ($stories as $key => $story) {
+                    $news  = [];
+                    $title = $story->title();
+                    if (mb_strlen($title) > $options[2]) {
+                        $title = News\Utility::truncateTagSafe($title, $options[2] + 3);
                     }
-                    $block['smallheader'] = $smallheader;
+                    if ('' !== $options[7]) {
+                        $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
+                    }
+                    if ($options[3] > 0) {
+                        $html         = 1 == $story->nohtml() ? 0 : 1;
+                        $news['text'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                    } else {
+                        $news['text'] = '';
+                    }
+
+                    if (1 == $story->votes()) {
+                        $news['number_votes'] = _NW_ONEVOTE;
+                    } else {
+                        $news['number_votes'] = sprintf(_NW_NUMVOTES, $story->votes());
+                    }
+                    if ($infotips > 0) {
+                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
+                    } else {
+                        $news['infotips'] = '';
+                    }
+                    $news['title']       = sprintf("<a href='%s' %s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
+                    $news['id']          = $story->storyid();
+                    $news['date']        = formatTimestamp($story->published(), $dateformat);
+                    $news['hits']        = $story->counter();
+                    $news['rating']      = number_format($story->rating(), 2);
+                    $news['votes']       = $story->votes();
+                    $news['topicid']     = $story->topicid();
+                    $news['topic_title'] = $story->topic_title();
+                    $news['topic_color'] = '#' . $myts->displayTarea($story->topic_color);
+                    $news['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
+                    $news['pictureinfo'] = $story->pictureinfo();
+
+                    if (3 != $displayname) {
+                        $news['author'] = sprintf('%s %s', _POSTEDBY, $story->uname());
+                    } else {
+                        $news['author'] = '';
+                    }
+                    $news['title_with_link'] = sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $news['infotips'], $title);
+                    $block['news'][]         = $news;
                 }
+                $block['smallheader'] = $smallheader;
             }
         }
         $block['lang_on']    = _ON; // on
@@ -390,7 +393,7 @@ function b_news_top_show($options)
             $block['color5'] = $options[13];
         }
     } else { // ************************ Classical view **************************************************************************************************************
-        $tmpstory = new NewsStory;
+        $tmpstory = new NewsStory();
         if (isset($options[14]) && 0 == $options[14]) {
             $stories = NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
         } else {
@@ -401,12 +404,12 @@ function b_news_top_show($options)
         if (!count($stories)) {
             return '';
         }
-        $topic = new NewsTopic();
+        $topic = new  NewsTopic();
 
         foreach ($stories as $key => $story) {
             $news  = [];
             $title = $story->title();
-            if (strlen($title) > $options[2]) {
+            if (mb_strlen($title) > $options[2]) {
                 $title = xoops_substr($title, 0, $options[2] + 3);
             }
 
@@ -417,7 +420,7 @@ function b_news_top_show($options)
                 $spotlight = [];
                 $visible   = true;
                 if ($restricted) {
-                    $permittedtopics = NewsUtility::getMyItemIds();
+                    $permittedtopics = News\Utility::getMyItemIds();
                     if (!in_array($story->topicid(), $permittedtopics)) {
                         $visible = false;
                     }
@@ -430,7 +433,7 @@ function b_news_top_show($options)
                     }
                     // Added 16 february 2007 *****************************************
                     $story_user = null;
-                    $story_user = new XoopsUser($story->uid());
+                    $story_user = new \XoopsUser($story->uid());
                     if (is_object($story_user)) {
                         $spotlight['avatar'] = XOOPS_UPLOAD_URL . '/' . $story_user->getVar('user_avatar');
                     }
@@ -447,7 +450,7 @@ function b_news_top_show($options)
                     // Added, topic's image and description
                     $spotlight['topic_image']       = XOOPS_URL . '/modules/news/assets/images/topics/' . $story->topic_imgurl();
                     $spotlight['topic_description'] = $myts->displayTarea($story->topic_description, 1);
-                    if (strlen(xoops_trim($story->bodytext())) > 0) {
+                    if ('' !== xoops_trim($story->bodytext())) {
                         $spotlight['read_more'] = true;
                     } else {
                         $spotlight['read_more'] = false;
@@ -480,12 +483,12 @@ function b_news_top_show($options)
                 }
                 if ($options[3] > 0) {
                     $html             = 1 == $story->nohtml() ? 0 : 1;
-                    $news['teaser']   = NewsUtility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                    $news['teaser']   = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     $news['infotips'] = '';
                 } else {
                     $news['teaser'] = '';
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . NewsUtility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -499,7 +502,7 @@ function b_news_top_show($options)
             $block['use_spotlight'] = true;
             $visible                = true;
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
-                $permittedtopics = NewsUtility::getMyItemIds();
+                $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics)) {
                     $visible = false;
@@ -531,7 +534,7 @@ function b_news_top_show($options)
                 }
                 // Added 16 february 2007 *****************************************
                 $story_user = null;
-                $story_user = new XoopsUser($spotlightArticle->uid());
+                $story_user = new \XoopsUser($spotlightArticle->uid());
                 if (is_object($story_user)) {
                     $spotlight['avatar'] = XOOPS_UPLOAD_URL . '/' . $story_user->getVar('user_avatar');
                 }
@@ -553,7 +556,7 @@ function b_news_top_show($options)
                 } else {
                     $spotlight['author'] = '';
                 }
-                if (strlen(xoops_trim($spotlightArticle->bodytext())) > 0) {
+                if ('' !== xoops_trim($spotlightArticle->bodytext())) {
                     $spotlight['read_more'] = true;
                 } else {
                     $spotlight['read_more'] = false;
@@ -565,11 +568,11 @@ function b_news_top_show($options)
     if (isset($permstory)) {
         unset($permstory);
     }
-    $block['lang_read_more']      = $myts->htmlSpecialChars(_MB_READMORE); // Read More...
-    $block['lang_orderby']        = $myts->htmlSpecialChars(_MB_NEWS_ORDER); // "Order By"
-    $block['lang_orderby_date']   = $myts->htmlSpecialChars(_MB_NEWS_DATE); // Published date
-    $block['lang_orderby_hits']   = $myts->htmlSpecialChars(_MB_NEWS_HITS); // Number of Hits
-    $block['lang_orderby_rating'] = $myts->htmlSpecialChars(_MB_NEWS_RATE); // Rating
+    $block['lang_read_more']      = htmlspecialchars(_MB_READMORE, ENT_QUOTES | ENT_HTML5); // Read More...
+    $block['lang_orderby']        = htmlspecialchars(_MB_NEWS_ORDER, ENT_QUOTES | ENT_HTML5); // "Order By"
+    $block['lang_orderby_date']   = htmlspecialchars(_MB_NEWS_DATE, ENT_QUOTES | ENT_HTML5); // Published date
+    $block['lang_orderby_hits']   = htmlspecialchars(_MB_NEWS_HITS, ENT_QUOTES | ENT_HTML5); // Number of Hits
+    $block['lang_orderby_rating'] = htmlspecialchars(_MB_NEWS_RATE, ENT_QUOTES | ENT_HTML5); // Rating
     $block['sort']                = $options[0]; // "published" or "counter" or "rating"
 
     return $block;
@@ -583,7 +586,7 @@ function b_news_top_show($options)
 function b_news_top_edit($options)
 {
     global $xoopsDB;
-    $tmpstory = new NewsStory;
+    $tmpstory = new NewsStory();
     $form     = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";
     $form     .= "<option value='published'";
     if ('published' === $options[0]) {
@@ -666,10 +669,10 @@ function b_news_top_edit($options)
     $form .= "</table>\n";
 
     $form .= '<br><br>' . _MB_SPOTLIGHT_TOPIC . "<br><select name='options[]' multiple='multiple'>";
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $topics_arr = [];
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
-    $xt         = new MyXoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
+    $xt         = new \XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr = $xt->getChildTreeArray(0, 'topic_title');
     $size       = count($options);
     foreach ($topics_arr as $onetopic) {
@@ -697,9 +700,9 @@ function b_news_top_edit($options)
 function b_news_top_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_top_show($options);
+    $block   = b_news_top_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_top.tpl');
 }

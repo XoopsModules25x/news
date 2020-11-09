@@ -11,13 +11,17 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+use XoopsModules\News;
+use XoopsModules\News\Helper;
+use XoopsModules\News\NewsStory;
+
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 /**
  * Display archives
@@ -35,14 +39,17 @@ require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 function b_news_archives_show($options)
 {
     global $xoopsDB, $xoopsConfig;
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+    // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
     require_once XOOPS_ROOT_PATH . '/language/' . $xoopsConfig['language'] . '/calendar.php';
-    if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php')) {
-        require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/main.php';
-    } else {
-        require_once XOOPS_ROOT_PATH . '/modules/news/language/english/main.php';
+
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        //            throw new \RuntimeException('Unable to create the $helper directory');
+        return false;
     }
+
+    $helper = Helper::getInstance();
+    $helper->loadLanguage('main');
 
     $months_arr    = [
         1  => _CAL_JANUARY,
@@ -56,7 +63,7 @@ function b_news_archives_show($options)
         9  => _CAL_SEPTEMBER,
         10 => _CAL_OCTOBER,
         11 => _CAL_NOVEMBER,
-        12 => _CAL_DECEMBER
+        12 => _CAL_DECEMBER,
     ];
     $block         = [];
     $sort_order    = 0 == $options[0] ? 'ASC' : 'DESC';
@@ -71,9 +78,9 @@ function b_news_archives_show($options)
     if (!$result) {
         return '';
     }
-    while ($myrow = $xoopsDB->fetchArray($result)) {
-        $year                = (int)substr($myrow['published'], 0, 4);
-        $month               = (int)substr($myrow['published'], 5, 2);
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
+        $year                = (int)mb_substr($myrow['published'], 0, 4);
+        $month               = (int)mb_substr($myrow['published'], 5, 2);
         $formated_month      = $months_arr[$month];
         $block['archives'][] = ['month' => $month, 'year' => $year, 'formated_month' => $formated_month];
     }
@@ -98,7 +105,7 @@ function b_news_archives_edit($options)
     $seleyear  = $options[3];
     $selemonth = $options[4];
 
-    $tmpstory = new NewsStory;
+    $tmpstory = new NewsStory();
     $tmpstory->getOlderRecentNews($older, $recent); // We are searching for the module's older and more recent article's date
 
     // Min and max value for the two dates selectors
@@ -174,9 +181,9 @@ function b_news_archives_edit($options)
 function b_news_archives_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_archives_show($options);
+    $block   = b_news_archives_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_archives.tpl');
 }

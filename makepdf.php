@@ -11,22 +11,30 @@
 
 /**
  * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
+use Xmf\Request;
+use XoopsModules\News;
+use XoopsModules\News\NewsStory;
+
 error_reporting(0);
 
 require_once __DIR__ . '/header.php';
 //2.5.8
-require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+    redirect_header(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/viewtopic.php?topic_id=' . $topic_id, 3, 'TCPDF for Xoops not installed');
+} else {
+    require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+}
 
-$myts = MyTextSanitizer::getInstance();
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-$storyid = isset($_GET['storyid']) ? (int)$_GET['storyid'] : 0;
+$myts = \MyTextSanitizer::getInstance();
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+
+$storyid = Request::getInt('storyid', 0, 'GET');
 
 if (empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
@@ -43,28 +51,29 @@ if (0 != $article->expired() && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
-$gpermHandler = xoops_getHandler('groupperm');
+/** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
+if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
-$dateformat               = NewsUtility::getModuleOption('dateformat');
+$dateformat               = News\Utility::getModuleOption('dateformat');
 $article_data             = $article->hometext() . $article->bodytext();
 $article_title            = $article->title();
-$article_title            = NewsUtility::html2text($myts->undoHtmlSpecialChars($article_title));
+$article_title            = News\Utility::html2text($myts->undoHtmlSpecialChars($article_title));
 $forumdata['topic_title'] = $article_title;
 $pdf_data['title']        = $article->title();
 $topic_title              = $article->topic_title();
-$topic_title              = NewsUtility::html2text($myts->undoHtmlSpecialChars($topic_title));
+$topic_title              = News\Utility::html2text($myts->undoHtmlSpecialChars($topic_title));
 $pdf_data['subtitle']     = $topic_title;
 $pdf_data['subsubtitle']  = $article->subtitle();
 $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);
-$pdf_data['filename']     = preg_replace("/[^0-9a-z\-_\.]/i", '', $myts->htmlSpecialChars($article->topic_title()) . ' - ' . $article->title());
+$pdf_data['filename']     = preg_replace("/[^0-9a-z\-_\.]/i", '', htmlspecialchars($article->topic_title(), ENT_QUOTES | ENT_HTML5) . ' - ' . $article->title());
 $hometext                 = $article->hometext();
 $bodytext                 = $article->bodytext();
 $content                  = $myts->undoHtmlSpecialChars($hometext) . '<br><br>' . $myts->undoHtmlSpecialChars($bodytext);

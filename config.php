@@ -1,6 +1,6 @@
 <?php
 //  ------------------------------------------------------------------------ //
-//                  Copyright (c) 2005-2006 Herve Thouzard                     //
+//                  Copyright (c) 2005-2006 Hervé Thouzard                     //
 //                     <http://www.herve-thouzard.com>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -22,11 +22,18 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
+
+use XoopsModules\News;
+use XoopsModules\News\Helper;
+
+/** @var \XoopsModules\News\Helper $helper */
+$helper = Helper::getInstance();
+
 $cfg = [];
 /**
  * How many items do you want to display in the Summary table visible in the article's page ?
  */
-$cfg['article_summary_items_count'] = isset($xoopsModuleConfig['storyhome']) ? $xoopsModuleConfig['storyhome'] : 10;
+$cfg['article_summary_items_count'] = ('' !== $helper->getConfig('storyhome')) ? $helper->getConfig('storyhome') : 10;
 
 /**
  * Auto generate meta keywords ?

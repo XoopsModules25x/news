@@ -11,13 +11,15 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\News;
+use XoopsModules\News\Helper;
+use XoopsModules\News\NewsTopic;
 
 /**
  * @param $options
@@ -26,22 +28,28 @@
  */
 function b_news_topicsnav_show($options)
 {
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-    $myts             = MyTextSanitizer::getInstance();
+    /** @var Helper $helper */
+    if (!class_exists(Helper::class)) {
+        return false;
+    }
+
+    $helper = Helper::getInstance();
+
+    $myts             = \MyTextSanitizer::getInstance();
     $block            = [];
     $newscountbytopic = [];
     $perms            = '';
-    $xt               = new NewsTopic();
-    $restricted       = NewsUtility::getModuleOption('restrictindex');
+    $xt               = new  NewsTopic();
+    $restricted       = News\Utility::getModuleOption('restrictindex');
     if ($restricted) {
         global $xoopsUser;
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gpermHandler  = xoops_getHandler('groupperm');
-        $topics        = $gpermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
+        /** @var \XoopsGroupPermHandler $grouppermHandler */
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $topics           = $grouppermHandler->getItemIds('news_view', $groups, $newsModule->getVar('mid'));
         if (count($topics) > 0) {
             $topics = implode(',', $topics);
             $perms  = ' AND topic_id IN (' . $topics . ') ';
@@ -67,7 +75,7 @@ function b_news_topicsnav_show($options)
                 'id'          => $onetopic['topic_id'],
                 'news_count'  => $count,
                 'topic_color' => '#' . $onetopic['topic_color'],
-                'title'       => $myts->displayTarea($onetopic['topic_title'])
+                'title'       => $myts->displayTarea($onetopic['topic_title']),
             ];
         }
     }
@@ -102,9 +110,9 @@ function b_news_topicsnav_edit($options)
 function b_news_topicsnav_onthefly($options)
 {
     $options = explode('|', $options);
-    $block   = &b_news_topicsnav_show($options);
+    $block   = b_news_topicsnav_show($options);
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign('block', $block);
     $tpl->display('db:news_block_topicnav.tpl');
 }

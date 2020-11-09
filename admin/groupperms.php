@@ -2,7 +2,7 @@
 //
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
-// Copyright (c) 2000-2016 XOOPS.org                                             //
+// Copyright (c) 2000-2020 XOOPS.org                                             //
 // <https://xoops.org>                                                  //
 // ------------------------------------------------------------------------ //
 // This program is free software; you can redistribute it and/or modify     //
@@ -24,18 +24,23 @@
 // along with this program; if not, write to the Free Software              //
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------ //
-require_once __DIR__ . '/../../../include/cp_header.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
+
+use Xmf\Module\Admin;
+use Xmf\Request;
+use XoopsModules\News;
+
+require_once dirname(__DIR__, 3) . '/include/cp_header.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
-$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject = Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 
 echo '<br><br><br>';
-$permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
+$permtoset                = Request::getInt('permtoset', 1, 'POST');
 $selected                 = ['', '', ''];
 $selected[$permtoset - 1] = ' selected';
 echo "<form method='post' name='fselperm' action='groupperms.php'><select name='permtoset' onChange='document.fselperm.submit()'><option value='1'"
@@ -71,8 +76,8 @@ switch ($permtoset) {
         break;
 }
 
-$permform  = new XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/groupperms.php');
-$xt        = new MyXoopsTopic($xoopsDB->prefix('news_topics'));
+$permform  = new \XoopsGroupPermForm($title_of_form, $module_id, $perm_name, $perm_desc, 'admin/groupperms.php');
+$xt        = new \XoopsModules\News\XoopsTopic($xoopsDB->prefix('news_topics'));
 $alltopics = $xt->getTopicsList();
 
 if ($alltopics) {

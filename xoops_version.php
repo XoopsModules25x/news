@@ -11,18 +11,26 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\News;
+use XoopsModules\News\NewsTopic;
+
+require_once __DIR__ . '/preloads/autoloader.php';
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+$helper->loadLanguage('common');
+
 $moduleDirName = basename(__DIR__);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 $modversion['version']       = 1.72;
-$modversion['module_status'] = 'Beta 2';
-$modversion['release_date']  = '2020/06/06';
+$modversion['module_status'] = 'Beta 4';
+$modversion['release_date']  = '2020/11/08';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -30,7 +38,7 @@ $modversion['author']        = 'XOOPS Project Module Dev Team & Hervé Thouzard'
 $modversion['nickname']      = 'hervet';
 $modversion['help']          = 'page=help';
 $modversion['license']       = 'GNU General Public License';
-$modversion['license_url']   = 'http://www.gnu.org/licenses/gpl.html';
+$modversion['license_url']   = 'https://www.gnu.org/licenses/gpl.html';
 $modversion['official']      = 0; //1 indicates supported by XOOPS Dev Team, 0 means 3rd party supported
 $modversion['image']         = 'assets/images/logoModule.png';
 $modversion['dirname']       = $moduleDirName;
@@ -43,8 +51,8 @@ $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
-$modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = '2.5.9';
+$modversion['min_php']             = '7.2';
+$modversion['min_xoops']           = '2.5.10';
 $modversion['min_admin']           = '1.2';
 $modversion['min_db']              = ['mysql' => '5.5'];
 
@@ -196,7 +204,7 @@ $cansubmit = 0;
 /**
  * This part inserts the selected topics as sub items in the Xoops main menu
  */
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->getByDirname($modversion['dirname']);
 if ($module) {
@@ -206,8 +214,9 @@ if ($module) {
     } else {
         $groups = XOOPS_GROUP_ANONYMOUS;
     }
-    $gpermHandler = xoops_getHandler('groupperm');
-    if ($gpermHandler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    if ($grouppermHandler->checkRight('news_submit', 0, $groups, $module->getVar('mid'))) {
         $cansubmit = 1;
     }
 }
@@ -220,25 +229,24 @@ global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule, $xoopsModuleConfig;
 if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['dirname']
     && $xoopsModule->getVar('isactive')) {
     // 2) If there's no topics to display as sub menus we can go on
-    if (!isset($_SESSION['items_count']) || $_SESSION['items_count'] == -1) {
+    if (!isset($_SESSION['items_count']) || -1 == $_SESSION['items_count']) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
         $result = $xoopsDB->query($sql);
-        list($count) = $xoopsDB->fetchRow($result);
+        [$count] = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
     } else {
         $count = $_SESSION['items_count'];
     }
     if ($count > 0) {
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+        //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         $xt         = new NewsTopic();
-        $allTopics  = $xt->getAllTopics(NewsUtility::getModuleOption('restrictindex'));
-        $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+        $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
+        $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
             foreach ($topics_arr as $onetopic) {
-                if ($gpermHandler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
+                if ($grouppermHandler->checkRight('news_view', $onetopic->topic_id(), $groups, $xoopsModule->getVar('mid'))
                     && $onetopic->menu()) {
                     $modversion['sub'][$i]['name'] = $onetopic->topic_title();
                     $modversion['sub'][$i]['url']  = 'index.php?storytopic=' . $onetopic->topic_id();
@@ -259,8 +267,8 @@ if ($cansubmit) {
 }
 unset($cansubmit);
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
-if (NewsUtility::getModuleOption('newsbythisauthor')) {
+//;
+if (News\Utility::getModuleOption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;
     $modversion['sub'][$i]['url']  = 'whoswho.php';
@@ -285,114 +293,117 @@ $modversion['comments']['callback']['approve'] = 'news_com_approve';
 $modversion['comments']['callback']['update']  = 'news_com_update';
 
 // start module optins
-$i = 0;
+
 /**
  * Select the number of news items to display on top page
  */
-++$i;
-$modversion['config'][$i]['name']        = 'storyhome';
-$modversion['config'][$i]['title']       = '_MI_STORYHOME';
-$modversion['config'][$i]['description'] = '_MI_STORYHOMEDSC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 5;
-$modversion['config'][$i]['options']     = ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30];
-
+$modversion['config'][] = [
+    'name'        => 'storyhome',
+    'title'       => '_MI_STORYHOME',
+    'description' => '_MI_STORYHOMEDSC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'default'     => 5,
+    'options'     => ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30],
+];
 /**
  * Format of the date to use in the module, if you don't specify anything then the default date's format will be used
  */
-++$i;
-$modversion['config'][$i]['name']        = 'dateformat';
-$modversion['config'][$i]['title']       = '_MI_NEWS_DATEFORMAT';
-$modversion['config'][$i]['description'] = '_MI_NEWS_DATEFORMAT_DESC';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = '';
-
+$modversion['config'][] = [
+    'name'        => 'dateformat',
+    'title'       => '_MI_NEWS_DATEFORMAT',
+    'description' => '_MI_NEWS_DATEFORMAT_DESC',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'text',
+    'default'     => '',
+];
 /**
  * Display a navigation's box on the pages ?
  * This navigation's box enable you to jump from one topic to another
  */
-++$i;
-$modversion['config'][$i]['name']        = 'displaynav';
-$modversion['config'][$i]['title']       = '_MI_DISPLAYNAV';
-$modversion['config'][$i]['description'] = '_MI_DISPLAYNAVDSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
-
+$modversion['config'][] = [
+    'name'        => 'displaynav',
+    'title'       => '_MI_DISPLAYNAV',
+    'description' => '_MI_DISPLAYNAVDSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
 /*
- ++$i;
- $modversion['config'][$i]['name'] = 'anonpost';
- $modversion['config'][$i]['title'] = '_MI_ANONPOST';
- $modversion['config'][$i]['description'] = '';
- $modversion['config'][$i]['formtype'] = 'yesno';
- $modversion['config'][$i]['valuetype'] = 'int';
- $modversion['config'][$i]['default'] = 0;
+ $modversion['config'][] = [
+ 'name' =>  'anonpost',
+ 'title' =>  '_MI_ANONPOST',
+ 'description' =>  '',
+ 'formtype' =>  'yesno',
+ 'valuetype' =>  'int',
+ 'default' =>  0,
+];
  */
 
 /**
  * Auto approuve submited stories
  */
-++$i;
-$modversion['config'][$i]['name']        = 'autoapprove';
-$modversion['config'][$i]['title']       = '_MI_AUTOAPPROVE';
-$modversion['config'][$i]['description'] = '_MI_AUTOAPPROVEDSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'autoapprove',
+    'title'       => '_MI_AUTOAPPROVE',
+    'description' => '_MI_AUTOAPPROVEDSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Dispay layout, classic or by topics
  */
-++$i;
-$modversion['config'][$i]['name']        = 'newsdisplay';
-$modversion['config'][$i]['title']       = '_MI_NEWSDISPLAY';
-$modversion['config'][$i]['description'] = '_MI_NEWSDISPLAYDESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = 'Classic';
-$modversion['config'][$i]['options']     = ['_MI_NEWSCLASSIC' => 'Classic', '_MI_NEWSBYTOPIC' => 'Bytopic'];
+$modversion['config'][] = [
+    'name'        => 'newsdisplay',
+    'title'       => '_MI_NEWSDISPLAY',
+    'description' => '_MI_NEWSDISPLAYDESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'text',
+    'default'     => 'Classic',
+    'options'     => ['_MI_NEWSCLASSIC' => 'Classic', '_MI_NEWSBYTOPIC' => 'Bytopic'],
+];
 
 /**
  * How to display Author's name, username, full name or nothing ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'displayname';
-$modversion['config'][$i]['title']       = '_MI_NAMEDISPLAY';
-$modversion['config'][$i]['description'] = '_MI_ADISPLAYNAMEDSC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
-$modversion['config'][$i]['options']     = [
+$modversion['config'][] = [
+    'name'        => 'displayname',
+    'title'       => '_MI_NAMEDISPLAY',
+    'description' => '_MI_ADISPLAYNAMEDSC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'default'     => 1,
+    'options'     => [
     '_MI_DISPLAYNAME1' => 1,
     '_MI_DISPLAYNAME2' => 2,
-    '_MI_DISPLAYNAME3' => 3
+        '_MI_DISPLAYNAME3' => 3,
+    ],
 ];
-
 /**
  * Number of columns to use to display news
  */
-++$i;
-$modversion['config'][$i]['name']        = 'columnmode';
-$modversion['config'][$i]['title']       = '_MI_COLUMNMODE';
-$modversion['config'][$i]['description'] = '_MI_COLUMNMODE_DESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
-$modversion['config'][$i]['options']     = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5];
-
+$modversion['config'][] = [
+    'name'        => 'columnmode',
+    'title'       => '_MI_COLUMNMODE',
+    'description' => '_MI_COLUMNMODE_DESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'default'     => 1,
+    'options'     => [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5],
+];
 /**
  * Number of news and topics to display in the module's admin part
  */
-++$i;
-$modversion['config'][$i]['name']        = 'storycountadmin';
-$modversion['config'][$i]['title']       = '_MI_STORYCOUNTADMIN';
-$modversion['config'][$i]['description'] = '_MI_STORYCOUNTADMIN_DESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 10;
-$modversion['config'][$i]['options']     = [
+$modversion['config'][] = [
+    'name'        => 'storycountadmin',
+    'title'       => '_MI_STORYCOUNTADMIN',
+    'description' => '_MI_STORYCOUNTADMIN_DESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'default'     => 10,
+    'options'     => [
     '5'  => 5,
     '10' => 10,
     '15' => 15,
@@ -400,47 +411,51 @@ $modversion['config'][$i]['options']     = [
     '25' => 25,
     '30' => 30,
     '35' => 35,
-    '40' => 40
+        '40' => 40,
+    ],
 ];
 
 /**
  * Authorized groups to upload
  */
-++$i;
-$modversion['config'][$i]['name']        = 'uploadgroups';
-$modversion['config'][$i]['title']       = '_MI_UPLOADGROUPS';
-$modversion['config'][$i]['description'] = '_MI_UPLOADGROUPS_DESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 2;
-$modversion['config'][$i]['options']     = [
+$modversion['config'][] = [
+    'name'        => 'uploadgroups',
+    'title'       => '_MI_UPLOADGROUPS',
+    'description' => '_MI_UPLOADGROUPS_DESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'default'     => 2,
+    'options'     => [
     '_MI_UPLOAD_GROUP1' => 1,
     '_MI_UPLOAD_GROUP2' => 2,
-    '_MI_UPLOAD_GROUP3' => 3
+        '_MI_UPLOAD_GROUP3' => 3,
+    ],
 ];
 
 /**
  * MAX Filesize Upload in kilo bytes
  */
-++$i;
-$modversion['config'][$i]['name']        = 'maxuploadsize';
-$modversion['config'][$i]['title']       = '_MI_UPLOADFILESIZE';
-$modversion['config'][$i]['description'] = '_MI_UPLOADFILESIZE_DESC';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1048576;
+$modversion['config'][] = [
+    'name'        => 'maxuploadsize',
+    'title'       => '_MI_UPLOADFILESIZE',
+    'description' => '_MI_UPLOADFILESIZE_DESC',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => 1048576,
+];
 
 /**
  * Display  Topic_title with news_title  ?
  * display Topic_title right before news_title in  news_item.tpl
  */
-++$i;
-$modversion['config'][$i]['name']        = 'displaytopictitle';
-$modversion['config'][$i]['title']       = '_MI_DISPLAYTOPIC_TITLE';
-$modversion['config'][$i]['description'] = '_MI_DISPLAYTOPIC_TITLEDSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
+$modversion['config'][] = [
+    'name'        => 'displaytopictitle',
+    'title'       => '_MI_DISPLAYTOPIC_TITLE',
+    'description' => '_MI_DISPLAYTOPIC_TITLEDSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
 
 /**
  * Restrict Topics on Index Page
@@ -451,169 +466,182 @@ $modversion['config'][$i]['default']     = 1;
  * If you set it to Yes then you can only see what you have the right to see.
  * Many of the permissions are based on this option.
  */
-++$i;
-$modversion['config'][$i]['name']        = 'restrictindex';
-$modversion['config'][$i]['title']       = '_MI_RESTRICTINDEX';
-$modversion['config'][$i]['description'] = '_MI_RESTRICTINDEXDSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'restrictindex',
+    'title'       => '_MI_RESTRICTINDEX',
+    'description' => '_MI_RESTRICTINDEXDSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Do you want to enable your visitors to see all the other articles
  * created by the author they are currently reading ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'newsbythisauthor';
-$modversion['config'][$i]['title']       = '_MI_NEWSBYTHISAUTHOR';
-$modversion['config'][$i]['description'] = '_MI_NEWSBYTHISAUTHORDSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'newsbythisauthor',
+    'title'       => '_MI_NEWSBYTHISAUTHOR',
+    'description' => '_MI_NEWSBYTHISAUTHORDSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * If you set this option to yes then you will see two links at the bottom
  * of each article. The first link will enable you to go to the previous
  * article and the other link will bring you to the next article
  */
-++$i;
-$modversion['config'][$i]['name']        = 'showprevnextlink';
-$modversion['config'][$i]['title']       = '_MI_NEWS_PREVNEX_LINK';
-$modversion['config'][$i]['description'] = '_MI_NEWS_PREVNEX_LINK_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'showprevnextlink',
+    'title'       => '_MI_NEWS_PREVNEX_LINK',
+    'description' => '_MI_NEWS_PREVNEX_LINK_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Do you want to see a summary table at the bottom of each article ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'showsummarytable';
-$modversion['config'][$i]['title']       = '_MI_NEWS_SUMMARY_SHOW';
-$modversion['config'][$i]['description'] = '_MI_NEWS_SUMMARY_SHOW_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'showsummarytable',
+    'title'       => '_MI_NEWS_SUMMARY_SHOW',
+    'description' => '_MI_NEWS_SUMMARY_SHOW_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Do you enable author's to edit their posts ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'authoredit';
-$modversion['config'][$i]['title']       = '_MI_NEWS_AUTHOR_EDIT';
-$modversion['config'][$i]['description'] = '_MI_NEWS_AUTHOR_EDIT_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
+$modversion['config'][] = [
+    'name'        => 'authoredit',
+    'title'       => '_MI_NEWS_AUTHOR_EDIT',
+    'description' => '_MI_NEWS_AUTHOR_EDIT_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
 
 /**
  * Do you want to enable your visitors to rate news ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'ratenews';
-$modversion['config'][$i]['title']       = '_MI_NEWS_RATE_NEWS';
-$modversion['config'][$i]['description'] = '';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'ratenews',
+    'title'       => '_MI_NEWS_RATE_NEWS',
+    'description' => '',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * You can set RSS feeds per topic
  */
-++$i;
-$modversion['config'][$i]['name']        = 'topicsrss';
-$modversion['config'][$i]['title']       = '_MI_NEWS_TOPICS_RSS';
-$modversion['config'][$i]['description'] = '_MI_NEWS_TOPICS_RSS_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'topicsrss',
+    'title'       => '_MI_NEWS_TOPICS_RSS',
+    'description' => '_MI_NEWS_TOPICS_RSS_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * If you set this option to yes then the approvers can type the keyword
  * and description's meta datas
  */
-++$i;
-$modversion['config'][$i]['name']        = 'metadata';
-$modversion['config'][$i]['title']       = '_MI_NEWS_META_DATA';
-$modversion['config'][$i]['description'] = '_MI_NEWS_META_DATA_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'metadata',
+    'title'       => '_MI_NEWS_META_DATA',
+    'description' => '_MI_NEWS_META_DATA_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
-/**
- * Editor to use
- */
-++$i;
-$modversion['config'][$i]['name']        = 'form_options';
-$modversion['config'][$i]['title']       = '_MI_NEWS_FORM_OPTIONS';
-$modversion['config'][$i]['description'] = '_MI_NEWS_FORM_OPTIONS_DESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = 'dhtml';
-xoops_load('xoopseditorhandler');
-$editorHandler                       = XoopsEditorHandler::getInstance();
-$modversion['config'][$i]['options'] = array_flip($editorHandler->getList());
+// default admin editor
+xoops_load('XoopsEditorHandler');
+$editorHandler = \XoopsEditorHandler::getInstance();
+$editorList    = array_flip($editorHandler->getList());
+
+$modversion['config'][] = [
+    'name'        => 'form_options',
+    'title'       => '_MI_NEWS_FORM_OPTIONS',
+    'description' => '_MI_NEWS_FORM_OPTIONS_DESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'text',
+    'default'     => 'dhtml',
+    'options'     => $editorList,
+];
 
 /**
  * If you set this option to Yes then the keywords entered in the
  * search will be highlighted in the articles.
  */
-++$i;
-$modversion['config'][$i]['name']        = 'keywordshighlight';
-$modversion['config'][$i]['title']       = '_MI_NEWS_KEYWORDS_HIGH';
-$modversion['config'][$i]['description'] = '_MI_NEWS_KEYWORDS_HIGH_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'keywordshighlight',
+    'title'       => '_MI_NEWS_KEYWORDS_HIGH',
+    'description' => '_MI_NEWS_KEYWORDS_HIGH_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * If you have enabled the previous option then with this one
  * you can select the color to use to highlight words
  */
-++$i;
-$modversion['config'][$i]['name']        = 'highlightcolor';
-$modversion['config'][$i]['title']       = '_MI_NEWS_HIGH_COLOR';
-$modversion['config'][$i]['description'] = '_MI_NEWS_HIGH_COLOR_DES';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = '#FFFF80';
+$modversion['config'][] = [
+    'name'        => 'highlightcolor',
+    'title'       => '_MI_NEWS_HIGH_COLOR',
+    'description' => '_MI_NEWS_HIGH_COLOR_DES',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'text',
+    'default'     => '#FFFF80',
+];
 
 /**
  * Tooltips, or infotips are some small textes you can see when you
  * move your mouse over an article's title. This text contains the
  * first (x) characters of the story
  */
-++$i;
-$modversion['config'][$i]['name']        = 'infotips';
-$modversion['config'][$i]['title']       = '_MI_NEWS_INFOTIPS';
-$modversion['config'][$i]['description'] = '_MI_NEWS_INFOTIPS_DES';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = '0';
+$modversion['config'][] = [
+    'name'        => 'infotips',
+    'title'       => '_MI_NEWS_INFOTIPS',
+    'description' => '_MI_NEWS_INFOTIPS_DES',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => '0',
+];
 
 /**
  * This option is specific to Mozilla/Firefox and Opera
  * Both of them can display a toolbar wich contains buttons to
  * go from article to article. It can show other information too
  */
-++$i;
-$modversion['config'][$i]['name']        = 'sitenavbar';
-$modversion['config'][$i]['title']       = '_MI_NEWS_SITE_NAVBAR';
-$modversion['config'][$i]['description'] = '_MI_NEWS_SITE_NAVBAR_DESC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'sitenavbar',
+    'title'       => '_MI_NEWS_SITE_NAVBAR',
+    'description' => '_MI_NEWS_SITE_NAVBAR_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * With this option you can select the skin (apparence) to use for the blocks containing tabs
  */
-++$i;
-$modversion['config'][$i]['name']        = 'tabskin';
-$modversion['config'][$i]['title']       = '_MI_NEWS_TABS_SKIN';
-$modversion['config'][$i]['description'] = '_MI_NEWS_TABS_SKIN_DESC';
-$modversion['config'][$i]['formtype']    = 'select';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['options']     = [
+$modversion['config'][] = [
+    'name'        => 'tabskin',
+    'title'       => '_MI_NEWS_TABS_SKIN',
+    'description' => '_MI_NEWS_TABS_SKIN_DESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'int',
+    'options'     => [
     _MI_NEWS_SKIN_1 => 1,
     _MI_NEWS_SKIN_2 => 2,
     _MI_NEWS_SKIN_3 => 3,
@@ -621,178 +649,205 @@ $modversion['config'][$i]['options']     = [
     _MI_NEWS_SKIN_5 => 5,
     _MI_NEWS_SKIN_6 => 6,
     _MI_NEWS_SKIN_7 => 7,
-    _MI_NEWS_SKIN_8 => 8
+        _MI_NEWS_SKIN_8 => 8,
+    ],
+    'default'     => 6,
 ];
-$modversion['config'][$i]['default']     = 6;
 
 /**
  * Display a navigation's box on the pages ?
  * This navigation's box enable you to jump from one topic to another
  */
-++$i;
-$modversion['config'][$i]['name']        = 'footNoteLinks';
-$modversion['config'][$i]['title']       = '_MI_NEWS_FOOTNOTES';
-$modversion['config'][$i]['description'] = '';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
+$modversion['config'][] = [
+    'name'        => 'footNoteLinks',
+    'title'       => '_MI_NEWS_FOOTNOTES',
+    'description' => '',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
 
 /**
  * Activate Dublin Core Metadata ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'dublincore';
-$modversion['config'][$i]['title']       = '_MI_NEWS_DUBLINCORE';
-$modversion['config'][$i]['description'] = '_MI_NEWS_DUBLINCORE_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'dublincore',
+    'title'       => '_MI_NEWS_DUBLINCORE',
+    'description' => '_MI_NEWS_DUBLINCORE_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Display a "Bookmark this article at these sites" block ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'bookmarkme';
-$modversion['config'][$i]['title']       = '_MI_NEWS_BOOKMARK_ME';
-$modversion['config'][$i]['description'] = '_MI_NEWS_BOOKMARK_ME_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'bookmarkme',
+    'title'       => '_MI_NEWS_BOOKMARK_ME',
+    'description' => '_MI_NEWS_BOOKMARK_ME_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Activate Firefox 2 microformats ? //obsolete, see here : http://wiki.mozilla.org/Microsummaries (cesagonchu)
- * ++$i;
- * $modversion['config'][$i]['name'] = 'firefox_microsummaries';
- * $modversion['config'][$i]['title'] = '_MI_NEWS_FF_MICROFORMAT';
- * $modversion['config'][$i]['description'] = '_MI_NEWS_FF_MICROFORMAT_DSC';
- * $modversion['config'][$i]['formtype'] = 'yesno';
- * $modversion['config'][$i]['valuetype'] = 'int';
- * $modversion['config'][$i]['default'] = 0;
+ * $modversion['config'][] = [
+ * 'name' =>  'firefox_microsummaries',
+ * 'title' =>  '_MI_NEWS_FF_MICROFORMAT',
+ * 'description' =>  '_MI_NEWS_FF_MICROFORMAT_DSC',
+ * 'formtype' =>  'yesno',
+ * 'valuetype' =>  'int',
+ * 'default' =>  0,
+ * ];
  */
 
 /**
  * Advertisement
  */
-++$i;
-$modversion['config'][$i]['name']        = 'advertisement';
-$modversion['config'][$i]['title']       = '_MI_NEWS_ADVERTISEMENT';
-$modversion['config'][$i]['description'] = '_MI_NEWS_ADV_DESCR';
-$modversion['config'][$i]['formtype']    = 'textarea';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = '';
+$modversion['config'][] = [
+    'name'        => 'advertisement',
+    'title'       => '_MI_NEWS_ADVERTISEMENT',
+    'description' => '_MI_NEWS_ADV_DESCR',
+    'formtype'    => 'textarea',
+    'valuetype'   => 'text',
+    'default'     => '',
+];
 
 /**
  * Mime Types
  *
  * Default values : Web pictures (png, gif, jpeg), zip, pdf, gtar, tar, pdf
  */
-++$i;
-$modversion['config'][$i]['name']        = 'mimetypes';
-$modversion['config'][$i]['title']       = '_MI_NEWS_MIME_TYPES';
-$modversion['config'][$i]['description'] = '';
-$modversion['config'][$i]['formtype']    = 'textarea';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar";
+$modversion['config'][] = [
+    'name'        => 'mimetypes',
+    'title'       => '_MI_NEWS_MIME_TYPES',
+    'description' => '',
+    'formtype'    => 'textarea',
+    'valuetype'   => 'text',
+    'default'     => "image/gif\nimage/jpeg\nimage/pjpeg\nimage/x-png\nimage/png\napplication/x-zip-compressed\napplication/zip\napplication/pdf\napplication/x-gtar\napplication/x-tar",
+];
 
 /**
  * Use enhanced page separator ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'enhanced_pagenav';
-$modversion['config'][$i]['title']       = '_MI_NEWS_ENHANCED_PAGENAV';
-$modversion['config'][$i]['description'] = '_MI_NEWS_ENHANCED_PAGENAV_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'enhanced_pagenav',
+    'title'       => '_MI_NEWS_ENHANCED_PAGENAV',
+    'description' => '_MI_NEWS_ENHANCED_PAGENAV_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Use the TAGS system ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'tags';
-$modversion['config'][$i]['title']       = '_MI_NEWS_TAGS';
-$modversion['config'][$i]['description'] = '_MI_NEWS_TAGS_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'tags',
+    'title'       => '_MI_NEWS_TAGS',
+    'description' => '_MI_NEWS_TAGS_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Introduction text to show on the submit page
  */
-++$i;
-$modversion['config'][$i]['name']        = 'submitintromsg';
-$modversion['config'][$i]['title']       = '_MI_NEWS_INTRO_TEXT';
-$modversion['config'][$i]['description'] = '';
-$modversion['config'][$i]['formtype']    = 'textarea';
-$modversion['config'][$i]['valuetype']   = 'text';
-$modversion['config'][$i]['default']     = '';
+$modversion['config'][] = [
+    'name'        => 'submitintromsg',
+    'title'       => '_MI_NEWS_INTRO_TEXT',
+    'description' => '',
+    'formtype'    => 'textarea',
+    'valuetype'   => 'text',
+    'default'     => '',
+];
 
 /**
  * Max width
  */
-++$i;
-$modversion['config'][$i]['name']        = 'maxwidth';
-$modversion['config'][$i]['title']       = '_MI_NEWS_IMAGE_MAX_WIDTH';
-$modversion['config'][$i]['description'] = '';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 640;
+$modversion['config'][] = [
+    'name'        => 'maxwidth',
+    'title'       => '_MI_NEWS_IMAGE_MAX_WIDTH',
+    'description' => '',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => 640,
+];
 
 /**
  * Max height
  */
-++$i;
-$modversion['config'][$i]['name']        = 'maxheight';
-$modversion['config'][$i]['title']       = '_MI_NEWS_IMAGE_MAX_HEIGHT';
-$modversion['config'][$i]['description'] = '';
-$modversion['config'][$i]['formtype']    = 'textbox';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 480;
+$modversion['config'][] = [
+    'name'        => 'maxheight',
+    'title'       => '_MI_NEWS_IMAGE_MAX_HEIGHT',
+    'description' => '',
+    'formtype'    => 'textbox',
+    'valuetype'   => 'int',
+    'default'     => 480,
+];
 
 /**
  * Display a "share" items ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'share';
-$modversion['config'][$i]['title']       = '_MI_NEWS_SHARE_ME';
-$modversion['config'][$i]['description'] = '_MI_NEWS_SHARE_ME_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'share',
+    'title'       => '_MI_NEWS_SHARE_ME',
+    'description' => '_MI_NEWS_SHARE_ME_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Display Print and Email icons in each article ?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'showicons';
-$modversion['config'][$i]['title']       = '_MI_NEWS_SHOWICONS';
-$modversion['config'][$i]['description'] = '_MI_NEWS_SHOWICONS_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 1;
+$modversion['config'][] = [
+    'name'        => 'showicons',
+    'title'       => '_MI_NEWS_SHOWICONS',
+    'description' => '_MI_NEWS_SHOWICONS_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
 
 /**
  * Display PDF icon in each article ?
  */
-
-++$i;
-$modversion['config'][$i]['name']        = 'show_pdficon';
-$modversion['config'][$i]['title']       = '_MI_NEWS_SHOWICONS_PDF';
-$modversion['config'][$i]['description'] = '_MI_NEWS_SHOWICONS_PDF_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'show_pdficon',
+    'title'       => '_MI_NEWS_SHOWICONS_PDF',
+    'description' => '_MI_NEWS_SHOWICONS_PDF_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
 
 /**
  * Allow Facebook Comments?
  */
-++$i;
-$modversion['config'][$i]['name']        = 'fbcomments';
-$modversion['config'][$i]['title']       = '_MI_NEWS_FACEBOOKCOMMENTS';
-$modversion['config'][$i]['description'] = '_MI_NEWS_FACEBOOKCOMMENTS_DSC';
-$modversion['config'][$i]['formtype']    = 'yesno';
-$modversion['config'][$i]['valuetype']   = 'int';
-$modversion['config'][$i]['default']     = 0;
+$modversion['config'][] = [
+    'name'        => 'fbcomments',
+    'title'       => '_MI_NEWS_FACEBOOKCOMMENTS',
+    'description' => '_MI_NEWS_FACEBOOKCOMMENTS_DSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
+
+/**
+ * Make Sample button visible?
+ */
+$modversion['config'][] = [
+    'name'        => 'displaySampleButton',
+    'title'       => '_MI_NEWS_SHOW_SAMPLE_BUTTON',
+    'description' => '_MI_NEWS_SHOW_SAMPLE_BUTTON_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
 
 // Notification
 $modversion['hasNotification']             = 1;

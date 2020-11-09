@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -24,26 +24,31 @@
  * You can enable and disable this feature with the module's option named "Enable RSS feeds per topics?"
  * The script uses the permissions to know what to display.
  *
- * @package       News
+ * @param type $nomvariable description
  * @author        Xoops Modules Dev Team
  * @copyright (c) XOOPS Project (https://xoops.org)
  *
- * @param type $nomvariable description
+ * @package       News
  */
-include __DIR__ . '/../../mainfile.php';
+
+use Xmf\Request;
+use XoopsModules\News;
+use XoopsModules\News\NewsStory;
+use XoopsModules\News\NewsTopic;
+
+require_once dirname(__DIR__, 2) . '/mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
-if (!NewsUtility::getModuleOption('topicsrss')) {
+if (!News\Utility::getModuleOption('topicsrss')) {
     exit();
 }
 
-$topicid = isset($_GET['topicid']) ? (int)$_GET['topicid'] : 0;
+$topicid = Request::getInt('topicid', 0, 'GET');
 if (0 == $topicid) {
     exit();
 }
@@ -52,20 +57,20 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 
-$restricted = NewsUtility::getModuleOption('restrictindex');
-$newsnumber = NewsUtility::getModuleOption('storyhome');
+$restricted = News\Utility::getModuleOption('restrictindex');
+$newsnumber = News\Utility::getModuleOption('storyhome');
 
 $charset = 'utf-8';
 
 header('Content-Type:text/xml; charset=' . $charset);
 $story        = new NewsStory();
-$tpl          = new XoopsTpl();
+$tpl          = new \XoopsTpl();
 $tpl->caching = 2;
 $tpl->xoops_setCacheTime(3600); // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
-    $xt     = new NewsTopic($topicid);
+    $xt     = new  NewsTopic($topicid);
     $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
-    if (is_array($sarray) && count($sarray) > 0) {
+    if ($sarray && is_array($sarray)) {
         $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);
         $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES);
         $tpl->assign('channel_title', xoops_utf8_encode($sitename));
@@ -95,14 +100,17 @@ if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
         foreach ($sarray as $story) {
             $storytitle = $story->title();
             //if we are allowing html, we need to use htmlspecialchars or any bug will break the output
-            $description = htmlspecialchars($story->hometext());
-            $tpl->append('items', [
-                'title'       => xoops_utf8_encode($storytitle),
-                'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
-                'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
-                'pubdate'     => formatTimestamp($story->published(), 'rss'),
-                'description' => xoops_utf8_encode($description)
-            ]);
+            $description = htmlspecialchars($story->hometext(), ENT_QUOTES | ENT_HTML5);
+            $tpl->append(
+                'items',
+                [
+                    'title'       => xoops_utf8_encode($storytitle),
+                    'link'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
+                    'guid'        => XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(),
+                    'pubdate'     => formatTimestamp($story->published(), 'rss'),
+                    'description' => xoops_utf8_encode($description),
+                ]
+            );
         }
     }
 }

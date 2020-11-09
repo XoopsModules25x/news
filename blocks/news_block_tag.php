@@ -11,16 +11,15 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\News\Helper;
 
 if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
-
     /**
      * @param $options
      *

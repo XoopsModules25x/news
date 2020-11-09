@@ -45,10 +45,10 @@
         install icon. Follow the directions in the screen and you'll be ready to
         go.<br><br>
         Detailed instructions on installing modules are available in the
-        <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
+        <a href="https://xoops.gitbook.io/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
         <br><br>
 
-        Please verify that the modules\news\images\topics directory is writable
+        Please verify that the modules\News\images\topics directory is writable
         on the
         server (read+write e.g. chmod=777).<br><br>
 
@@ -61,11 +61,11 @@
 
     <p class="even">
         Tutorial has been started, but we might need your help! Please check out the status of the tutorial <a
-            href="https://www.gitbook.com/book/xoops/ZZZZZZZZ-tutorial/" target="_blank">here </a>.
+            href="https://xoops.gitbook.io/ZZZZZZZZ-tutorial/" target="_blank">here </a>.
         <br><br>To contribute to this Tutorial, <a href="https://github.com/XoopsDocs/ZZZZZZZZ-tutorial/"
                                                    target="_blank">please fork it on GitHub</a>.
         <br> This document describes our <a
-            href="https://www.gitbook.com/book/xoops/xoops-documentation-process/details/" target="_blank">Documentation
+            href="https://xoops.gitbook.io/xoops-documentation-process/details/" target="_blank">Documentation
         Process</a> and it will help you to understand how to contribute.
         <br><br>
         There are more XOOPS Tutorials, so check them out in our <a href="https://www.gitbook.com/@xoops/"

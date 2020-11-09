@@ -11,22 +11,26 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
  */
 
-include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+use Xmf\Request;
+use XoopsModules\News\Files;
+use XoopsModules\News\NewsStory;
 
-$fileid = isset($_GET['fileid']) ? (int)$_GET['fileid'] : 0;
+require_once dirname(__DIR__, 2) . '/mainfile.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+
+$fileid = Request::getInt('fileid', 0, 'GET');
 if (empty($fileid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _ERRORS);
 }
-$myts   = MyTextSanitizer::getInstance(); // MyTextSanitizer object
-$sfiles = new sFiles($fileid);
+$myts   = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
+$sfiles = new Files($fileid);
 
 // Do we have the right to see the file ?
 $article = new NewsStory($sfiles->getStoryid());
@@ -39,13 +43,14 @@ if (0 != $article->expired() && $article->expired() < time()) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
-$gpermHandler = xoops_getHandler('groupperm');
+/** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {
     $groups = $xoopsUser->getGroups();
 } else {
     $groups = XOOPS_GROUP_ANONYMOUS;
 }
-if (!$gpermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
+if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $xoopsModule->getVar('mid'))) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
@@ -54,5 +59,5 @@ $url = XOOPS_UPLOAD_URL . '/' . $sfiles->getDownloadname();
 if (!preg_match("/^ed2k*:\/\//i", $url)) {
     header("Location: $url");
 }
-echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . $myts->htmlSpecialChars($url) . '"></meta></head><body></body></html>';
+echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . htmlspecialchars($url, ENT_QUOTES | ENT_HTML5) . '"></meta></head><body></body></html>';
 exit();

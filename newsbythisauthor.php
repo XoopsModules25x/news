@@ -11,7 +11,7 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
@@ -66,42 +66,46 @@
  *                                                          string  published       Date of publication formated (according to user's prefs)
  *                                                          int     rating          Rating for this news
  */
-include __DIR__ . '/../../mainfile.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
-require_once XOOPS_ROOT_PATH . '/modules/news/class/utility.php';
+
+use Xmf\Request;
+use XoopsModules\News;
+use XoopsModules\News\NewsStory;
+
+require_once dirname(__DIR__, 2) . '/mainfile.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
+//require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
+
+/** @var News\Helper $helper */
+$helper = News\Helper::getInstance();
+
 global $xoopsUser;
 
-if (file_exists(XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php')) {
-    require_once XOOPS_ROOT_PATH . '/modules/news/language/' . $xoopsConfig['language'] . '/modinfo.php';
-} else {
-    require_once XOOPS_ROOT_PATH . '/modules/news/language/english/modinfo.php';
-}
+$helper = News\Helper::getInstance();
+$helper->loadLanguage('modinfo');
 
-$uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
+$uid = Request::getInt('uid', 0, 'GET');
 if (empty($uid)) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
-if (!NewsUtility::getModuleOption('newsbythisauthor')) {
+if (!News\Utility::getModuleOption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
-$myts                                    = MyTextSanitizer::getInstance();
+$myts                                    = \MyTextSanitizer::getInstance();
 $articles                                = new NewsStory();
 $GLOBALS['xoopsOption']['template_main'] = 'news_by_this_author.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-$dateformat = NewsUtility::getModuleOption('dateformat');
-$infotips   = NewsUtility::getModuleOption('infotips');
-$thisuser   = new XoopsUser($uid);
+$dateformat = News\Utility::getModuleOption('dateformat');
+$infotips   = News\Utility::getModuleOption('infotips');
+$thisuser   = new \XoopsUser($uid);
 
-switch ($xoopsModuleConfig['displayname']) {
+switch ($helper->getConfig('displayname')) {
     case 1: // Username
         $authname = $thisuser->getVar('uname');
         break;
-
     case 2: // Display full name (if it is not empty)
         if ('' == xoops_trim($thisuser->getVar('name'))) {
             $authname = $thisuser->getVar('uname');
@@ -109,7 +113,6 @@ switch ($xoopsModuleConfig['displayname']) {
             $authname = $thisuser->getVar('name');
         }
         break;
-
     case 3: // Nothing
         $authname = '';
         break;
@@ -122,7 +125,7 @@ $xoopsTpl->assign('author_name', $authname);
 $xoopsTpl->assign('lang_date', _NW_DATE);
 $xoopsTpl->assign('lang_hits', _NW_VIEWS);
 $xoopsTpl->assign('lang_title', _NW_TITLE);
-$xoopsTpl->assign('news_rating', NewsUtility::getModuleOption('ratenews'));
+$xoopsTpl->assign('news_rating', News\Utility::getModuleOption('ratenews'));
 $xoopsTpl->assign('lang_rating', _NW_RATING);
 $xoopsTpl->assign('author_name_with_link', sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/userinfo.php?uid=' . $uid, $authname));
 
@@ -131,7 +134,7 @@ $oldtopictitle = '';
 $oldtopiccolor = '';
 $articlelist   = [];
 $articlestpl   = [];
-$articlelist   = $articles->getAllPublishedByAuthor($uid, $xoopsModuleConfig['restrictindex'], false);
+$articlelist   = $articles->getAllPublishedByAuthor($uid, $helper->getConfig('restrictindex'), false);
 $articlescount = count($articlelist);
 $xoopsTpl->assign('articles_count', $articlescount);
 $count_articles = $count_reads = 0;
@@ -141,15 +144,18 @@ if ($articlescount > 0) {
         if ($oldtopic != $article['topicid']) {
             if (count($articlestpl) > 0) {
                 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-                $xoopsTpl->append('topics', [
-                    'topic_id'             => $oldtopic,
-                    'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
-                    'topic_count_reads'    => $count_reads,
-                    'topic_color'          => $oldtopiccolor,
-                    'topic_title'          => $oldtopictitle,
-                    'topic_link'           => $topic_link,
-                    'news'                 => $articlestpl
-                ]);
+                $xoopsTpl->append(
+                    'topics',
+                    [
+                        'topic_id'             => $oldtopic,
+                        'topic_count_articles' => sprintf(_AM_NEWS_TOTAL, $count_articles),
+                        'topic_count_reads'    => $count_reads,
+                        'topic_color'          => $oldtopiccolor,
+                        'topic_title'          => $oldtopictitle,
+                        'topic_link'           => $topic_link,
+                        'news'                 => $articlestpl,
+                    ]
+                );
             }
             $oldtopic       = $article['topicid'];
             $oldtopictitle  = $article['topic_title'];
@@ -159,7 +165,7 @@ if ($articlescount > 0) {
         }
         $htmltitle = '';
         if ($infotips > 0) {
-            $htmltitle = ' title="' . NewsUtility::makeInfotips($article['hometext']) . '"';
+            $htmltitle = ' title="' . News\Utility::makeInfotips($article['hometext']) . '"';
         }
         ++$count_articles;
         $count_reads   += $article['counter'];
@@ -171,24 +177,27 @@ if ($articlescount > 0) {
             'created'      => formatTimestamp($article['created'], $dateformat),
             'article_link' => sprintf("<a href='%s'%s>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $article['storyid'], $htmltitle, $article['title']),
             'published'    => formatTimestamp($article['published'], $dateformat),
-            'rating'       => $article['rating']
+            'rating'       => $article['rating'],
         ];
     }
 }
 $topic_link = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/index.php?storytopic=' . $oldtopic, $oldtopictitle);
-$xoopsTpl->append('topics', [
-    'topic_id'    => $oldtopic,
-    'topic_title' => $oldtopictitle,
-    'topic_link'  => $topic_link,
-    'news'        => $articlestpl
-]);
-$xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
-$xoopsTpl->assign('advertisement', NewsUtility::getModuleOption('advertisement'));
+$xoopsTpl->append(
+    'topics',
+    [
+        'topic_id'    => $oldtopic,
+        'topic_title' => $oldtopictitle,
+        'topic_link'  => $topic_link,
+        'news'        => $articlestpl,
+    ]
+);
+$xoopsTpl->assign('xoops_pagetitle', _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . htmlspecialchars($xoopsModule->name(), ENT_QUOTES | ENT_HTML5));
+$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
 
 /**
  * Create the meta datas
  */
-NewsUtility::createMetaDatas();
+News\Utility::createMetaDatas();
 
 $meta_description = _MI_NEWSBYTHISAUTHOR . ' - ' . $authname . ' - ' . $xoopsModule->name('s');
 if (isset($xoTheme) && is_object($xoTheme)) {

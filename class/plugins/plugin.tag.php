@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -11,16 +14,27 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
- * @author         Herve Thouzard  URL: http://www.herve-thouzard.com
+ * @author         Hervé Thouzard  URL: http://www.herve-thouzard.com
  */
 
 /**
  * @param $items
  *
+ * @return bool|null
+ */
+
+use XoopsModules\News;
+
+use function array_keys;
+use function is_array;
+use function time;
+
+/**
+ * @param $items
  * @return bool|null
  */
 function news_tag_iteminfo(&$items)
@@ -35,21 +49,21 @@ function news_tag_iteminfo(&$items)
             $items_id[] = (int)$item_id;
         }
     }
-    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-    $tempNews  = new NewsStory();
+    //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+    $tempNews  = new \XoopsModules\News\NewsStory();
     $items_obj = $tempNews->getStoriesByIds($items_id);
 
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
             if (isset($items_obj[$item_id])) {
-                $item_obj                 =& $items_obj[$item_id];
+                $item_obj                 = &$items_obj[$item_id];
                 $items[$cat_id][$item_id] = [
                     'title'   => $item_obj->title(),
                     'uid'     => $item_obj->uid(),
                     'link'    => "article.php?storyid={$item_id}",
                     'time'    => $item_obj->published(),
                     'tags'    => '', // tag_parse_tag($item_obj->getVar("item_tags", "n")), // optional
-                    'content' => ''
+                    'content' => '',
                 ];
             }
         }
@@ -67,7 +81,7 @@ function news_tag_synchronization($mid)
     global $xoopsDB;
     $itemHandler_keyName = 'storyid';
     $itemHandler_table   = $xoopsDB->prefix('news_stories');
-    $linkHandler         = xoops_getModuleHandler('link', 'tag');
+    $linkHandler         = \XoopsModules\Tag\Helper::getInstance()->getHandler('Link'); //@var \XoopsModules\Tag\Handler $tagHandler
     $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . time() . ')';
 
     /* clear tag-item links */
@@ -81,7 +95,8 @@ function news_tag_synchronization($mid)
                . "             FROM {$itemHandler_table} "
                . "                WHERE $where"
                . '           ) '
-               . '     )'; else:
+               . '     )';
+    else:
         $sql = "   DELETE {$linkHandler->table} FROM {$linkHandler->table}"
                . "  LEFT JOIN {$itemHandler_table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler_keyName} "
                . '   WHERE '

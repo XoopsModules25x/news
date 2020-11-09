@@ -11,16 +11,18 @@
 
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
- * @license        {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author         XOOPS Development Team
+ * @param mixed $story_id
+ * @param mixed $total_num
  */
 
 // comment callback functions
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+// require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
+use XoopsModules\News\NewsStory;
 
 /**
  * @param $story_id

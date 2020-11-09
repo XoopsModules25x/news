@@ -3,7 +3,7 @@
         <div align='right'><{$topic_rssfeed_link}></div>
     <{/if}>
 
-    <{if $displaynav == true}>
+    <{if $displaynav === true}>
         <div style="text-align: center;">
             <form name="form1" action="<{$xoops_url}>/modules/news/index.php" method="get">
                 <{$topic_select}> <select name="storynum"><{$storynum_options}></select> <input type="submit" value="<{$lang_go}>" class="formButton">

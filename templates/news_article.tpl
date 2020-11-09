@@ -9,14 +9,14 @@
                         src="<{xoModuleIcons16 delete.png}>" title="<{$smarty.const._DELETE}>"></a>
         <{/if}>
 
-        <{if $showicons == true}>
+        <{if $showicons === true}>
             <a href="<{$xoops_url}>/modules/news/print.php?storyid=<{$story.id}>" rel="nofollow"
                title="<{$lang_printerpage}>"><img src="<{xoModuleIcons16 printer.png}>"
                                                   alt="<{$lang_printerpage}>"></a>
             <a target="_top" href="<{$mail_link}>" title="<{$lang_sendstory}>" rel="nofollow"><img
                         src="<{xoModuleIcons16 mail_forward.png}>" alt="<{$lang_sendstory}>"></a>
         <{/if}>
-        <{if $showPdfIcon == true}>
+        <{if $showPdfIcon === true}>
             <a target="_blank" href="<{$xoops_url}>/modules/news/makepdf.php?storyid=<{$story.id}>" rel="nofollow"
                title="<{$lang_pdfstory}>"><img src="<{xoModuleIcons16 pdf.png}>"
                                                alt="<{$lang_pdfstory}>"></a>
@@ -52,7 +52,7 @@
 
     </div>
 
-    <{if $showsummary == true && $summary_count>0}>
+    <{if $showsummary === true && $summary_count>0}>
         <div class="marg10">
             <table width='50%' cellspacing='0' cellpadding='1'>
                 <tr>
@@ -69,7 +69,7 @@
         </div>
     <{/if}>
 
-    <{if $bookmarkme == true}>
+    <{if $bookmarkme === true}>
         <div class="item-bookmarkme">
             <div class="head item-bookmarkme-title"><{$smarty.const._NW_BOOKMARK_ME}></div>
             <div class="item-bookmarkme-items">
@@ -163,7 +163,7 @@
             </div>
         </div>
     <{/if}>
-    <{if $share == true}>
+    <{if $share === true}>
         <div class="item-bookmarkme-ftg">
             <ul>
                 <li>
@@ -190,7 +190,7 @@
         </div>
     <{/if}>
 
-    <{if $fbcomments == true}>
+    <{if $fbcomments === true}>
         <div id="fb-root"></div>
         <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
         <fb:comments href="<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>" num_posts="5"
