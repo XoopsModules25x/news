@@ -209,7 +209,7 @@ class NewsTopic extends XoopsTopic
     /**
      * Get the total number of topics in the base
      * @param bool $checkRight
-     * @return |null
+     * @return mixed|null |null
      */
     public function getAllTopicsCount($checkRight = true)
     {

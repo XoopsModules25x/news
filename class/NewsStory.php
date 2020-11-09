@@ -715,7 +715,7 @@ class NewsStory extends XoopsStory
     /**
      * Get the topic image url
      * @param string $format
-     * @return
+     * @return string
      */
     public function topic_imgurl($format = 'S')
     {

@@ -81,7 +81,6 @@ $helper = News\Helper::getInstance();
 
 global $xoopsUser;
 
-/** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('modinfo');
 

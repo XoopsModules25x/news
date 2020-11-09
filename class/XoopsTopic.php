@@ -278,6 +278,9 @@ class XoopsTopic
         return $imgurl;
     }
 
+    /**
+     * @return null
+     */
     public function prefix()
     {
         if (isset($this->prefix)) {

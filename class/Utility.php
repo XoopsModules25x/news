@@ -705,7 +705,7 @@ class Utility extends Common\SysUtility
      * Create an infotip
      *
      * @param $text
-     * @return        |null
+     * @return string|null |null
      * @copyright (c) Hervé Thouzard
      * @package       News
      * @author        Hervé Thouzard (http://www.herve-thouzard.com)

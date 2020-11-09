@@ -37,7 +37,6 @@ $adminObject = Admin::getInstance();
 $pathIcon16 = Admin::iconUrl('', 16);
 $pathIcon32 = Admin::iconUrl('', 32);
 
-/** @var Xmf\Module\Helper\GenericHelper $helper */
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
 // Load language files
