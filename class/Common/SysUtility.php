@@ -26,7 +26,9 @@ namespace XoopsModules\News\Common;
 use MyTextSanitizer;
 use XoopsFormDhtmlTextArea;
 use XoopsFormTextArea;
-use XoopsModules\News;
+use XoopsModules\News\{
+    Helper
+};
 
 /**
  * Class SysUtility
