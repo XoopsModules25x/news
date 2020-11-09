@@ -1,5 +1,10 @@
 -
     gperm_groupid: '1'
+    gperm_itemid: '2'
+    gperm_modid: '210'
+    gperm_name: news_approve
+-
+    gperm_groupid: '1'
     gperm_itemid: '1'
     gperm_modid: '210'
     gperm_name: news_approve
@@ -9,17 +14,7 @@
     gperm_modid: '210'
     gperm_name: news_approve
 -
-    gperm_groupid: '1'
-    gperm_itemid: '1'
-    gperm_modid: '210'
-    gperm_name: news_submit
--
-    gperm_groupid: '1'
-    gperm_itemid: '3'
-    gperm_modid: '210'
-    gperm_name: news_submit
--
-    gperm_groupid: '2'
+    gperm_groupid: '8'
     gperm_itemid: '3'
     gperm_modid: '210'
     gperm_name: news_submit
@@ -29,7 +24,7 @@
     gperm_modid: '210'
     gperm_name: news_submit
 -
-    gperm_groupid: '8'
+    gperm_groupid: '2'
     gperm_itemid: '3'
     gperm_modid: '210'
     gperm_name: news_submit
@@ -40,17 +35,27 @@
     gperm_name: news_submit
 -
     gperm_groupid: '1'
+    gperm_itemid: '3'
+    gperm_modid: '210'
+    gperm_name: news_submit
+-
+    gperm_groupid: '1'
     gperm_itemid: '1'
+    gperm_modid: '210'
+    gperm_name: news_submit
+-
+    gperm_groupid: '9'
+    gperm_itemid: '3'
     gperm_modid: '210'
     gperm_name: news_view
 -
     gperm_groupid: '2'
-    gperm_itemid: '1'
+    gperm_itemid: '3'
     gperm_modid: '210'
     gperm_name: news_view
 -
     gperm_groupid: '3'
-    gperm_itemid: '1'
+    gperm_itemid: '3'
     gperm_modid: '210'
     gperm_name: news_view
 -
@@ -59,18 +64,18 @@
     gperm_modid: '210'
     gperm_name: news_view
 -
-    gperm_groupid: '2'
-    gperm_itemid: '3'
-    gperm_modid: '210'
-    gperm_name: news_view
--
     gperm_groupid: '3'
-    gperm_itemid: '3'
+    gperm_itemid: '1'
     gperm_modid: '210'
     gperm_name: news_view
 -
-    gperm_groupid: '9'
-    gperm_itemid: '3'
+    gperm_groupid: '2'
+    gperm_itemid: '1'
+    gperm_modid: '210'
+    gperm_name: news_view
+-
+    gperm_groupid: '1'
+    gperm_itemid: '1'
     gperm_modid: '210'
     gperm_name: news_view
 -
