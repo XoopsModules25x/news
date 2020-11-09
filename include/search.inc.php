@@ -17,8 +17,6 @@
  * @author         XOOPS Development Team
  */
 
-
-
 use XoopsModules\News;
 
 /**
@@ -38,13 +36,13 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
     /** @var \XoopsModuleHandler $moduleHandler */
-$moduleHandler = xoops_getHandler('module');
+    $moduleHandler = xoops_getHandler('module');
     $module        = $moduleHandler->getByDirname('news');
     $modid         = $module->getVar('mid');
     $searchparam   = '';
 
     /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     if (is_object($xoopsUser)) {
         $groups = $xoopsUser->getGroups();
     } else {

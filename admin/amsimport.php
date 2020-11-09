@@ -65,7 +65,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
         // Retreive News module's ID
         /** @var \XoopsModuleHandler $moduleHandler */
-$moduleHandler = xoops_getHandler('module');
+        $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $news_mid      = $newsModule->getVar('mid');
         // Retreive AMS module's ID

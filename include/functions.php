@@ -59,10 +59,10 @@ function news_getmoduleoption($option, $repmodule = 'news')
         }
     } else {
         /** @var \XoopsModuleHandler $moduleHandler */
-$moduleHandler = xoops_getHandler('module');
+        $moduleHandler = xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($repmodule);
         /** @var \XoopsConfigHandler $configHandler */
-$configHandler = xoops_getHandler('config');
+        $configHandler = xoops_getHandler('config');
         if ($module) {
             $moduleConfig = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
             if (isset($moduleConfig[$option])) {
@@ -121,11 +121,11 @@ function news_MygetItemIds($permtype = 'news_view')
     }
 
     /** @var \XoopsModuleHandler $moduleHandler */
-$moduleHandler = xoops_getHandler('module');
-    $newsModule          = $moduleHandler->getByDirname('news');
-    $groups              = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $moduleHandler = xoops_getHandler('module');
+    $newsModule    = $moduleHandler->getByDirname('news');
+    $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
     /** @var \XoopsGroupPermHandler $grouppermHandler */
-$grouppermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler    = xoops_getHandler('groupperm');
     $topics              = $grouppermHandler->getItemIds($permtype, $groups, $newsModule->getVar('mid'));
     $tblperms[$permtype] = $topics;
 
