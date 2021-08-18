@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -21,7 +19,7 @@ use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -52,7 +50,7 @@ if ($com_itemid > 0) {
             $com_replytext .= '<br><br>' . $bodytext . '';
         }
         $com_replytitle = $article->title();
-        require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
+        require XOOPS_ROOT_PATH . '/include/comment_new.php';
     } else {
         exit;
     }

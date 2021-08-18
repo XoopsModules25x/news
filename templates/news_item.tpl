@@ -8,14 +8,14 @@
 
     <div class="itemInfo">
         <{if $story.files_attached}><{$story.attached_link}>&nbsp;<{/if}>
-        <{if $story.poster != ''}><span class="itemPoster"><{$lang_postedby}> <{$story.poster}> </span><{/if}>
+        <{if $story.poster|default:'' != ''}><span class="itemPoster"><{$lang_postedby}> <{$story.poster}> </span><{/if}>
         <span class="itemPostDate"><{$lang_on}> <{$story.posttime}></span>
         (<span class="itemStats"><{$story.hits}> <{$lang_reads}></span>)
         <{$news_by_the_same_author_link}>
         <!--<span class="itemTopic"><{$lang_topic}> <{$story.topic_title}></span>-->
     </div>
     <div class="itemBody">
-        <{if $story.picture != ''}>
+        <{if $story.picture|default:'' != ''}>
             <img class="left" src="<{$story.picture}>" alt="<{$story.pictureinfo}>">
         <{else}>
             <{$story.imglink}>

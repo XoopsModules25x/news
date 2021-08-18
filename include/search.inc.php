@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -95,7 +93,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $searchincomments = $cfg['config_search_comments'];
 
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
-        require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+        require XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
         $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM ' . $xoopsDB->prefix('xoopscomments') . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
         if (0 != $userid) {

@@ -15,8 +15,6 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -498,7 +496,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_rssurl = htmlspecialchars($this->topic_rssurl, ENT_QUOTES | ENT_HTML5);
+                $topic_rssurl = \htmlspecialchars($this->topic_rssurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -522,7 +520,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_color = htmlspecialchars($this->topic_color, ENT_QUOTES | ENT_HTML5);
+                $topic_color = \htmlspecialchars($this->topic_color, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -554,7 +552,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_description = htmlspecialchars($this->topic_description, ENT_QUOTES | ENT_HTML5);
+                $topic_description = \htmlspecialchars($this->topic_description, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -574,16 +572,16 @@ class NewsTopic extends XoopsTopic
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -626,6 +624,7 @@ class NewsTopic extends XoopsTopic
      */
     public function getTopicsList($frontpage = false, $perms = false)
     {
+        $ret    = [];
         $sql = 'SELECT topic_id, topic_pid, topic_title, topic_color FROM ' . $this->table . ' WHERE 1 ';
         if ($frontpage) {
             $sql .= ' AND topic_frontpage=1';
@@ -640,16 +639,16 @@ class NewsTopic extends XoopsTopic
             $sql    .= ' AND topic_id IN (' . $topics . ')';
         }
         $result = $this->db->query($sql);
-        $ret    = [];
-        $myts   = \MyTextSanitizer::getInstance();
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $ret[$myrow['topic_id']] = [
-                'title' => $myts->displayTarea($myrow['topic_title']),
-                'pid'   => $myrow['topic_pid'],
-                'color' => $myrow['topic_color'],
-            ];
+        if ($result) {
+            $myts = \MyTextSanitizer::getInstance();
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[$myrow['topic_id']] = [
+                    'title' => $myts->displayTarea($myrow['topic_title']),
+                    'pid'   => $myrow['topic_pid'],
+                    'color' => $myrow['topic_color'],
+                ];
+            }
         }
-
         return $ret;
     }
 

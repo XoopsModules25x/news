@@ -2,6 +2,10 @@
 
 namespace XoopsModules\News;
 
+use MyTextSanitizer;
+use XoopsDatabaseFactory;
+use XoopsUser;
+
 /**
  * XOOPS news story
  *
@@ -59,7 +63,7 @@ class XoopsStory
     public function Story($storyid = -1)
     {
         /** @var \XoopsMySQLDatabase $this ->db */
-        $this->db          = \XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db          = XoopsDatabaseFactory::getDatabaseConnection();
         $this->table       = '';
         $this->topicstable = '';
         if (\is_array($storyid)) {
@@ -221,7 +225,7 @@ class XoopsStory
     public function store($approved = false)
     {
         //$newpost = 0;
-        $myts     = \MyTextSanitizer::getInstance();
+        $myts     = MyTextSanitizer::getInstance();
         $title    = $myts->censorString($this->title);
         $hometext = $myts->censorString($this->hometext);
         $bodytext = $myts->censorString($this->bodytext);
@@ -405,7 +409,7 @@ class XoopsStory
      */
     public function uname()
     {
-        return \XoopsUser::getUnameFromId($this->uid);
+        return XoopsUser::getUnameFromId($this->uid);
     }
 
     /**
@@ -415,7 +419,7 @@ class XoopsStory
      */
     public function title($format = 'Show')
     {
-        $myts   = \MyTextSanitizer::getInstance();
+        $myts   = MyTextSanitizer::getInstance();
         $smiley = 1;
         if ($this->nosmiley()) {
             $smiley = 0;
@@ -423,11 +427,11 @@ class XoopsStory
         switch ($format) {
             case 'Show':
             case 'Edit':
-                $title = htmlspecialchars($this->title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->title, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'Preview':
             case 'InForm':
-                $title = htmlspecialchars($this->title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->title, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -441,7 +445,7 @@ class XoopsStory
      */
     public function hometext($format = 'Show')
     {
-        $myts   = \MyTextSanitizer::getInstance();
+        $myts   = MyTextSanitizer::getInstance();
         $html   = 1;
         $smiley = 1;
         $xcodes = 1;
@@ -476,7 +480,7 @@ class XoopsStory
      */
     public function bodytext($format = 'Show')
     {
-        $myts   = \MyTextSanitizer::getInstance();
+        $myts   = MyTextSanitizer::getInstance();
         $html   = 1;
         $smiley = 1;
         $xcodes = 1;

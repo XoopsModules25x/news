@@ -2,10 +2,22 @@
 
 namespace XoopsModules\News;
 
+use MyTextSanitizer;
 use WideImage\WideImage;
+use Xmf\Request;
+use XoopsFormDhtmlTextArea;
+use XoopsFormEditor;
+use XoopsFormFckeditor;
+use XoopsFormHtmlarea;
+use XoopsFormTextArea;
+use XoopsFormTinyeditorTextArea;
+use XoopsFormWysiwygTextArea;
 use XoopsModules\News;
 use XoopsModules\News\Common;
 use XoopsModules\News\Constants;
+use XoopsObjectTree;
+use XoopsTpl;
+
 
 /**
  * Class Utility
@@ -208,7 +220,7 @@ class Utility extends Common\SysUtility
         $editor_configs['editor'] = $editor_option;
 
         if (static::isX23()) {
-            $editor = new \XoopsFormEditor($caption, $name, $editor_configs);
+            $editor = new XoopsFormEditor($caption, $name, $editor_configs);
 
             return $editor;
         }
@@ -218,27 +230,27 @@ class Utility extends Common\SysUtility
             case 'fckeditor':
                 if (\is_readable(XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php';
-                    $editor = new \XoopsFormFckeditor($caption, $name, $value);
+                    $editor = new XoopsFormFckeditor($caption, $name, $value);
                 }
                 break;
             case 'htmlarea':
                 if (\is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
-                    $editor = new \XoopsFormHtmlarea($caption, $name, $value);
+                    $editor = new XoopsFormHtmlarea($caption, $name, $value);
                 }
                 break;
             case 'dhtmltextarea':
             case 'dhtml':
-                $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
+                $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
                 break;
             case 'textarea':
-                $editor = new \XoopsFormTextArea($caption, $name, $value);
+                $editor = new XoopsFormTextArea($caption, $name, $value);
                 break;
             case 'tinyeditor':
             case 'tinymce':
                 if (\is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
-                    $editor = new \XoopsFormTinyeditorTextArea(
+                    $editor = new XoopsFormTinyeditorTextArea(
                         [
                             'caption' => $caption,
                             'name'    => $name,
@@ -252,7 +264,7 @@ class Utility extends Common\SysUtility
             case 'koivi':
                 if (\is_readable(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php';
-                    $editor = new \XoopsFormWysiwygTextArea($caption, $name, $value, $width, $height, '');
+                    $editor = new XoopsFormWysiwygTextArea($caption, $name, $value, $width, $height, '');
                 }
                 break;
         }
@@ -286,12 +298,12 @@ class Utility extends Common\SysUtility
 
         if (\class_exists('XoopsFormEditor')) {
             if ($isAdmin) {
-                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
             } else {
-                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
             }
         } else {
-            $descEditor = new \XoopsFormDhtmlTextArea(\ucfirst($options['name']), $options['name'], $options['value'], '100%', '100%');
+            $descEditor = new XoopsFormDhtmlTextArea(\ucfirst($options['name']), $options['name'], $options['value'], '100%', '100%');
         }
 
         //        $form->addElement($descEditor);
@@ -330,7 +342,7 @@ class Utility extends Common\SysUtility
     {
         global $xoopsConfig, $xoTheme, $xoopsTpl;
         $content = '';
-        $myts    = \MyTextSanitizer::getInstance();
+        $myts    = MyTextSanitizer::getInstance();
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
         /**
@@ -341,7 +353,7 @@ class Utility extends Common\SysUtility
             $content .= \sprintf("<link rel=\"Contents\" href=\"%s\">\n", XOOPS_URL . '/modules/news/index.php');
             $content .= \sprintf("<link rel=\"Search\" href=\"%s\">\n", XOOPS_URL . '/search.php');
             $content .= \sprintf("<link rel=\"Glossary\" href=\"%s\">\n", XOOPS_URL . '/modules/news/archive.php');
-            $content .= \sprintf("<link rel=\"%s\" href=\"%s\">\n", htmlspecialchars(_NW_SUBMITNEWS, ENT_QUOTES | ENT_HTML5), XOOPS_URL . '/modules/news/submit.php');
+            $content .= \sprintf("<link rel=\"%s\" href=\"%s\">\n", \htmlspecialchars(_NW_SUBMITNEWS, \ENT_QUOTES | \ENT_HTML5), XOOPS_URL . '/modules/news/submit.php');
             $content .= \sprintf("<link rel=\"alternate\" type=\"application/rss+xml\" title=\"%s\" href=\"%s/\">\n", $xoopsConfig['sitename'], XOOPS_URL . '/backend.php');
 
             // Create chapters
@@ -349,7 +361,7 @@ class Utility extends Common\SysUtility
             //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
             $xt         = new  \XoopsModules\News\NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
-            $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+            $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
             $topics_arr = $topic_tree->getAllChild(0);
             foreach ($topics_arr as $onetopic) {
                 $content .= \sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\">\n", $onetopic->topic_title(), XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
@@ -446,7 +458,7 @@ class Utility extends Common\SysUtility
 
         $tmp = [];
         // Search for the "Minimum keyword length"
-        if (\Xmf\Request::hasVar('news_keywords_limit', 'SESSION')) {
+        if (Request::hasVar('news_keywords_limit', 'SESSION')) {
             $limit = $_SESSION['news_keywords_limit'];
         } else {
             $configHandler                   = \xoops_getHandler('config');
@@ -454,7 +466,7 @@ class Utility extends Common\SysUtility
             $limit                           = $xoopsConfigSearch['keyword_min'];
             $_SESSION['news_keywords_limit'] = $limit;
         }
-        $myts            = \MyTextSanitizer::getInstance();
+        $myts            = MyTextSanitizer::getInstance();
         $content         = \str_replace('<br>', ' ', $content);
         $content         = $myts->undoHtmlSpecialChars($content);
         $content         = \strip_tags($content);
@@ -575,7 +587,7 @@ class Utility extends Common\SysUtility
         require_once XOOPS_ROOT_PATH . '/class/template.php';
         $tplfileHandler = \xoops_getHandler('tplfile');
         $tpllist        = $tplfileHandler->find(null, null, null, $folder);
-        $xoopsTpl       = new \XoopsTpl();
+        $xoopsTpl       = new XoopsTpl();
         \xoops_template_clear_module_cache($xoopsModule->getVar('mid')); // Clear module's blocks cache
 
         // Remove cache for each page.
@@ -583,7 +595,7 @@ class Utility extends Common\SysUtility
             if ('module' === $onetemplate->getVar('tpl_type')) {
                 // Note, I've been testing all the other methods (like the one of Smarty) and none of them run, that's why I have used this code
                 $files_del = [];
-                $files_del = \glob(XOOPS_CACHE_PATH . '/*' . $onetemplate->getVar('tpl_file') . '*', GLOB_NOSORT);
+                $files_del = \glob(XOOPS_CACHE_PATH . '/*' . $onetemplate->getVar('tpl_file') . '*', \GLOB_NOSORT);
                 if (\count($files_del) > 0) {
                     foreach ($files_del as $one_file) {
                         \unlink($one_file);
@@ -678,7 +690,7 @@ class Utility extends Common\SysUtility
      */
     public static function isBot()
     {
-        if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION')) {
+        if (Request::hasVar('news_cache_bot', 'SESSION')) {
             return $_SESSION['news_cache_bot'];
         }
         // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
@@ -713,9 +725,9 @@ class Utility extends Common\SysUtility
     {
         $infotips = static::getModuleOption('infotips');
         if ($infotips > 0) {
-            $myts = \MyTextSanitizer::getInstance();
+            $myts = MyTextSanitizer::getInstance();
 
-            return htmlspecialchars(\xoops_substr(\strip_tags($text), 0, $infotips), ENT_QUOTES | ENT_HTML5);
+            return \htmlspecialchars(\xoops_substr(\strip_tags($text), 0, $infotips), \ENT_QUOTES | \ENT_HTML5);
         }
 
         return null;

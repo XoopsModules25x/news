@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -54,7 +52,7 @@ require_once XOOPS_ROOT_PATH . '/class/tree.php';
 $allTopics  = $xt->getAllTopics($helper->getConfig('restrictindex'), 'news_submit');
 $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName = \basename(\dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
 
 if (News\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {

@@ -12,6 +12,8 @@ namespace XoopsModules\Xoopsfaq\Common;
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+use RuntimeException;
+
 /**
  * Class Migrate synchronize existing tables with target schema
  *
@@ -34,12 +36,12 @@ class Migrate extends \Xmf\Database\Migrate
     {
         $class = __NAMESPACE__ . '\\' . 'Configurator';
         if (!\class_exists($class)) {
-            throw new \RuntimeException("Class '$class' not found");
+            throw new RuntimeException("Class '$class' not found");
         }
         $configurator       = new $class();
         $this->renameTables = $configurator->renameTables;
 
-        $moduleDirName = \basename(dirname(__DIR__, 2));
+        $moduleDirName = \basename(\dirname(__DIR__, 2));
         parent::__construct($moduleDirName);
     }
 

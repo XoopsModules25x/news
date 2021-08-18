@@ -10,26 +10,25 @@
  */
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
- * @author       XOOPS Development Team
+ * @author      XOOPS Development Team
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Utility;
 
-require_once dirname(__DIR__) . '/preloads/autoloader.php';
+require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 
-$moduleDirName      = basename(dirname(__DIR__));
-$moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
+$moduleDirName      = \basename(\dirname(__DIR__));
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 /** @var \XoopsDatabase $db */
 /** @var News\Helper $helper */
 /** @var News\Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
 $helper  = News\Helper::getInstance();
-$utility = new \XoopsModules\News\Utility();
+$utility = new Utility();
 //$configurator = new \XoopsModules\News\Common\Configurator();
 
 $helper->loadLanguage('common');

@@ -10,32 +10,21 @@
  */
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
- * @author       XOOPS Development Team
+ * @author      XOOPS Development Team
  */
 
 use XoopsModules\News;
 use XoopsModules\News\Common\Configurator;
+use XoopsModules\News\Utility;
 
 if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof \XoopsUser)
     || !$GLOBALS['xoopsUser']->isAdmin()) {
     exit('Restricted access' . PHP_EOL);
 }
 
-/**
- * @param string $tablename
- *
- * @return bool
- */
-function tableExists($tablename)
-{
-    $result = $GLOBALS['xoopsDB']->queryF("SHOW TABLES LIKE '$tablename'");
 
-    return ($GLOBALS['xoopsDB']->getRowsNum($result) > 0) ? true : false;
-}
 
 /**
  * Prepares system prior to attempting to install module
@@ -45,11 +34,11 @@ function tableExists($tablename)
  */
 function xoops_module_pre_update_news(\XoopsModule $module)
 {
-    $moduleDirName = basename(dirname(__DIR__));
+    $moduleDirName = \basename(\dirname(__DIR__));
     /** @var News\Helper $helper */
     /** @var News\Utility $utility */
     $helper  = News\Helper::getInstance();
-    $utility = new \XoopsModules\News\Utility();
+    $utility = new Utility();
 
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
@@ -66,13 +55,13 @@ function xoops_module_pre_update_news(\XoopsModule $module)
  */
 function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
 {
-    $moduleDirName      = basename(dirname(__DIR__));
+    $moduleDirName      = \basename(\dirname(__DIR__));
     $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
     /** @var News\Helper $helper */ /** @var News\Utility $utility */
     /** @var News\Common\Configurator $configurator */
     $helper       = News\Helper::getInstance();
-    $utility      = new \XoopsModules\News\Utility();
+    $utility      = new Utility();
     $configurator = new Configurator();
 
     if ($previousVersion < 240) {
@@ -127,7 +116,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
 
         //  ---  COPY blank.png FILES ---------------
         if (count($configurator->copyBlankFiles) > 0) {
-            $file = dirname(__DIR__) . '/assets/images/blank.png';
+            $file = \dirname(__DIR__) . '/assets/images/blank.png';
             foreach (array_keys($configurator->copyBlankFiles) as $i) {
                 $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
                 $utility::copyFile($file, $dest);

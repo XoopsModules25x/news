@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -23,7 +21,7 @@ use XoopsModules\News\Files;
 use XoopsModules\News\NewsTopic;
 use XoopsModules\Tag\FormTag;
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName = \basename(\dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
 xoops_loadLanguage('calendar');
 

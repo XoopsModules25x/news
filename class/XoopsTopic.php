@@ -24,7 +24,10 @@ namespace XoopsModules\News;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
 
+use MyTextSanitizer;
+use XoopsDatabaseFactory;
 use XoopsModules\News;
+use XoopsPerms;
 
 /**
  * Class XoopsTopic
@@ -47,7 +50,7 @@ class XoopsTopic
     public function __construct($table, $topicid = 0)
     {
         /** @var \XoopsMySQLDatabase $db */
-        $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table;
         if (\is_array($topicid)) {
             $this->makeTopic($topicid);
@@ -117,7 +120,7 @@ class XoopsTopic
      */
     public function store()
     {
-        $myts   = \MyTextSanitizer::getInstance();
+        $myts   = MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
         if (isset($this->topic_title) && '' !== $this->topic_title) {
@@ -150,7 +153,7 @@ class XoopsTopic
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && \is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
-                    $moderate_topics = \XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
+                    $moderate_topics = XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
@@ -160,7 +163,7 @@ class XoopsTopic
                         }
                     }
                     if (true === $add) {
-                        $xp = new \XoopsPerms();
+                        $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
                         $xp->setItemId($this->topic_id);
@@ -171,7 +174,7 @@ class XoopsTopic
             }
             if (!empty($this->s_groups) && \is_array($this->s_groups)) {
                 foreach ($s_groups as $s_g) {
-                    $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
+                    $submit_topics = XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
                         if (!\in_array($p_topic, $submit_topics)) {
@@ -180,7 +183,7 @@ class XoopsTopic
                         }
                     }
                     if (true === $add) {
-                        $xp = new \XoopsPerms();
+                        $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
                         $xp->setItemId($this->topic_id);
@@ -191,7 +194,7 @@ class XoopsTopic
             }
             if (!empty($this->r_groups) && \is_array($this->r_groups)) {
                 foreach ($r_groups as $r_g) {
-                    $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
+                    $read_topics = XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
                         if (!\in_array($p_topic, $read_topics)) {
@@ -200,7 +203,7 @@ class XoopsTopic
                         }
                     }
                     if (true === $add) {
-                        $xp = new \XoopsPerms();
+                        $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
                         $xp->setItemId($this->topic_id);
@@ -240,15 +243,15 @@ class XoopsTopic
      */
     public function topic_title($format = 'S')
     {
-        $myts = \MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
-                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->topic_title, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->topic_title, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -262,15 +265,15 @@ class XoopsTopic
      */
     public function topic_imgurl($format = 'S')
     {
-        $myts = \MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -389,16 +392,17 @@ class XoopsTopic
      */
     public function getTopicsList()
     {
-        $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
         $ret    = [];
-        $myts   = \MyTextSanitizer::getInstance();
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $ret[$myrow['topic_id']] = [
-                'title' => htmlspecialchars($myrow['topic_title'], ENT_QUOTES | ENT_HTML5),
-                'pid'   => $myrow['topic_pid'],
-            ];
+        $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
+        if ($result) {
+            $myts = MyTextSanitizer::getInstance();
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[$myrow['topic_id']] = [
+                    'title' => \htmlspecialchars($myrow['topic_title'], \ENT_QUOTES | \ENT_HTML5),
+                    'pid'   => $myrow['topic_pid'],
+                ];
+            }
         }
-
         return $ret;
     }
 

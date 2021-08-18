@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -118,7 +116,7 @@ use XoopsModules\News\Files;
 use XoopsModules\News\Keyhighlighter;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -539,5 +537,5 @@ if (1 == News\Utility::getModuleOption('displaytopictitle')) {
 //Add style css
 $xoTheme->addStylesheet('modules/news/assets/css/style.css');
 
-require_once XOOPS_ROOT_PATH . '/include/comment_view.php';
+require XOOPS_ROOT_PATH . '/include/comment_view.php';
 require_once XOOPS_ROOT_PATH . '/footer.php';

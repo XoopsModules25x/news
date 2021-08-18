@@ -88,10 +88,10 @@ function xoops_module_install_news(\XoopsModule $module)
     chmod($dir, 0777);
 
     // Copy index.html files on uploads folders
-    $indexFile = XOOPS_ROOT_PATH . '/modules/news/include/index.html';
-    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/index.html');
-    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/file/index.html');
-    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/image/index.html');
+    $indexFile = XOOPS_ROOT_PATH . '/modules/news/include/index.php';
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/index.php');
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/file/index.php');
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/image/index.php');
 
     return true;
 }

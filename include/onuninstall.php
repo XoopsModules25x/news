@@ -9,6 +9,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Utility;
 
 /**
  * Prepares system prior to attempting to uninstall module
@@ -32,13 +33,13 @@ function xoops_module_uninstall_news(\XoopsModule $module)
 {
     //    return true;
 
-    $moduleDirName      = basename(dirname(__DIR__));
+    $moduleDirName      = \basename(\dirname(__DIR__));
     $moduleDirNameUpper = mb_strtoupper($moduleDirName);
     /** @var News\Helper $helper */
     $helper = News\Helper::getInstance();
 
     /** @var News\Utility $utility */
-    $utility = new \XoopsModules\News\Utility();
+    $utility = new Utility();
 
     $success = true;
     $helper->loadLanguage('admin');

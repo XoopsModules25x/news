@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -30,7 +28,7 @@ function b_news_topics_show()
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
-    $moduleDirName = basename(dirname(__DIR__));
+    $moduleDirName = \basename(\dirname(__DIR__));
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {

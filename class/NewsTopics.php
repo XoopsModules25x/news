@@ -2,6 +2,12 @@
 
 namespace XoopsModules\News;
 
+use XoopsObject;
+
+
+
+
+
 /**
  * ****************************************************************************
  * - Developers TEAM TDM Xoops - (https://xoops.org)
@@ -39,7 +45,7 @@ namespace XoopsModules\News;
 /**
  * Class Topics
  */
-class NewsTopics extends \XoopsObject
+class NewsTopics extends XoopsObject
 {
     //Constructor
 

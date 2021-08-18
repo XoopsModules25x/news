@@ -15,8 +15,6 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -123,10 +121,11 @@ class Files
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $ret[] = new self($myrow);
+        if ($result instanceof \mysqli_result) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[] = new self($myrow);
+            }
         }
-
         return $ret;
     }
 
@@ -291,19 +290,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
+                $filerealname = \htmlspecialchars($this->filerealname, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
             case 'Edit':
-                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
+                $filerealname = \htmlspecialchars($this->filerealname, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'Preview':
-                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
+                $filerealname = \htmlspecialchars($this->filerealname, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
             case 'InForm':
-                $filerealname = htmlspecialchars($this->filerealname, ENT_QUOTES | ENT_HTML5);
+                $filerealname = \htmlspecialchars($this->filerealname, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -321,19 +320,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
+                $filemimetype = \htmlspecialchars($this->mimetype, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
             case 'Edit':
-                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
+                $filemimetype = \htmlspecialchars($this->mimetype, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'Preview':
-                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
+                $filemimetype = \htmlspecialchars($this->mimetype, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
             case 'InForm':
-                $filemimetype = htmlspecialchars($this->mimetype, ENT_QUOTES | ENT_HTML5);
+                $filemimetype = \htmlspecialchars($this->mimetype, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -351,19 +350,19 @@ class Files
         switch ($format) {
             case 'S':
             case 'Show':
-                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
+                $filedownname = \htmlspecialchars($this->downloadname, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
             case 'Edit':
-                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
+                $filedownname = \htmlspecialchars($this->downloadname, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'Preview':
-                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
+                $filedownname = \htmlspecialchars($this->downloadname, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
             case 'InForm':
-                $filedownname = htmlspecialchars($this->downloadname, ENT_QUOTES | ENT_HTML5);
+                $filedownname = \htmlspecialchars($this->downloadname, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -398,11 +397,12 @@ class Files
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
             $sql    .= \implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
-            while (false !== ($myrow = $this->db->fetchArray($result))) {
-                $ret[$myrow['storyid']] = $myrow['cnt'];
+        if ($result instanceof \mysqli_result) {
+            while (false !== ($myrow =$this->db->fetchArray($result))) {
+                    $ret[$myrow['storyid']] = $myrow['cnt'];
+                }
             }
         }
-
         return $ret;
     }
 }

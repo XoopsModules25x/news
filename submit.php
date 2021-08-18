@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -25,7 +23,7 @@ use XoopsModules\News\NewsTopic;
 use XoopsModules\Tag\Helper;
 
 if (!defined('XOOPS_ROOT_PATH')) {
-    require_once dirname(__DIR__, 2) . '/mainfile.php';
+    require_once \dirname(__DIR__, 2) . '/mainfile.php';
 }
 require_once __DIR__ . '/header.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';

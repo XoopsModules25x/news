@@ -15,15 +15,13 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+require XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
 require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 

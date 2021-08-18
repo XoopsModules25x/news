@@ -2,6 +2,9 @@
 
 namespace XoopsModules\News;
 
+use XoopsDatabase;
+use XoopsPersistableObjectHandler;
+
 /**
  * ****************************************************************************
  * - Developers TEAM TDM Xoops - (https://xoops.org)
@@ -39,12 +42,12 @@ namespace XoopsModules\News;
 /**
  * Class newsnews_storiesHandler
  */
-class NewsStoriesHandler extends \XoopsPersistableObjectHandler
+class NewsStoriesHandler extends XoopsPersistableObjectHandler
 {
     /**
      * @param null|\XoopsDatabase $db
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public function __construct(XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_stories', NewsStories::class, 'storyid', 'uid');
     }
