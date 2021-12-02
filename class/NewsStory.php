@@ -788,8 +788,7 @@ class NewsStory extends XoopsStory
      */
     public function textlink()
     {
-        $ret = '<a title=' . $this->topic_title() . " href='" . XOOPS_URL . '/modules/news/index.php?storytopic=' . $this->topicid() . "'>" . $this->topic_title() . '</a>';
-
+        $ret = '<a title="' . $this->topic_title() . '" href="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $this->topicid() . '">' . $this->topic_title() . '</a>';
         return $ret;
     }
 
