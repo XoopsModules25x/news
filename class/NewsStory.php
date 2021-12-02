@@ -777,7 +777,7 @@ class NewsStory extends XoopsStory
         $ret = '';
         if ('' !== $this->topic_imgurl()
             && \file_exists(XOOPS_ROOT_PATH . '/uploads/news/image/' . $this->topic_imgurl())) {
-            $ret = "<a href='" . XOOPS_URL . '/modules/news/index.php?storytopic=' . $this->topicid() . "'><img src='" . XOOPS_URL . '/uploads/news/image/' . $this->topic_imgurl() . "' alt='" . $this->topic_title() . "' hspace='10' vspace='10' align='" . $this->topicalign() . "'></a>";
+            $ret = '<a href="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $this->topicid() . '"><img src="' . XOOPS_URL . '/uploads/news/image/' . $this->topic_imgurl() . '" alt="' . $this->topic_title() . '" hspace="10" vspace="10" align="' . $this->topicalign() . '"></a>';
         }
 
         return $ret;
