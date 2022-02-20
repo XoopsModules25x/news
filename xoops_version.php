@@ -28,7 +28,7 @@ $helper->loadLanguage('common');
 $moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-$modversion['version']       = 1.72;
+$modversion['version']       = '1.72.0';
 $modversion['module_status'] = 'Beta 5';
 $modversion['release_date']  = '2022/02-20';
 $modversion['name']          = _MI_NEWS_NAME;
