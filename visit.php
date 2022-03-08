@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -54,7 +54,7 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
 
 $sfiles->updateCounter();
 $url = XOOPS_UPLOAD_URL . '/' . $sfiles->getDownloadname();
-if (!preg_match("/^ed2k*:\/\//i", $url)) {
+if (!preg_match('/^ed2k*:\/\//i', $url)) {
     header("Location: $url");
 }
 echo '<html><head><meta http-equiv="Refresh" content="0; URL=' . htmlspecialchars($url, ENT_QUOTES | ENT_HTML5) . '"></meta></head><body></body></html>';

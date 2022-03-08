@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -176,7 +176,7 @@ function b_news_archives_edit($options)
 /**
  * @param $options
  */
-function b_news_archives_onthefly($options)
+function b_news_archives_onthefly($options): void
 {
     $options = explode('|', $options);
     $block   = b_news_archives_show($options);

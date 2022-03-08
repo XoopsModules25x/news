@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -126,13 +126,14 @@ class Files
                 $ret[] = new self($myrow);
             }
         }
+
         return $ret;
     }
 
     /**
      * @param $id
      */
-    public function getFile($id)
+    public function getFile($id): void
     {
         $sql   = 'SELECT * FROM ' . $this->table . ' WHERE fileid=' . (int)$id;
         $array = $this->db->fetchArray($this->db->query($sql));
@@ -142,7 +143,7 @@ class Files
     /**
      * @param $array
      */
-    public function makeFile($array)
+    public function makeFile($array): void
     {
         foreach ($array as $key => $value) {
             $this->$key = $value;
@@ -155,10 +156,10 @@ class Files
     public function store()
     {
         $myts         = \MyTextSanitizer::getInstance();
-        $fileRealName = $myts->addSlashes($this->filerealname);
-        $downloadname = $myts->addSlashes($this->downloadname);
+        $fileRealName = $GLOBALS['xoopsDB']->escape($this->filerealname);
+        $downloadname = $GLOBALS['xoopsDB']->escape($this->downloadname);
         $date         = \time();
-        $mimetype     = $myts->addSlashes($this->mimetype);
+        $mimetype     = $GLOBALS['xoopsDB']->escape($this->mimetype);
         $counter      = (int)$this->counter;
         $storyid      = (int)$this->storyid;
 
@@ -214,7 +215,7 @@ class Files
     /**
      * @param $filename
      */
-    public function setFileRealName($filename)
+    public function setFileRealName($filename): void
     {
         $this->filerealname = $filename;
     }
@@ -222,7 +223,7 @@ class Files
     /**
      * @param $id
      */
-    public function setStoryid($id)
+    public function setStoryid($id): void
     {
         $this->storyid = (int)$id;
     }
@@ -230,7 +231,7 @@ class Files
     /**
      * @param $value
      */
-    public function setMimetype($value)
+    public function setMimetype($value): void
     {
         $this->mimetype = $value;
     }
@@ -238,7 +239,7 @@ class Files
     /**
      * @param $value
      */
-    public function setDownloadname($value)
+    public function setDownloadname($value): void
     {
         $this->downloadname = $value;
     }
@@ -397,12 +398,13 @@ class Files
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
             $sql    .= \implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
-        if ($result instanceof \mysqli_result) {
-            while (false !== ($myrow =$this->db->fetchArray($result))) {
+            if ($result instanceof \mysqli_result) {
+                while (false !== ($myrow = $this->db->fetchArray($result))) {
                     $ret[$myrow['storyid']] = $myrow['cnt'];
                 }
             }
         }
+
         return $ret;
     }
 }

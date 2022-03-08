@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -91,7 +91,7 @@ class NewsStory extends XoopsStory
      * Load the specified story from the database
      * @param $storyid
      */
-    public function getStory($storyid)
+    public function getStory($storyid): void
     {
         /** @var \XoopsMySQLDatabase $db */
         $db    = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -237,7 +237,7 @@ class NewsStory extends XoopsStory
             if (!\is_array($topic)) {
                 if ($checkRight) {
                     $topics = News\Utility::getMyItemIds('news_view');
-                    if (!\in_array($topic, $topics)) {
+                    if (!\in_array($topic, $topics, true)) {
                         return null;
                     }
                     $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
@@ -683,7 +683,7 @@ class NewsStory extends XoopsStory
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = \xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dirname);
-        $pathIcon16    = Admin::iconUrl('', 16);
+        $pathIcon16    = Admin::iconUrl('', '16');
 
         $ret = '&nbsp; <a href='
                . XOOPS_URL
@@ -807,7 +807,7 @@ class NewsStory extends XoopsStory
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = \xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dirname);
-        $pathIcon16    = Admin::iconUrl('', 16);
+        $pathIcon16    = Admin::iconUrl('', '16');
 
         $myts                 = \MyTextSanitizer::getInstance();
         $infotips             = News\Utility::getModuleOption('infotips');
@@ -987,7 +987,7 @@ class NewsStory extends XoopsStory
      * @param int      $todate       Ending date
      * @param string   $topicslist
      * @param bool|int $usetopicsdef Should we also export topics definitions ?
-     * @param          $tbltopics
+     * @param mixed    $tbltopics
      * @param bool     $asobject     Return values as an object or not ?
      *
      * @param string   $order
@@ -1046,17 +1046,17 @@ class NewsStory extends XoopsStory
     public function store($approved = false)
     {
         $myts        = \MyTextSanitizer::getInstance();
-        $counter     = isset($this->counter) ? $this->counter : 0;
-        $title       = $myts->addSlashes($myts->censorString($this->title));
-        $subtitle    = $myts->addSlashes($myts->censorString($this->subtitle));
-        $hostname    = $myts->addSlashes($this->hostname);
-        $type        = $myts->addSlashes($this->type);
-        $hometext    = $myts->addSlashes($myts->censorString($this->hometext));
-        $bodytext    = $myts->addSlashes($myts->censorString($this->bodytext));
-        $description = $myts->addSlashes($myts->censorString($this->description));
-        $keywords    = $myts->addSlashes($myts->censorString($this->keywords));
-        $picture     = $myts->addSlashes($this->picture);
-        $pictureinfo = $myts->addSlashes($myts->censorString($this->pictureinfo));
+        $counter     = $this->counter ?? 0;
+        $title       = $GLOBALS['xoopsDB']->escape($myts->censorString($this->title));
+        $subtitle    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->subtitle));
+        $hostname    = $GLOBALS['xoopsDB']->escape($this->hostname);
+        $type        = $GLOBALS['xoopsDB']->escape($this->type);
+        $hometext    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->hometext));
+        $bodytext    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->bodytext));
+        $description = $GLOBALS['xoopsDB']->escape($myts->censorString($this->description));
+        $keywords    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->keywords));
+        $picture     = $GLOBALS['xoopsDB']->escape($this->picture);
+        $pictureinfo = $GLOBALS['xoopsDB']->escape($myts->censorString($this->pictureinfo));
         $votes       = (int)$this->votes;
         $rating      = (float)$this->rating;
         if (!isset($this->nohtml) || 1 != $this->nohtml) {
@@ -1189,7 +1189,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setPicture($data)
+    public function setPicture($data): void
     {
         $this->picture = $data;
     }
@@ -1197,7 +1197,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setPictureinfo($data)
+    public function setPictureinfo($data): void
     {
         $this->pictureinfo = $data;
     }
@@ -1205,7 +1205,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setSubtitle($data)
+    public function setSubtitle($data): void
     {
         $this->subtitle = $data;
     }
@@ -1213,7 +1213,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setDescription($data)
+    public function setDescription($data): void
     {
         $this->description = $data;
     }
@@ -1221,7 +1221,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setKeywords($data)
+    public function setKeywords($data): void
     {
         $this->keywords = $data;
     }
@@ -1302,7 +1302,7 @@ class NewsStory extends XoopsStory
             if (!\is_array($topic)) {
                 if ($checkRight) {
                     $topics = News\Utility::getMyItemIds('news_view');
-                    if (!\in_array($topic, $topics)) {
+                    if (!\in_array($topic, $topics, true)) {
                         return null;
                     }
                     $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
@@ -1487,7 +1487,7 @@ class NewsStory extends XoopsStory
      * @param $older
      * @param $recent
      */
-    public function getOlderRecentNews(&$older, &$recent)
+    public function getOlderRecentNews(&$older, &$recent): void
     {
         /** @var \XoopsMySQLDatabase $db */
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();

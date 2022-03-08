@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -13,11 +13,8 @@ use XoopsFormTextArea;
 use XoopsFormTinyeditorTextArea;
 use XoopsFormWysiwygTextArea;
 use XoopsModules\News;
-use XoopsModules\News\Common;
-use XoopsModules\News\Constants;
 use XoopsObjectTree;
 use XoopsTpl;
-
 
 /**
  * Class Utility
@@ -66,18 +63,17 @@ class Utility extends Common\SysUtility
      * Updates rating data in item table for a given item
      *
      * @param $storyid
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
-     * @package       News
      */
-    public static function updateRating($storyid)
+    public static function updateRating($storyid): void
     {
         global $xoopsDB;
         $query       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
         $voteresult  = $xoopsDB->query($query);
         $votesDB     = $xoopsDB->getRowsNum($voteresult);
         $totalrating = 0;
-        while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
+        while ([$rating] = $xoopsDB->fetchRow($voteresult)) {
             $totalrating += $rating;
         }
         $finalrating = $totalrating / $votesDB;
@@ -93,10 +89,9 @@ class Utility extends Common\SysUtility
      *
      * @param string $permtype
      *
-     * @return array $topics    Permitted topics Ids
+     * @return array    Permitted topics Ids
      *
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
     public static function getMyItemIds($permtype = 'news_view')
@@ -193,7 +188,7 @@ class Utility extends Common\SysUtility
     }
 
     /**
-     * Retreive an editor according to the module's option "form_options"
+     * Retrieve an editor according to the module's option "form_options"
      *
      * @param                                                                                                                                 $caption
      * @param                                                                                                                                 $name
@@ -202,13 +197,12 @@ class Utility extends Common\SysUtility
      * @param string                                                                                                                          $height
      * @param string                                                                                                                          $supplemental
      * @return bool|\XoopsFormDhtmlTextArea|\XoopsFormEditor|\XoopsFormFckeditor|\XoopsFormHtmlarea|\XoopsFormTextArea|\XoopsFormTinyeditorTextArea
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
     public static function getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
     {
-        $editor_option            = mb_strtolower(static::getModuleOption('form_options'));
+        $editor_option            = \mb_strtolower(static::getModuleOption('form_options'));
         $editor                   = false;
         $editor_configs           = [];
         $editor_configs['name']   = $name;
@@ -317,8 +311,7 @@ class Utility extends Common\SysUtility
      * @param $text
      * @return mixed
      * @copyright (c) Hervé Thouzard
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
     public static function getDublinQuotes($text)
     {
@@ -334,11 +327,10 @@ class Utility extends Common\SysUtility
      * - The meta description
      *
      * @param null $story
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
-     * @package       News
      */
-    public static function createMetaDatas($story = null)
+    public static function createMetaDatas($story = null): void
     {
         global $xoopsConfig, $xoTheme, $xoopsTpl;
         $content = '';
@@ -359,7 +351,7 @@ class Utility extends Common\SysUtility
             // Create chapters
             require_once XOOPS_ROOT_PATH . '/class/tree.php';
             //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-            $xt         = new  \XoopsModules\News\NewsTopic();
+            $xt         = new \XoopsModules\News\NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
             $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
             $topics_arr = $topic_tree->getAllChild(0);
@@ -433,8 +425,7 @@ class Utility extends Common\SysUtility
      * @param $content
      * @return string
      * @copyright (c) Hervé Thouzard
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
     public static function createMetaKeywords($content)
     {
@@ -470,7 +461,7 @@ class Utility extends Common\SysUtility
         $content         = \str_replace('<br>', ' ', $content);
         $content         = $myts->undoHtmlSpecialChars($content);
         $content         = \strip_tags($content);
-        $content         = mb_strtolower($content);
+        $content         = \mb_strtolower($content);
         $search_pattern  = [
             '&nbsp;',
             "\t",
@@ -574,11 +565,10 @@ class Utility extends Common\SysUtility
     /**
      * Remove module's cache
      *
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function updateCache()
+    public static function updateCache(): void
     {
         global $xoopsModule;
         $folder  = $xoopsModule->getVar('dirname');
@@ -611,8 +601,7 @@ class Utility extends Common\SysUtility
      * @param $tablename
      * @return bool
      * @copyright (c) Hervé Thouzard
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
     public static function existTable($tablename)
     {
@@ -628,8 +617,7 @@ class Utility extends Common\SysUtility
      * @param $fieldname
      * @param $table
      * @return bool
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
     public static function existField($fieldname, $table)
@@ -646,8 +634,7 @@ class Utility extends Common\SysUtility
      * @param $field
      * @param $table
      * @return bool|\mysqli_result
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
     public static function addField($field, $table)
@@ -665,7 +652,7 @@ class Utility extends Common\SysUtility
     {
         global $xoopsUser, $xoopsModule;
         if (\is_object($xoopsUser)) {
-            if (\in_array('1', $xoopsUser->getGroups())) {
+            if (\in_array('1', $xoopsUser->getGroups(), true)) {
                 return true;
             }
             if ($xoopsUser->isAdmin($xoopsModule->mid())) {
@@ -684,8 +671,7 @@ class Utility extends Common\SysUtility
      * If you have a problem with this function, insert the folowing code just before the line if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION'))) { :
      * return false;
      *
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
     public static function isBot()
@@ -696,8 +682,8 @@ class Utility extends Common\SysUtility
         // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
         // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
         $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
-        $botlist      = mb_strtoupper($botlist);
-        $currentagent = mb_strtoupper(\xoops_getenv('HTTP_USER_AGENT'));
+        $botlist      = \mb_strtoupper($botlist);
+        $currentagent = \mb_strtoupper(\xoops_getenv('HTTP_USER_AGENT'));
         $retval       = false;
         $botarray     = \explode('|', $botlist);
         foreach ($botarray as $onebot) {
@@ -718,8 +704,7 @@ class Utility extends Common\SysUtility
      * @param $text
      * @return string|null
      * @copyright (c) Hervé Thouzard
-     * @package       News
-     * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+     * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
     public static function makeInfotips($text)
     {
@@ -789,7 +774,6 @@ class Utility extends Common\SysUtility
      * @return string
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>
-     *
      */
     public static function truncateTagSafe($string, $length = 80, $etc = '...', $break_words = false)
     {

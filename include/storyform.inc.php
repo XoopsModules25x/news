@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -39,7 +39,7 @@ $sform->addElement(new \XoopsFormText(_NW_SUBTITLE, 'subtitle', 50, 255, $subtit
 
 // Topic's selection box
 if (!isset($xt)) {
-    $xt = new  NewsTopic();
+    $xt = new NewsTopic();
 }
 if (0 == $xt->getAllTopicsCount()) {
     redirect_header('index.php', 4, _NW_POST_SORRY);
@@ -99,21 +99,20 @@ if ($approveprivilege) {
     $editor2 = News\Utility::getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
     $sform->addElement($editor2, false);
 
-    if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-        $itemIdForTag = isset($storyid) ? $storyid : 0;
-        require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-        $sform->addElement(new FormTag('item_tag', 60, 255, $itemIdForTag, 0));
+    if (News\Utility::getModuleOption('tags') && \class_exists(\XoopsModules\Tag\FormTag::class) && xoops_isActiveModule('tag')) {
+        $itemIdForTag = $storyid ?? 0;
+        $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
     if (News\Utility::getModuleOption('metadata')) {
         $sform->addElement(new xoopsFormText(_NW_META_DESCRIPTION, 'description', 50, 255, $description), false);
         $sform->addElement(new xoopsFormText(_NW_META_KEYWORDS, 'keywords', 50, 255, $keywords), false);
     }
-} elseif (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-    $itemIdForTag = isset($storyid) ? $storyid : 0;
-    require_once XOOPS_ROOT_PATH . '/modules/tag/include/formtag.php';
-    $sform->addElement(new FormTag('item_tag', 60, 255, $itemIdForTag, 0));
+} elseif (News\Utility::getModuleOption('tags') && \class_exists(\XoopsModules\Tag\FormTag::class) && xoops_isActiveModule('tag')) {
+    $itemIdForTag = $storyid ?? 0;
+    $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
 }
+
 // Manage upload(s)
 $allowupload = false;
 switch ($helper->getConfig('uploadgroups')) {

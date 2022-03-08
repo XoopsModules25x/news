@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -22,7 +22,7 @@
  *
  * @package News
  * @author Hervé Thouzard of Hervé Thouzard
- * @copyright (c) Hervé Thouzard (http://www.herve-thouzard.com)
+ * @copyright (c) Hervé Thouzard (https://www.herve-thouzard.com)
  */
 
 use XoopsModules\News;

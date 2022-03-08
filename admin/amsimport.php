@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -20,8 +20,7 @@
  *
  * This script will import topics, articles, files, links, ratings, comments and notifications from AMS 2.41
  *
- * @package   News
- * @author    Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author    Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright 2005, 2006 - Hervé Thouzard
  */
 
@@ -61,23 +60,23 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // User's choices
         $use_forum    = (isset($_POST['useforum']) && 1 == $_POST['useforum']) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
-        // Retreive News module's ID
+        // Retrieve News module's ID
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $news_mid      = $newsModule->getVar('mid');
-        // Retreive AMS module's ID
+        // Retrieve AMS module's ID
         $AmsModule = $moduleHandler->getByDirname('AMS');
         $ams_mid   = $AmsModule->getVar('mid');
 
-        // Retreive AMS tables names
+        // Retrieve AMS tables names
         $ams_topics   = $xoopsDB->prefix('ams_topics');
         $ams_articles = $xoopsDB->prefix('ams_article');
         $ams_text     = $xoopsDB->prefix('ams_text');
         $ams_files    = $xoopsDB->prefix('ams_files');
         $ams_links    = $xoopsDB->prefix('ams_link');
         $ams_rating   = $xoopsDB->prefix('ams_rating');
-        // Retreive News tables names
+        // Retrieve News tables names
         $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
         $commentHandler = xoops_getHandler('comment');

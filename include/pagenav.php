@@ -1,4 +1,7 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace XoopsModules\News;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -11,15 +14,13 @@
 
 /**
  * @copyright    XOOPS Project (https://xoops.org)
- * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @author      XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
 /**
  * Class to facilitate navigation in a multi page document/list
  *
- * @package              kernel
- * @subpackage           util
  *
  * @author               Kazumi Ono    <onokazu@xoops.org>
  * @copyright        (c) XOOPS Project (https://xoops.org)
@@ -28,7 +29,7 @@
 /**
  * Class XoopsPageNav
  */
-class XoopsPageNav
+class pagenav
 {
     /**#@+
      * @access    private

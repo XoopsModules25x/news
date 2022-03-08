@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -24,9 +24,9 @@ $helper = News\Helper::getInstance();
 $helper->loadLanguage('common');
 
 $moduleDirName      = basename(__DIR__);
-$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
-$modversion['version']       = 1.72;
+$modversion['version']       = '1.72.0';
 $modversion['module_status'] = 'Beta 4';
 $modversion['release_date']  = '2020/11/08';
 $modversion['name']          = _MI_NEWS_NAME;
@@ -49,7 +49,7 @@ $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
-$modversion['min_php']             = '7.3';
+$modversion['min_php']             = '7.4';
 $modversion['min_xoops']           = '2.5.10';
 $modversion['min_admin']           = '1.2';
 $modversion['min_db']              = ['mysql' => '5.5'];
@@ -691,7 +691,7 @@ $modversion['config'][] = [
 ];
 
 /**
- * Activate Firefox 2 microformats ? //obsolete, see here : http://wiki.mozilla.org/Microsummaries (cesagonchu)
+ * Activate Firefox 2 microformats ? //obsolete, see here : https://wiki.mozilla.org/Microsummaries (cesagonchu)
  * $modversion['config'][] = [
  * 'name' =>  'firefox_microsummaries',
  * 'title' =>  '_MI_NEWS_FF_MICROFORMAT',

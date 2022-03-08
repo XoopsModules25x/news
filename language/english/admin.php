@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 //
 //%%%%%%    Admin Module Name  Articles     %%%%%
 define('_AM_DBUPDATED', 'Database updated successfully!');

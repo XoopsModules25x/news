@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -11,8 +11,8 @@
 
 /**
  * @copyright    XOOPS Project (https://xoops.org)
- * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @author      XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
 use Xmf\Request;
@@ -71,7 +71,7 @@ $topic_title              = News\Utility::html2text($myts->undoHtmlSpecialChars(
 $pdf_data['subtitle']     = $topic_title;
 $pdf_data['subsubtitle']  = $article->subtitle();
 $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);
-$pdf_data['filename']     = preg_replace("/[^0-9a-z\-_\.]/i", '', htmlspecialchars($article->topic_title(), ENT_QUOTES | ENT_HTML5) . ' - ' . $article->title());
+$pdf_data['filename']     = preg_replace('/[^0-9a-z\-_\.]/i', '', htmlspecialchars($article->topic_title(), ENT_QUOTES | ENT_HTML5) . ' - ' . $article->title());
 $hometext                 = $article->hometext();
 $bodytext                 = $article->bodytext();
 $content                  = $myts->undoHtmlSpecialChars($hometext) . '<br><br>' . $myts->undoHtmlSpecialChars($bodytext);

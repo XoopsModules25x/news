@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 //
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
@@ -45,7 +45,6 @@ use XoopsModules\News\{
 /** @var Admin $adminObject */
 /** @var Helper $helper */
 /** @var Utility $utility */
-
 require_once __DIR__ . '/admin_header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
@@ -82,7 +81,7 @@ if (!Utility::existField('picture', $storiesTableName)) {
  * The table contains the last x new submissions.
  * The system's block called "Waiting Contents" is listing the number of those news.
  */
-function newSubmissions()
+function newSubmissions(): void
 {
     global $dateformat, $pathIcon16;
     $start       = Request::getInt('startnew', 0, 'GET');
@@ -160,7 +159,7 @@ function newSubmissions()
  * used to edit the story while the second is used to remove the story.
  * The list only contains the last (x) automated news
  */
-function autoStories()
+function autoStories(): void
 {
     global $dateformat, $pathIcon16;
 
@@ -257,7 +256,7 @@ function autoStories()
  * that you can use to enter a story's Id, then with the scrolling list you can select
  * if you want to edit or delete the story.
  */
-function lastStories()
+function lastStories(): void
 {
     global $dateformat, $pathIcon16;
     news_collapsableBar('laststories', 'toplaststories');
@@ -329,7 +328,7 @@ function lastStories()
  * that you can use to enter a story's Id, then with the scrolling list you can select
  * if you want to edit or delete the story.
  */
-function expStories()
+function expStories(): void
 {
     global $dateformat, $pathIcon16;
     $start        = Request::getInt('startexp', 0, 'GET');
@@ -406,7 +405,7 @@ function expStories()
  * message with the number of news that will be removed.
  * Note, the topics are not deleted (even if there are no more news inside them).
  */
-function setPruneManager()
+function setPruneManager(): void
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
@@ -440,7 +439,7 @@ function setPruneManager()
 }
 
 // A confirmation is asked before to prune stories
-function confirmBeforePrune()
+function confirmBeforePrune(): void
 {
     global $dateformat;
     $story = new NewsStory();
@@ -478,7 +477,7 @@ function confirmBeforePrune()
 }
 
 // Effectively delete stories (published before a date), no more confirmation
-function pruneNews()
+function pruneNews(): void
 {
     $story     = new NewsStory();
     $timestamp = Request::getInt('prune_date', 0, 'POST');
@@ -510,7 +509,7 @@ function pruneNews()
  * Once it's done, the script will use the file named /xoops/modules/language/yourlanguage/newsletter.php to create
  * the newsletter's content. When it's finished, the script generates a file in the upload folder.
  */
-function createNewsletter()
+function createNewsletter(): void
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
@@ -553,14 +552,14 @@ function createNewsletter()
 /**
  * Launch the creation of the newsletter's content
  */
-function launchNewsletter()
+function launchNewsletter(): void
 {
     global $xoopsConfig, $dateformat;
     xoops_cp_header();
     $adminObject = Admin::getInstance();
     $adminObject->displayNavigation('index.php?op=configurenewsletter');
     $newslettertemplate = '';
-    $helper = Helper::getInstance();
+    $helper             = Helper::getInstance();
     $helper->loadLanguage('newsletter');
     echo '<br>';
     $story           = new NewsStory();
@@ -659,7 +658,7 @@ function launchNewsletter()
  * to also export the topics.
  * News, and topics, will be exported to the XML format.
  */
-function exportNews()
+function exportNews(): void
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     xoops_cp_header();
@@ -707,7 +706,7 @@ function news_utf8_encode($text)
 }
 
 // Launch stories export (to the xml's format)
-function launchExport()
+function launchExport(): void
 {
     xoops_cp_header();
     $adminObject = Admin::getInstance();
@@ -748,7 +747,7 @@ function launchExport()
                 $content .= sprintf("\t<topic_frontpage>%d</topic_frontpage>\n", $topic->topic_frontpage());
                 $content .= sprintf("\t<topic_rssurl>%s</topic_rssurl>\n", $topic->topic_rssurl('E'));
                 $content .= sprintf("\t<topic_description>%s</topic_description>\n", $topic->topic_description());
-                $content .= sprintf("</news_topic>\n");
+                $content .= "</news_topic>\n";
                 $content = news_utf8_encode($content);
                 fwrite($fp, $content);
             }
@@ -780,7 +779,7 @@ function launchExport()
             $content .= sprintf("\t<comments>%u</comments>\n", $onestory->comments());
             $content .= sprintf("\t<rating>%f</rating>\n", $onestory->rating());
             $content .= sprintf("\t<votes>%u</votes>\n", $onestory->votes());
-            $content .= sprintf("</xoops_story>\n");
+            $content .= "</xoops_story>\n";
             $content = news_utf8_encode($content);
             fwrite($fp, $content);
         }
@@ -810,7 +809,7 @@ function launchExport()
 * - And finally you ca select an image to represent the topic
 * The text box called "URL of RSS feed" is, for this moment, not used.
 */
-function topicsmanager()
+function topicsmanager(): void
 {
     global $xoopsDB, $xoopsConfig, $xoopsModule, $myts;
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -1260,7 +1259,7 @@ function topicsmanager()
 }
 
 // Save a topic after it has been modified
-function modTopicS()
+function modTopicS(): void
 {
     global $xoopsDB, $xoopsModule;
     $helper = Helper::getInstance();
@@ -1357,7 +1356,7 @@ function modTopicS()
 }
 
 // Delete a topic and its subtopics and its stories and the related stories
-function delTopic()
+function delTopic(): void
 {
     global $xoopsDB, $xoopsModule;
     if (!isset($_POST['ok'])) {
@@ -1397,7 +1396,7 @@ function delTopic()
 }
 
 // Add a new topic
-function addTopic()
+function addTopic(): void
 {
     global $xoopsDB, $xoopsModule;
     $helper = Helper::getInstance();
@@ -1506,11 +1505,11 @@ function addTopic()
  *   c) Biggest contributors
  *      The goal of this table is to know who is creating the biggest number of articles.
  */
-function getStats()
+function getStats(): void
 {
     global $xoopsModule, $xoopsConfig;
     xoops_cp_header();
-    $myts = \MyTextSanitizer::getInstance();
+    $myts   = \MyTextSanitizer::getInstance();
     $helper = Helper::getInstance();
     $helper->loadLanguage('main');
 
@@ -1682,14 +1681,14 @@ function getStats()
  * From here you can also manage some other options like the maximum number of meta keywords to create and
  * the keywords apparition's order.
  */
-function getMetagen()
+function getMetagen(): void
 {
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     global $xoopsModule, $xoopsConfig, $cfg;
     $helper = Helper::getInstance();
 
     xoops_cp_header();
-    $myts = \MyTextSanitizer::getInstance();
+    $myts   = \MyTextSanitizer::getInstance();
     $helper = Helper::getInstance();
     $helper->loadLanguage('main');
 
@@ -1760,7 +1759,7 @@ function getMetagen()
 /**
  * Save metagen's blacklist words
  */
-function saveMetagenBlackList()
+function saveMetagenBlackList(): void
 {
     $blacklist = new Blacklist();
     $words     = $blacklist->getAllKeywords();
@@ -1786,7 +1785,7 @@ function saveMetagenBlackList()
 /**
  * Save Metagen Options
  */
-function saveMetagenOptions()
+function saveMetagenOptions(): void
 {
     $registry = new Registryfile('news_metagen_options.txt');
     $registry->savefile(Request::getInt('keywordscount', 0, 'POST') . ',' . Request::getInt('keywordsorder', 0, 'POST'));
@@ -1846,7 +1845,7 @@ switch ($op) {
         $published    = 0;
         $description  = '';
         $keywords     = '';
-        $helper = Helper::getInstance();
+        $helper       = Helper::getInstance();
         $helper->loadLanguage('main');
 
         if (1 == $helper->getConfig('autoapprove')) {
@@ -2020,28 +2019,27 @@ switch ($op) {
 
         //check for latest release
         //$newRelease = $utility::checkVerModule($helper);
-        //if (!empty($newRelease)) {
+        //if (null !== $newRelease) {
         //    $adminObject->addItemButton($newRelease[0], $newRelease[1], 'download', 'style="color : Red"');
         //}
 
-    //------------- Test Data Buttons ----------------------------
-    if ($helper->getConfig('displaySampleButton')) {
-        TestdataButtons::loadButtonConfig($adminObject);
-        $adminObject->displayButton('left', '');
-    }
-    $op = Request::getString('op', 0, 'GET');
-    switch ($op) {
-        case 'hide_buttons':
-            TestdataButtons::hideButtons();
-            break;
-        case 'show_buttons':
-            TestdataButtons::showButtons();
-            break;
-    }
-    //------------- End Test Data Buttons ----------------------------
+        //------------- Test Data Buttons ----------------------------
+        if ($helper->getConfig('displaySampleButton')) {
+            TestdataButtons::loadButtonConfig($adminObject);
+            $adminObject->displayButton('left', '');
+        }
+        $op = Request::getString('op', 0, 'GET');
+        switch ($op) {
+            case 'hide_buttons':
+                TestdataButtons::hideButtons();
+                break;
+            case 'show_buttons':
+                TestdataButtons::showButtons();
+                break;
+        }
+        //------------- End Test Data Buttons ----------------------------
 
-
-    $adminObject->displayIndex();
+        $adminObject->displayIndex();
 
         echo $utility::getServerStats();
 

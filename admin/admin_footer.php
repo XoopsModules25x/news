@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * News module
@@ -12,14 +12,13 @@
  *
  * @copyright    XOOPS Project (https://xoops.org)
  * @license      https://www.gnu.org/licenses/gpl-2.0.html GNU Public License
- * @package      News
  * @since        1.6.7
  * @author       Mamba (www.xoops.org)
  **/
 
 use Xmf\Module\Admin;
 
-$pathIcon32 = Admin::iconUrl('', 32);
+$pathIcon32 = Admin::iconUrl('', '32');
 echo "<div class='adminfooter'>\n" . "  <div class ='txtcenter'>\n" . "    <a href='https://xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>\n" . "  </div>\n" . '  ' . _AM_MODULEADMIN_ADMIN_FOOTER . "\n" . '</div>';
 
 xoops_cp_footer();

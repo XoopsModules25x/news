@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -16,7 +16,7 @@ namespace XoopsModules\News;
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @author         XOOPS Development Team
- * @author         Hervé Thouzard  URL: http://www.herve-thouzard.com
+ * @author         Hervé Thouzard  URL: https://www.herve-thouzard.com
  */
 
 /**
@@ -70,7 +70,7 @@ function news_tag_iteminfo(&$items)
 /**
  * @param $mid
  */
-function news_tag_synchronization($mid)
+function news_tag_synchronization($mid): void
 {
     global $xoopsDB;
     $itemHandler_keyName = 'storyid';
@@ -79,7 +79,7 @@ function news_tag_synchronization($mid)
     $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . \time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . \time() . ')';
 
     /* clear tag-item links */
-    if ($linkHandler->mysql_major_version() >= 4):
+    if (version_compare($xoopsDB->getServerVersion(), '4.1.0', 'ge')) :
         $sql = "    DELETE FROM {$linkHandler->table}"
                . ' WHERE '
                . "     tag_modid = {$mid}"
@@ -90,7 +90,7 @@ function news_tag_synchronization($mid)
                . "                WHERE $where"
                . '           ) '
                . '     )';
-    else:
+    else :
         $sql = "   DELETE {$linkHandler->table} FROM {$linkHandler->table}"
                . "  LEFT JOIN {$itemHandler_table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler_keyName} "
                . '   WHERE '

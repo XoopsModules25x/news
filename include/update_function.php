@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * News functions
  *
@@ -12,7 +13,6 @@
  * @copyright   {@link https://xoops.org/ XOOPS Project}
  * @license     GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Voltan
- * @package     News
  */
 
 use XoopsModules\News;
@@ -28,7 +28,7 @@ function xoops_module_update_news()
     //0) Rename all tables
 
     if (News\Utility::existTable($xoopsDB->prefix('stories_files'))) {
-        $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files'));
+        $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
             echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
@@ -54,7 +54,7 @@ function xoops_module_update_news()
     }
 
     if (News\Utility::existTable($xoopsDB->prefix('stories'))) {
-        $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('stories') . ' RENAME ' . $xoopsDB->prefix('news_stories'));
+        $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('stories') . ' RENAME ' . $xoopsDB->prefix('news_stories');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
             echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
@@ -63,7 +63,7 @@ function xoops_module_update_news()
     }
 
     if (News\Utility::existTable($xoopsDB->prefix('topics'))) {
-        $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('topics') . ' RENAME ' . $xoopsDB->prefix('news_topics'));
+        $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('topics') . ' RENAME ' . $xoopsDB->prefix('news_topics');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
             echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
@@ -72,7 +72,7 @@ function xoops_module_update_news()
     }
 
     if (News\Utility::existTable($xoopsDB->prefix('stories_files'))) {
-        $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files'));
+        $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
             echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
@@ -81,7 +81,7 @@ function xoops_module_update_news()
     }
 
     // 2) Change the topic title's length, in the topics table
-    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' CHANGE topic_title topic_title VARCHAR( 255 ) NOT NULL;');
+    $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' CHANGE topic_title topic_title VARCHAR( 255 ) NOT NULL;';
     $result = $xoopsDB->queryF($sql);
     if (!$result) {
         echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
@@ -146,9 +146,9 @@ function xoops_module_update_news()
     }
 
     // 5) Add some indexes to the topics table
-    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' ADD INDEX ( `topic_title` );');
+    $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' ADD INDEX ( `topic_title` );';
     $result = $xoopsDB->queryF($sql);
-    $sql    = sprintf('ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' ADD INDEX ( `menu` );');
+    $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('news_topics') . ' ADD INDEX ( `menu` );';
     $result = $xoopsDB->queryF($sql);
 
     // 6) Make files and folders

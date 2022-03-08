@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -27,11 +27,10 @@
  *
  * @param string $tablename
  * @param string $iconname
- * @copyright::  (c) Hervé Thouzard (http://www.herve-thouzard.com)
- * @package  ::    News
- * @author   ::     Hervé Thouzard (http://www.herve-thouzard.com) & Dojo Javscript Toolkit
+ * @copyright::  (c) Hervé Thouzard (https://www.herve-thouzard.com)
+ * @author   ::     Hervé Thouzard (https://www.herve-thouzard.com) & Dojo Javscript Toolkit
  */
-function news_collapsableBar($tablename = '', $iconname = '')
+function news_collapsableBar($tablename = '', $iconname = ''): void
 {
     ?>
     <script type="text/javascript">

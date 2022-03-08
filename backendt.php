@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -25,8 +25,6 @@
  * @param type $nomvariable description
  * @author        Xoops Modules Dev Team
  * @copyright (c) XOOPS Project (https://xoops.org)
- *
- * @package       News
  */
 
 use Xmf\Request;
@@ -66,7 +64,7 @@ $tpl          = new \XoopsTpl();
 $tpl->caching = 2;
 $tpl->xoops_setCacheTime(3600); // Change this to the value you want
 if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
-    $xt     = new  NewsTopic($topicid);
+    $xt     = new NewsTopic($topicid);
     $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
     if ($sarray && is_array($sarray)) {
         $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);

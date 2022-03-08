@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -43,7 +43,7 @@ function news_com_update($story_id, $total_num)
 /**
  * @param $comment
  */
-function news_com_approve(&$comment)
+function news_com_approve(&$comment): void
 {
     // notification mail here
 }

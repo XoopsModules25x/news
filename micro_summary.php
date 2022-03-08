@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -19,10 +19,10 @@
  * Created on 28 oct. 2006
  *
  * This file is responsible for creating micro summaries for Firefox 2 web navigator
- * For more information, see this page : http://wiki.mozilla.org/Microsummaries
+ * For more information, see this page : https://wiki.mozilla.org/Microsummaries
  *
  * @package News
- * @author Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  *
  * NOTE : If you use this code, please make credit.

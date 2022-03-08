@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -34,9 +34,6 @@ $helper->loadLanguage('main');
  */
 class NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
-    /**
-     * @param \XoopsDatabase|null $db
-     */
     public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_stories', NewsStory::class, 'storieid', 'title');

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * News module
  *
@@ -11,7 +12,6 @@
  *
  * @copyright      XOOPS Project (https://xoops.org)
  * @license        https://www.gnu.org/licenses/gpl-2.0.html GNU Public License
- * @package        news
  * @since          1.6.7
  * @author         XOOPS Development Team
  **/
@@ -34,8 +34,8 @@ $helper = Helper::getInstance();
 /** @var Xmf\Module\Admin $adminObject */
 $adminObject = Admin::getInstance();
 
-$pathIcon16 = Admin::iconUrl('', 16);
-$pathIcon32 = Admin::iconUrl('', 32);
+$pathIcon16 = Admin::iconUrl('', '16');
+$pathIcon32 = Admin::iconUrl('', '32');
 
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 

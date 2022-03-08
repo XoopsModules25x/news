@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -20,7 +20,6 @@
 /**
  * @param $category
  * @param $item_id
- * @return null
  */
 function news_notify_iteminfo($category, $item_id)
 {

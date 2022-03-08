@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -14,9 +14,8 @@ namespace XoopsModules\News;
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         kernel
  * @since           2.0.0
- * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
+ * @author          Kazumi Ono (AKA onokazu) https://www.myweb.ne.jp/, https://jp.xoops.org/
  */
 
 /**
@@ -25,9 +24,6 @@ namespace XoopsModules\News;
  * @author     Kazumi Ono <onokazu@xoops.org>
  * @author     John Neill <catzwolf@xoops.org>
  * @copyright  copyright (c) XOOPS.org
- * @package    kernel
- * @subpackage XoopsTree
- * @access     public
  */
 class XoopsTree
 {
@@ -78,6 +74,7 @@ class XoopsTree
                 $arr[] = $myrow;
             }
         }
+
         return $arr;
     }
 
@@ -97,7 +94,7 @@ class XoopsTree
         if (0 == $count) {
             return $idarray;
         }
-        while (list($id) = $this->db->fetchRow($result)) {
+        while ([$id] = $this->db->fetchRow($result)) {
             $idarray[] = $id;
         }
 
@@ -125,7 +122,7 @@ class XoopsTree
         if (0 == $count) {
             return $idarray;
         }
-        while (list($r_id) = $this->db->fetchRow($result)) {
+        while ([$r_id] = $this->db->fetchRow($result)) {
             $idarray[] = $r_id;
             $idarray   = $this->getAllChildId($r_id, $order, $idarray);
         }
@@ -201,7 +198,7 @@ class XoopsTree
      * @param string $sel_name
      * @param string $onchange
      */
-    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '')
+    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = ''): void
     {
         if ('' == $sel_name) {
             $sel_name = $this->id;
@@ -220,7 +217,7 @@ class XoopsTree
         if ($none) {
             echo "<option value='0'>----</option>\n";
         }
-        while (list($catid, $name) = $this->db->fetchRow($result)) {
+        while ([$catid, $name] = $this->db->fetchRow($result)) {
             $sel = '';
             if ($catid == $preset_id) {
                 $sel = ' selected';

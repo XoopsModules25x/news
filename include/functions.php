@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -13,7 +13,7 @@
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @author         XOOPS Development Team
- * @author         Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author         Hervé Thouzard (https://www.herve-thouzard.com)
  */
 
 /**
@@ -77,18 +77,17 @@ function news_getmoduleoption($option, $repmodule = 'news')
  * Updates rating data in item table for a given item
  *
  * @param $storyid
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
- * @package       News
  */
-function news_updaterating($storyid)
+function news_updaterating($storyid): void
 {
     global $xoopsDB;
     $query       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
     $voteresult  = $xoopsDB->query($query);
     $votesDB     = $xoopsDB->getRowsNum($voteresult);
     $totalrating = 0;
-    while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
+    while ([$rating] = $xoopsDB->fetchRow($voteresult)) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
@@ -104,10 +103,9 @@ function news_updaterating($storyid)
  *
  * @param string $permtype
  *
- * @return array $topics    Permitted topics Ids
+ * @return array    Permitted topics Ids
  *
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
 function news_MygetItemIds($permtype = 'news_view')
@@ -205,7 +203,7 @@ function news_isX23()
 }
 
 /**
- * Retreive an editor according to the module's option "form_options"
+ * Retrieve an editor according to the module's option "form_options"
  *
  * @param                                                                                                                                 $caption
  * @param                                                                                                                                 $name
@@ -214,13 +212,12 @@ function news_isX23()
  * @param string                                                                                                                          $height
  * @param string                                                                                                                          $supplemental
  * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|\XoopsFormFckeditor|\XoopsFormHtmlarea|\XoopsFormTextArea|\XoopsFormTinyeditorTextArea
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
 function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
 {
-    $editor_option            = mb_strtolower(news_getmoduleoption('form_options'));
+    $editor_option            = \mb_strtolower(news_getmoduleoption('form_options'));
     $editor                   = false;
     $editor_configs           = [];
     $editor_configs['name']   = $name;
@@ -290,8 +287,7 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
  * @param $text
  * @return mixed
  * @copyright (c) Hervé Thouzard
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
 function DublinQuotes($text)
 {
@@ -307,11 +303,10 @@ function DublinQuotes($text)
  * - The meta description
  *
  * @param null $story
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
- * @package       News
  */
-function news_CreateMetaDatas($story = null)
+function news_CreateMetaDatas($story = null): void
 {
     global $xoopsConfig, $xoTheme, $xoopsTpl;
     $content = '';
@@ -332,7 +327,7 @@ function news_CreateMetaDatas($story = null)
         // Create chapters
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-        $xt         = new  NewsTopic();
+        $xt         = new NewsTopic();
         $allTopics  = $xt->getAllTopics(news_getmoduleoption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
@@ -407,8 +402,7 @@ function news_CreateMetaDatas($story = null)
  * @param $content
  * @return string
  * @copyright (c) Hervé Thouzard
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
 function news_createmeta_keywords($content)
 {
@@ -444,7 +438,7 @@ function news_createmeta_keywords($content)
     $content         = str_replace('<br>', ' ', $content);
     $content         = $myts->undoHtmlSpecialChars($content);
     $content         = strip_tags($content);
-    $content         = mb_strtolower($content);
+    $content         = \mb_strtolower($content);
     $search_pattern  = [
         '&nbsp;',
         "\t",
@@ -549,11 +543,10 @@ function news_createmeta_keywords($content)
 /**
  * Remove module's cache
  *
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_updateCache()
+function news_updateCache(): void
 {
     global $xoopsModule;
     $folder  = $xoopsModule->getVar('dirname');
@@ -587,8 +580,7 @@ function news_updateCache()
  * @param $tablename
  * @return bool
  * @copyright (c) Hervé Thouzard
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
 function news_TableExists($tablename)
 {
@@ -604,8 +596,7 @@ function news_TableExists($tablename)
  * @param $fieldname
  * @param $table
  * @return bool
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
 function news_FieldExists($fieldname, $table)
@@ -622,8 +613,7 @@ function news_FieldExists($fieldname, $table)
  * @param $field
  * @param $table
  * @return bool|\mysqli_result
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
 function news_AddField($field, $table)
@@ -641,7 +631,7 @@ function news_is_admin_group()
 {
     global $xoopsUser, $xoopsModule;
     if (is_object($xoopsUser)) {
-        if (in_array('1', $xoopsUser->getGroups())) {
+        if (in_array('1', $xoopsUser->getGroups(), true)) {
             return true;
         }
         if ($xoopsUser->isAdmin($xoopsModule->mid())) {
@@ -660,8 +650,7 @@ function news_is_admin_group()
  * If you have a problem with this function, insert the folowing code just before the line if (\Xmf\Request::hasVar('news_cache_bot', 'SESSION'))) { :
  * return false;
  *
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
 function news_isbot()
@@ -672,8 +661,8 @@ function news_isbot()
     // Add here every bot you know separated by a pipe | (not matter with the upper or lower cases)
     // If you want to see the result for yourself, add your navigator's user agent at the end (mozilla for example)
     $botlist      = 'AbachoBOT|Arachnoidea|ASPSeek|Atomz|cosmos|crawl25-public.alexa.com|CrawlerBoy Pinpoint.com|Crawler|DeepIndex|EchO!|exabot|Excalibur Internet Spider|FAST-WebCrawler|Fluffy the spider|GAIS Robot/1.0B2|GaisLab data gatherer|Google|Googlebot-Image|googlebot|Gulliver|ia_archiver|Infoseek|Links2Go|Lycos_Spider_(modspider)|Lycos_Spider_(T-Rex)|MantraAgent|Mata Hari|Mercator|MicrosoftPrototypeCrawler|Mozilla@somewhere.com|MSNBOT|NEC Research Agent|NetMechanic|Nokia-WAPToolkit|nttdirectory_robot|Openfind|Oracle Ultra Search|PicoSearch|Pompos|Scooter|Slider_Search_v1-de|Slurp|Slurp.so|SlySearch|Spider|Spinne|SurferF3|Surfnomore Spider|suzuran|teomaagent1|TurnitinBot|Ultraseek|VoilaBot|vspider|W3C_Validator|Web Link Validator|WebTrends|WebZIP|whatUseek_winona|WISEbot|Xenu Link Sleuth|ZyBorg';
-    $botlist      = mb_strtoupper($botlist);
-    $currentagent = mb_strtoupper(xoops_getenv('HTTP_USER_AGENT'));
+    $botlist      = \mb_strtoupper($botlist);
+    $currentagent = \mb_strtoupper(xoops_getenv('HTTP_USER_AGENT'));
     $retval       = false;
     $botarray     = explode('|', $botlist);
     foreach ($botarray as $onebot) {
@@ -694,8 +683,7 @@ function news_isbot()
  * @param $text
  * @return string|null
  * @copyright (c) Hervé Thouzard
- * @package       News
- * @author        Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
 function news_make_infotips($text)
 {
@@ -765,7 +753,6 @@ function news_close_tags($string)
  * @return string
  * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
  *           <amos dot robinson at gmail dot com>
- *
  */
 function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false)
 {

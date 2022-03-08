@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -63,7 +63,7 @@
  */
 ######################################################################
 # Original version:
-# [11-may-2001] Kenneth Lee - http://www.nexgear.com/
+# [11-may-2001] Kenneth Lee - https://www.nexgear.com/
 ######################################################################
 
 use Xmf\Request;
@@ -127,7 +127,7 @@ if (!$result) {
 $years  = [];
 $months = [];
 $i      = 0;
-while (list($time) = $xoopsDB->fetchRow($result)) {
+while ([$time] = $xoopsDB->fetchRow($result)) {
     $time = formatTimestamp($time, 'mysql', $useroffset);
     if (preg_match('/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/', $time, $datetime)) {
         $this_year  = (int)$datetime[1];

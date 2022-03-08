@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
 //  ------------------------------------------------------------------------ //
 //                  Copyright (c) 2005-2006 Hervé Thouzard                     //
-//                     <http://www.herve-thouzard.com>                      //
+//                     <https://www.herve-thouzard.com>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -60,7 +60,7 @@ class Blacklist
      * Remove one or many keywords from the list
      * @param $keyword
      */
-    public function delete($keyword)
+    public function delete($keyword): void
     {
         if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
@@ -77,7 +77,7 @@ class Blacklist
      * Add one or many keywords
      * @param $keyword
      */
-    public function addkeywords($keyword)
+    public function addkeywords($keyword): void
     {
         $myts = \MyTextSanitizer::getInstance();
         if (\is_array($keyword)) {
@@ -123,7 +123,7 @@ class Blacklist
     /**
      * Save keywords
      */
-    public function store()
+    public function store(): void
     {
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (\is_file($filename)) {

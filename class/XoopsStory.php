@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -18,9 +18,8 @@ use XoopsUser;
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         kernel
  * @since           2.0.0
- * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
+ * @author          Kazumi Ono (AKA onokazu) https://www.myweb.ne.jp/, https://jp.xoops.org/
  * @deprecated
  */
 
@@ -60,7 +59,7 @@ class XoopsStory
     /**
      * @param $storyid
      */
-    public function Story($storyid = -1)
+    public function Story($storyid = -1): void
     {
         /** @var \XoopsMySQLDatabase $this ->db */
         $this->db          = XoopsDatabaseFactory::getDatabaseConnection();
@@ -76,7 +75,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setStoryId($value)
+    public function setStoryId($value): void
     {
         $this->storyid = (int)$value;
     }
@@ -84,7 +83,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setTopicId($value)
+    public function setTopicId($value): void
     {
         $this->topicid = (int)$value;
     }
@@ -92,7 +91,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setUid($value)
+    public function setUid($value): void
     {
         $this->uid = (int)$value;
     }
@@ -100,7 +99,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setTitle($value)
+    public function setTitle($value): void
     {
         $this->title = $value;
     }
@@ -108,7 +107,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setHometext($value)
+    public function setHometext($value): void
     {
         $this->hometext = $value;
     }
@@ -116,7 +115,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setBodytext($value)
+    public function setBodytext($value): void
     {
         $this->bodytext = $value;
     }
@@ -124,7 +123,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setPublished($value)
+    public function setPublished($value): void
     {
         $this->published = (int)$value;
     }
@@ -132,7 +131,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setExpired($value)
+    public function setExpired($value): void
     {
         $this->expired = (int)$value;
     }
@@ -140,7 +139,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setHostname($value)
+    public function setHostname($value): void
     {
         $this->hostname = $value;
     }
@@ -148,7 +147,7 @@ class XoopsStory
     /**
      * @param int $value
      */
-    public function setNohtml($value = 0)
+    public function setNohtml($value = 0): void
     {
         $this->nohtml = $value;
     }
@@ -156,7 +155,7 @@ class XoopsStory
     /**
      * @param int $value
      */
-    public function setNosmiley($value = 0)
+    public function setNosmiley($value = 0): void
     {
         $this->nosmiley = $value;
     }
@@ -164,7 +163,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setIhome($value)
+    public function setIhome($value): void
     {
         $this->ihome = $value;
     }
@@ -172,7 +171,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setNotifyPub($value)
+    public function setNotifyPub($value): void
     {
         $this->notifypub = $value;
     }
@@ -180,7 +179,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setType($value)
+    public function setType($value): void
     {
         $this->type = $value;
     }
@@ -188,7 +187,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setApproved($value)
+    public function setApproved($value): void
     {
         $this->approved = (int)$value;
     }
@@ -196,7 +195,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setTopicdisplay($value)
+    public function setTopicdisplay($value): void
     {
         $this->topicdisplay = $value;
     }
@@ -204,7 +203,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setTopicalign($value)
+    public function setTopicalign($value): void
     {
         $this->topicalign = $value;
     }
@@ -212,7 +211,7 @@ class XoopsStory
     /**
      * @param $value
      */
-    public function setComments($value)
+    public function setComments($value): void
     {
         $this->comments = (int)$value;
     }
@@ -229,9 +228,9 @@ class XoopsStory
         $title    = $myts->censorString($this->title);
         $hometext = $myts->censorString($this->hometext);
         $bodytext = $myts->censorString($this->bodytext);
-        $title    = $myts->addSlashes($title);
-        $hometext = $myts->addSlashes($hometext);
-        $bodytext = $myts->addSlashes($bodytext);
+        $title    = $GLOBALS['xoopsDB']->escape($title);
+        $hometext = $GLOBALS['xoopsDB']->escape($hometext);
+        $bodytext = $GLOBALS['xoopsDB']->escape($bodytext);
         if (!isset($this->nohtml) || 1 != $this->nohtml) {
             $this->nohtml = 0;
         }
@@ -327,7 +326,7 @@ class XoopsStory
     /**
      * @param $storyid
      */
-    public function getStory($storyid)
+    public function getStory($storyid): void
     {
         $storyid = (int)$storyid;
         $sql     = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . $storyid . '';
@@ -338,7 +337,7 @@ class XoopsStory
     /**
      * @param $array
      */
-    public function makeStory($array)
+    public function makeStory($array): void
     {
         foreach ($array as $key => $value) {
             $this->$key = $value;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -38,7 +38,7 @@
  * - If you are a module's admin, you have the possibility to see two links at the bottom
  *   of the article, "Edit & Delete"
  *
- * @param int storyid    Id of the story we want to see
+ * @param int $matches storyid    Id of the story we want to see
  * @param int page        page's number (in the case where there are more than one page)
  *
  * @page_title                      Article's title - Topic's title - Module's name
@@ -106,13 +106,13 @@
  *
  * Parameters received by this page :
  *
- * @package                         News
  * @author                          Xoops Modules Dev Team
  */
 
 use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\Files;
+use XoopsModules\News\Helper;
 use XoopsModules\News\Keyhighlighter;
 use XoopsModules\News\NewsStory;
 
@@ -125,8 +125,8 @@ require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/Keyhighlighter.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 
 $storyid = Request::getInt('storyid', 0, 'GET');
 
@@ -511,12 +511,12 @@ if (News\Utility::getModuleOption('ratenews') && $other_test) {
 $xoopsTpl->assign('story', $story);
 
 // Added in version 1.63, TAGS
-if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-    require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
+$helper = Helper::getInstance();
+$xoopsTpl->assign('tags', false);
+if (1 == $helper->getConfig('tags') && \class_exists(\XoopsModules\Tag\Tagbar::class) && \xoops_isActiveModule('tag')) {
     $xoopsTpl->assign('tags', true);
-    $xoopsTpl->assign('tagbar', tagBar($storyid, 0));
-} else {
-    $xoopsTpl->assign('tags', false);
+    $tagbarObj = new \XoopsModules\Tag\Tagbar();
+    $xoopsTpl->assign('tagbar', $tagbarObj->getTagbar($storyid, 0));
 }
 
 $xoopsTpl->assign('share', $helper->getConfig('share'));

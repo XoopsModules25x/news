@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * News functions
@@ -13,8 +13,6 @@
  * @copyright   {@link https://xoops.org/ XOOPS Project}
  * @license     GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Voltan
- * @package     News
- * @param \XoopsModule $module
  * @return bool
  */
 function xoops_module_pre_install_news(\XoopsModule $module)
