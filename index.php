@@ -215,6 +215,7 @@ if ($showclassic) {
                 $story['news_title']  = $story['title'];
                 $story['title']       = $thisstory->textlink() . '&nbsp;:&nbsp;' . $story['title'];
                 $story['topic_title'] = $thisstory->textlink();
+                $story['topic_img'] = $thisstory->imglink();
                 $story['topic_color'] = '#' . $myts->displayTarea($thisstory->topic_color);
                 if ('' === $firsttitle) {
                     $firsttitle = $thisstory->topic_title() . ' - ' . $thisstory->title();

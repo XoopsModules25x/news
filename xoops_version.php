@@ -23,12 +23,12 @@ require_once __DIR__ . '/preloads/autoloader.php';
 $helper = News\Helper::getInstance();
 $helper->loadLanguage('common');
 
-$moduleDirName      = basename(__DIR__);
+$moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 $modversion['version']       = '1.72.0';
-$modversion['module_status'] = 'Beta 4';
-$modversion['release_date']  = '2020/11/08';
+$modversion['module_status'] = 'Beta 5';
+$modversion['release_date']  = '2022/02-20';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -176,7 +176,7 @@ $modversion['blocks'][] = [
 ];
 
 $modversion['blocks'][] = [
-    // Added in v1.63
+// Added in v1.63
     'file'        => 'news_block_tag.php',
     'name'        => _MI_NEWS_BNAME10,
     'description' => 'Show tag cloud',
@@ -375,8 +375,8 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 1,
     'options'     => [
-        '_MI_DISPLAYNAME1' => 1,
-        '_MI_DISPLAYNAME2' => 2,
+    '_MI_DISPLAYNAME1' => 1,
+    '_MI_DISPLAYNAME2' => 2,
         '_MI_DISPLAYNAME3' => 3,
     ],
 ];
@@ -403,13 +403,13 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 10,
     'options'     => [
-        '5'  => 5,
-        '10' => 10,
-        '15' => 15,
-        '20' => 20,
-        '25' => 25,
-        '30' => 30,
-        '35' => 35,
+    '5'  => 5,
+    '10' => 10,
+    '15' => 15,
+    '20' => 20,
+    '25' => 25,
+    '30' => 30,
+    '35' => 35,
         '40' => 40,
     ],
 ];
@@ -425,8 +425,8 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 2,
     'options'     => [
-        '_MI_UPLOAD_GROUP1' => 1,
-        '_MI_UPLOAD_GROUP2' => 2,
+    '_MI_UPLOAD_GROUP1' => 1,
+    '_MI_UPLOAD_GROUP2' => 2,
         '_MI_UPLOAD_GROUP3' => 3,
     ],
 ];
@@ -641,13 +641,13 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'options'     => [
-        _MI_NEWS_SKIN_1 => 1,
-        _MI_NEWS_SKIN_2 => 2,
-        _MI_NEWS_SKIN_3 => 3,
-        _MI_NEWS_SKIN_4 => 4,
-        _MI_NEWS_SKIN_5 => 5,
-        _MI_NEWS_SKIN_6 => 6,
-        _MI_NEWS_SKIN_7 => 7,
+    _MI_NEWS_SKIN_1 => 1,
+    _MI_NEWS_SKIN_2 => 2,
+    _MI_NEWS_SKIN_3 => 3,
+    _MI_NEWS_SKIN_4 => 4,
+    _MI_NEWS_SKIN_5 => 5,
+    _MI_NEWS_SKIN_6 => 6,
+    _MI_NEWS_SKIN_7 => 7,
         _MI_NEWS_SKIN_8 => 8,
     ],
     'default'     => 6,
