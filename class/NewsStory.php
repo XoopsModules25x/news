@@ -217,7 +217,7 @@ class NewsStory extends XoopsStory
      * @param bool   $asobject
      * @param string $order
      * @param bool   $topic_frontpage
-     * @return array
+     * @return array|null
      */
     public static function getAllPublished(
         $limit = 0,

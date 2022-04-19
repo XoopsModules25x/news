@@ -402,7 +402,7 @@ function b_news_top_show($options)
             $stories = NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
         }
 
-        if (!count($stories)) {
+        if (!$stories) {
             return '';
         }
         $topic = new  NewsTopic();
