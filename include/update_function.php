@@ -88,6 +88,23 @@ function xoops_module_update_news()
         ++$errors;
     }
 
+    // 2.0a) change column size for IP address from varchar(16) to varchar(45) for IPv6
+    $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('news_stories') . ' MODIFY hostname VARCHAR( 45 ) NOT NULL DEFAULT \'\';';
+    $result = $xoopsDB->queryF($sql);
+    if (!$result) {
+        echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+        ++$errors;
+    }
+
+    // 2.0b)  change column size for Picture from varchar(50) to varchar(255) for SEO
+    $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('news_stories') . ' MODIFY picture VARCHAR( 255 ) NOT NULL DEFAULT \'\';';
+    $result = $xoopsDB->queryF($sql);
+    if (!$result) {
+        echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
+        ++$errors;
+    }
+
+
     // 2.1) Add the new fields to the topic table
     if (!News\Utility::existField('menu', $xoopsDB->prefix('news_topics'))) {
         News\Utility::addField("menu TINYINT( 1 ) DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_topics'));
@@ -177,10 +194,10 @@ function xoops_module_update_news()
     }
 
     // Copy index.html files on uploads folders
-    $indexFile = XOOPS_ROOT_PATH . '/modules/news/include/index.html';
-    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/index.html');
-    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/file/index.html');
-    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/image/index.html');
+    $indexFile = XOOPS_ROOT_PATH . '/modules/news/include/index.php';
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/index.php');
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/file/index.php');
+    copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/image/index.php');
 
     return true;
 }
