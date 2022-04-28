@@ -33,7 +33,6 @@ use XoopsModules\News\{
     Common,
     Common\TestdataButtons,
     Files,
-    Forms,
     Helper,
     NewsStory,
     NewsTopic,
