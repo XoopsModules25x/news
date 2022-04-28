@@ -525,7 +525,7 @@ function b_news_top_show($options)
                     $block['use_spotlight'] = false;
                 }
             }
-            if (true === $block['use_spotlight']) {
+            if ($block['use_spotlight']) {
                 $spotlight          = [];
                 $spotlight['title'] = xoops_substr($spotlightArticle->title(), 0, $options[2] - 1);
                 if ('' !== $options[7]) {

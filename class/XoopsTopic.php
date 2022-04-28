@@ -140,7 +140,7 @@ class XoopsTopic
         if (!$result = $this->db->query($sql)) {
             \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
         }
-        if (true === $this->use_permission) {
+        if ($this->use_permission) {
             if (empty($this->topic_id)) {
                 $this->topic_id = $this->db->getInsertId();
             }
@@ -157,7 +157,7 @@ class XoopsTopic
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
@@ -177,7 +177,7 @@ class XoopsTopic
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
@@ -197,7 +197,7 @@ class XoopsTopic
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');

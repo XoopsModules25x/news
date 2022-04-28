@@ -398,7 +398,7 @@ class NewsTopic extends XoopsTopic
             $this->topic_id = $this->db->getInsertId();
         }
 
-        if (true === $this->use_permission) {
+        if ($this->use_permission) {
             $xt            = new News\XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && \is_array($this->m_groups)) {
@@ -412,7 +412,7 @@ class NewsTopic extends XoopsTopic
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
@@ -432,7 +432,7 @@ class NewsTopic extends XoopsTopic
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
@@ -452,7 +452,7 @@ class NewsTopic extends XoopsTopic
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
