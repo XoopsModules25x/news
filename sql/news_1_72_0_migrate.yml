@@ -1,0 +1,238 @@
+news_stories:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+    columns:
+        -
+            name: storyid
+            attributes: ' int(8) unsigned  NOT NULL auto_increment'
+        -
+            name: uid
+            attributes: ' int(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: title
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: created
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: published
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: expired
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: hostname
+            attributes: ' varchar(45)  NOT NULL  DEFAULT '''' '
+        -
+            name: nohtml
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: nosmiley
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: hometext
+            attributes: ' text  NOT NULL '
+        -
+            name: bodytext
+            attributes: ' text  NOT NULL '
+        -
+            name: keywords
+            attributes: ' varchar(255)  NOT NULL '
+        -
+            name: description
+            attributes: ' varchar(255)  NOT NULL '
+        -
+            name: counter
+            attributes: ' int(8) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: topicid
+            attributes: ' smallint(4) unsigned  NOT NULL  DEFAULT ''1'' '
+        -
+            name: ihome
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: notifypub
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: story_type
+            attributes: ' varchar(5)  NOT NULL  DEFAULT '''' '
+        -
+            name: topicdisplay
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: topicalign
+            attributes: ' char(1)  NOT NULL  DEFAULT ''R'' '
+        -
+            name: comments
+            attributes: ' smallint(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: rating
+            attributes: ' double(6,4)  NOT NULL  DEFAULT ''0.0000'' '
+        -
+            name: votes
+            attributes: ' int(11) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: picture
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: pictureinfo
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: subtitle
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+    keys:
+        created:
+            columns: created
+            unique: false
+        idxstoriestopic:
+            columns: topicid
+            unique: false
+        ihome:
+            columns: ihome
+            unique: false
+        PRIMARY:
+            columns: storyid
+            unique: true
+        published_ihome:
+            columns: 'published, ihome'
+            unique: false
+        search:
+            columns: 'title, hometext, bodytext'
+            unique: false
+        title:
+            columns: 'title (40)'
+            unique: false
+        uid:
+            columns: uid
+            unique: false
+news_topics:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+    columns:
+        -
+            name: topic_id
+            attributes: ' smallint(4) unsigned  NOT NULL auto_increment'
+        -
+            name: topic_pid
+            attributes: ' smallint(4) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: topic_imgurl
+            attributes: ' varchar(20)  NOT NULL  DEFAULT '''' '
+        -
+            name: topic_title
+            attributes: ' varchar(255)  NOT NULL '
+        -
+            name: menu
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: topic_frontpage
+            attributes: ' tinyint(1)  NOT NULL  DEFAULT ''1'' '
+        -
+            name: topic_rssurl
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: topic_description
+            attributes: ' text  NOT NULL '
+        -
+            name: topic_color
+            attributes: ' varchar(6)  NOT NULL  DEFAULT ''000000'' '
+    keys:
+        menu:
+            columns: menu
+            unique: false
+        menu_2:
+            columns: menu
+            unique: false
+        menu_3:
+            columns: menu
+            unique: false
+        menu_4:
+            columns: menu
+            unique: false
+        menu_5:
+            columns: menu
+            unique: false
+        pid:
+            columns: topic_pid
+            unique: false
+        PRIMARY:
+            columns: topic_id
+            unique: true
+        topic_title:
+            columns: 'topic_title (100)'
+            unique: false
+        topic_title_2:
+            columns: topic_title
+            unique: false
+        topic_title_3:
+            columns: topic_title
+            unique: false
+        topic_title_4:
+            columns: topic_title
+            unique: false
+        topic_title_5:
+            columns: topic_title
+            unique: false
+news_stories_files:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+    columns:
+        -
+            name: fileid
+            attributes: ' int(8) unsigned  NOT NULL auto_increment'
+        -
+            name: filerealname
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: storyid
+            attributes: ' int(8) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: date
+            attributes: ' int(10)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: mimetype
+            attributes: ' varchar(64)  NOT NULL  DEFAULT '''' '
+        -
+            name: downloadname
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: counter
+            attributes: ' int(8) unsigned  NOT NULL  DEFAULT ''0'' '
+    keys:
+        PRIMARY:
+            columns: fileid
+            unique: true
+        storyid:
+            columns: storyid
+            unique: false
+news_stories_votedata:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8'
+    columns:
+        -
+            name: ratingid
+            attributes: ' int(11) unsigned  NOT NULL auto_increment'
+        -
+            name: storyid
+            attributes: ' int(8) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: ratinguser
+            attributes: ' int(11)  NOT NULL  DEFAULT ''0'' '
+        -
+            name: rating
+            attributes: ' tinyint(3) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: ratinghostname
+            attributes: ' varchar(60)  NOT NULL  DEFAULT '''' '
+        -
+            name: ratingtimestamp
+            attributes: ' int(10)  NOT NULL  DEFAULT ''0'' '
+    keys:
+        PRIMARY:
+            columns: ratingid
+            unique: true
+        ratinghostname:
+            columns: ratinghostname
+            unique: false
+        ratinguser:
+            columns: ratinguser
+            unique: false
+        storyid:
+            columns: storyid
+            unique: false
