@@ -22,6 +22,7 @@ use XoopsModules\News;
 use XoopsModules\News\Helper;
 use XoopsModules\News\NewsStory;
 use XoopsModules\News\NewsTopic;
+use XoopsModules\News\XoopsTree;
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
@@ -401,7 +402,7 @@ function b_news_top_show($options)
             $stories = NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
         }
 
-        if (!count($stories)) {
+        if (!$stories) {
             return '';
         }
         $topic = new  NewsTopic();
@@ -672,7 +673,7 @@ function b_news_top_edit($options)
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     $topics_arr = [];
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
-    $xt         = new \XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $xt         = new XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topics_arr = $xt->getChildTreeArray(0, 'topic_title');
     $size       = count($options);
     foreach ($topics_arr as $onetopic) {
