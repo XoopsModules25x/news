@@ -102,6 +102,14 @@ $adminmenu[] = [
     'icon'  => $pathIcon32 . '/metagen.png',
 ];
 
+if (is_object($helper->getModule()) && $helper->getConfig('displayDeveloperTools')) {
+    $adminmenu[] = [
+        'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
+        'link' => 'admin/migrate.php',
+        'icon' => $pathIcon32 . '/database_go.png',
+    ];
+}
+
 $adminmenu[] = [
     'title' => _MI_NEWS_ABOUT,
     'link'  => 'admin/about.php',
