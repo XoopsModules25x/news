@@ -81,7 +81,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
 
         if ($display) {
             $ret[$i]['image'] = 'assets/images/news.png';
-            $ret[$i]['link']  = 'article.php?storyid=' . $myrow['storyid'] . '' . $searchparam;
+            $ret[$i]['link']  = 'article.php?storyid=' . $myrow['storyid'] . $searchparam;
             $ret[$i]['title'] = $myrow['title'];
             $ret[$i]['time']  = $myrow['created'];
             $ret[$i]['uid']   = $myrow['uid'];
@@ -124,7 +124,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
 
             if ($display) {
                 $ret[$i]['image'] = 'assets/images/news.png';
-                $ret[$i]['link']  = 'article.php?storyid=' . $myrow['com_itemid'] . '' . $searchparam;
+                $ret[$i]['link']  = 'article.php?storyid=' . $myrow['com_itemid'] . $searchparam;
                 $ret[$i]['title'] = $myrow['com_title'];
                 $ret[$i]['time']  = $myrow['com_created'];
                 $ret[$i]['uid']   = $myrow['com_uid'];

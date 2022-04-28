@@ -379,7 +379,7 @@ class Files
      */
     public function getCountbyStory($storyid)
     {
-        $sql    = 'SELECT count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid . '';
+        $sql    = 'SELECT count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
         $myrow  = $this->db->fetchArray($result);
 

@@ -853,7 +853,7 @@ class NewsStory extends XoopsStory
 
         $morelink = '';
         if ($fullcount > 1) {
-            $morelink .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
+            $morelink .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
             $morelink .= '">' . _NW_READMORE . '</a>';
             $morelink .= ' | ' . \sprintf(_NW_BYTESMORE, $totalcount);
             if (\XOOPS_COMMENT_APPROVENONE != $helper->getConfig('com_rule')) {
@@ -862,8 +862,8 @@ class NewsStory extends XoopsStory
         }
         if (\XOOPS_COMMENT_APPROVENONE != $helper->getConfig('com_rule')) {
             $ccount    = $this->comments();
-            $morelink  .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
-            $morelink2 = '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
+            $morelink  .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
+            $morelink2 = '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
             if (0 == $ccount) {
                 $morelink .= '">' . _NW_COMMENTS . '</a>';
             } elseif ($fullcount < 1) {

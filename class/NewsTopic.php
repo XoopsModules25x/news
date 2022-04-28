@@ -318,7 +318,7 @@ class NewsTopic extends XoopsTopic
      */
     public function getTopic($topicid): void
     {
-        $sql   = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid . '';
+        $sql   = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid;
         $array = $this->db->fetchArray($this->db->query($sql));
         $this->makeTopic($array);
     }

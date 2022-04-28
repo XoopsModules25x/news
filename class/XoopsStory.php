@@ -329,7 +329,7 @@ class XoopsStory
     public function getStory($storyid): void
     {
         $storyid = (int)$storyid;
-        $sql     = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . $storyid . '';
+        $sql     = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . $storyid;
         $array   = $this->db->fetchArray($this->db->query($sql));
         $this->makeStory($array);
     }
