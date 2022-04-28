@@ -555,11 +555,7 @@ class Utility extends Common\SysUtility
             $configHandler = \xoops_getHandler('config');
         }
         $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(\XOOPS_CONF_METAFOOTER);
-        if (isset($xoopsConfigMetaFooter['meta_keywords'])) {
-            return $xoopsConfigMetaFooter['meta_keywords'];
-        }
-
-        return '';
+        return $xoopsConfigMetaFooter['meta_keywords'] ?? '';
     }
 
     /**

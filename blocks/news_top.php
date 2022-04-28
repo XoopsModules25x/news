@@ -190,11 +190,7 @@ function b_news_top_show($options)
             }
 
             if (0 == $options[5]) { // Use a specific news
-                if (!isset($permstory)) {
-                    $tmpstory = new NewsStory($options[6]);
-                } else {
-                    $tmpstory = $permstory;
-                }
+                $tmpstory = $permstory ?? new NewsStory($options[6]);
             } else { // Use the most recent news
                 $stories = [];
                 $stories = NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
