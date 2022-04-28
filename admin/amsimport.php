@@ -166,7 +166,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $news->setComments($article['comments']);
                 $news->rating   = $article['rating'];
                 $news->votes    = $votes['cpt'];
-                $approved       = $article['published'] > 0 ? true : false;
+                $approved       = $article['published'] > 0;
                 $news->approved = $approved;
                 $news->store($approved);
                 echo '<br>&nbsp;&nbsp;This story was imported : ' . $news->title();

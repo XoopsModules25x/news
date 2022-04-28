@@ -417,7 +417,7 @@ switch ($op) {
                 $allowupload = true;
                 break;
             case 2: //Approvers only
-                $allowupload = $approveprivilege ? true : false;
+                $allowupload = $approveprivilege;
                 break;
             case 3: //Upload Disabled
                 $allowupload = false;
