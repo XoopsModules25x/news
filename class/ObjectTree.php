@@ -15,7 +15,7 @@ namespace XoopsModules\News;
  * @copyright       (c) 2000-2020 XOOPS Project (www.xoops.org)
  * @license             GNU GPL 2 (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since               2.0.0
- * @author              Kazumi Ono (https://www.myweb.ne.jp/, https://jp.xoops.org/)
+ * @author              Kazumi Ono (http://www.myweb.ne.jp/, http://jp.xoops.org/)
  */
 
 /**
