@@ -215,12 +215,12 @@ if ('' !== xoops_trim($bodytext)) {
         }
 
         if (0 == $storypage) {
-            $story['text'] = $story['text'] . '<br>' . News\Utility::getModuleOption('advertisement') . '<br>' . $articletext[$storypage];
+            $story['text'] .= '<br>' . News\Utility::getModuleOption('advertisement') . '<br>' . $articletext[$storypage];
         } else {
             $story['text'] = $articletext[$storypage];
         }
     } else {
-        $story['text'] = $story['text'] . '<br>' . News\Utility::getModuleOption('advertisement') . '<br>' . $bodytext;
+        $story['text'] .= '<br>' . News\Utility::getModuleOption('advertisement') . '<br>' . $bodytext;
     }
 }
 // Publicit�

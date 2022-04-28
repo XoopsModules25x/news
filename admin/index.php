@@ -871,22 +871,7 @@ function topicsmanager(): void
                 $submenu = $topics_arr[$tmpcpt]['menu'] ? _YES : _NO;
                 $class   = ('even' === $class) ? 'odd' : 'even';
 
-                $output = $output
-                          . "<tr class='"
-                          . $class
-                          . "'><td>"
-                          . $topics_arr[$tmpcpt]['topic_id']
-                          . "</td><td align='left'>"
-                          . $topics_arr[$tmpcpt]['prefix']
-                          . $myts->displayTarea($topics_arr[$tmpcpt]['topic_title'])
-                          . "</td><td align='left'>"
-                          . $parent
-                          . "</td><td align='center'>"
-                          . $submenu
-                          . "</td><td align='center'>"
-                          . $action_edit
-                          . $action_delete
-                          . '</td></tr>';
+                $output .= "<tr class='" . $class . "'><td>" . $topics_arr[$tmpcpt]['topic_id'] . "</td><td align='left'>" . $topics_arr[$tmpcpt]['prefix'] . $myts->displayTarea($topics_arr[$tmpcpt]['topic_title']) . "</td><td align='left'>" . $parent . "</td><td align='center'>" . $submenu . "</td><td align='center'>" . $action_edit . $action_delete . '</td></tr>';
             } else {
                 $ok = false;
             }
