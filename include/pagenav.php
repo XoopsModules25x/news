@@ -163,11 +163,7 @@ class pagenav
             $counter      = 1;
             $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
-                if (isset($titles[$counter - 1])) {
-                    $title = $titles[$counter - 1];
-                } else {
-                    $title = $counter;
-                }
+                $title = $titles[$counter - 1] ?? $counter;
                 if ($counter == $current_page) {
                     $ret .= '<option value="' . $this->url . (($counter - 1) * $this->perpage) . '" selected>' . $title . '</option>';
                 } else {
