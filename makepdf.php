@@ -17,18 +17,23 @@
 
 use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 use XoopsModules\News\NewsStory;
 
 error_reporting(0);
 
 require_once __DIR__ . '/header.php';
-//2.5.8
-if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
-    redirect_header(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/viewtopic.php?topic_id=' . $topic_id, 3, 'TCPDF for Xoops not installed');
-} else {
-    require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
-}
 
+$moduleDirName      = basename(__DIR__);
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
+
+//2.5.8
+$helper = Helper::getInstance();
+if (is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+    require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+} else {
+    redirect_header($helper->url('index.php'), 3, \constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_NO_PDF'));
+}
 $myts = \MyTextSanitizer::getInstance();
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
