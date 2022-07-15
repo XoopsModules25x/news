@@ -370,7 +370,7 @@ switch ($op) {
             if (!$approve) {
                 $story->setPublished(0);
             }
-        } elseif (1 == $helper->getConfig('autoapprove') && !$approveprivilege) {
+        } elseif (1 == $helper->getConfig('autoapprove')) {
             if (empty($storyid)) {
                 $approve = 1;
             } else {
