@@ -252,9 +252,6 @@ switch ($op) {
         if ($approveprivilege) {
             $nohtml = Request::getInt('nohtml', 0, 'POST');
             $story->setNohtml($nohtml);
-            if (!isset($_POST['approve'])) {
-                $approve = 0;
-            }
         } else {
             $story->setNohtml = 1;
         }
