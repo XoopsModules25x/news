@@ -22,7 +22,7 @@ use XoopsModules\News\Helper;
 use XoopsModules\News\NewsStory;
 
 /**
- * Dispay a block where news moderators can show news that need to be moderated.
+ * Display a block where news moderators can show news that needs to be moderated.
  */
 function b_news_topics_moderate()
 {
