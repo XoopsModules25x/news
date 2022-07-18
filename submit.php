@@ -157,7 +157,7 @@ switch ($op) {
         $pictureinfo = $story->pictureinfo;
         $approve     = 0;
         $published   = $story->published();
-        if (isset($published) && $published > 0) {
+        if ((isset($published) && $published > 0) || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         if (0 != $story->published()) {
@@ -252,9 +252,6 @@ switch ($op) {
         if ($approveprivilege) {
             $nohtml = Request::getInt('nohtml', 0, 'POST');
             $story->setNohtml($nohtml);
-            if (!isset($_POST['approve'])) {
-                $approve = 0;
-            }
         } else {
             $story->setNohtml = 1;
         }
@@ -370,7 +367,7 @@ switch ($op) {
             if (!$approve) {
                 $story->setPublished(0);
             }
-        } elseif (1 == $helper->getConfig('autoapprove') && !$approveprivilege) {
+        } elseif (1 == $helper->getConfig('autoapprove')) {
             if (empty($storyid)) {
                 $approve = 1;
             } else {
@@ -576,7 +573,7 @@ switch ($op) {
             $expired      = 0;
             $published    = 0;
         }
-        if (1 == $helper->getConfig('autoapprove')) {
+        if (1 == $helper->getConfig('autoapprove') || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';

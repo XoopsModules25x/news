@@ -22,7 +22,7 @@ use XoopsModules\News\Helper;
 use XoopsModules\News\NewsStory;
 
 /**
- * Dispay a block where news moderators can show news that need to be moderated.
+ * Display a block where news moderators can show news that needs to be moderated.
  */
 function b_news_topics_moderate()
 {
@@ -67,8 +67,8 @@ function b_news_topics_moderate()
             $story['action']      = "<a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=edit&amp;storyid=' . $newstory->storyid() . "'>" . _EDIT . "</a> - <a href='" . XOOPS_URL . '/modules/news/admin/index.php?op=delete&amp;storyid=' . $newstory->storyid() . "'>" . _MB_DELETE . '</a>';
             $story['topic_title'] = $newstory->topic_title();
             $story['topic_color'] = '#' . $myts->displayTarea($newstory->topic_color);
-            $block['picture']     = XOOPS_URL . '/uploads/news/image/' . $story->picture();
-            $block['pictureinfo'] = $story->pictureinfo();
+            $block['picture']     = XOOPS_URL . '/uploads/news/image/' . $newstory->picture();
+            $block['pictureinfo'] = $newstory->pictureinfo();
             $block['stories'][]   = &$story;
             unset($story);
         }

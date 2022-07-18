@@ -341,7 +341,7 @@ $modversion['config'][] = [
  */
 
 /**
- * Auto approuve submited stories
+ * Auto approve submited stories
  */
 $modversion['config'][] = [
     'name'        => 'autoapprove',
@@ -353,7 +353,7 @@ $modversion['config'][] = [
 ];
 
 /**
- * Dispay layout, classic or by topics
+ * Display layout, classic or by topics
  */
 $modversion['config'][] = [
     'name'        => 'newsdisplay',
@@ -366,7 +366,7 @@ $modversion['config'][] = [
 ];
 
 /**
- * How to display Author's name, username, full name or nothing ?
+ * How to display author's name - username, full name or nothing?
  */
 $modversion['config'][] = [
     'name'        => 'displayname',
@@ -381,6 +381,7 @@ $modversion['config'][] = [
         '_MI_DISPLAYNAME3' => 3,
     ],
 ];
+
 /**
  * Number of columns to use to display news
  */
@@ -393,6 +394,7 @@ $modversion['config'][] = [
     'default'     => 1,
     'options'     => [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5],
 ];
+
 /**
  * Number of news and topics to display in the module's admin part
  */
