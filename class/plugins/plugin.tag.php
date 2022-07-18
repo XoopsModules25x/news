@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -15,10 +15,8 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
- * @author         Hervé Thouzard  URL: http://www.herve-thouzard.com
+ * @author         Hervé Thouzard  URL: https://www.herve-thouzard.com
  */
 
 /**
@@ -29,23 +27,19 @@ namespace XoopsModules\News;
 
 use XoopsModules\News;
 
-use function array_keys;
-use function is_array;
-use function time;
-
 /**
  * @param $items
  * @return bool|null
  */
 function news_tag_iteminfo(&$items)
 {
-    if (empty($items) || !is_array($items)) {
+    if (empty($items) || !\is_array($items)) {
         return false;
     }
 
     $items_id = [];
-    foreach (array_keys($items) as $cat_id) {
-        foreach (array_keys($items[$cat_id]) as $item_id) {
+    foreach (\array_keys($items) as $cat_id) {
+        foreach (\array_keys($items[$cat_id]) as $item_id) {
             $items_id[] = (int)$item_id;
         }
     }
@@ -53,8 +47,8 @@ function news_tag_iteminfo(&$items)
     $tempNews  = new \XoopsModules\News\NewsStory();
     $items_obj = $tempNews->getStoriesByIds($items_id);
 
-    foreach (array_keys($items) as $cat_id) {
-        foreach (array_keys($items[$cat_id]) as $item_id) {
+    foreach (\array_keys($items) as $cat_id) {
+        foreach (\array_keys($items[$cat_id]) as $item_id) {
             if (isset($items_obj[$item_id])) {
                 $item_obj                 = &$items_obj[$item_id];
                 $items[$cat_id][$item_id] = [
@@ -76,16 +70,16 @@ function news_tag_iteminfo(&$items)
 /**
  * @param $mid
  */
-function news_tag_synchronization($mid)
+function news_tag_synchronization($mid): void
 {
     global $xoopsDB;
     $itemHandler_keyName = 'storyid';
     $itemHandler_table   = $xoopsDB->prefix('news_stories');
     $linkHandler         = \XoopsModules\Tag\Helper::getInstance()->getHandler('Link'); //@var \XoopsModules\Tag\Handler $tagHandler
-    $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . time() . ')';
+    $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . \time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . \time() . ')';
 
     /* clear tag-item links */
-    if ($linkHandler->mysql_major_version() >= 4):
+    if (version_compare($xoopsDB->getServerVersion(), '4.1.0', 'ge')) :
         $sql = "    DELETE FROM {$linkHandler->table}"
                . ' WHERE '
                . "     tag_modid = {$mid}"
@@ -96,7 +90,7 @@ function news_tag_synchronization($mid)
                . "                WHERE $where"
                . '           ) '
                . '     )';
-    else:
+    else :
         $sql = "   DELETE {$linkHandler->table} FROM {$linkHandler->table}"
                . "  LEFT JOIN {$itemHandler_table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler_keyName} "
                . '   WHERE '
@@ -105,9 +99,9 @@ function news_tag_synchronization($mid)
                . "       ( aa.{$itemHandler_keyName} IS NULL"
                . '           OR '
                . '       (aa.published > 0 AND aa.published <= '
-               . time()
+               . \time()
                . ') AND (aa.expired = 0 OR aa.expired > '
-               . time()
+               . \time()
                . ')'
                . '       )';
 

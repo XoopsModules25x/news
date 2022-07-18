@@ -1,6 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
+
+use XoopsObject;
 
 /**
  * ****************************************************************************
@@ -8,7 +10,7 @@ namespace XoopsModules\News;
  * ****************************************************************************
  *       NEWS - MODULE FOR XOOPS
  *        Copyright (c) 2007 - 2011
- *       TXMod Xoops (http://www.txmodxoops.org)
+ *       TXMod Xoops (https://www.txmodxoops.org)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,9 +29,8 @@ namespace XoopsModules\News;
  *
  *  ------------------------------------------------------------------------
  *
- * @copyright       TXMod Xoops (http://www.txmodxoops.org)
+ * @copyright       TXMod Xoops (https://www.txmodxoops.org)
  * @license         GPL see LICENSE
- * @package         news
  * @author          TXMod Xoops (info@txmodxoops.org)
  *
  * Version : 1.67 Tue 2012/02/13 22:29:36 : Timgno Exp $
@@ -39,7 +40,7 @@ namespace XoopsModules\News;
 /**
  * Class Topics
  */
-class NewsTopics extends \XoopsObject
+class NewsTopics extends XoopsObject
 {
     //Constructor
 

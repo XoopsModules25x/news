@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -15,15 +15,13 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+require XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
 require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 
@@ -36,9 +34,6 @@ $helper->loadLanguage('main');
  */
 class NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
-    /**
-     * @param \XoopsDatabase|null $db
-     */
     public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_stories', NewsStory::class, 'storieid', 'title');

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -10,27 +10,30 @@
  */
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
+ * @copyright    XOOPS Project (https://xoops.org)
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
  */
 
 use Xmf\Request;
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 use XoopsModules\News\NewsStory;
 
 error_reporting(0);
 
 require_once __DIR__ . '/header.php';
-//2.5.8
-if (!is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
-    redirect_header(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/viewtopic.php?topic_id=' . $topic_id, 3, 'TCPDF for Xoops not installed');
-} else {
-    require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
-}
 
+$moduleDirName      = basename(__DIR__);
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
+
+//2.5.8
+$helper = Helper::getInstance();
+if (is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+    require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
+} else {
+    redirect_header($helper->url('index.php'), 3, \constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_NO_PDF'));
+}
 $myts = \MyTextSanitizer::getInstance();
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -73,7 +76,7 @@ $topic_title              = News\Utility::html2text($myts->undoHtmlSpecialChars(
 $pdf_data['subtitle']     = $topic_title;
 $pdf_data['subsubtitle']  = $article->subtitle();
 $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);
-$pdf_data['filename']     = preg_replace("/[^0-9a-z\-_\.]/i", '', htmlspecialchars($article->topic_title(), ENT_QUOTES | ENT_HTML5) . ' - ' . $article->title());
+$pdf_data['filename']     = preg_replace('/[^0-9a-z\-_\.]/i', '', htmlspecialchars($article->topic_title(), ENT_QUOTES | ENT_HTML5) . ' - ' . $article->title());
 $hometext                 = $article->hometext();
 $bodytext                 = $article->bodytext();
 $content                  = $myts->undoHtmlSpecialChars($hometext) . '<br><br>' . $myts->undoHtmlSpecialChars($bodytext);

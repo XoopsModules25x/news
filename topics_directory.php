@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -24,13 +22,13 @@
  *
  * @package News
  * @author Hervé Thouzard
- * @copyright (c) Hervé Thouzard - http://www.herve-thouzard.com
+ * @copyright (c) Hervé Thouzard - https://www.herve-thouzard.com
  */
 
 use XoopsModules\News;
 use XoopsModules\News\NewsTopic;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
@@ -41,7 +39,7 @@ $myts = \MyTextSanitizer::getInstance();
 
 $newscountbytopic = $tbl_topics = [];
 $perms            = '';
-$xt               = new  NewsTopic();
+$xt               = new NewsTopic();
 $restricted       = News\Utility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;

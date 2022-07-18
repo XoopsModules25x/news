@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -65,14 +63,14 @@
  */
 ######################################################################
 # Original version:
-# [11-may-2001] Kenneth Lee - http://www.nexgear.com/
+# [11-may-2001] Kenneth Lee - https://www.nexgear.com/
 ######################################################################
 
 use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -129,7 +127,7 @@ if (!$result) {
 $years  = [];
 $months = [];
 $i      = 0;
-while (list($time) = $xoopsDB->fetchRow($result)) {
+while ([$time] = $xoopsDB->fetchRow($result)) {
     $time = formatTimestamp($time, 'mysql', $useroffset);
     if (preg_match('/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/', $time, $datetime)) {
         $this_year  = (int)$datetime[1];

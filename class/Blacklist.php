@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
 //  ------------------------------------------------------------------------ //
 //                  Copyright (c) 2005-2006 Hervé Thouzard                     //
-//                     <http://www.herve-thouzard.com>                      //
+//                     <https://www.herve-thouzard.com>                      //
 // ------------------------------------------------------------------------- //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -45,7 +45,7 @@ class Blacklist
             require_once $filename;
             foreach ($tbl_black_list as $onekeyword) {
                 if ('' !== \xoops_trim($onekeyword)) {
-                    $onekeyword       = htmlspecialchars($onekeyword, ENT_QUOTES | ENT_HTML5);
+                    $onekeyword       = \htmlspecialchars($onekeyword, \ENT_QUOTES | \ENT_HTML5);
                     $ret[$onekeyword] = $onekeyword;
                 }
             }
@@ -60,7 +60,7 @@ class Blacklist
      * Remove one or many keywords from the list
      * @param $keyword
      */
-    public function delete($keyword)
+    public function delete($keyword): void
     {
         if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
@@ -77,18 +77,18 @@ class Blacklist
      * Add one or many keywords
      * @param $keyword
      */
-    public function addkeywords($keyword)
+    public function addkeywords($keyword): void
     {
         $myts = \MyTextSanitizer::getInstance();
         if (\is_array($keyword)) {
             foreach ($keyword as $onekeyword) {
-                $onekeyword = \xoops_trim(htmlspecialchars($onekeyword, ENT_QUOTES | ENT_HTML5));
+                $onekeyword = \xoops_trim(\htmlspecialchars($onekeyword, \ENT_QUOTES | \ENT_HTML5));
                 if ('' !== $onekeyword) {
                     $this->keywords[$onekeyword] = $onekeyword;
                 }
             }
         } else {
-            $keyword = \xoops_trim(htmlspecialchars($keyword, ENT_QUOTES | ENT_HTML5));
+            $keyword = \xoops_trim(\htmlspecialchars($keyword, \ENT_QUOTES | \ENT_HTML5));
             if ('' !== $keyword) {
                 $this->keywords[$keyword] = $keyword;
             }
@@ -123,7 +123,7 @@ class Blacklist
     /**
      * Save keywords
      */
-    public function store()
+    public function store(): void
     {
         $filename = XOOPS_UPLOAD_PATH . '/news_black_list.php';
         if (\is_file($filename)) {

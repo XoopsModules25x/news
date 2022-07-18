@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -30,7 +28,7 @@ function b_news_topics_show()
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
     //    require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
 
-    $moduleDirName = basename(dirname(__DIR__));
+    $moduleDirName = \basename(\dirname(__DIR__));
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
@@ -43,7 +41,7 @@ function b_news_topics_show()
     $storytopic = !empty($storytopic) ? $storytopic : 0;
     $restricted = News\Utility::getModuleOption('restrictindex');
 
-    $xt         = new  NewsTopic();
+    $xt         = new NewsTopic();
     $allTopics  = $xt->getAllTopics($restricted);
     $topic_tree = new \XoopsModules\News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $additional = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";
@@ -62,7 +60,7 @@ function b_news_topics_show()
 /**
  * @param $options
  */
-function b_news_topics_onthefly($options)
+function b_news_topics_onthefly($options): void
 {
     $options = explode('|', $options);
     $block   = b_news_topics_show($options);

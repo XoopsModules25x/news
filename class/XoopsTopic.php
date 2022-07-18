@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -14,7 +14,6 @@ namespace XoopsModules\News;
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         kernel
  * @since           2.0.0
  * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
  * @deprecated
@@ -24,7 +23,10 @@ namespace XoopsModules\News;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
 
+use MyTextSanitizer;
+use XoopsDatabaseFactory;
 use XoopsModules\News;
+use XoopsPerms;
 
 /**
  * Class XoopsTopic
@@ -47,7 +49,7 @@ class XoopsTopic
     public function __construct($table, $topicid = 0)
     {
         /** @var \XoopsMySQLDatabase $db */
-        $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table;
         if (\is_array($topicid)) {
             $this->makeTopic($topicid);
@@ -61,7 +63,7 @@ class XoopsTopic
     /**
      * @param $value
      */
-    public function setTopicTitle($value)
+    public function setTopicTitle($value): void
     {
         $this->topic_title = $value;
     }
@@ -69,7 +71,7 @@ class XoopsTopic
     /**
      * @param $value
      */
-    public function setTopicImgurl($value)
+    public function setTopicImgurl($value): void
     {
         $this->topic_imgurl = $value;
     }
@@ -77,7 +79,7 @@ class XoopsTopic
     /**
      * @param $value
      */
-    public function setTopicPid($value)
+    public function setTopicPid($value): void
     {
         $this->topic_pid = $value;
     }
@@ -85,10 +87,10 @@ class XoopsTopic
     /**
      * @param $topicid
      */
-    public function getTopic($topicid)
+    public function getTopic($topicid): void
     {
         $topicid = (int)$topicid;
-        $sql     = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid . '';
+        $sql     = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid;
         $array   = $this->db->fetchArray($this->db->query($sql));
         $this->makeTopic($array);
     }
@@ -96,7 +98,7 @@ class XoopsTopic
     /**
      * @param $array
      */
-    public function makeTopic($array)
+    public function makeTopic($array): void
     {
         foreach ($array as $key => $value) {
             $this->$key = $value;
@@ -106,7 +108,7 @@ class XoopsTopic
     /**
      * @param $mid
      */
-    public function usePermission($mid)
+    public function usePermission($mid): void
     {
         $this->mid            = $mid;
         $this->use_permission = true;
@@ -117,14 +119,14 @@ class XoopsTopic
      */
     public function store()
     {
-        $myts   = \MyTextSanitizer::getInstance();
+        $myts   = MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
         if (isset($this->topic_title) && '' !== $this->topic_title) {
-            $title = $myts->addSlashes($this->topic_title);
+            $title = $GLOBALS['xoopsDB']->escape($this->topic_title);
         }
         if (isset($this->topic_imgurl) && '' !== $this->topic_imgurl) {
-            $imgurl = $myts->addSlashes($this->topic_imgurl);
+            $imgurl = $GLOBALS['xoopsDB']->escape($this->topic_imgurl);
         }
         if (!isset($this->topic_pid) || !\is_numeric($this->topic_pid)) {
             $this->topic_pid = 0;
@@ -136,13 +138,9 @@ class XoopsTopic
             $sql = \sprintf("UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table, $this->topic_pid, $imgurl, $title, $this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
-            // TODO: Replace with something else
-            //            ErrorHandler::show('0022');
-
-            $helper = \XoopsModules\News\Helper::getHelper($dirname);
-            $helper->redirect('admin/index.php', 5, $this->db->error());
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
         }
-        if (true === $this->use_permission) {
+        if ($this->use_permission) {
             if (empty($this->topic_id)) {
                 $this->topic_id = $this->db->getInsertId();
             }
@@ -150,17 +148,17 @@ class XoopsTopic
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && \is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
-                    $moderate_topics = \XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
+                    $moderate_topics = XoopsPerms::getPermitted($this->mid, 'ModInTopic', $m_g);
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
-                        if (!\in_array($p_topic, $moderate_topics)) {
+                        if (!\in_array($p_topic, $moderate_topics, true)) {
                             $add = false;
                             continue;
                         }
                     }
-                    if (true === $add) {
-                        $xp = new \XoopsPerms();
+                    if ($add) {
+                        $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
                         $xp->setItemId($this->topic_id);
@@ -171,16 +169,16 @@ class XoopsTopic
             }
             if (!empty($this->s_groups) && \is_array($this->s_groups)) {
                 foreach ($s_groups as $s_g) {
-                    $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
+                    $submit_topics = XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!\in_array($p_topic, $submit_topics)) {
+                        if (!\in_array($p_topic, $submit_topics, true)) {
                             $add = false;
                             continue;
                         }
                     }
-                    if (true === $add) {
-                        $xp = new \XoopsPerms();
+                    if ($add) {
+                        $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
                         $xp->setItemId($this->topic_id);
@@ -191,16 +189,16 @@ class XoopsTopic
             }
             if (!empty($this->r_groups) && \is_array($this->r_groups)) {
                 foreach ($r_groups as $r_g) {
-                    $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
+                    $read_topics = XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!\in_array($p_topic, $read_topics)) {
+                        if (!\in_array($p_topic, $read_topics, true)) {
                             $add = false;
                             continue;
                         }
                     }
-                    if (true === $add) {
-                        $xp = new \XoopsPerms();
+                    if ($add) {
+                        $xp = new XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
                         $xp->setItemId($this->topic_id);
@@ -214,7 +212,7 @@ class XoopsTopic
         return true;
     }
 
-    public function delete()
+    public function delete(): void
     {
         $sql = \sprintf('DELETE FROM `%s` WHERE topic_id = %u', $this->table, $this->topic_id);
         $this->db->query($sql);
@@ -240,15 +238,15 @@ class XoopsTopic
      */
     public function topic_title($format = 'S')
     {
-        $myts = \MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
-                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->topic_title, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->topic_title, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -262,15 +260,15 @@ class XoopsTopic
      */
     public function topic_imgurl($format = 'S')
     {
-        $myts = \MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -282,11 +280,7 @@ class XoopsTopic
      */
     public function prefix()
     {
-        if (isset($this->prefix)) {
-            return $this->prefix;
-        }
-
-        return null;
+        return $this->prefix ?? null;
     }
 
     /**
@@ -346,7 +340,7 @@ class XoopsTopic
      * @param string $selname
      * @param string $onchange
      */
-    public function makeTopicSelBox($none = 0, $seltopic = -1, $selname = '', $onchange = '')
+    public function makeTopicSelBox($none = 0, $seltopic = -1, $selname = '', $onchange = ''): void
     {
         $xt = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
         if (-1 != $seltopic) {
@@ -389,14 +383,16 @@ class XoopsTopic
      */
     public function getTopicsList()
     {
-        $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
         $ret    = [];
-        $myts   = \MyTextSanitizer::getInstance();
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $ret[$myrow['topic_id']] = [
-                'title' => htmlspecialchars($myrow['topic_title'], ENT_QUOTES | ENT_HTML5),
-                'pid'   => $myrow['topic_pid'],
-            ];
+        $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
+        if ($result) {
+            $myts = MyTextSanitizer::getInstance();
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[$myrow['topic_id']] = [
+                    'title' => \htmlspecialchars($myrow['topic_title'], \ENT_QUOTES | \ENT_HTML5),
+                    'pid'   => $myrow['topic_pid'],
+                ];
+            }
         }
 
         return $ret;

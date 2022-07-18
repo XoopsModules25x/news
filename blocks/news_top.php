@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -77,7 +75,7 @@ function b_news_top_show($options)
         $perm_verified   = true;
         $permittedtopics = News\Utility::getMyItemIds();
         $permstory       = new NewsStory($options[6]);
-        if (!in_array($permstory->topicid(), $permittedtopics)) {
+        if (!in_array($permstory->topicid(), $permittedtopics, true)) {
             $usespotlight = false;
             $news_visible = false;
             $topicstitles = [];
@@ -90,7 +88,7 @@ function b_news_top_show($options)
         $permittedtopics = News\Utility::getMyItemIds();
         $topics          = array_slice($options, 14);
         foreach ($topics as $onetopic) {
-            if (in_array($onetopic, $permittedtopics)) {
+            if (in_array($onetopic, $permittedtopics, true)) {
                 $topics2[] = $onetopic;
             }
         }
@@ -134,7 +132,7 @@ function b_news_top_show($options)
         }
 
         $tmpstory     = new NewsStory();
-        $topic        = new  NewsTopic();
+        $topic        = new NewsTopic();
         $topicstitles = [];
         if (1 == $options[4]) { // Spotlight enabled
             $topicstitles[0] = _MB_NEWS_SPOTLIGHT_TITLE;
@@ -146,7 +144,7 @@ function b_news_top_show($options)
             if (!$perm_verified) {
                 $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
-                if (!in_array($permstory->topicid(), $permittedtopics)) {
+                if (!in_array($permstory->topicid(), $permittedtopics, true)) {
                     $usespotlight = false;
                     $topicstitles = [];
                 }
@@ -192,11 +190,7 @@ function b_news_top_show($options)
             }
 
             if (0 == $options[5]) { // Use a specific news
-                if (!isset($permstory)) {
-                    $tmpstory = new NewsStory($options[6]);
-                } else {
-                    $tmpstory = $permstory;
-                }
+                $tmpstory = $permstory ?? new NewsStory($options[6]);
             } else { // Use the most recent news
                 $stories = [];
                 $stories = NewsStory::getAllPublished(1, 0, $restricted, 0, 1, true, $options[0]);
@@ -405,7 +399,7 @@ function b_news_top_show($options)
         if (!$stories) {
             return '';
         }
-        $topic = new  NewsTopic();
+        $topic = new NewsTopic();
 
         foreach ($stories as $key => $story) {
             $news  = [];
@@ -422,7 +416,7 @@ function b_news_top_show($options)
                 $visible   = true;
                 if ($restricted) {
                     $permittedtopics = News\Utility::getMyItemIds();
-                    if (!in_array($story->topicid(), $permittedtopics)) {
+                    if (!in_array($story->topicid(), $permittedtopics, true)) {
                         $visible = false;
                     }
                 }
@@ -505,7 +499,7 @@ function b_news_top_show($options)
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
                 $permittedtopics = News\Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
-                if (!in_array($permstory->topicid(), $permittedtopics)) {
+                if (!in_array($permstory->topicid(), $permittedtopics, true)) {
                     $visible = false;
                 }
                 unset($permstory);
@@ -527,7 +521,7 @@ function b_news_top_show($options)
                     $block['use_spotlight'] = false;
                 }
             }
-            if (true === $block['use_spotlight']) {
+            if ($block['use_spotlight']) {
                 $spotlight          = [];
                 $spotlight['title'] = xoops_substr($spotlightArticle->title(), 0, $options[2] - 1);
                 if ('' !== $options[7]) {
@@ -698,7 +692,7 @@ function b_news_top_edit($options)
 /**
  * @param $options
  */
-function b_news_top_onthefly($options)
+function b_news_top_onthefly($options): void
 {
     $options = explode('|', $options);
     $block   = b_news_top_show($options);

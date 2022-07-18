@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -140,7 +138,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     // Check if News POSTER is voting (UNLESS Anonymous users allowed to post)
     if (0 != $ratinguser) {
         $result = $xoopsDB->query('SELECT uid FROM ' . $xoopsDB->prefix('news_stories') . " WHERE storyid=$storyid");
-        while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
+        while ([$ratinguserDB] = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_CANTVOTEOWN);
             }
@@ -148,7 +146,7 @@ if (!empty($_POST['submit'])) { // The form was submited
 
         // Check if REG user is trying to vote twice.
         $result = $xoopsDB->query('SELECT ratinguser FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid");
-        while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
+        while ([$ratinguserDB] = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
             }
@@ -167,7 +165,8 @@ if (!empty($_POST['submit'])) { // The form was submited
     $newid    = $xoopsDB->genId($xoopsDB->prefix('news_stories_votedata') . '_ratingid_seq');
     $datetime = time();
     $sql      = sprintf("INSERT INTO `%s` (ratingid, storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix('news_stories_votedata'), $newid, $storyid, $ratinguser, $rating, $ip, $datetime);
-    $xoopsDB->query($sql) || ErrorHandler::show('0013');
+    // $xoopsDB->query($sql) || ErrorHandler::show('0013');
+    $xoopsDB->query($sql) or trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
     News\Utility::updateRating($storyid);

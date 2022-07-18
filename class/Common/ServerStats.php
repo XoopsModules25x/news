@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News\Common;
 
@@ -14,7 +14,7 @@ namespace XoopsModules\News\Common;
 
 /**
  * @copyright   XOOPS Project (https://xoops.org)
- * @license     http://www.fsf.org/copyleft/gpl.html GNU public license
+ * @license     https://www.fsf.org/copyleft/gpl.html GNU public license
  * @author      mamba <mambax7@gmail.com>
  */
 trait ServerStats
@@ -27,8 +27,8 @@ trait ServerStats
     public static function getServerStats()
     {
         //mb    $wfdownloads = WfdownloadsWfdownloads::getInstance();
-        $moduleDirName      = \basename(dirname(__DIR__, 2));
-        $moduleDirNameUpper = mb_strtoupper($moduleDirName);
+        $moduleDirName      = \basename(\dirname(__DIR__, 2));
+        $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
         \xoops_loadLanguage('common', $moduleDirName);
         $html = '';
         //        $sql   = 'SELECT metavalue';

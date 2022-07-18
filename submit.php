@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -25,7 +23,7 @@ use XoopsModules\News\NewsTopic;
 use XoopsModules\Tag\Helper;
 
 if (!defined('XOOPS_ROOT_PATH')) {
-    require_once dirname(__DIR__, 2) . '/mainfile.php';
+    require_once \dirname(__DIR__, 2) . '/mainfile.php';
 }
 require_once __DIR__ . '/header.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -105,7 +103,7 @@ if (Request::hasVar('preview', 'POST')) {
         if (!empty($storyid)) {
             $tmpstory = new NewsStory($storyid);
             if ($tmpstory->uid() == $xoopsUser->getVar('uid')) {
-                $op = isset($_GET['op']) ? $_GET['op'] : $_POST['post'];
+                $op = $_GET['op'] ?? $_POST['post'];
                 unset($tmpstory);
                 $approveprivilege = 1;
             } else {
@@ -180,7 +178,7 @@ switch ($op) {
         break;
     case 'preview':
         $topic_id = Request::getInt('topic_id', 0, 'POST');
-        $xt       = new  NewsTopic($topic_id);
+        $xt       = new NewsTopic($topic_id);
         if (Request::hasVar('storyid', 'GET')) {
             $storyid = Request::getInt('storyid', 0, 'GET');
         } elseif (Request::hasVar('storyid', 'POST')) {
@@ -416,7 +414,7 @@ switch ($op) {
                 $allowupload = true;
                 break;
             case 2: //Approvers only
-                $allowupload = $approveprivilege ? true : false;
+                $allowupload = $approveprivilege;
                 break;
             case 3: //Upload Disabled
                 $allowupload = false;
@@ -471,9 +469,11 @@ switch ($op) {
 
         $result = $story->store();
         if ($result) {
-            if (xoops_isActiveModule('tag') && News\Utility::getModuleOption('tags')) {
-                $tagHandler = Helper::getInstance()->getHandler('Tag');
-                $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $xoopsModule->getVar('dirname'), 0);
+            $helper = Helper::getInstance();
+            if (1 == $helper->getConfig('tags') && \class_exists(\XoopsModules\Tag\TagHandler::class) && xoops_isActiveModule('tag')) {
+                /** @var \XoopsModules\Tag\TagHandler $tagHandler */
+                $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag');
+                $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $helper->getDirname(), 0);
             }
 
             if (!$editmode) {
@@ -552,7 +552,7 @@ switch ($op) {
         }
         break;
     case 'form':
-        $xt        = new  NewsTopic();
+        $xt        = new NewsTopic();
         $title     = '';
         $subtitle  = '';
         $hometext  = '';

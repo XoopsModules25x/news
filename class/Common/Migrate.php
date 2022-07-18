@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace XoopsModules\Xoopsfaq\Common;
+namespace XoopsModules\News\Common;
 
 /*
  You may not change or alter any portion of this comment or credits
@@ -12,13 +12,16 @@ namespace XoopsModules\Xoopsfaq\Common;
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+use RuntimeException;
+use Xmf\Database\Tables;
+
 /**
  * Class Migrate synchronize existing tables with target schema
  *
  * @category  Migrate
  * @author    Richard Griffith <richard@geekwright.com>
  * @copyright 2016 XOOPS Project (https://xoops.org)
- * @license   GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @license   GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @link      https://xoops.org
  */
 class Migrate extends \Xmf\Database\Migrate
@@ -27,74 +30,44 @@ class Migrate extends \Xmf\Database\Migrate
 
     /**
      * Migrate constructor.
-     * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function __construct()
     {
         $class = __NAMESPACE__ . '\\' . 'Configurator';
         if (!\class_exists($class)) {
-            throw new \RuntimeException("Class '$class' not found");
+            throw new RuntimeException("Class '$class' not found");
         }
         $configurator       = new $class();
         $this->renameTables = $configurator->renameTables;
 
-        $moduleDirName = \basename(dirname(__DIR__, 2));
+        $moduleDirName = \basename(\dirname(__DIR__, 2));
         parent::__construct($moduleDirName);
     }
 
-    /**
-     * change table prefix if needed
-     */
-    private function changePrefix()
-    {
-        foreach ($this->renameTables as $oldName => $newName) {
-            if ($this->tableHandler->useTable($oldName) && !$this->tableHandler->useTable($newName)) {
-                $this->tableHandler->renameTable($oldName, $newName);
-            }
-        }
-    }
 
     /**
-     * Change integer IPv4 column to varchar IPv6 capable
+     * Change column size of a field
      *
      * @param string $tableName  table to convert
-     * @param string $columnName column with IP address
+     * @param string $columnName column to convert
+     * @param string $attribute new attribute
      */
-    private function convertIPAddresses($tableName, $columnName)
+    private function changeColumnSize($tableName, $columnName, $attribute)
     {
-        if ($this->tableHandler->useTable($tableName)) {
-            $attributes = $this->tableHandler->getColumnAttributes($tableName, $columnName);
-            if (false !== mb_strpos($attributes, ' int(')) {
-                if (false === mb_strpos($attributes, 'unsigned')) {
-                    $this->tableHandler->alterColumn($tableName, $columnName, " bigint(16) NOT NULL  DEFAULT '0' ");
-                    $this->tableHandler->update($tableName, [$columnName => "4294967296 + $columnName"], "WHERE $columnName < 0", false);
-                }
-                $this->tableHandler->alterColumn($tableName, $columnName, " varchar(45)  NOT NULL  DEFAULT '' ");
-                $this->tableHandler->update($tableName, [$columnName => "INET_NTOA($columnName)"], '', false);
+        $moduleDirName      = \basename(\dirname(__DIR__, 2));
+        $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
+
+        $tables = new Tables();
+        if ($tables->useTable($tableName)) {
+            $tables->alterColumn($tableName, $columnName, $attribute);
+            if (!$tables->executeQueue()) {
+                echo '<br>' . constant('CO_' . $moduleDirNameUpper . '_UPGRADEFAILED4') . ' ' . $tables->getLastError();
             }
         }
     }
 
-    /**
-     * Move do* columns from newbb_posts to newbb_posts_text table
-     */
-    private function moveDoColumns()
-    {
-        $tableName    = 'newbb_posts_text';
-        $srcTableName = 'newbb_posts';
-        if ($this->tableHandler->useTable($tableName)
-            && $this->tableHandler->useTable($srcTableName)) {
-            $attributes = $this->tableHandler->getColumnAttributes($tableName, 'dohtml');
-            if (false === $attributes) {
-                $this->synchronizeTable($tableName);
-                $updateTable = $GLOBALS['xoopsDB']->prefix($tableName);
-                $joinTable   = $GLOBALS['xoopsDB']->prefix($srcTableName);
-                $sql         = "UPDATE `$updateTable` t1 INNER JOIN `$joinTable` t2 ON t1.post_id = t2.post_id \n" . "SET t1.dohtml = t2.dohtml,  t1.dosmiley = t2.dosmiley, t1.doxcode = t2.doxcode\n" . '  , t1.doimage = t2.doimage, t1.dobr = t2.dobr';
-                $this->tableHandler->addToQueue($sql);
-            }
-        }
-    }
 
     /**
      * Perform any upfront actions before synchronizing the schema
@@ -103,16 +76,12 @@ class Migrate extends \Xmf\Database\Migrate
      *   table and column renames
      *   data conversions
      */
-    protected function preSyncActions()
+    protected function preSyncActions(): void
     {
-        /*
-        // change 'bb' table prefix to 'newbb'
-        $this->changePrefix();
-        // columns dohtml, dosmiley, doxcode, doimage and dobr moved between tables as some point
-        $this->moveDoColumns();
-        // Convert IP address columns from int to readable varchar(45) for IPv6
-        $this->convertIPAddresses('newbb_posts', 'poster_ip');
-        $this->convertIPAddresses('newbb_report', 'reporter_ip');
-        */
+       // change column size for IP address from varchar(16) to varchar(45) for IPv6
+        $this->changeColumnSize('news_stories', 'hostname', 'varchar(45) NOT NULL DEFAULT \'\'');
+        // change column size for Picture from varchar(50) to varchar(255) for SEO
+        $this->changeColumnSize('news_stories', 'picture', 'varchar(255) NOT NULL DEFAULT \'\'');
+
     }
 }

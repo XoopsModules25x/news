@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -21,7 +19,7 @@ use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -49,10 +47,10 @@ if ($com_itemid > 0) {
         $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), News\Utility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
         $bodytext      = $article->bodytext();
         if ('' !== $bodytext) {
-            $com_replytext .= '<br><br>' . $bodytext . '';
+            $com_replytext .= '<br><br>' . $bodytext;
         }
         $com_replytitle = $article->title();
-        require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
+        require XOOPS_ROOT_PATH . '/include/comment_new.php';
     } else {
         exit;
     }

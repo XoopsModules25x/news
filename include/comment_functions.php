@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  * @param mixed $story_id
  * @param mixed $total_num
@@ -45,7 +43,7 @@ function news_com_update($story_id, $total_num)
 /**
  * @param $comment
  */
-function news_com_approve(&$comment)
+function news_com_approve(&$comment): void
 {
     // notification mail here
 }

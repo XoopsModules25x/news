@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -14,7 +14,6 @@ namespace XoopsModules\News;
  *
  * @copyright       (c) 2000-2020 XOOPS Project (www.xoops.org)
  * @license             GNU GPL 2 (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package             kernel
  * @since               2.0.0
  * @author              Kazumi Ono (http://www.myweb.ne.jp/, http://jp.xoops.org/)
  */
@@ -22,8 +21,6 @@ namespace XoopsModules\News;
 /**
  * A tree structures with {@link XoopsObject}s as nodes
  *
- * @package    kernel
- * @subpackage core
  * @author     Kazumi Ono <onokazu@xoops.org>
  */
 class ObjectTree
@@ -61,7 +58,7 @@ class ObjectTree
      *
      * @access private
      */
-    protected function initialize()
+    protected function initialize(): void
     {
         foreach (\array_keys($this->objects) as $i) {
             $key1                         = $this->objects[$i]->getVar($this->myId);
@@ -171,7 +168,7 @@ class ObjectTree
      *
      * @deprecated since 2.5.9, please use makeSelectElement() functionality
      */
-    protected function makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = '')
+    protected function makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = ''): void
     {
         if ($key > 0) {
             $value = $this->tree[$key]['obj']->getVar($this->myId);
@@ -216,7 +213,7 @@ class ObjectTree
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
         $ret = '<select name="' . $name . '" id="' . $name . '" ' . $extra . '>';
-        if (false !== (bool)$addEmptyOption) {
+        if ((bool)$addEmptyOption) {
             $ret .= '<option value="0"></option>';
         }
         $this->makeSelBoxOptions($fieldName, $selected, $key, $ret, $prefix);
@@ -253,7 +250,7 @@ class ObjectTree
         $element = new \XoopsFormSelect($caption, $name, $selected);
         $element->setExtra($extra);
 
-        if (false !== (bool)$addEmptyOption) {
+        if ((bool)$addEmptyOption) {
             $element->addOption('0', ' ');
         }
         $this->addSelectOptions($element, $fieldName, $key, $prefix);
@@ -273,7 +270,7 @@ class ObjectTree
      *
      * @access private
      */
-    protected function addSelectOptions($element, $fieldName, $key, $prefix_orig, $prefix_curr = '')
+    protected function addSelectOptions($element, $fieldName, $key, $prefix_orig, $prefix_curr = ''): void
     {
         if ($key > 0) {
             $value = $this->tree[$key]['obj']->getVar($this->myId);

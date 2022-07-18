@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -10,15 +10,14 @@
  */
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
+ * @copyright    XOOPS Project (https://xoops.org)
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author       XOOPS Development Team
  */
 
 use XoopsModules\News;
 use XoopsModules\News\Common\Configurator;
+use XoopsModules\News\Utility;
 
 /**
  * Prepares system prior to attempting to install module
@@ -28,13 +27,13 @@ use XoopsModules\News\Common\Configurator;
  */
 function xoops_module_pre_install_news(\XoopsModule $module)
 {
-    require_once dirname(__DIR__) . '/preloads/autoloader.php';
+    require_once \dirname(__DIR__) . '/preloads/autoloader.php';
     /** @var News\Utility $utility */
-    $utility      = new \XoopsModules\News\Utility();
+    $utility      = new Utility();
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
 
-    if (false !== $xoopsSuccess && false !== $phpSuccess) {
+    if ($xoopsSuccess && $phpSuccess) {
         $moduleTables = &$module->getInfo('tables');
         foreach ($moduleTables as $table) {
             $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
@@ -52,13 +51,13 @@ function xoops_module_pre_install_news(\XoopsModule $module)
  */
 function xoops_module_install_news(\XoopsModule $module)
 {
-    require_once dirname(__DIR__, 3) . '/mainfile.php';
+    require_once \dirname(__DIR__, 3) . '/mainfile.php';
 
-    $moduleDirName = basename(dirname(__DIR__));
+    $moduleDirName = \basename(\dirname(__DIR__));
 
     /** @var News\Helper $helper */
     $helper       = News\Helper::getInstance();
-    $utility      = new \XoopsModules\News\Utility();
+    $utility      = new Utility();
     $configurator = new Configurator();
     // Load language files
     $helper->loadLanguage('admin');
@@ -87,7 +86,7 @@ function xoops_module_install_news(\XoopsModule $module)
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file = dirname(__DIR__) . '/assets/images/blank.png';
+        $file = \dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utility::copyFile($file, $dest);

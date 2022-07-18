@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  * @param mixed $category
  * @param mixed $item_id
@@ -22,7 +20,6 @@
 /**
  * @param $category
  * @param $item_id
- * @return null
  */
 function news_notify_iteminfo($category, $item_id)
 {

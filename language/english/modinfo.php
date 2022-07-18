@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 //
 // Module Info
 // The name of this module
@@ -93,7 +93,7 @@ define('_MI_NEWS_RATE_NEWS', 'Enable users to rate news?');
 define('_MI_NEWS_TOPICS_RSS', 'Enable RSS feeds per topics?');
 define('_MI_NEWS_TOPICS_RSS_DESC', "If you set this option to 'yes' then the topics content will be available as RSS feeds");
 define('_MI_NEWS_DATEFORMAT', "Date's format");
-define('_MI_NEWS_DATEFORMAT_DESC', "Please refer to the Php documentation (http://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
+define('_MI_NEWS_DATEFORMAT_DESC', "Please refer to the Php documentation (https://php.net/manual/en/function.date.php) for more information on how to select the format. Note, if you don't type anything then the default date's format will be used");
 define('_MI_NEWS_META_DATA', 'Enable meta data (keywords and description) to be entered?');
 define('_MI_NEWS_META_DATA_DESC', "If you set this option to 'yes' then the approvers will be able to enter the following meta data: keywords and description");
 define('_MI_NEWS_BNAME8', 'Random news');
@@ -130,11 +130,11 @@ define('_MI_NEWS_BNAME9', 'Archives');
 define('_MI_NEWS_FORM_TINYEDITOR', 'TinyEditor');
 define('_MI_NEWS_FOOTNOTES', 'Shows links in printable versions of your articles?');
 define('_MI_NEWS_DUBLINCORE', "Activate 'Dublin Core Metadata'?");
-define('_MI_NEWS_DUBLINCORE_DSC', "For more information, <a href='http://dublincore.org/'>visit this link</a>");
+define('_MI_NEWS_DUBLINCORE_DSC', "For more information, <a href='https://dublincore.org/'>visit this link</a>");
 define('_MI_NEWS_BOOKMARK_ME', "Display a 'Bookmark this article at these sites' block?");
 define('_MI_NEWS_BOOKMARK_ME_DSC', "This block will be visible on the article's page");
-//define('_MI_NEWS_FF_MICROFORMAT',"Activate 'Firefox Micro Summaries'?");//obsolete, see here : http://wiki.mozilla.org/Microsummaries (cesagonchu)
-//define('_MI_NEWS_FF_MICROFORMAT_DSC',"For more information, see <a href='http://wiki.mozilla.org/Microsummaries' target='_blank'>this page</a>");//obsolete, see here : http://wiki.mozilla.org/Microsummaries (cesagonchu)
+//define('_MI_NEWS_FF_MICROFORMAT',"Activate 'Firefox Micro Summaries'?");//obsolete, see here : https://wiki.mozilla.org/Microsummaries (cesagonchu)
+//define('_MI_NEWS_FF_MICROFORMAT_DSC',"For more information, see <a href='https://wiki.mozilla.org/Microsummaries' target='_blank'>this page</a>");//obsolete, see here : https://wiki.mozilla.org/Microsummaries (cesagonchu)
 define('_MI_NEWS_WHOS_WHO', "Who's who");
 define('_MI_NEWS_METAGEN', 'Metagen');
 define('_MI_NEWS_TOPICS_DIRECTORY', 'Topics directory');

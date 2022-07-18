@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -23,7 +21,6 @@
  * This page is used to print an article. The advantage of this script is that you
  * only see the article and nothing else.
  *
- * @package               News
  * @author                Xoops Modules Dev Team
  * @copyright    (c)      XOOPS Project (https://xoops.org)
  *
@@ -39,7 +36,7 @@ use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 $storyid = Request::getInt('storyid', 0, 'GET');
 if (empty($storyid)) {
@@ -85,7 +82,7 @@ if ('' !== trim($story->description())) {
     $xoops_meta_description = strip_tags($story->title());
 }
 
-function PrintPage()
+function PrintPage(): void
 {
     global $xoopsConfig, $xoopsModule, $story, $xoops_meta_keywords, $xoops_meta_description;
     $myts     = \MyTextSanitizer::getInstance();
@@ -118,9 +115,9 @@ function PrintPage()
              Author:         Aaron Gustafson (aaron at easy-designs dot net)
              Creation Date:  8 May 2005
              Version:        1.3
-             Homepage:       http://www.easy-designs.net/code/footnoteLinks/
+             Homepage:       https://www.easy-designs.net/code/footnoteLinks/
              License:        Creative Commons Attribution-ShareAlike 2.0 License
-             http://creativecommons.org/licenses/by-sa/2.0/
+             https://creativecommons.org/licenses/by-sa/2.0/
              Note:           This version has reduced functionality as it is a demo of
              the script's development
              ------------------------------------------------------------------------------*/
@@ -182,9 +179,9 @@ function PrintPage()
             /*------------------------------------------------------------------------------
              Excerpts from the jsUtilities Library
              Version:        2.1
-             Homepage:       http://www.easy-designs.net/code/jsUtilities/
+             Homepage:       https://www.easy-designs.net/code/jsUtilities/
              License:        Creative Commons Attribution-ShareAlike 2.0 License
-             http://creativecommons.org/licenses/by-sa/2.0/
+             https://creativecommons.org/licenses/by-sa/2.0/
              Note:           If you change or improve on this script, please let us know.
              ------------------------------------------------------------------------------*/
             if (Array.prototype.push === null) {
@@ -196,7 +193,7 @@ function PrintPage()
             }
             // ---------------------------------------------------------------------
             //                  function.apply (if unsupported)
-            //           Courtesy of Aaron Boodman - http://youngpup.net
+            //           Courtesy of Aaron Boodman - https://youngpup.net
             // ---------------------------------------------------------------------
             if (!Function.prototype.apply) {
                 Function.prototype.apply = function (oScope, args) {

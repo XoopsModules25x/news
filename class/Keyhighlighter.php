@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
 /**
  * This file contains the Keyhighlighter class that highlight the chosen keyword in the current output buffer.
- *
- * @package Keyhighlighter
  */
 
 /**
@@ -13,12 +11,11 @@ namespace XoopsModules\News;
  *
  * This class highlight the chosen keywords in the current output buffer
  *
- * @package   Keyhighlighter
  * @author    Setec Astronomy
  * @abstract  Highlight specific keywords.
  * @copyright 2004
  * @example   sample.php A sample code.
- * @link      http://setecastronomy.stufftoread.com
+ * @link      https://setecastronomy.stufftoread.com
  */
 class Keyhighlighter
 {
@@ -57,7 +54,7 @@ class Keyhighlighter
      * }
      *
      * new Keyhighlighter ('W3C', false, 'my_highlighter');
-     * readfile ('http://www.w3c.org/');
+     * readfile ('https://www.w3c.org/');
      * ?>
      * </code>
      */
@@ -108,7 +105,7 @@ class Keyhighlighter
     {
         $buffer              = '>' . $buffer . '<';
         $this->preg_keywords = \preg_replace('/[^\w ]/si', '', $this->keywords);
-        $buffer              = \preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", [&$this, 'replace'], $buffer);
+        $buffer              = \preg_replace_callback('/(\>(((?' . '>[^><]+)|(?R))*)\<)/is', [&$this, 'replace'], $buffer);
         $buffer              = \xoops_substr($buffer, 1, -1);
 
         return $buffer;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,14 +12,12 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
 use XoopsModules\News;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -37,4 +35,4 @@ if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) { // Anon
     exit();
 }
 // ****************************************************************************
-require_once XOOPS_ROOT_PATH . '/include/comment_post.php';
+require XOOPS_ROOT_PATH . '/include/comment_post.php';

@@ -1,5 +1,5 @@
 <div class="news-index">
-    <{if $topic_rssfeed_link != ""}>
+    <{if $topic_rssfeed_link|default:'' != ''}>
         <div align='right'><{$topic_rssfeed_link}></div>
     <{/if}>
 
@@ -12,7 +12,7 @@
         </div>
     <{/if}>
 
-    <{if $topic_description != ''}>
+    <{if $topic_description|default:'' != ''}>
         <div style="text-align: center;"><{$topic_description}></div>
     <{/if}>
 

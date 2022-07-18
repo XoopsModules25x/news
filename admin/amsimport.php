@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -22,8 +20,7 @@
  *
  * This script will import topics, articles, files, links, ratings, comments and notifications from AMS 2.41
  *
- * @package   News
- * @author    Hervé Thouzard (http://www.herve-thouzard.com)
+ * @author    Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright 2005, 2006 - Hervé Thouzard
  */
 
@@ -33,7 +30,7 @@ use XoopsModules\News\Files;
 use XoopsModules\News\NewsStory;
 use XoopsModules\News\NewsTopic;
 
-require_once dirname(__DIR__, 3) . '/include/cp_header.php';
+require \dirname(__DIR__, 3) . '/include/cp_header.php';
 xoops_cp_header();
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -63,23 +60,23 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         // User's choices
         $use_forum    = (isset($_POST['useforum']) && 1 == $_POST['useforum']) ? 1 : 0;
         $use_extlinks = (isset($_POST['useextlinks']) && 1 == $_POST['useextlinks']) ? 1 : 0;
-        // Retreive News module's ID
+        // Retrieve News module's ID
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newsModule    = $moduleHandler->getByDirname('news');
         $news_mid      = $newsModule->getVar('mid');
-        // Retreive AMS module's ID
+        // Retrieve AMS module's ID
         $AmsModule = $moduleHandler->getByDirname('AMS');
         $ams_mid   = $AmsModule->getVar('mid');
 
-        // Retreive AMS tables names
+        // Retrieve AMS tables names
         $ams_topics   = $xoopsDB->prefix('ams_topics');
         $ams_articles = $xoopsDB->prefix('ams_article');
         $ams_text     = $xoopsDB->prefix('ams_text');
         $ams_files    = $xoopsDB->prefix('ams_files');
         $ams_links    = $xoopsDB->prefix('ams_link');
         $ams_rating   = $xoopsDB->prefix('ams_rating');
-        // Retreive News tables names
+        // Retrieve News tables names
         $news_stories_votedata = $xoopsDB->prefix('news_stories_votedata');
         // Misc
         $commentHandler = xoops_getHandler('comment');
@@ -169,7 +166,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $news->setComments($article['comments']);
                 $news->rating   = $article['rating'];
                 $news->votes    = $votes['cpt'];
-                $approved       = $article['published'] > 0 ? true : false;
+                $approved       = $article['published'] > 0;
                 $news->approved = $approved;
                 $news->store($approved);
                 echo '<br>&nbsp;&nbsp;This story was imported : ' . $news->title();

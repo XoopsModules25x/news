@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * News module
  *
@@ -11,7 +12,6 @@
  *
  * @copyright      XOOPS Project (https://xoops.org)
  * @license        https://www.gnu.org/licenses/gpl-2.0.html GNU Public License
- * @package        news
  * @since          1.6.7
  * @author         XOOPS Development Team
  **/
@@ -20,22 +20,22 @@ use Xmf\Module\Admin;
 use XoopsModules\News;
 use XoopsModules\News\Helper;
 
-require_once dirname(__DIR__, 3) . '/include/cp_header.php';
+require \dirname(__DIR__, 3) . '/include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
-// require_once  dirname(__DIR__) . '/class/Utility.php';
-require_once dirname(__DIR__) . '/include/common.php';
+// require_once  \dirname(__DIR__) . '/class/Utility.php';
+require_once \dirname(__DIR__) . '/include/common.php';
 
-require_once dirname(__DIR__) . '/preloads/autoloader.php';
+require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName = \basename(\dirname(__DIR__));
 /** @var \XoopsModules\News\Helper $helper */
 $helper = Helper::getInstance();
 
 /** @var Xmf\Module\Admin $adminObject */
 $adminObject = Admin::getInstance();
 
-$pathIcon16 = Admin::iconUrl('', 16);
-$pathIcon32 = Admin::iconUrl('', 32);
+$pathIcon16 = Admin::iconUrl('', '16');
+$pathIcon32 = Admin::iconUrl('', '32');
 
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
@@ -43,6 +43,7 @@ $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 $helper->loadLanguage('admin');
 $helper->loadLanguage('modinfo');
 $helper->loadLanguage('main');
+$helper->loadLanguage('common');
 
 $myts = \MyTextSanitizer::getInstance();
 

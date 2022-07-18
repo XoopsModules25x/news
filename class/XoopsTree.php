@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -14,7 +14,6 @@ namespace XoopsModules\News;
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         kernel
  * @since           2.0.0
  * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
  */
@@ -25,9 +24,6 @@ namespace XoopsModules\News;
  * @author     Kazumi Ono <onokazu@xoops.org>
  * @author     John Neill <catzwolf@xoops.org>
  * @copyright  copyright (c) XOOPS.org
- * @package    kernel
- * @subpackage XoopsTree
- * @access     public
  */
 class XoopsTree
 {
@@ -68,17 +64,15 @@ class XoopsTree
     {
         $sel_id = (int)$sel_id;
         $arr    = [];
-        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
-        $count  = $this->db->getRowsNum($result);
-        if (0 == $count) {
-            return $arr;
-        }
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $arr[] = $myrow;
+        if ($result instanceof \mysqli_result) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $arr[] = $myrow;
+            }
         }
 
         return $arr;
@@ -95,12 +89,12 @@ class XoopsTree
     {
         $sel_id  = (int)$sel_id;
         $idarray = [];
-        $result  = $this->db->query('SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '');
+        $result  = $this->db->query('SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id);
         $count   = $this->db->getRowsNum($result);
         if (0 == $count) {
             return $idarray;
         }
-        while (list($id) = $this->db->fetchRow($result)) {
+        while ([$id] = $this->db->fetchRow($result)) {
             $idarray[] = $id;
         }
 
@@ -119,7 +113,7 @@ class XoopsTree
     public function getAllChildId($sel_id, $order = '', $idarray = [])
     {
         $sel_id = (int)$sel_id;
-        $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -128,7 +122,7 @@ class XoopsTree
         if (0 == $count) {
             return $idarray;
         }
-        while (list($r_id) = $this->db->fetchRow($result)) {
+        while ([$r_id] = $this->db->fetchRow($result)) {
             $idarray[] = $r_id;
             $idarray   = $this->getAllChildId($r_id, $order, $idarray);
         }
@@ -148,7 +142,7 @@ class XoopsTree
     public function getAllParentId($sel_id, $order = '', $idarray = [])
     {
         $sel_id = (int)$sel_id;
-        $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
+        $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -182,8 +176,8 @@ class XoopsTree
         }
         [$parentid, $name] = $this->db->fetchRow($result);
         $myts = \MyTextSanitizer::getInstance();
-        $name = htmlspecialchars($name, ENT_QUOTES | ENT_HTML5);
-        $path = '/' . $name . $path . '';
+        $name = \htmlspecialchars($name, \ENT_QUOTES | \ENT_HTML5);
+        $path = '/' . $name . $path;
         if (0 == $parentid) {
             return $path;
         }
@@ -204,7 +198,7 @@ class XoopsTree
      * @param string $sel_name
      * @param string $onchange
      */
-    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '')
+    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = ''): void
     {
         if ('' == $sel_name) {
             $sel_name = $this->id;
@@ -223,7 +217,7 @@ class XoopsTree
         if ($none) {
             echo "<option value='0'>----</option>\n";
         }
-        while (list($catid, $name) = $this->db->fetchRow($result)) {
+        while ([$catid, $name] = $this->db->fetchRow($result)) {
             $sel = '';
             if ($catid == $preset_id) {
                 $sel = ' selected';
@@ -233,7 +227,7 @@ class XoopsTree
             $arr = $this->getChildTreeArray($catid, $order);
             foreach ($arr as $option) {
                 $option['prefix'] = \str_replace('.', '--', $option['prefix']);
-                $catpath          = $option['prefix'] . '&nbsp;' . htmlspecialchars($option[$title], ENT_QUOTES | ENT_HTML5);
+                $catpath          = $option['prefix'] . '&nbsp;' . \htmlspecialchars($option[$title], \ENT_QUOTES | \ENT_HTML5);
                 if ($option[$this->id] == $preset_id) {
                     $sel = ' selected';
                 }
@@ -265,8 +259,8 @@ class XoopsTree
         }
         [$parentid, $name] = $this->db->fetchRow($result);
         $myts = \MyTextSanitizer::getInstance();
-        $name = htmlspecialchars($name, ENT_QUOTES | ENT_HTML5);
-        $path = "<a href='" . $funcURL . '&amp;' . $this->id . '=' . $sel_id . "'>" . $name . '</a>' . $path . '';
+        $name = \htmlspecialchars($name, \ENT_QUOTES | \ENT_HTML5);
+        $path = "<a href='" . $funcURL . '&amp;' . $this->id . '=' . $sel_id . "'>" . $name . '</a>' . $path;
         if (0 == $parentid) {
             return $path;
         }
@@ -292,7 +286,7 @@ class XoopsTree
             return $path;
         }
         [$parentid] = $this->db->fetchRow($result);
-        $path = '/' . $sel_id . $path . '';
+        $path = '/' . $sel_id . $path;
         if (0 == $parentid) {
             return $path;
         }
@@ -313,7 +307,7 @@ class XoopsTree
     public function getAllChild($sel_id = 0, $order = '', $parray = [])
     {
         $sel_id = (int)$sel_id;
-        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -343,7 +337,7 @@ class XoopsTree
     public function getChildTreeArray($sel_id = 0, $order = '', $parray = [], $r_prefix = '')
     {
         $sel_id = (int)$sel_id;
-        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }

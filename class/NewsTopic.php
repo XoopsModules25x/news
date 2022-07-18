@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -15,8 +15,6 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -136,7 +134,7 @@ class NewsTopic extends XoopsTopic
         if ($none) {
             $outbuffer .= "<option value='0'>----</option>\n";
         }
-        while (list($catid, $name) = $this->db->fetchRow($result)) {
+        while ([$catid, $name] = $this->db->fetchRow($result)) {
             $sel = '';
             if ($catid == $preset_id) {
                 $sel = ' selected';
@@ -258,7 +256,7 @@ class NewsTopic extends XoopsTopic
         $sql    .= ' ORDER BY topic_title';
         $result = $db->query($sql);
         while (false !== ($array = $db->fetchArray($result))) {
-            $topic = new  self();
+            $topic = new self();
             $topic->makeTopic($array);
             $topics_arr[$array['topic_id']] = $topic;
             unset($topic);
@@ -302,7 +300,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $value
      */
-    public function setMenu($value)
+    public function setMenu($value): void
     {
         $this->menu = $value;
     }
@@ -310,7 +308,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $value
      */
-    public function setTopic_color($value)
+    public function setTopic_color($value): void
     {
         $this->topic_color = $value;
     }
@@ -318,9 +316,9 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $topicid
      */
-    public function getTopic($topicid)
+    public function getTopic($topicid): void
     {
-        $sql   = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid . '';
+        $sql   = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid;
         $array = $this->db->fetchArray($this->db->query($sql));
         $this->makeTopic($array);
     }
@@ -328,7 +326,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $array
      */
-    public function makeTopic($array)
+    public function makeTopic($array): void
     {
         if (\is_array($array)) {
             foreach ($array as $key => $value) {
@@ -346,17 +344,17 @@ class NewsTopic extends XoopsTopic
         $title             = '';
         $imgurl            = '';
         $topic_description = $myts->censorString($this->topic_description);
-        $topic_description = $myts->addSlashes($topic_description);
-        $topic_rssurl      = $myts->addSlashes($this->topic_rssurl);
-        $topic_color       = $myts->addSlashes($this->topic_color);
+        $topic_description = $GLOBALS['xoopsDB']->escape($topic_description);
+        $topic_rssurl      = $GLOBALS['xoopsDB']->escape($this->topic_rssurl);
+        $topic_color       = $GLOBALS['xoopsDB']->escape($this->topic_color);
 
         $dirname = \basename(\dirname(__DIR__));
 
         if (isset($this->topic_title) && '' !== $this->topic_title) {
-            $title = $myts->addSlashes($this->topic_title);
+            $title = $GLOBALS['xoopsDB']->escape($this->topic_title);
         }
         if (isset($this->topic_imgurl) && '' !== $this->topic_imgurl) {
-            $imgurl = $myts->addSlashes($this->topic_imgurl);
+            $imgurl = $GLOBALS['xoopsDB']->escape($this->topic_imgurl);
         }
         if (!isset($this->topic_pid) || !\is_numeric($this->topic_pid)) {
             $this->topic_pid = 0;
@@ -395,16 +393,12 @@ class NewsTopic extends XoopsTopic
             );
         }
         if (!$result = $this->db->query($sql)) {
-            // TODO: Replace with something else
-            //            ErrorHandler::show('0022');
-
-            $helper = Helper::getHelper($dirname);
-            $helper->redirect('admin/index.php', 5, $this->db->error());
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
         } elseif ($insert) {
             $this->topic_id = $this->db->getInsertId();
         }
 
-        if (true === $this->use_permission) {
+        if ($this->use_permission) {
             $xt            = new News\XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && \is_array($this->m_groups)) {
@@ -413,12 +407,12 @@ class NewsTopic extends XoopsTopic
                     $add             = true;
                     // only grant this permission when the group has this permission in all parent topics of the created topic
                     foreach ($parent_topics as $p_topic) {
-                        if (!\in_array($p_topic, $moderate_topics)) {
+                        if (!\in_array($p_topic, $moderate_topics, true)) {
                             $add = false;
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ModInTopic');
@@ -433,12 +427,12 @@ class NewsTopic extends XoopsTopic
                     $submit_topics = \XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!\in_array($p_topic, $submit_topics)) {
+                        if (!\in_array($p_topic, $submit_topics, true)) {
                             $add = false;
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('SubmitInTopic');
@@ -453,12 +447,12 @@ class NewsTopic extends XoopsTopic
                     $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
-                        if (!\in_array($p_topic, $read_topics)) {
+                        if (!\in_array($p_topic, $read_topics, true)) {
                             $add = false;
                             continue;
                         }
                     }
-                    if (true === $add) {
+                    if ($add) {
                         $xp = new \XoopsPerms();
                         $xp->setModuleId($this->mid);
                         $xp->setName('ReadInTopic');
@@ -476,7 +470,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $value
      */
-    public function setTopicRssUrl($value)
+    public function setTopicRssUrl($value): void
     {
         $this->topic_rssurl = $value;
     }
@@ -498,7 +492,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_rssurl = htmlspecialchars($this->topic_rssurl, ENT_QUOTES | ENT_HTML5);
+                $topic_rssurl = \htmlspecialchars($this->topic_rssurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -522,7 +516,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_color = htmlspecialchars($this->topic_color, ENT_QUOTES | ENT_HTML5);
+                $topic_color = \htmlspecialchars($this->topic_color, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -554,7 +548,7 @@ class NewsTopic extends XoopsTopic
                 break;
             case 'F':
             case 'E':
-                $topic_description = htmlspecialchars($this->topic_description, ENT_QUOTES | ENT_HTML5);
+                $topic_description = \htmlspecialchars($this->topic_description, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -574,16 +568,16 @@ class NewsTopic extends XoopsTopic
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -626,6 +620,7 @@ class NewsTopic extends XoopsTopic
      */
     public function getTopicsList($frontpage = false, $perms = false)
     {
+        $ret = [];
         $sql = 'SELECT topic_id, topic_pid, topic_title, topic_color FROM ' . $this->table . ' WHERE 1 ';
         if ($frontpage) {
             $sql .= ' AND topic_frontpage=1';
@@ -640,14 +635,15 @@ class NewsTopic extends XoopsTopic
             $sql    .= ' AND topic_id IN (' . $topics . ')';
         }
         $result = $this->db->query($sql);
-        $ret    = [];
-        $myts   = \MyTextSanitizer::getInstance();
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $ret[$myrow['topic_id']] = [
-                'title' => $myts->displayTarea($myrow['topic_title']),
-                'pid'   => $myrow['topic_pid'],
-                'color' => $myrow['topic_color'],
-            ];
+        if ($result) {
+            $myts = \MyTextSanitizer::getInstance();
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[$myrow['topic_id']] = [
+                    'title' => $myts->displayTarea($myrow['topic_title']),
+                    'pid'   => $myrow['topic_pid'],
+                    'color' => $myrow['topic_color'],
+                ];
+            }
         }
 
         return $ret;
@@ -656,7 +652,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $value
      */
-    public function setTopicDescription($value)
+    public function setTopicDescription($value): void
     {
         $this->topic_description = $value;
     }
@@ -672,7 +668,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param $value
      */
-    public function setTopicFrontpage($value)
+    public function setTopicFrontpage($value): void
     {
         $this->topic_frontpage = (int)$value;
     }

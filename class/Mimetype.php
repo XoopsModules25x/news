@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -106,12 +106,7 @@ class Mimetype
         $mimetypes = $this->privBuildMimeArray();
 
         // return mime type for extension
-        if (isset($mimetypes[$ext])) {
-            return $mimetypes[$ext];
-            // if the extension wasn't found return octet-stream
-        }
-
-        return 'unknown';
+        return $mimetypes[$ext] ?? 'unknown';
     }
 
     /**

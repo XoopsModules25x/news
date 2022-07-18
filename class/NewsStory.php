@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News;
 
@@ -15,15 +15,14 @@ namespace XoopsModules\News;
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
+use Xmf\Module\Admin;
 use XoopsModules\News;
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+require XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
 require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 
@@ -92,7 +91,7 @@ class NewsStory extends XoopsStory
      * Load the specified story from the database
      * @param $storyid
      */
-    public function getStory($storyid)
+    public function getStory($storyid): void
     {
         /** @var \XoopsMySQLDatabase $db */
         $db    = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -178,7 +177,7 @@ class NewsStory extends XoopsStory
         if ($result) {
             $myts = \MyTextSanitizer::getInstance();
             while (false !== ($row = $db->fetchArray($result))) {
-                $ret = ['storyid' => $row['storyid'], 'title' => htmlspecialchars($row['title'], ENT_QUOTES | ENT_HTML5)];
+                $ret = ['storyid' => $row['storyid'], 'title' => \htmlspecialchars($row['title'], \ENT_QUOTES | \ENT_HTML5)];
             }
         }
 
@@ -238,7 +237,7 @@ class NewsStory extends XoopsStory
             if (!\is_array($topic)) {
                 if ($checkRight) {
                     $topics = News\Utility::getMyItemIds('news_view');
-                    if (!\in_array($topic, $topics)) {
+                    if (!\in_array($topic, $topics, true)) {
                         return null;
                     }
                     $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
@@ -280,7 +279,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -324,7 +323,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -388,7 +387,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -504,7 +503,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -530,7 +529,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -574,7 +573,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -684,7 +683,7 @@ class NewsStory extends XoopsStory
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = \xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dirname);
-        $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16    = Admin::iconUrl('', '16');
 
         $ret = '&nbsp; <a href='
                . XOOPS_URL
@@ -725,16 +724,16 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
-                $imgurl = htmlspecialchars($this->topic_imgurl, ENT_QUOTES | ENT_HTML5);
+                $imgurl = \htmlspecialchars($this->topic_imgurl, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -751,18 +750,18 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
-                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->topic_title, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
-                $title = htmlspecialchars($this->topic_title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($this->topic_title, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
                 $title = $this->topic_title;
-                $title = htmlspecialchars($title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($title, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'F':
                 $title = $this->topic_title;
-                $title = htmlspecialchars($title, ENT_QUOTES | ENT_HTML5);
+                $title = \htmlspecialchars($title, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -807,7 +806,7 @@ class NewsStory extends XoopsStory
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = \xoops_getHandler('module');
         $module        = $moduleHandler->getByDirname($dirname);
-        $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
+        $pathIcon16    = Admin::iconUrl('', '16');
 
         $myts                 = \MyTextSanitizer::getInstance();
         $infotips             = News\Utility::getModuleOption('infotips');
@@ -854,7 +853,7 @@ class NewsStory extends XoopsStory
 
         $morelink = '';
         if ($fullcount > 1) {
-            $morelink .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
+            $morelink .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
             $morelink .= '">' . _NW_READMORE . '</a>';
             $morelink .= ' | ' . \sprintf(_NW_BYTESMORE, $totalcount);
             if (\XOOPS_COMMENT_APPROVENONE != $helper->getConfig('com_rule')) {
@@ -863,8 +862,8 @@ class NewsStory extends XoopsStory
         }
         if (\XOOPS_COMMENT_APPROVENONE != $helper->getConfig('com_rule')) {
             $ccount    = $this->comments();
-            $morelink  .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
-            $morelink2 = '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid() . '';
+            $morelink  .= '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
+            $morelink2 = '<a href="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $this->storyid();
             if (0 == $ccount) {
                 $morelink .= '">' . _NW_COMMENTS . '</a>';
             } elseif ($fullcount < 1) {
@@ -987,7 +986,7 @@ class NewsStory extends XoopsStory
      * @param int      $todate       Ending date
      * @param string   $topicslist
      * @param bool|int $usetopicsdef Should we also export topics definitions ?
-     * @param          $tbltopics
+     * @param mixed    $tbltopics
      * @param bool     $asobject     Return values as an object or not ?
      *
      * @param string   $order
@@ -1031,7 +1030,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 
@@ -1046,17 +1045,17 @@ class NewsStory extends XoopsStory
     public function store($approved = false)
     {
         $myts        = \MyTextSanitizer::getInstance();
-        $counter     = isset($this->counter) ? $this->counter : 0;
-        $title       = $myts->addSlashes($myts->censorString($this->title));
-        $subtitle    = $myts->addSlashes($myts->censorString($this->subtitle));
-        $hostname    = $myts->addSlashes($this->hostname);
-        $type        = $myts->addSlashes($this->type);
-        $hometext    = $myts->addSlashes($myts->censorString($this->hometext));
-        $bodytext    = $myts->addSlashes($myts->censorString($this->bodytext));
-        $description = $myts->addSlashes($myts->censorString($this->description));
-        $keywords    = $myts->addSlashes($myts->censorString($this->keywords));
-        $picture     = $myts->addSlashes($this->picture);
-        $pictureinfo = $myts->addSlashes($myts->censorString($this->pictureinfo));
+        $counter     = $this->counter ?? 0;
+        $title       = $GLOBALS['xoopsDB']->escape($myts->censorString($this->title));
+        $subtitle    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->subtitle));
+        $hostname    = $GLOBALS['xoopsDB']->escape($this->hostname);
+        $type        = $GLOBALS['xoopsDB']->escape($this->type);
+        $hometext    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->hometext));
+        $bodytext    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->bodytext));
+        $description = $GLOBALS['xoopsDB']->escape($myts->censorString($this->description));
+        $keywords    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->keywords));
+        $picture     = $GLOBALS['xoopsDB']->escape($this->picture);
+        $pictureinfo = $GLOBALS['xoopsDB']->escape($myts->censorString($this->pictureinfo));
         $votes       = (int)$this->votes;
         $rating      = (float)$this->rating;
         if (!isset($this->nohtml) || 1 != $this->nohtml) {
@@ -1189,7 +1188,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setPicture($data)
+    public function setPicture($data): void
     {
         $this->picture = $data;
     }
@@ -1197,7 +1196,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setPictureinfo($data)
+    public function setPictureinfo($data): void
     {
         $this->pictureinfo = $data;
     }
@@ -1205,7 +1204,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setSubtitle($data)
+    public function setSubtitle($data): void
     {
         $this->subtitle = $data;
     }
@@ -1213,7 +1212,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setDescription($data)
+    public function setDescription($data): void
     {
         $this->description = $data;
     }
@@ -1221,7 +1220,7 @@ class NewsStory extends XoopsStory
     /**
      * @param $data
      */
-    public function setKeywords($data)
+    public function setKeywords($data): void
     {
         $this->keywords = $data;
     }
@@ -1236,14 +1235,14 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
             case 'S':
-                $description = htmlspecialchars($this->description, ENT_QUOTES | ENT_HTML5);
+                $description = \htmlspecialchars($this->description, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $description = htmlspecialchars($this->description, ENT_QUOTES | ENT_HTML5);
+                $description = \htmlspecialchars($this->description, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
-                $description = htmlspecialchars($this->description, ENT_QUOTES | ENT_HTML5);
+                $description = \htmlspecialchars($this->description, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -1260,14 +1259,14 @@ class NewsStory extends XoopsStory
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
             case 'S':
-                $keywords = htmlspecialchars($this->keywords, ENT_QUOTES | ENT_HTML5);
+                $keywords = \htmlspecialchars($this->keywords, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'P':
             case 'F':
-                $keywords = htmlspecialchars($this->keywords, ENT_QUOTES | ENT_HTML5);
+                $keywords = \htmlspecialchars($this->keywords, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'E':
-                $keywords = htmlspecialchars($this->keywords, ENT_QUOTES | ENT_HTML5);
+                $keywords = \htmlspecialchars($this->keywords, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -1302,7 +1301,7 @@ class NewsStory extends XoopsStory
             if (!\is_array($topic)) {
                 if ($checkRight) {
                     $topics = News\Utility::getMyItemIds('news_view');
-                    if (!\in_array($topic, $topics)) {
+                    if (!\in_array($topic, $topics, true)) {
                         return null;
                     }
                     $sql .= ' AND topicid=' . (int)$topic . ' AND (ihome=1 OR ihome=0)';
@@ -1487,7 +1486,7 @@ class NewsStory extends XoopsStory
      * @param $older
      * @param $recent
      */
-    public function getOlderRecentNews(&$older, &$recent)
+    public function getOlderRecentNews(&$older, &$recent): void
     {
         /** @var \XoopsMySQLDatabase $db */
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -1598,13 +1597,13 @@ class NewsStory extends XoopsStory
                 $hometext     = \str_replace('[summary]', $auto_summary, $hometext);
                 break;
             case 'Edit':
-                $hometext = htmlspecialchars($this->hometext, ENT_QUOTES | ENT_HTML5);
+                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'Preview':
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $hometext = htmlspecialchars($this->hometext, ENT_QUOTES | ENT_HTML5);
+                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -1636,13 +1635,13 @@ class NewsStory extends XoopsStory
                 $bodytext     = \str_replace('[summary]', $auto_summary, $bodytext);
                 break;
             case 'Edit':
-                $bodytext = htmlspecialchars($this->bodytext, ENT_QUOTES | ENT_HTML5);
+                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES | \ENT_HTML5);
                 break;
             case 'Preview':
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $bodytext = htmlspecialchars($this->bodytext, ENT_QUOTES | ENT_HTML5);
+                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES | \ENT_HTML5);
                 break;
         }
 
@@ -1696,7 +1695,7 @@ class NewsStory extends XoopsStory
             if ($asobject) {
                 $ret[$myrow['storyid']] = new self($myrow);
             } else {
-                $ret[$myrow['storyid']] = htmlspecialchars($myrow['title'], ENT_QUOTES | ENT_HTML5);
+                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
             }
         }
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\News\Common;
 
@@ -16,19 +16,14 @@ namespace XoopsModules\News\Common;
  */
 
 /**
- *
  * @license      https://www.fsf.org/copyleft/gpl.html GNU public license
  * @copyright    https://xoops.org 2000-2020 &copy; XOOPS Project
  * @author       ZySpec <zyspec@yahoo.com>
  * @author       Mamba <mambax7@gmail.com>
  */
 
-use MyTextSanitizer;
-use XoopsFormDhtmlTextArea;
-use XoopsFormTextArea;
-use XoopsModules\News\{
-    Helper
-};
+use XoopsFormEditor;
+use XoopsModules\News\Helper;
 
 /**
  * Class SysUtility
@@ -79,7 +74,7 @@ class SysUtility
                     if (\preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $line_matchings[1])) {
                         // do nothing
                         // if tag is a closing tag
-                    } elseif (\preg_match('/^<\s*\/([^\s]+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
+                    } elseif (\preg_match('/^<\s*\/(\S+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
                         // delete tag from $open_tags list
                         $pos = \array_search($tag_matchings[1], $open_tags, true);
                         if (false !== $pos) {
@@ -88,7 +83,7 @@ class SysUtility
                         // if tag is an opening tag
                     } elseif (\preg_match('/^<\s*([^\s>!]+).*?' . '>$/s', $line_matchings[1], $tag_matchings)) {
                         // add tag to the beginning of $open_tags list
-                        \array_unshift($open_tags, mb_strtolower($tag_matchings[1]));
+                        \array_unshift($open_tags, \mb_strtolower($tag_matchings[1]));
                     }
                     // add html-tag to $truncate'd text
                     $truncate .= $line_matchings[1];
@@ -177,9 +172,9 @@ class SysUtility
 
         if (\class_exists('XoopsFormEditor')) {
             if ($isAdmin) {
-                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
             } else {
-                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
             }
         } else {
             $descEditor = new \XoopsFormDhtmlTextArea(\ucfirst($options['name']), $options['name'], $options['value'], '100%', '100%');
@@ -191,16 +186,62 @@ class SysUtility
     }
 
     /**
-     * @param $fieldname
-     * @param $table
+     * @param string $fieldname
+     * @param string $table
      *
      * @return bool
      */
-    public function fieldExists($fieldname, $table)
+    public static function fieldExists(string $fieldname, string $table): bool
     {
         global $xoopsDB;
         $result = $xoopsDB->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
 
         return ($xoopsDB->getRowsNum($result) > 0);
+    }
+
+    /**
+     * @param array|string $tableName
+     * @param int          $id_field
+     * @param int          $id
+     *
+     * @return mixed
+     */
+    public static function cloneRecord($tableName, $id_field, $id)
+    {
+        $new_id = false;
+        $table  = $GLOBALS['xoopsDB']->prefix($tableName);
+        // copy content of the record you wish to clone
+        $sql    = "SELECT * FROM $table WHERE $idField='" . $id . "' ";
+        $result = $GLOBALS['xoopsDB']->query($sql);
+        if ($result instanceof \mysqli_result) {
+            $tempTable = $GLOBALS['xoopsDB']->fetchArray($result, \MYSQLI_ASSOC);
+        }
+        if (!$tempTable) {
+            \trigger_error($GLOBALS['xoopsDB']->error());
+        }
+        // set the auto-incremented id's value to blank.
+        unset($tempTable[$id_field]);
+        // insert cloned copy of the original  record
+        $sql    = "INSERT INTO $table (" . \implode(', ', \array_keys($tempTable)) . ") VALUES ('" . \implode("', '", \array_values($tempTable)) . "')";
+        $result = $GLOBALS['xoopsDB']->queryF($sql);
+        if (!$result) {
+            \trigger_error($GLOBALS['xoopsDB']->error());
+        }
+        // Return the new id
+        $new_id = $GLOBALS['xoopsDB']->getInsertId();
+
+        return $new_id;
+    }
+
+    /**
+     * @param string $tablename
+     *
+     * @return bool
+     */
+    public static function tableExists($tablename)
+    {
+        $result = $GLOBALS['xoopsDB']->queryF("SHOW TABLES LIKE '$tablename'");
+
+        return $GLOBALS['xoopsDB']->getRowsNum($result) > 0;
     }
 }

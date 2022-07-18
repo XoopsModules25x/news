@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author         XOOPS Development Team
  */
 
@@ -23,7 +21,6 @@
  * This page displays a list of the published articles and can also display the
  * stories of a particular topic.
  *
- * @package               News
  * @author                Xoops Modules Dev Team
  * @copyright (c)         XOOPS Project (https://xoops.org)
  *
@@ -79,7 +76,7 @@ use XoopsModules\News\Files;
 use XoopsModules\News\NewsStory;
 use XoopsModules\News\NewsTopic;
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
