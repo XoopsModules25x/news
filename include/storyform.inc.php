@@ -167,9 +167,6 @@ if ($allowupload) {
 $option_tray = new \XoopsFormElementTray(_OPTIONS, '<br>');
 //Set date of publish/expiration
 if ($approveprivilege) {
-    if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid'))) {
-        $approve = 1;
-    }
     $approve_checkbox = new \XoopsFormCheckBox('', 'approve', $approve);
     $approve_checkbox->addOption(1, _AM_APPROVE);
     $option_tray->addElement($approve_checkbox);
