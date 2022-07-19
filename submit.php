@@ -155,7 +155,9 @@ switch ($op) {
         $pictureinfo = $story->pictureinfo;
         $approve     = 0;
         $published   = $story->published();
-        if ((isset($published) && $published > 0) || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if (isset($published) && $published > 0) {
+            $approve = 1;
+        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         if (0 != $story->published()) {
@@ -573,7 +575,9 @@ switch ($op) {
             $expired      = 0;
             $published    = 0;
         }
-        if (1 == $helper->getConfig('autoapprove') || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if (1 == $helper->getConfig('autoapprove')) {
+            $approve = 1;
+        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
