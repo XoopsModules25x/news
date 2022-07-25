@@ -23,8 +23,8 @@
  *
  * If no story Id has been placed on the URL or if the story is not yet published
  * then the page will redirect user to the module's index.
- * If the user does not have the permissions to see the article, he is also redirected
- * to the module's index page but with a error message saying :
+ * If the user does not have the permissions to see the article, they are also redirected
+ * to the module's index page but with an error message saying :
  *     "Sorry, you don't have the permission to access this area"
  *
  * Each time a page is seen, and only if we are on the first page, its counter of hits is
@@ -55,7 +55,7 @@
  * @template_var                    string    news_title    Just the news title
  * @template_var                    string    topic_title    Just the topic's title
  * @template_var                    string    text        Defined as "The scoop"
- * @template_var                    string    poster        A link to see the author's profil and his name or "Anonymous"
+ * @template_var                    string    poster        A link to see the author's profile and their name or "Anonymous"
  * @template_var                    int        posterid    Author's uid (or 0 if it's an anonymous or a user wich does not exist any more)
  * @template_var                    string    morelink    Never used ???? May be it could be deleted
  * @template_var                    string    adminlink    A link to Edit or Delete the story or a blank string if you are not the module's admin

@@ -302,13 +302,13 @@
     To see an example, look at the bottom of this article :
     http://ajax.phpmagazine.net/2006/11/ajaxcore_new_php_framework_rel.html
 - You can use Firefox 2 Micro summaries : http://wiki.mozilla.org/Microsummaries
-  If someone bookmark your page with Firefox 2 he can choose to see the last
+  If someone bookmarks your page with Firefox 2 they can choose to see the last
   title of your last news instead of the current page's title.
   The News module modifies the meta datas of all its page to include a line
   like this one :
   <link rel="microsummary" href="http://www.example.com/modules/news/micro_summary.php" />
   but you can also add it in your theme so that when someone bookmark your site
-  from any page he can get your micro summary.
+  from any page they can get your micro summary.
   With FireFox 2, you can use this extension :
       https://addons.mozilla.org/firefox/3639/
 - You have a new page called "Who's who" showing your visitors a list or the

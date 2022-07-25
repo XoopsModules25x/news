@@ -39,7 +39,7 @@
  * @template_var    string  lang_page_title         contains "News by the same author"
  * @template_var    int     author_id               contains the user ID
  * @template_var    string  author_name             Name of the author (according to the user preferences (username or full name or nothing))
- * @template_var    string  author_name_with_link   Name of the author with an hyperlink pointing to userinfo.php (to see his "identity")
+ * @template_var    string  author_name_with_link   Name of the author with a hyperlink pointing to userinfo.php (to see their "identity")
  * @template_var    int     articles_count          Total number of visibles articles (for the current user and according to the permissions)
  * @template_var    string  lang_date               Fixed string, "Date"
  * @template_var    string  lang_hits               Fixed string, 'Views'
