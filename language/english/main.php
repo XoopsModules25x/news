@@ -82,7 +82,7 @@ define('_NW_PAGE', 'Page');
 define('_NW_BOOKMARK_ME', 'Bookmark this article at these sites');
 define('_AM_NEWS_TOTAL', 'Total of %u articles');
 define('_AM_NEWS_WHOS_WHO', "Who's who");
-define('_NW_NEWS_LIST_OF_AUTHORS', 'Here is a list of the authors of this site, click on the name to see their articles');
+define('_NW_NEWS_LIST_OF_AUTHORS', 'Here is a list of the authors of this site, click on a name to see articles by that author');
 define('_AM_NEWS_TOPICS_DIRECTORY', 'Topics directory');
 define('_NW_PAGE_AUTO_SUMMARY', 'Page %d: %s');
 // Added in version 1.51
