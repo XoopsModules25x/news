@@ -1832,7 +1832,9 @@ switch ($op) {
         $helper       = Helper::getInstance();
         $helper->loadLanguage('main');
 
-        if (1 == $helper->getConfig('autoapprove') || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if (1 == $helper->getConfig('autoapprove')) {
+            $approve = 1;
+        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         $approveprivilege = 1;
