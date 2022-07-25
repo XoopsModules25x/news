@@ -100,7 +100,7 @@ if (!empty($storyid)) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_NOSTORY);
 }
 
-// 3) Does the user can see this news ? If he can't see it, he can't vote for
+// 3) Can the user see this news? If they can't see it, they can't vote for it
 /** @var \XoopsGroupPermHandler $grouppermHandler */
 $grouppermHandler = xoops_getHandler('groupperm');
 if (is_object($xoopsUser)) {

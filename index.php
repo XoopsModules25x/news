@@ -242,7 +242,7 @@ if ($showclassic) {
     if ($totalcount > $scount) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new \XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
-        if (News\Utility::isBot()) { // A bot is reading the news, we are going to show it all the links so that he can read everything
+        if (News\Utility::isBot()) { // A bot is reading the news, we are going to show it all the links so that it can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
         } else {
             $xoopsTpl->assign('pagenav', $pagenav->renderNav());
