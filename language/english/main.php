@@ -14,7 +14,7 @@ define('_NW_SUBMITNEWS', 'Submit news');
 define('_NW_TITLE', 'Title');
 define('_NW_TOPIC', 'Topic');
 define('_NW_THESCOOP', 'The Scoop');
-define('_NW_NOTIFYPUBLISH', 'Notify by mail when published');
+define('_NW_NOTIFYPUBLISH', 'Notify me when this story is published');
 define('_NW_POST', 'Post');
 define('_NW_GO', 'Go!');
 define('_NW_THANKS', 'Thanks for your submission.'); //submission of news article
