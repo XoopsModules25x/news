@@ -1618,7 +1618,7 @@ function getStats(): void
             $myts->displayTarea($data['title']),
             $url3,
             htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
-            number_format($data['rating'], 2)
+            number_format((float)$data['rating'], 2)
         );
     }
     echo '</table></div><br><br><br>';
