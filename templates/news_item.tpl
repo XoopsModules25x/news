@@ -4,15 +4,15 @@
            <{if $displaytopictitle === true}> <{$story.topic_title}> - &nbsp; <{/if}> <h2><{$story.news_title}></h2>
         </span>
     </div>
-    <h6><i><{$story.subtitle}></i></h6>
+    <h6><i><{$story.subtitle|default:''}></i></h6>
 
     <div class="itemInfo">
-        <{if $story.files_attached}><{$story.attached_link}>&nbsp;<{/if}>
+        <{if $story.files_attached|default:''}><{$story.attached_link}>&nbsp;<{/if}>
         <{if $story.poster|default:'' != ''}><span class="itemPoster"><{$lang_postedby}> <{$story.poster}> </span><{/if}>
         <span class="itemPostDate"><{$lang_on}> <{$story.posttime}></span>
         (<span class="itemStats"><{$story.hits}> <{$lang_reads}></span>)
-        <{$news_by_the_same_author_link}>
-        <!--<span class="itemTopic"><{$lang_topic}> <{$story.topic_title}></span>-->
+        <{$news_by_the_same_author_link|default:''}>
+        <!--<span class="itemTopic"><{$lang_topic|default:''}> <{$story.topic_title|default:''}></span>-->
     </div>
     <div class="itemBody">
         <{if $story.picture|default:'' != ''}>

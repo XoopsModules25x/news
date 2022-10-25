@@ -193,7 +193,7 @@ define('_MI_NEWS_OVERVIEW', 'Overview');
 
 //define('_MI_NEWS_HELP_DIR', __DIR__);
 
-//help multi-page
+//help multipage
 define('_MI_NEWS_DISCLAIMER', 'Disclaimer');
 define('_MI_NEWS_LICENSE', 'License');
 define('_MI_NEWS_SUPPORT', 'Support');

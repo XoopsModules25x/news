@@ -23,13 +23,19 @@ function xoops_module_pre_install_news(\XoopsModule $module)
 
     if ($currentVersion[0] > $minSupportedVersion[0]) {
         return true;
-    } elseif ($currentVersion[0] == $minSupportedVersion[0]) {
+    }
+
+    if ($currentVersion[0] == $minSupportedVersion[0]) {
         if ($currentVersion[1] > $minSupportedVersion[1]) {
             return true;
-        } elseif ($currentVersion[1] == $minSupportedVersion[1]) {
+        }
+
+        if ($currentVersion[1] == $minSupportedVersion[1]) {
             if ($currentVersion[2] > $minSupportedVersion[2]) {
                 return true;
-            } elseif ($currentVersion[2] == $minSupportedVersion[2]) {
+            }
+
+            if ($currentVersion[2] == $minSupportedVersion[2]) {
                 return true;
             }
         }

@@ -40,6 +40,33 @@ namespace XoopsModules\News;
  */
 class NewsStories extends \XoopsObject
 {
+    public $storyid;
+    public $uid;
+    public $title;
+    public $created;
+    public $published;
+    public $expired;
+    public $hostname;
+    public $nohtml;
+    public $nosmiley;
+    public $hometext;
+    public $bodytext;
+    public $keywords;
+    public $description;
+    public $counter;
+    public $topicid;
+    public $ihome;
+    public $notifypub;
+    public $story_type;
+    public $topicdisplay;
+    public $topicalign;
+    public $comments;
+    public $rating;
+    public $votes;
+    public $picture;
+    public $pictureinfo;
+    public $subtitle;
+
     //Constructor
 
     public function __construct()

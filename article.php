@@ -110,11 +110,16 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Files;
-use XoopsModules\News\Helper;
-use XoopsModules\News\Keyhighlighter;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Files,
+    Helper,
+    Keyhighlighter,
+    NewsStory,
+    XoopsTree,
+    PageNav,
+    Utility
+};
+
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -158,7 +163,7 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
 }
 
 $storypage  = Request::getInt('page', 0, 'GET');
-$dateformat = News\Utility::getModuleOption('dateformat');
+$dateformat = Utility::getModuleOption('dateformat');
 $hcontent   = '';
 
 /**
@@ -166,7 +171,7 @@ $hcontent   = '';
  */
 if (empty($_GET['com_id']) && 0 == $storypage) {
     if (is_object($xoopsUser)) {
-        if (($xoopsUser->getVar('uid') == $article->uid()) || News\Utility::isAdminGroup()) {
+        if (($xoopsUser->getVar('uid') == $article->uid()) || Utility::isAdminGroup()) {
             // nothing ! ;-)
         } else {
             $article->updateCounter();
@@ -190,7 +195,7 @@ $bodytext      = $article->bodytext();
 
 if ('' !== xoops_trim($bodytext)) {
     $articletext = [];
-    if (News\Utility::getModuleOption('enhanced_pagenav')) {
+    if (Utility::getModuleOption('enhanced_pagenav')) {
         $articletext             = preg_split('/(\[pagebreak:|\[pagebreak)(.*)(\])/iU', $bodytext);
         $arr_titles              = [];
         $auto_summary            = $article->auto_summary($bodytext, $arr_titles);
@@ -204,27 +209,27 @@ if ('' !== xoops_trim($bodytext)) {
     $story_pages = count($articletext);
 
     if ($story_pages > 1) {
-        require_once XOOPS_ROOT_PATH . '/modules/news/include/pagenav.php';
-        $pagenav = new \XoopsPageNav($story_pages, 1, $storypage, 'page', 'storyid=' . $storyid);
-        if (News\Utility::isBot()) { // A bot is reading the articles, we are going to show him all the links to the pages
+//        require_once XOOPS_ROOT_PATH . '/modules/news/include/pagenav.php';
+        $pagenav = new PageNav($story_pages, 1, $storypage, 'page', 'storyid=' . $storyid);
+        if (Utility::isBot()) { // A bot is reading the articles, we are going to show him all the links to the pages
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($story_pages));
-        } elseif (News\Utility::getModuleOption('enhanced_pagenav')) {
+        } elseif (Utility::getModuleOption('enhanced_pagenav')) {
             $xoopsTpl->assign('pagenav', $pagenav->renderEnhancedSelect(true, $arr_titles));
         } else {
             $xoopsTpl->assign('pagenav', $pagenav->renderNav());
         }
 
         if (0 == $storypage) {
-            $story['text'] .= '<br>' . News\Utility::getModuleOption('advertisement') . '<br>' . $articletext[$storypage];
+            $story['text'] .= '<br>' . Utility::getModuleOption('advertisement') . '<br>' . $articletext[$storypage];
         } else {
             $story['text'] = $articletext[$storypage];
         }
     } else {
-        $story['text'] .= '<br>' . News\Utility::getModuleOption('advertisement') . '<br>' . $bodytext;
+        $story['text'] .= '<br>' . Utility::getModuleOption('advertisement') . '<br>' . $bodytext;
     }
 }
 // Publicit�
-$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
+$xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 // ****************************************************************************************************************
 /**
@@ -234,7 +239,7 @@ $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'
  */
 function my_highlighter($matches)
 {
-    $color = News\Utility::getModuleOption('highlightcolor');
+    $color = Utility::getModuleOption('highlightcolor');
     if (0 !== mb_strpos($color, '#')) {
         $color = '#' . $color;
     }
@@ -243,7 +248,7 @@ function my_highlighter($matches)
 }
 
 $highlight = false;
-$highlight = News\Utility::getModuleOption('keywordshighlight');
+$highlight = Utility::getModuleOption('keywordshighlight');
 
 if ($highlight && isset($_GET['keywords'])) {
     $keywords      = htmlspecialchars(trim(urldecode($_GET['keywords'])), ENT_QUOTES | ENT_HTML5);
@@ -271,7 +276,7 @@ if ($story['poster']) {
     $story['poster_email']     = '';
     $story['poster_url']       = '';
     $story['poster_from']      = '';
-    if (3 != News\Utility::getModuleOption('displayname')) {
+    if (3 != Utility::getModuleOption('displayname')) {
         $story['poster'] = $xoopsConfig['anonymous'];
     }
 }
@@ -281,7 +286,7 @@ unset($isadmin);
 
 if (is_object($xoopsUser)) {
     if ($xoopsUser->isAdmin($xoopsModule->getVar('mid'))
-        || (News\Utility::getModuleOption('authoredit')
+        || (Utility::getModuleOption('authoredit')
             && $article->uid() == $xoopsUser->getVar('uid'))) {
         $isadmin = true;
         //      $story['adminlink'] = $article->adminlink();
@@ -338,7 +343,7 @@ if ($filescount > 0) {
  * Create page's title
  */
 $complement = '';
-if (News\Utility::getModuleOption('enhanced_pagenav')
+if (Utility::getModuleOption('enhanced_pagenav')
     && (isset($arr_titles) && is_array($arr_titles)
         && isset($arr_titles, $storypage)
         && $storypage > 0)) {
@@ -346,7 +351,7 @@ if (News\Utility::getModuleOption('enhanced_pagenav')
 }
 $xoopsTpl->assign('xoops_pagetitle', $article->title() . $complement . ' - ' . $article->topic_title() . ' - ' . $xoopsModule->name('s'));
 
-if (News\Utility::getModuleOption('newsbythisauthor')) {
+if (Utility::getModuleOption('newsbythisauthor')) {
     $xoopsTpl->assign('news_by_the_same_author_link', sprintf("<a href='%s?uid=%d'>%s</a>", XOOPS_URL . '/modules/news/newsbythisauthor.php', $article->uid(), _NW_NEWSSAMEAUTHORLINK));
 }
 
@@ -356,7 +361,7 @@ if (News\Utility::getModuleOption('newsbythisauthor')) {
  * Uncomment the code to be able to use it
  */
 if ($cfg['create_clickable_path']) {
-    $mytree    = new \XoopsModules\News\ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $mytree    = new XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($article->topicid(), 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
     unset($mytree);
@@ -373,12 +378,12 @@ if ($cfg['create_clickable_path']) {
  * We also use the module's option "restrictindex" ("Restrict Topics on Index Page"), like
  * this you (the webmaster) select if users can see restricted stories or not.
  */
-if (News\Utility::getModuleOption('showsummarytable')) {
+if (Utility::getModuleOption('showsummarytable')) {
     $xoopsTpl->assign('showsummary', true);
     $xoopsTpl->assign('lang_other_story', _NW_OTHER_ARTICLES);
     $count      = 0;
     $tmparticle = new NewsStory();
-    $infotips   = News\Utility::getModuleOption('infotips');
+    $infotips   = Utility::getModuleOption('infotips');
     $sarray     = NewsStory::getAllPublished($cfg['article_summary_items_count'], 0, $helper->getConfig('restrictindex'));
     if (count($sarray) > 0) {
         foreach ($sarray as $onearticle) {
@@ -387,7 +392,7 @@ if (News\Utility::getModuleOption('showsummarytable')) {
             $tooltips  = '';
             $htmltitle = '';
             if ($infotips > 0) {
-                $tooltips  = News\Utility::makeInfotips($onearticle->hometext());
+                $tooltips  = Utility::makeInfotips($onearticle->hometext());
                 $htmltitle = ' title="' . $tooltips . '"';
             }
             $xoopsTpl->append(
@@ -417,7 +422,7 @@ if (News\Utility::getModuleOption('showsummarytable')) {
  * This feature uses the module's option "restrictindex" so that we can, or can't see
  * restricted stories
  */
-if (News\Utility::getModuleOption('showprevnextlink')) {
+if (Utility::getModuleOption('showprevnextlink')) {
     $xoopsTpl->assign('nav_links', true);
     $tmparticle    = new NewsStory();
     $nextId        = $previousId = -1;
@@ -457,12 +462,12 @@ if (News\Utility::getModuleOption('showprevnextlink')) {
 /**
  * Manage all the meta datas
  */
-News\Utility::createMetaDatas($article);
+Utility::createMetaDatas($article);
 
 /**
  * Show a "Bookmark this article at these sites" block ?
  */
-if (News\Utility::getModuleOption('bookmarkme')) {
+if (Utility::getModuleOption('bookmarkme')) {
     $xoopsTpl->assign('bookmarkme', true);
     $xoopsTpl->assign('encoded_title', rawurlencode($article->title()));
 } else {
@@ -472,7 +477,7 @@ if (News\Utility::getModuleOption('bookmarkme')) {
 /**
  * Use Facebook Comments Box?
  */
-if (News\Utility::getModuleOption('fbcomments')) {
+if (Utility::getModuleOption('fbcomments')) {
     $xoopsTpl->assign('fbcomments', true);
 } else {
     $xoopsTpl->assign('fbcomments', false);
@@ -494,7 +499,7 @@ if ($cfg['config_rating_registred_only']) {
     }
 }
 
-if (News\Utility::getModuleOption('ratenews') && $other_test) {
+if (Utility::getModuleOption('ratenews') && $other_test) {
     $xoopsTpl->assign('rates', true);
     $xoopsTpl->assign('lang_ratingc', _NW_RATINGC);
     $xoopsTpl->assign('lang_ratethisnews', _NW_RATETHISNEWS);
@@ -528,7 +533,7 @@ if (!is_object($GLOBALS['xoopsUser']) && 0 == $helper->getConfig('show_pdficon')
 }
 $xoopsTpl->assign('showPdfIcon', $canPdf);
 
-if (1 == News\Utility::getModuleOption('displaytopictitle')) {
+if (1 == Utility::getModuleOption('displaytopictitle')) {
     $xoopsTpl->assign('displaytopictitle', true);
 } else {
     $xoopsTpl->assign('displaytopictitle', false);

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-define('_MB_NEWS_NOTYET', "There isn't a biggest story for today, yet.");
+define('_MB_NEWS_NOTYET', "There isn't a big story for today, yet.");
 define('_MB_NEWS_TMRSI', "Today's most read story is:");
 define('_MB_NEWS_ORDER', 'Order by');
 define('_MB_NEWS_DATE', 'Published date');

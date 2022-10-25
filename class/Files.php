@@ -121,7 +121,7 @@ class Files
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
-        if ($result instanceof \mysqli_result) {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $ret[] = new self($myrow);
             }
@@ -160,8 +160,8 @@ class Files
         $downloadname = $GLOBALS['xoopsDB']->escape($this->downloadname);
         $date         = \time();
         $mimetype     = $GLOBALS['xoopsDB']->escape($this->mimetype);
-        $counter      = (int)$this->counter;
-        $storyid      = (int)$this->storyid;
+        $counter      = $this->counter;
+        $storyid      = $this->storyid;
 
         if (!isset($this->fileid)) {
             $newid        = (int)$this->db->genId($this->table . '_fileid_seq');
@@ -261,7 +261,7 @@ class Files
      */
     public function getStoryid()
     {
-        return (int)$this->storyid;
+        return $this->storyid;
     }
 
     /**
@@ -269,7 +269,7 @@ class Files
      */
     public function getCounter()
     {
-        return (int)$this->counter;
+        return $this->counter;
     }
 
     /**
@@ -277,7 +277,7 @@ class Files
      */
     public function getDate()
     {
-        return (int)$this->date;
+        return $this->date;
     }
 
     /**
@@ -398,7 +398,7 @@ class Files
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
             $sql    .= \implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
-            if ($result instanceof \mysqli_result) {
+            if ($this->db->isResultSet($result)) {
                 while (false !== ($myrow = $this->db->fetchArray($result))) {
                     $ret[$myrow['storyid']] = $myrow['cnt'];
                 }

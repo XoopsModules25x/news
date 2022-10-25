@@ -16,7 +16,7 @@ namespace XoopsModules\News\Common;
  */
 
 /**
- * @license      https://www.fsf.org/copyleft/gpl.html GNU public license
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @copyright    https://xoops.org 2000-2020 &copy; XOOPS Project
  * @author       ZySpec <zyspec@yahoo.com>
  * @author       Mamba <mambax7@gmail.com>
@@ -201,7 +201,7 @@ class SysUtility
 
     /**
      * @param array|string $tableName
-     * @param int          $id_field
+     * @param string       $id_field
      * @param int          $id
      *
      * @return mixed
@@ -211,9 +211,9 @@ class SysUtility
         $new_id = false;
         $table  = $GLOBALS['xoopsDB']->prefix($tableName);
         // copy content of the record you wish to clone
-        $sql    = "SELECT * FROM $table WHERE $idField='" . $id . "' ";
+        $sql    = "SELECT * FROM $table WHERE $id_field='" . $id . "' ";
         $result = $GLOBALS['xoopsDB']->query($sql);
-        if ($result instanceof \mysqli_result) {
+        if ($GLOBALS['xoopsDB']->isResultSet($result)) {
             $tempTable = $GLOBALS['xoopsDB']->fetchArray($result, \MYSQLI_ASSOC);
         }
         if (!$tempTable) {
@@ -234,14 +234,25 @@ class SysUtility
     }
 
     /**
-     * @param string $tablename
+     * Check if dB table exists
      *
-     * @return bool
+     * @param string $tablename dB tablename with prefix
+     * @return bool true if table exists
      */
-    public static function tableExists($tablename)
+    public static function tableExists(string $tablename): bool
     {
+        $ret    = false;
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        \trigger_error(__FUNCTION__ . " is deprecated, called from {$trace[0]['file']} line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(
+            \basename(\dirname(__DIR__, 2)) . ' Module: ' . __FUNCTION__ . ' function is deprecated, please use Xmf\Database\Tables method(s) instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}"
+        );
         $result = $GLOBALS['xoopsDB']->queryF("SHOW TABLES LIKE '$tablename'");
 
-        return $GLOBALS['xoopsDB']->getRowsNum($result) > 0;
+        if ($GLOBALS['xoopsDB']->isResultSet($result)) {
+            $ret = $GLOBALS['xoopsDB']->getRowsNum($result) > 0;
+        }
+
+        return $ret;
     }
 }

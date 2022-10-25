@@ -16,11 +16,14 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\XoopsTree;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    NewsTopic,
+    XoopsTree,
+    Utility
+};
+
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
@@ -53,17 +56,17 @@ function b_news_top_show($options)
 
     $myts        = \MyTextSanitizer::getInstance();
     $block       = [];
-    $displayname = News\Utility::getModuleOption('displayname');
-    $tabskin     = News\Utility::getModuleOption('tabskin');
+    $displayname = Utility::getModuleOption('displayname');
+    $tabskin     = Utility::getModuleOption('tabskin');
 
     $block['displayview'] = $options[8];
     $block['tabskin']     = $tabskin;
     $block['imagesurl']   = XOOPS_URL . '/modules/news/assets/images/';
 
-    $restricted = News\Utility::getModuleOption('restrictindex');
-    $dateformat = News\Utility::getModuleOption('dateformat');
-    $infotips   = News\Utility::getModuleOption('infotips');
-    $newsrating = News\Utility::getModuleOption('ratenews');
+    $restricted = Utility::getModuleOption('restrictindex');
+    $dateformat = Utility::getModuleOption('dateformat');
+    $infotips   = Utility::getModuleOption('infotips');
+    $newsrating = Utility::getModuleOption('ratenews');
     if ('' == $dateformat) {
         $dateformat = 's';
     }
@@ -73,7 +76,7 @@ function b_news_top_show($options)
     // Is the spotlight visible ?
     if (1 == $options[4] && $restricted && 0 == $options[5]) {
         $perm_verified   = true;
-        $permittedtopics = News\Utility::getMyItemIds();
+        $permittedtopics = Utility::getMyItemIds();
         $permstory       = new NewsStory($options[6]);
         if (!in_array($permstory->topicid(), $permittedtopics, true)) {
             $usespotlight = false;
@@ -85,7 +88,7 @@ function b_news_top_show($options)
     // Try to see what tabs are visibles (if we are in restricted view of course)
     if (2 == $options[8] && $restricted && 0 != $options[14]) {
         $topics2         = [];
-        $permittedtopics = News\Utility::getMyItemIds();
+        $permittedtopics = Utility::getMyItemIds();
         $topics          = array_slice($options, 14);
         foreach ($topics as $onetopic) {
             if (in_array($onetopic, $permittedtopics, true)) {
@@ -133,6 +136,7 @@ function b_news_top_show($options)
 
         $tmpstory     = new NewsStory();
         $topic        = new NewsTopic();
+        $topics = [];
         $topicstitles = [];
         if (1 == $options[4]) { // Spotlight enabled
             $topicstitles[0] = _MB_NEWS_SPOTLIGHT_TITLE;
@@ -142,7 +146,7 @@ function b_news_top_show($options)
 
         if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
             if (!$perm_verified) {
-                $permittedtopics = News\Utility::getMyItemIds();
+                $permittedtopics = Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics, true)) {
                     $usespotlight = false;
@@ -282,12 +286,12 @@ function b_news_top_show($options)
                     }
                     if ($options[3] > 0) {
                         $html           = 1 == $story->nohtml() ? 0 : 1;
-                        $news['teaser'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                        $news['teaser'] = Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     } else {
                         $news['teaser'] = '';
                     }
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -318,14 +322,14 @@ function b_news_top_show($options)
                     $news  = [];
                     $title = $story->title();
                     if (mb_strlen($title) > $options[2]) {
-                        $title = News\Utility::truncateTagSafe($title, $options[2] + 3);
+                        $title = Utility::truncateTagSafe($title, $options[2] + 3);
                     }
                     if ('' !== $options[7]) {
                         $news['image'] = sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid(), $myts->displayTarea($options[7], $story->nohtml));
                     }
                     if ($options[3] > 0) {
                         $html         = 1 == $story->nohtml() ? 0 : 1;
-                        $news['text'] = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                        $news['text'] = Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     } else {
                         $news['text'] = '';
                     }
@@ -336,7 +340,7 @@ function b_news_top_show($options)
                         $news['number_votes'] = sprintf(_NW_NUMVOTES, $story->votes());
                     }
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -389,7 +393,7 @@ function b_news_top_show($options)
         }
     } else { // ************************ Classical view **************************************************************************************************************
         $tmpstory = new NewsStory();
-        if (isset($options[14]) && 0 == $options[14]) {
+        if (isset($options[14]) && 0 == (int)$options[14]) {
             $stories = NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
         } else {
             $topics  = array_slice($options, 14);
@@ -415,7 +419,7 @@ function b_news_top_show($options)
                 $spotlight = [];
                 $visible   = true;
                 if ($restricted) {
-                    $permittedtopics = News\Utility::getMyItemIds();
+                    $permittedtopics = Utility::getMyItemIds();
                     if (!in_array($story->topicid(), $permittedtopics, true)) {
                         $visible = false;
                     }
@@ -478,12 +482,12 @@ function b_news_top_show($options)
                 }
                 if ($options[3] > 0) {
                     $html             = 1 == $story->nohtml() ? 0 : 1;
-                    $news['teaser']   = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
+                    $news['teaser']   = Utility::truncateTagSafe($myts->displayTarea($story->hometext(), $html), $options[3] + 3);
                     $news['infotips'] = '';
                 } else {
                     $news['teaser'] = '';
                     if ($infotips > 0) {
-                        $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
+                        $news['infotips'] = ' title="' . Utility::makeInfotips($story->hometext()) . '"';
                     } else {
                         $news['infotips'] = '';
                     }
@@ -497,7 +501,7 @@ function b_news_top_show($options)
             $block['use_spotlight'] = true;
             $visible                = true;
             if (0 == $options[5] && $restricted) { // Use a specific news and we are in restricted mode
-                $permittedtopics = News\Utility::getMyItemIds();
+                $permittedtopics = Utility::getMyItemIds();
                 $permstory       = new NewsStory($options[6]);
                 if (!in_array($permstory->topicid(), $permittedtopics, true)) {
                     $visible = false;

@@ -16,9 +16,11 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 error_reporting(0);
 
@@ -65,14 +67,14 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
-$dateformat               = News\Utility::getModuleOption('dateformat');
+$dateformat               = Utility::getModuleOption('dateformat');
 $article_data             = $article->hometext() . $article->bodytext();
 $article_title            = $article->title();
-$article_title            = News\Utility::html2text($myts->undoHtmlSpecialChars($article_title));
+$article_title            = Utility::html2text($myts->undoHtmlSpecialChars($article_title));
 $forumdata['topic_title'] = $article_title;
 $pdf_data['title']        = $article->title();
 $topic_title              = $article->topic_title();
-$topic_title              = News\Utility::html2text($myts->undoHtmlSpecialChars($topic_title));
+$topic_title              = Utility::html2text($myts->undoHtmlSpecialChars($topic_title));
 $pdf_data['subtitle']     = $topic_title;
 $pdf_data['subsubtitle']  = $article->subtitle();
 $pdf_data['date']         = formatTimestamp($article->published(), $dateformat);

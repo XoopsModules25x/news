@@ -80,6 +80,7 @@ class Registryfile
         if (\is_file($fw)) {
             @\unlink($fw);
         }
+        /** @var resource $fp */
         $fp = \fopen($fw, 'wb') || exit(_ERRORS);
         \fwrite($fp, $content);
         \fclose($fp);

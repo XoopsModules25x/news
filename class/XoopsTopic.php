@@ -25,7 +25,6 @@ namespace XoopsModules\News;
 
 use MyTextSanitizer;
 use XoopsDatabaseFactory;
-use XoopsModules\News;
 use XoopsPerms;
 
 /**
@@ -33,6 +32,7 @@ use XoopsPerms;
  */
 class XoopsTopic
 {
+    public $db;
     public $table;
     public $topic_id;
     public $topic_pid;
@@ -41,6 +41,12 @@ class XoopsTopic
     public $prefix; // only used in topic tree
     public $use_permission = false;
     public $mid; // module id used for setting permission
+
+    public $menu;
+    public $topic_color;
+    public $topic_description;
+    public $topic_frontpage;
+    public $topic_rssurl;
 
     /**
      * @param     $table
@@ -168,7 +174,7 @@ class XoopsTopic
                 }
             }
             if (!empty($this->s_groups) && \is_array($this->s_groups)) {
-                foreach ($s_groups as $s_g) {
+                foreach ($this->s_groups as $s_g) {
                     $submit_topics = XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
@@ -188,7 +194,7 @@ class XoopsTopic
                 }
             }
             if (!empty($this->r_groups) && \is_array($this->r_groups)) {
-                foreach ($r_groups as $r_g) {
+                foreach ($this->r_groups as $r_g) {
                     $read_topics = XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
@@ -342,7 +348,7 @@ class XoopsTopic
      */
     public function makeTopicSelBox($none = 0, $seltopic = -1, $selname = '', $onchange = ''): void
     {
-        $xt = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
+        $xt = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         if (-1 != $seltopic) {
             $xt->makeMySelBox('topic_title', 'topic_title', $seltopic, $none, $selname, $onchange);
         } elseif (!empty($this->topic_id)) {
@@ -361,7 +367,7 @@ class XoopsTopic
      */
     public function getNiceTopicPathFromId($funcURL)
     {
-        $xt  = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
+        $xt  = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getNicePathFromId($this->topic_id, 'topic_title', $funcURL);
 
         return $ret;
@@ -372,7 +378,7 @@ class XoopsTopic
      */
     public function getAllChildTopicsId()
     {
-        $xt  = new \XoopsModules\News\ObjectTree($this->table, 'topic_id', 'topic_pid');
+        $xt  = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getAllChildId($this->topic_id, 'topic_title');
 
         return $ret;

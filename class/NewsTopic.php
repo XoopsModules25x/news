@@ -18,8 +18,6 @@ namespace XoopsModules\News;
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -89,7 +87,9 @@ class NewsTopic extends XoopsTopic
 
         if (-1 != $seltopic) {
             return $this->makeMySelBox('topic_title', 'topic_title', $seltopic, $none, $selname, $onchange, $perms);
-        } elseif (!empty($this->topic_id)) {
+        }
+
+        if (!empty($this->topic_id)) {
             return $this->makeMySelBox('topic_title', 'topic_title', $this->topic_id, $none, $selname, $onchange, $perms);
         }
 
@@ -102,7 +102,7 @@ class NewsTopic extends XoopsTopic
      * @param        $title
      * @param string $order
      * @param int    $preset_id is used to specify a preselected item
-     * @param int    $none      set $none to 1 to add a option with value 0
+     * @param int    $none      set $none to 1 to add an option with value 0
      *
      * @param string $sel_name
      * @param string $onchange
@@ -246,7 +246,7 @@ class NewsTopic extends XoopsTopic
         $table = $db->prefix('news_topics');
         $sql   = 'SELECT * FROM ' . $table;
         if ($checkRight) {
-            $topics = \XoopsModules\News\Utility::getMyItemIds($permission);
+            $topics = Utility::getMyItemIds($permission);
             if (0 == \count($topics)) {
                 return [];
             }
@@ -389,7 +389,7 @@ class NewsTopic extends XoopsTopic
                 $topic_frontpage,
                 $topic_rssurl,
                 $topic_color,
-                (int)$this->topic_id
+                $this->topic_id
             );
         }
         if (!$result = $this->db->query($sql)) {
@@ -399,7 +399,7 @@ class NewsTopic extends XoopsTopic
         }
 
         if ($this->use_permission) {
-            $xt            = new News\XoopsTree($this->table, 'topic_id', 'topic_pid');
+            $xt            = new XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && \is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {
@@ -627,7 +627,7 @@ class NewsTopic extends XoopsTopic
         }
         if ($perms) {
             //            $topicsids = [];
-            $topicsids = \XoopsModules\News\Utility::getMyItemIds();
+            $topicsids = Utility::getMyItemIds();
             if (0 == \count($topicsids)) {
                 return '';
             }

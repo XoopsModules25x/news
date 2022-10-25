@@ -37,6 +37,7 @@ use XoopsModules\News\{
     NewsStory,
     NewsTopic,
     ObjectTree,
+    PageNav,
     Registryfile,
     Utility
 };
@@ -54,7 +55,7 @@ require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/registryfile.php';
 require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+//require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 require_once XOOPS_ROOT_PATH . '/modules/news/admin/functions.php';
 
 $helper = Helper::getInstance();
@@ -87,7 +88,7 @@ function newSubmissions(): void
     $newsubcount = NewsStory::getAllStoriesCount(3, false);
     $storyarray  = NewsStory::getAllSubmitted(Utility::getModuleOption('storycountadmin'), true, Utility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
-        $pagenav = new \XoopsPageNav($newsubcount, Utility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
+        $pagenav = new PageNav($newsubcount, Utility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
         news_collapsableBar('newsub', 'topnewsubicon');
         echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topnewsubicon' name='topnewsubicon' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_NEWSUB . '</h4>';
         echo "<div id='newsub'>";
@@ -167,7 +168,7 @@ function autoStories(): void
     $storyarray   = NewsStory::getAllAutoStory(Utility::getModuleOption('storycountadmin'), true, $start);
     $class        = '';
     if (count($storyarray) > 0) {
-        $pagenav = new \XoopsPageNav($storiescount, Utility::getModuleOption('storycountadmin'), $start, 'startauto', 'op=newarticle');
+        $pagenav = new PageNav($storiescount, Utility::getModuleOption('storycountadmin'), $start, 'startauto', 'op=newarticle');
         news_collapsableBar('autostories', 'topautostories');
         echo "<img onclick=\"toggle('toptable'); toggleIcon('toptableicon');\" id='topautostories' name='topautostories' src='" . $pathIcon16 . "/close12.gif' alt=''></a>&nbsp;" . _AM_AUTOARTICLES . '</h4>';
         echo "<div id='autostories'>";
@@ -266,7 +267,7 @@ function lastStories(): void
     $start        = Request::getInt('start', 0, 'GET');
     $storyarray   = NewsStory::getAllPublished(Utility::getModuleOption('storycountadmin'), $start, false, 0, 1);
     $storiescount = NewsStory::getAllStoriesCount(4, false);
-    $pagenav      = new \XoopsPageNav($storiescount, Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
+    $pagenav      = new PageNav($storiescount, Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
     $class        = '';
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'><tr class='bg3'><th align='center'>"
          . _AM_STORYID
@@ -333,7 +334,7 @@ function expStories(): void
     $start        = Request::getInt('startexp', 0, 'GET');
     $expiredcount = NewsStory::getAllStoriesCount(1, false);
     $storyarray   = NewsStory::getAllExpired(Utility::getModuleOption('storycountadmin'), $start, 0, 1);
-    $pagenav      = new \XoopsPageNav($expiredcount, Utility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
+    $pagenav      = new PageNav($expiredcount, Utility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
 
     if (count($storyarray) > 0) {
         $class = '';
@@ -564,7 +565,6 @@ function launchNewsletter(): void
     $story           = new NewsStory();
     $exportedstories = [];
     $topiclist       = '';
-    $removebr        = $removehtml = false;
     $removebr        = Request::getInt('removebr', 0, 'POST');
     $removehtml      = Request::getInt('removehtml', 0, 'POST');
     $header          = Request::getString('header', '', 'POST');
@@ -882,7 +882,7 @@ function topicsmanager(): void
         }
         echo $output;
     }
-    $pagenav = new \XoopsPageNav($totaltopics, Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=topicsmanager');
+    $pagenav = new PageNav($totaltopics, Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=topicsmanager');
     echo "</table><div align='right'>" . $pagenav->renderNav() . '</div><br>';
     echo "</div></div><br>\n";
 
@@ -1501,6 +1501,7 @@ function getStats(): void
     $adminObject->displayNavigation('index.php?op=stats');
     $news   = new NewsStory();
     $stats  = [];
+    /** @var array $stats */
     $stats  = $news->getStats(Utility::getModuleOption('storycountadmin'));
     $totals = [0, 0, 0, 0, 0];
     //printf("<h1>%s</h1>\n",_AM_NEWS_STATS);
@@ -1617,7 +1618,7 @@ function getStats(): void
             $myts->displayTarea($data['title']),
             $url3,
             htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
-            number_format($data['rating'], 2)
+            number_format((float)$data['rating'], 2)
         );
     }
     echo '</table></div><br><br><br>';
@@ -1683,8 +1684,8 @@ function getMetagen(): void
 
     // Metagen Options
     $registry = new Registryfile('news_metagen_options.txt');
-    $content  = '';
-    $content  = $registry->getfile();
+    /** @var string $content */
+    $content = $registry->getfile();
     if ('' !== xoops_trim($content)) {
         [$keywordscount, $keywordsorder] = explode(',', $content);
     } else {
@@ -1855,7 +1856,7 @@ switch ($op) {
             $story = new NewsStory($storyid);
             $story->delete();
             $sfiles   = new Files();
-            $filesarr = [];
+            /** @var array $filesarr */
             $filesarr = $sfiles->getAllbyStory($storyid);
             if (count($filesarr) > 0) {
                 foreach ($filesarr as $onefile) {

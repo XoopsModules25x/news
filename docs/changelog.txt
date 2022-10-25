@@ -1,4 +1,4 @@
-<h5>1.72.0 Beta 6        [2022-04-27]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.28, PHP 8.1.5
+<h5>1.72.0 Beta 6        [2022-10-24]</h5>  Dev: XOOPS 2.5.11-Beta2, PHP 7.4.28, PHP 8.1.11, PHP 8.2 RC4
 <hr>
 - add namespace XoopsTree (Andrew-Staves)
 - remove Count() in news_top.php block  (Andrew-Staves)
@@ -6,7 +6,8 @@
 - increase hostname field to 45 characters (montuy337513): issue #24
 - increase picture field to 255 characters (montuy337513): issue #25
 - add dev tools and migration (future use) (mamba)
-- cosmetics (mamba)
+- various cosmetics (mamba)
+- fix for release_date in About (jorgenqv/mamba): issues/37
 
 
 <h5>1.72.0 Beta 5        [2022-02-20]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.27, PHP 8.0.16

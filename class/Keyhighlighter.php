@@ -87,7 +87,7 @@ class Keyhighlighter
 
         foreach ($patterns as $pattern) {
             if (null !== $this->replace_callback) {
-                $result = \preg_replace_callback($pattern, $this->replace_callback, $result);
+                $result = \preg_replace_callback($pattern, [$this, 'replace_callback'], $result);
             } else {
                 $result = \preg_replace($pattern, '<span class="highlightedkey">\\0</span>', $result);
             }

@@ -16,7 +16,7 @@ namespace XoopsModules\News\Common;
  * Configurator Class
  *
  * @copyright   XOOPS Project (https://xoops.org)
- * @license     https://www.fsf.org/copyleft/gpl.html GNU public license
+ * @license     GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author      XOOPS Development Team
  */
 
@@ -47,7 +47,7 @@ class Configurator
         $config = require \dirname(__DIR__, 2) . '/config/config.php';
 
         $this->name            = $config->name;
-        $this->paths           = $config->paths;
+//        $this->paths           = $config->paths;
         $this->uploadFolders   = $config->uploadFolders;
         $this->copyBlankFiles  = $config->copyBlankFiles;
         $this->copyTestFolders = $config->copyTestFolders;

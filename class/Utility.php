@@ -12,7 +12,6 @@ use XoopsFormHtmlarea;
 use XoopsFormTextArea;
 use XoopsFormTinyeditorTextArea;
 use XoopsFormWysiwygTextArea;
-use XoopsModules\News;
 use XoopsObjectTree;
 use XoopsTpl;
 
@@ -46,6 +45,7 @@ class Utility extends Common\SysUtility
             /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = \xoops_getHandler('module');
             $module        = $moduleHandler->getByDirname($repmodule);
+            /** @var XoopsConfigHandler $configHandler */
             $configHandler = \xoops_getHandler('config');
             if ($module) {
                 $moduleConfig = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
@@ -273,7 +273,7 @@ class Utility extends Common\SysUtility
      */
     public static function getEditor($helper = null, $options = null)
     {
-        /** @var News\Helper $helper */
+        /** @var Helper $helper */
         if (null === $options) {
             $options           = [];
             $options['name']   = 'Editor';
@@ -351,7 +351,7 @@ class Utility extends Common\SysUtility
             // Create chapters
             require_once XOOPS_ROOT_PATH . '/class/tree.php';
             //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-            $xt         = new \XoopsModules\News\NewsTopic();
+            $xt         = new NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
             $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
             $topics_arr = $topic_tree->getAllChild(0);
@@ -389,6 +389,7 @@ class Utility extends Common\SysUtility
          * Dublin Core's meta datas
          */
         if (static::getModuleOption('dublincore') && isset($story) && \is_object($story)) {
+            /** @var XoopsConfigHandler $configHandler */
             $configHandler         = \xoops_getHandler('config');
             $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(\XOOPS_CONF_METAFOOTER);
             $content               .= '<meta name="DC.Title" content="' . static::getDublinQuotes($story->title()) . "\">\n";
@@ -452,6 +453,7 @@ class Utility extends Common\SysUtility
         if (Request::hasVar('news_keywords_limit', 'SESSION')) {
             $limit = $_SESSION['news_keywords_limit'];
         } else {
+            /** @var XoopsConfigHandler $configHandler */
             $configHandler                   = \xoops_getHandler('config');
             $xoopsConfigSearch               = $configHandler->getConfigsByCat(\XOOPS_CONF_SEARCH);
             $limit                           = $xoopsConfigSearch['keyword_min'];
@@ -552,6 +554,7 @@ class Utility extends Common\SysUtility
             return \implode(',', $tmp);
         }
         if (!isset($configHandler) || !\is_object($configHandler)) {
+            /** @var XoopsConfigHandler $configHandler */
             $configHandler = \xoops_getHandler('config');
         }
         $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(\XOOPS_CONF_METAFOOTER);
@@ -715,7 +718,7 @@ class Utility extends Common\SysUtility
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return string
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>
