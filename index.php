@@ -71,15 +71,19 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Files;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    Files,
+    Helper,
+    NewsStory,
+    NewsTopic,
+    ObjectTree,
+    Utility
+};
 
 require \dirname(__DIR__, 2) . '/mainfile.php';
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 
 //$XOOPS_URL = XOOPS_URL;
 //$u=$XOOPS_URL.'/uploads/news_xml.php';
@@ -166,9 +170,9 @@ if ($showclassic) {
         $xoopsTpl->assign('displaynav', true);
 
         $allTopics  = $xt->getAllTopics($helper->getConfig('restrictindex'));
-        $topic_tree = new \XoopsModules\News\ObjectTree($allTopics, 'topic_id', 'topic_pid');
+        $topic_tree = new ObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-        if (News\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+        if (Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
             $topic_select = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', $xoopsOption['storytopic'], true, 0, '', '');
             $xoopsTpl->assign('topic_select', $topic_select->render());
         } else {
@@ -232,7 +236,7 @@ if ($showclassic) {
     unset($story);
 
     // orwah show topictitle in news_item.tpl
-    if (1 == News\Utility::getModuleOption('displaytopictitle')) {
+    if (1 == Utility::getModuleOption('displaytopictitle')) {
         $xoopsTpl->assign('displaytopictitle', true);
     } else {
         $xoopsTpl->assign('displaytopictitle', false);
@@ -242,7 +246,7 @@ if ($showclassic) {
     if ($totalcount > $scount) {
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         $pagenav = new \XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
-        if (News\Utility::isBot()) { // A bot is reading the news, we are going to show it all the links so that it can read everything
+        if (Utility::isBot()) { // A bot is reading the news, we are going to show it all the links so that it can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
         } else {
             $xoopsTpl->assign('pagenav', $pagenav->renderNav());
@@ -305,12 +309,12 @@ if ($showclassic) {
     $xoopsTpl->assign('columns', $columns);
 }
 
-$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
+$xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
  * Create the Meta Datas
  */
-News\Utility::createMetaDatas();
+Utility::createMetaDatas();
 
 /**
  * Create a clickable path from the root to the current topic (if we are viewing a topic)

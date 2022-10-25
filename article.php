@@ -110,11 +110,14 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Files;
-use XoopsModules\News\Helper;
-use XoopsModules\News\Keyhighlighter;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Files,
+    Helper,
+    Keyhighlighter,
+    NewsStory,
+    ObjectTree
+};
+
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -356,7 +359,7 @@ if (News\Utility::getModuleOption('newsbythisauthor')) {
  * Uncomment the code to be able to use it
  */
 if ($cfg['create_clickable_path']) {
-    $mytree    = new \XoopsModules\News\ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $mytree    = new ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($article->topicid(), 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
     unset($mytree);
