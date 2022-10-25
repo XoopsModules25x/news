@@ -42,6 +42,12 @@ class XoopsTopic
     public $use_permission = false;
     public $mid; // module id used for setting permission
 
+    public $menu;
+    public $topic_color;
+    public $topic_description;
+    public $topic_frontpage;
+    public $topic_rssurl;
+
     /**
      * @param     $table
      * @param int $topicid

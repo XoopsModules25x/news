@@ -42,6 +42,16 @@ use XoopsObject;
  */
 class NewsTopics extends XoopsObject
 {
+    public $topic_id;
+    public $topic_pid;
+    public $topic_title;
+    public $topic_imgurl;
+    public $menu;
+    public $topic_frontpage;
+    public $topic_rssurl;
+    public $topic_description;
+    public $topic_color;
+
     //Constructor
 
     public function __construct()

@@ -56,6 +56,16 @@ class XoopsStory
     public $topicstable;
     public $comments;
 
+    public $img_name;
+    public $menu;
+    public $story_type;
+    public $topic_color;
+    public $topic_frontpage;
+    public $topic_id;
+    public $topic_pid;
+    public $topic_rssurl;
+
+
     /**
      * @param $storyid
      */
