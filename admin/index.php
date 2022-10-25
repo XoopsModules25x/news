@@ -564,7 +564,6 @@ function launchNewsletter(): void
     $story           = new NewsStory();
     $exportedstories = [];
     $topiclist       = '';
-    $removebr        = $removehtml = false;
     $removebr        = Request::getInt('removebr', 0, 'POST');
     $removehtml      = Request::getInt('removehtml', 0, 'POST');
     $header          = Request::getString('header', '', 'POST');
@@ -1501,6 +1500,7 @@ function getStats(): void
     $adminObject->displayNavigation('index.php?op=stats');
     $news   = new NewsStory();
     $stats  = [];
+    /** @var array $stats */
     $stats  = $news->getStats(Utility::getModuleOption('storycountadmin'));
     $totals = [0, 0, 0, 0, 0];
     //printf("<h1>%s</h1>\n",_AM_NEWS_STATS);
@@ -1683,8 +1683,8 @@ function getMetagen(): void
 
     // Metagen Options
     $registry = new Registryfile('news_metagen_options.txt');
-    $content  = '';
-    $content  = $registry->getfile();
+    /** @var string $content */
+    $content = $registry->getfile();
     if ('' !== xoops_trim($content)) {
         [$keywordscount, $keywordsorder] = explode(',', $content);
     } else {
@@ -1855,7 +1855,7 @@ switch ($op) {
             $story = new NewsStory($storyid);
             $story->delete();
             $sfiles   = new Files();
-            $filesarr = [];
+            /** @var array $filesarr */
             $filesarr = $sfiles->getAllbyStory($storyid);
             if (count($filesarr) > 0) {
                 foreach ($filesarr as $onefile) {
