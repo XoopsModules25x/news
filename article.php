@@ -116,6 +116,7 @@ use XoopsModules\News\{
     Keyhighlighter,
     NewsStory,
     ObjectTree,
+    PageNav,
     Utility
 };
 
@@ -208,8 +209,8 @@ if ('' !== xoops_trim($bodytext)) {
     $story_pages = count($articletext);
 
     if ($story_pages > 1) {
-        require_once XOOPS_ROOT_PATH . '/modules/news/include/pagenav.php';
-        $pagenav = new \XoopsPageNav($story_pages, 1, $storypage, 'page', 'storyid=' . $storyid);
+//        require_once XOOPS_ROOT_PATH . '/modules/news/include/pagenav.php';
+        $pagenav = new PageNav($story_pages, 1, $storypage, 'page', 'storyid=' . $storyid);
         if (Utility::isBot()) { // A bot is reading the articles, we are going to show him all the links to the pages
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($story_pages));
         } elseif (Utility::getModuleOption('enhanced_pagenav')) {

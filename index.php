@@ -77,6 +77,7 @@ use XoopsModules\News\{
     NewsStory,
     NewsTopic,
     ObjectTree,
+    PageNav,
     Utility,
     XoopsTree
 };
@@ -245,8 +246,8 @@ if ($showclassic) {
 
     $totalcount = NewsStory::countPublishedByTopic($xoopsOption['storytopic'], $helper->getConfig('restrictindex'));
     if ($totalcount > $scount) {
-        require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-        $pagenav = new \XoopsPageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
+//        require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+        $pagenav = new PageNav($totalcount, $xoopsOption['storynum'], $start, 'start', 'storytopic=' . $xoopsOption['storytopic']);
         if (Utility::isBot()) { // A bot is reading the news, we are going to show it all the links so that it can read everything
             $xoopsTpl->assign('pagenav', $pagenav->renderNav($totalcount));
         } else {

@@ -27,9 +27,9 @@ namespace XoopsModules\News;
  */
 
 /**
- * Class XoopsPageNav
+ * Class PageNav
  */
-class pagenav
+class PageNav
 {
     /**#@+
      * @access    private
