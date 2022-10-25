@@ -1,4 +1,4 @@
-<h5>1.72.0 Beta 6        [2022-04-27]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.28, PHP 8.1.5
+<h5>1.72.0 Beta 6        [NOT RELEASED]</h5>  Dev: XOOPS 2.5.11-Beta2, PHP 7.4.28, PHP 8.1.11, PHP 8.2 RC4
 <hr>
 - add namespace XoopsTree (Andrew-Staves)
 - remove Count() in news_top.php block  (Andrew-Staves)
