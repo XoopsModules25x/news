@@ -25,7 +25,7 @@
  */
 
 use XoopsModules\Ams;
-use XoopsModules\Ams\Helper;
+use XoopsModules\Ams\Helper as AmsHelper;
 use XoopsModules\News\Files;
 use XoopsModules\News\NewsStory;
 use XoopsModules\News\NewsTopic;
@@ -51,7 +51,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
     } else {
         // Launch the import
         /** @var \XoopsModules\Ams\Helper $amsHelper */
-        $amsHelper = Helper::getInstance();
+        $amsHelper = AmsHelper::getInstance();
         $amsHelper->loadLanguage('admin');
         $amsHelper->loadLanguage('main');
 
