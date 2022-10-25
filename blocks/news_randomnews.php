@@ -47,10 +47,10 @@ function b_news_randomnews_show($options)
         $dateformat = 's';
     }
     if (0 == $options[4]) {
-        $stories = $tmpstory->getRandomNews($options[1], 0, $restricted, 0, 1, $options[0]);
+        $stories = $tmpstory->getRandomNews((int)$options[1], 0, $restricted, 0, 1, $options[0]);
     } else {
         $topics  = array_slice($options, 4);
-        $stories = $tmpstory->getRandomNews($options[1], 0, $restricted, $topics, 1, $options[0]);
+        $stories = $tmpstory->getRandomNews((int)$options[1], 0, $restricted, $topics, 1, $options[0]);
     }
     unset($tmpstory);
     if (0 == count($stories)) {
