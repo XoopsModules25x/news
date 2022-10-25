@@ -34,7 +34,7 @@
         </div>
     <{/if}>
 
-    <{if $pagenav}>
+    <{if $pagenav|default:''}>
         <div class="pagenav"><{$smarty.const._NW_PAGE}> <{$pagenav}></div><{/if}>
 
     <{if $tags}>

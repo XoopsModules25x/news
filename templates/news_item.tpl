@@ -7,7 +7,7 @@
     <h6><i><{$story.subtitle|default:''}></i></h6>
 
     <div class="itemInfo">
-        <{if $story.files_attached}><{$story.attached_link}>&nbsp;<{/if}>
+        <{if $story.files_attached|default:''}><{$story.attached_link}>&nbsp;<{/if}>
         <{if $story.poster|default:'' != ''}><span class="itemPoster"><{$lang_postedby}> <{$story.poster}> </span><{/if}>
         <span class="itemPostDate"><{$lang_on}> <{$story.posttime}></span>
         (<span class="itemStats"><{$story.hits}> <{$lang_reads}></span>)
