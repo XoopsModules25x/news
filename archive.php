@@ -169,7 +169,7 @@ if (0 != $fromyear && 0 != $frommonth) {
     $xoopsTpl->assign('lang_views', _NW_VIEWS);
 
     // must adjust the selected time to server timestamp
-    $timeoffset = $useroffset - $xoopsConfig['server_TZ'];
+    $timeoffset = (int)($useroffset - $xoopsConfig['server_TZ']);
     $monthstart = mktime(0 - $timeoffset, 0, 0, $frommonth, 1, $fromyear);
     $monthend   = mktime(23 - $timeoffset, 59, 59, $frommonth + 1, 0, $fromyear);
     $monthend   = ($monthend > time()) ? time() : $monthend;
