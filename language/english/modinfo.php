@@ -30,6 +30,7 @@ define('_MI_DISPLAYNAV', 'Select yes to display navigation box at the top of eac
 define('_MI_AUTOAPPROVE', 'Auto approve news stories without admin intervention?');
 define('_MI_ALLOWEDSUBMITGROUPS', 'Groups who can submit news');
 define('_MI_ALLOWEDAPPROVEGROUPS', 'Groups who can approve news');
+define('_MI_DEFAULT_APPROVE_CHECKED_FOR_ADMINS', 'Should the Approve checkbox be ticked by default for module admins?');
 define('_MI_NEWSDISPLAY', 'News display layout');
 define('_MI_NAMEDISPLAY', "Author's name");
 define('_MI_COLUMNMODE', 'Columns');
@@ -43,6 +44,7 @@ define('_MI_DISPLAYNAVDSC', '');
 define('_MI_AUTOAPPROVEDSC', '');
 define('_MI_ALLOWEDSUBMITGROUPSDESC', 'The selected groups will be able to submit news items');
 define('_MI_ALLOWEDAPPROVEGROUPSDESC', 'The selected groups will be able to approve news items');
+define('_MI_DEFAULT_APPROVE_CHECKED_FOR_ADMINS_DESC', 'The checkbox is shown to users who can approve news. This sets whether it is checked by default for users who also have news module admin rights.');
 define('_MI_NEWSDISPLAYDESC', 'Classic shows all news ordered by date of publish. News by topic will group the news by topic with the latest story in full and the others with just the title');
 define('_MI_ADISPLAYNAMEDSC', "Select how to display the author's name");
 define('_MI_COLUMNMODE_DESC', 'You can choose the number of columns to display articles list');

@@ -352,6 +352,18 @@ $modversion['config'][] = [
 ];
 
 /**
+ * Whether to check the Approve checkbox by default for module admin users
+ */
+$modversion['config'][] = [
+    'name'        => 'moduleAdminApproveChecked',
+    'title'       => '_MI_DEFAULT_APPROVE_CHECKED_FOR_ADMINS',
+    'description' => '_MI_DEFAULT_APPROVE_CHECKED_FOR_ADMINS_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
+
+/**
  * Display layout, classic or by topics
  */
 $modversion['config'][] = [
