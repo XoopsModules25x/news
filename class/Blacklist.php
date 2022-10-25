@@ -129,6 +129,7 @@ class Blacklist
         if (\is_file($filename)) {
             \unlink($filename);
         }
+        /** @var resource $fd */
         $fd = \fopen($filename, 'wb') || exit('Error unable to create the blacklist file');
         \fwrite($fd, "<?php\n");
         \fwrite($fd, '$tbl_black_list=array(' . "\n");
