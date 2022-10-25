@@ -200,13 +200,13 @@ switch ($op) {
             $story     = new NewsStory();
             $published = Request::getInt('publish_date', 0, 'POST');
             if (!empty($published) && isset($_POST['autodate']) && (int)(1 == $_POST['autodate'])) {
-                $published = strtotime($published['date']) + $published['time'];
+                $published = strtotime(str_replace('/', '-', $published['date'])) + $published['time'];
             } else {
                 $published = 0;
             }
             $expired = Request::getInt('expiry_date', 0, 'POST');
             if (!empty($expired) && isset($_POST['autoexpdate']) && (int)(1 == $_POST['autoexpdate'])) {
-                $expired = strtotime($expired['date']) + $expired['time'];
+                $expired = strtotime(str_replace('/', '-', $expired['date'])) + $expired['time'];
             } else {
                 $expired = 0;
             }
@@ -329,15 +329,13 @@ switch ($op) {
         $story->setType($_POST['type']);
 
         if (!empty($_POST['autodate']) && $approveprivilege) {
-            $publish_date = $_POST['publish_date'];
-            $pubdate      = strtotime($publish_date['date']) + $publish_date['time'];
+            $pubdate      = strtotime(str_replace('/', '-', $_POST['publish_date'])) + $publish_date['time'];
             //$offset = $xoopsUser -> timezone() - $xoopsConfig['server_TZ'];
             //$pubdate = $pubdate - ( $offset * 3600 );
             $story->setPublished($pubdate);
         }
         if (!empty($_POST['autoexpdate']) && $approveprivilege) {
-            $expiry_date = $_POST['expiry_date'];
-            $expiry_date = strtotime($expiry_date['date']) + $expiry_date['time'];
+            $expiry_date = strtotime(str_replace('/', '-', $_POST['expiry_date'])) + $expiry_date['time'];
             $offset      = $xoopsUser->timezone() - $xoopsConfig['server_TZ'];
             $expiry_date -= ($offset * 3600);
             $story->setExpired($expiry_date);
