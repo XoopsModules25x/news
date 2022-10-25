@@ -389,7 +389,7 @@ class NewsTopic extends XoopsTopic
                 $topic_frontpage,
                 $topic_rssurl,
                 $topic_color,
-                (int)$this->topic_id
+                $this->topic_id
             );
         }
         if (!$result = $this->db->query($sql)) {
