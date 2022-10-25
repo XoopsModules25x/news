@@ -33,6 +33,7 @@ use XoopsPerms;
  */
 class XoopsTopic
 {
+    public $db;
     public $table;
     public $topic_id;
     public $topic_pid;

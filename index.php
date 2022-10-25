@@ -76,7 +76,7 @@ use XoopsModules\News\Files;
 use XoopsModules\News\NewsStory;
 use XoopsModules\News\NewsTopic;
 
-require_once \dirname(__DIR__, 2) . '/mainfile.php';
+require \dirname(__DIR__, 2) . '/mainfile.php';
 
 /** @var News\Helper $helper */
 $helper = News\Helper::getInstance();
@@ -332,7 +332,7 @@ if ($xoopsOption['storytopic']) {
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 if ($helper->getConfig('topicsrss') && $xoopsOption['storytopic']) {
-    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, Admin::iconUrl('', 16) . '/rss.gif', _NW_RSSFEED);
+    $link = sprintf("<a href='%s' title='%s'><img src='%s' border='0' alt='%s'></a>", XOOPS_URL . '/modules/news/backendt.php?topicid=' . $xoopsOption['storytopic'], _NW_RSSFEED, Admin::iconUrl('', '16') . '/rss.gif', _NW_RSSFEED);
     $xoopsTpl->assign('topic_rssfeed_link', $link);
 }
 

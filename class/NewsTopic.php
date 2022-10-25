@@ -102,7 +102,7 @@ class NewsTopic extends XoopsTopic
      * @param        $title
      * @param string $order
      * @param int    $preset_id is used to specify a preselected item
-     * @param int    $none      set $none to 1 to add a option with value 0
+     * @param int    $none      set $none to 1 to add an option with value 0
      *
      * @param string $sel_name
      * @param string $onchange

@@ -715,7 +715,7 @@ class Utility extends Common\SysUtility
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return string
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>

@@ -112,7 +112,13 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
             $ams_news_topics[$ams_topicid] = $news_topicid;
 
             // Then we insert all its articles
-            $result = $db->query('SELECT * FROM ' . $ams_articles . ' WHERE topicid=' . $ams_topicid . ' ORDER BY created');
+            $sql = 'SELECT * FROM ' . $ams_articles . ' WHERE topicid=' . $ams_topicid . ' ORDER BY created';
+            $result = $db->query($sql);
+
+            if (!$db->isResultSet($result)) {
+                \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
+            }
+
             while (false !== ($article = $db->fetchArray($result))) {
                 $ams_newsid = $article['storyid'];
 

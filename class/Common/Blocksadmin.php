@@ -34,7 +34,7 @@ class Blocksadmin
      */
     public $db;
     /**
-     * @var \XoopsModules\Tag\Helper
+     * @var Helper
      */
     public $helper;
     /**
@@ -355,7 +355,7 @@ class Blocksadmin
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
         $modules = [];
-        if ($result instanceof \mysqli_result) {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($row = $this->db->fetchArray($result))) {
                 $modules[] = (int)$row['module_id'];
             }
@@ -480,7 +480,7 @@ class Blocksadmin
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
         $modules = [];
-        if ($result instanceof \mysqli_result) {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($row = $this->db->fetchArray($result))) {
                 $modules[] = (int)$row['module_id'];
             }

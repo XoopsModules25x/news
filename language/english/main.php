@@ -10,7 +10,7 @@ define('_NW_BYTESMORE', '%s bytes more');
 define('_NW_NUMCOMMENTS', '%s comments');
 define('_NW_MORERELEASES', 'More releases in ');
 //%%%%%%        File Name submit.php        %%%%%
-define('_NW_SUBMITNEWS', 'Submit news');
+//define('_NW_SUBMITNEWS', 'Submit news');
 define('_NW_TITLE', 'Title');
 define('_NW_TOPIC', 'Topic');
 define('_NW_THESCOOP', 'The Scoop');

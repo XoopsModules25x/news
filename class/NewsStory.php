@@ -275,13 +275,19 @@ class NewsStory extends XoopsStory
         $sql    .= " ORDER BY s.$order DESC";
         $result = $db->query($sql, (int)$limit, (int)$start);
 
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
-            }
+        if (!$db->isResultSet($result)) {
+//            \trigger_error("Query Failed! SQL: $sql- Error: " . $db->error(), E_USER_ERROR);
+            $helper = Helper::getInstance();
+            $helper->redirect('/index.php', 5, $db->error());
         }
+
+            while (false !== ($myrow = $db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
+            }
 
         return $ret;
     }
@@ -356,7 +362,7 @@ class NewsStory extends XoopsStory
         $db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts  = \MyTextSanitizer::getInstance();
         $ret   = [];
-        $tdate = \mktime(0, 0, 0, \date('n'), \date('j'), \date('Y'));
+        $tdate = \mktime(0, 0, 0, (int)\date('n'), (int)\date('j'), (int)\date('Y'));
         $sql   = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (published > ' . $tdate . ' AND published < ' . \time() . ') AND (expired > ' . \time() . ' OR expired = 0) ';
 
         if (0 != (int)$topic) {

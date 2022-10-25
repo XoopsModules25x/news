@@ -121,7 +121,7 @@ class Files
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
-        if ($result instanceof \mysqli_result) {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $ret[] = new self($myrow);
             }
@@ -398,7 +398,7 @@ class Files
             $sql    = 'SELECT storyid, count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid IN (';
             $sql    .= \implode(',', $stories) . ') GROUP BY storyid';
             $result = $this->db->query($sql);
-            if ($result instanceof \mysqli_result) {
+            if ($this->db->isResultSet($result)) {
                 while (false !== ($myrow = $this->db->fetchArray($result))) {
                     $ret[$myrow['storyid']] = $myrow['cnt'];
                 }
