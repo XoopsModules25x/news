@@ -18,7 +18,9 @@ namespace XoopsModules\News;
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
+use XoopsModules\News\{
+    XoopsTree
+};
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
@@ -401,7 +403,7 @@ class NewsTopic extends XoopsTopic
         }
 
         if ($this->use_permission) {
-            $xt            = new News\XoopsTree($this->table, 'topic_id', 'topic_pid');
+            $xt            = new XoopsTree($this->table, 'topic_id', 'topic_pid');
             $parent_topics = $xt->getAllParentId($this->topic_id);
             if (!empty($this->m_groups) && \is_array($this->m_groups)) {
                 foreach ($this->m_groups as $m_g) {

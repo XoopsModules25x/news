@@ -77,7 +77,8 @@ use XoopsModules\News\{
     NewsStory,
     NewsTopic,
     ObjectTree,
-    Utility
+    Utility,
+    XoopsTree
 };
 
 require \dirname(__DIR__, 2) . '/mainfile.php';
@@ -323,7 +324,7 @@ Utility::createMetaDatas();
  */
 if ($xoopsOption['storytopic']) {
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
-    $mytree    = new News\XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $mytree    = new XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($xoopsOption['storytopic'], 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
     unset($mytree);

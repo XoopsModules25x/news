@@ -16,11 +16,13 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Files;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\Tag\Helper;
+use XoopsModules\News\{
+    Files,
+    Helper,
+    NewsStory,
+    NewsTopic
+};
+use XoopsModules\Tag\Helper as TagHelper;
 
 if (!defined('XOOPS_ROOT_PATH')) {
     require_once \dirname(__DIR__, 2) . '/mainfile.php';
@@ -35,11 +37,8 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 require_once __DIR__ . '/include/common.php';
 
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
-
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 $helper->loadLanguage('admin');
 
 $myts      = \MyTextSanitizer::getInstance();

@@ -16,9 +16,10 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory
+};
 
 error_reporting(0);
 
