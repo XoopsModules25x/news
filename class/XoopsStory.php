@@ -395,7 +395,7 @@ class XoopsStory
      */
     public function topic()
     {
-        return new \XoopsModules\News\XoopsTopic($this->topicstable, $this->topicid);
+        return new XoopsTopic($this->topicstable, $this->topicid);
     }
 
     public function uid()

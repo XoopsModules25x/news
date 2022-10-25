@@ -115,7 +115,7 @@ use XoopsModules\News\{
     Helper,
     Keyhighlighter,
     NewsStory,
-    ObjectTree,
+    XoopsTree,
     PageNav,
     Utility
 };
@@ -361,7 +361,7 @@ if (Utility::getModuleOption('newsbythisauthor')) {
  * Uncomment the code to be able to use it
  */
 if ($cfg['create_clickable_path']) {
-    $mytree    = new ObjectTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
+    $mytree    = new XoopsTree($xoopsDB->prefix('news_topics'), 'topic_id', 'topic_pid');
     $topicpath = $mytree->getNicePathFromId($article->topicid(), 'topic_title', 'index.php?op=1');
     $xoopsTpl->assign('topic_path', $topicpath);
     unset($mytree);

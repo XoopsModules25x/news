@@ -20,7 +20,8 @@ use XoopsModules\News\{
     Files,
     Helper,
     NewsStory,
-    NewsTopic
+    NewsTopic,
+    Utility
 };
 use XoopsModules\Tag\Helper as TagHelper;
 
@@ -80,10 +81,10 @@ if (Request::hasVar('preview', 'POST')) {
     if ('edit' === $_GET['op'] || 'delete' === $_GET['op']) {
         if (1 == $helper->getConfig('authoredit')) {
             $tmpstory = new NewsStory(Request::getInt('storyid', 0, 'GET'));
-            if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !News\Utility::isAdminGroup()) {
+            if (is_object($xoopsUser) && $xoopsUser->getVar('uid') != $tmpstory->uid() && !Utility::isAdminGroup()) {
                 redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
             }
-        } elseif (!News\Utility::isAdminGroup()) {
+        } elseif (!Utility::isAdminGroup()) {
             // Users can't edit their articles
             redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
         }
@@ -95,7 +96,7 @@ if (Request::hasVar('preview', 'POST')) {
     } elseif ($approveprivilege && 'delete' === $_GET['op']) {
         $op      = 'delete';
         $storyid = Request::getInt('storyid', 0, 'GET');
-    } elseif (News\Utility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
+    } elseif (Utility::getModuleOption('authoredit') && is_object($xoopsUser) && isset($_GET['storyid'])
               && ('edit' === $_GET['op']
                   || 'preview' === $_POST['op']
                   || 'post' === $_POST['op'])) {
@@ -110,14 +111,14 @@ if (Request::hasVar('preview', 'POST')) {
                 $approveprivilege = 1;
             } else {
                 unset($tmpstory);
-                if (!News\Utility::isAdminGroup()) {
+                if (!Utility::isAdminGroup()) {
                     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
                 } else {
                     $approveprivilege = 1;
                 }
             }
         }
-    } elseif (!News\Utility::isAdminGroup()) {
+    } elseif (!Utility::isAdminGroup()) {
         unset($tmpstory);
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
     } else {
@@ -173,7 +174,7 @@ switch ($op) {
         $type         = $story->type();
         $topicdisplay = $story->topicdisplay();
         $topicalign   = $story->topicalign(false);
-        if (!News\Utility::isAdminGroup()) {
+        if (!Utility::isAdminGroup()) {
             require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         } else {
             require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
@@ -229,7 +230,7 @@ switch ($op) {
             $story->setTopicdisplay($topicdisplay);
             $story->setTopicalign($topicalign);
             $story->setBodytext($_POST['bodytext']);
-            if (News\Utility::getModuleOption('metadata')) {
+            if (Utility::getModuleOption('metadata')) {
                 $story->setKeywords($_POST['keywords']);
                 $story->setDescription($_POST['description']);
                 $story->setIhome(Request::getInt('ihome', 0, 'POST'));
@@ -345,7 +346,7 @@ switch ($op) {
         }
 
         if ($approveprivilege) {
-            if (News\Utility::getModuleOption('metadata')) {
+            if (Utility::getModuleOption('metadata')) {
                 $story->setDescription($_POST['description']);
                 $story->setKeywords($_POST['keywords']);
             }
@@ -388,7 +389,7 @@ switch ($op) {
         $story->setApproved($approve);
 
         if ($approve) {
-            News\Utility::updateCache();
+            Utility::updateCache();
         }
 
         // Increment author's posts count (only if it's a new article)
@@ -453,7 +454,7 @@ switch ($op) {
                         if ($uploader->upload()) {
                             $fullPictureName = XOOPS_ROOT_PATH . '/uploads/news/image/' . basename($destname);
                             $newName         = XOOPS_ROOT_PATH . '/uploads/news/image/redim_' . basename($destname);
-                            News\Utility::resizePicture($fullPictureName, $newName, $helper->getConfig('maxwidth'), $helper->getConfig('maxheight'));
+                            Utility::resizePicture($fullPictureName, $newName, $helper->getConfig('maxwidth'), $helper->getConfig('maxheight'));
                             if (file_exists($newName)) {
                                 @unlink($fullPictureName);
                                 rename($newName, $fullPictureName);
@@ -523,7 +524,7 @@ switch ($op) {
                         /**
                          * You can attach files to your news
                          */
-                        $permittedtypes = explode("\n", str_replace("\r", '', News\Utility::getModuleOption('mimetypes')));
+                        $permittedtypes = explode("\n", str_replace("\r", '', Utility::getModuleOption('mimetypes')));
                         array_walk($permittedtypes, '\trim');
                         $uploader = new \XoopsMediaUploader(XOOPS_UPLOAD_PATH, $permittedtypes, $helper->getConfig('maxuploadsize'));
                         $uploader->setTargetFileName($destname);

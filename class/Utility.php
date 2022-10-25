@@ -12,7 +12,6 @@ use XoopsFormHtmlarea;
 use XoopsFormTextArea;
 use XoopsFormTinyeditorTextArea;
 use XoopsFormWysiwygTextArea;
-use XoopsModules\News;
 use XoopsObjectTree;
 use XoopsTpl;
 
@@ -274,7 +273,7 @@ class Utility extends Common\SysUtility
      */
     public static function getEditor($helper = null, $options = null)
     {
-        /** @var News\Helper $helper */
+        /** @var Helper $helper */
         if (null === $options) {
             $options           = [];
             $options['name']   = 'Editor';
@@ -352,7 +351,7 @@ class Utility extends Common\SysUtility
             // Create chapters
             require_once XOOPS_ROOT_PATH . '/class/tree.php';
             //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
-            $xt         = new \XoopsModules\News\NewsTopic();
+            $xt         = new NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
             $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
             $topics_arr = $topic_tree->getAllChild(0);

@@ -133,6 +133,7 @@ function b_news_top_show($options)
 
         $tmpstory     = new NewsStory();
         $topic        = new NewsTopic();
+        $topics = [];
         $topicstitles = [];
         if (1 == $options[4]) { // Spotlight enabled
             $topicstitles[0] = _MB_NEWS_SPOTLIGHT_TITLE;

@@ -18,10 +18,6 @@ namespace XoopsModules\News;
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News\{
-    XoopsTree
-};
-
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/tree.php';
@@ -250,7 +246,7 @@ class NewsTopic extends XoopsTopic
         $table = $db->prefix('news_topics');
         $sql   = 'SELECT * FROM ' . $table;
         if ($checkRight) {
-            $topics = \XoopsModules\News\Utility::getMyItemIds($permission);
+            $topics = Utility::getMyItemIds($permission);
             if (0 == \count($topics)) {
                 return [];
             }
@@ -631,7 +627,7 @@ class NewsTopic extends XoopsTopic
         }
         if ($perms) {
             //            $topicsids = [];
-            $topicsids = \XoopsModules\News\Utility::getMyItemIds();
+            $topicsids = Utility::getMyItemIds();
             if (0 == \count($topicsids)) {
                 return '';
             }
