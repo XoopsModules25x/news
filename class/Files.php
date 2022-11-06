@@ -36,7 +36,7 @@ class Files
     public $counter;
 
     /**
-     * @param $fileid
+     * @param array|int $fileid
      */
     public function __construct($fileid = -1)
     {

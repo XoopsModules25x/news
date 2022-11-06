@@ -67,7 +67,7 @@ class XoopsStory
 
 
     /**
-     * @param $storyid
+     * @param array|int $storyid
      */
     public function Story($storyid = -1): void
     {

@@ -48,7 +48,7 @@ class NewsStory extends XoopsStory
 
     /**
      * Constructor
-     * @param int $storyid
+     * @param array|int  $storyid
      */
     public function __construct($storyid = -1)
     {
@@ -213,14 +213,14 @@ class NewsStory extends XoopsStory
 
     /**
      * Returns published stories according to some options
-     * @param int    $limit
-     * @param int    $start
-     * @param bool   $checkRight
-     * @param int    $topic
-     * @param int    $ihome
-     * @param bool   $asobject
-     * @param string $order
-     * @param bool   $topic_frontpage
+     * @param int       $limit
+     * @param int       $start
+     * @param bool      $checkRight
+     * @param array|int $topic
+     * @param int       $ihome
+     * @param bool      $asobject
+     * @param string    $order
+     * @param bool      $topic_frontpage
      * @return array|null
      */
     public static function getAllPublished(
@@ -345,13 +345,13 @@ class NewsStory extends XoopsStory
     /**
      * Get the today's most readed article
      *
-     * @param int    $limit      records limit
-     * @param int    $start      starting record
-     * @param bool   $checkRight Do we need to check permissions (by topics) ?
-     * @param int    $topic      limit the job to one topic
-     * @param int    $ihome      Limit to articles published in home page only ?
-     * @param bool   $asobject   Do we have to return an array of objects or a simple array ?
-     * @param string $order      Fields to sort on
+     * @param int       $limit      records limit
+     * @param int       $start      starting record
+     * @param bool      $checkRight Do we need to check permissions (by topics) ?
+     * @param array|int $topic      limit the job to one topic
+     * @param int       $ihome      Limit to articles published in home page only ?
+     * @param bool      $asobject   Do we have to return an array of objects or a simple array ?
+     * @param string    $order      Fields to sort on
      *
      * @return array
      */
@@ -1304,13 +1304,13 @@ class NewsStory extends XoopsStory
 
     /**
      * Returns a random number of news
-     * @param int    $limit
-     * @param int    $start
-     * @param bool   $checkRight
-     * @param int    $topic
-     * @param int    $ihome
-     * @param string $order
-     * @param bool   $topic_frontpage
+     * @param int       $limit
+     * @param int       $start
+     * @param bool      $checkRight
+     * @param array|int $topic
+     * @param int       $ihome
+     * @param string    $order
+     * @param bool      $topic_frontpage
      * @return array
      */
     public function getRandomNews(

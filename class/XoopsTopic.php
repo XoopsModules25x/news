@@ -49,8 +49,8 @@ class XoopsTopic
     public $topic_rssurl;
 
     /**
-     * @param     $table
-     * @param int $topicid
+     * @param string    $table
+     * @param array|int $topicid
      */
     public function __construct($table, $topicid = 0)
     {

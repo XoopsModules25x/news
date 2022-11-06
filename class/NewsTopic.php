@@ -27,14 +27,14 @@ namespace XoopsModules\News;
  */
 class NewsTopic extends XoopsTopic
 {
-    public $menu;
-    public $topic_description;
-    public $topic_frontpage;
-    public $topic_rssurl;
-    public $topic_color;
+//    public $menu;
+//    public $topic_description;
+//    public $topic_frontpage;
+//    public $topic_rssurl;
+//    public $topic_color;
 
     /**
-     * @param int $topicid
+     * @param array|int $topicid
      */
     public function __construct($topicid = 0)
     {
