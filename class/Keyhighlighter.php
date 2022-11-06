@@ -104,8 +104,8 @@ class Keyhighlighter
     public function highlight($buffer): string
     {
         $buffer              = '>' . $buffer . '<';
-        $this->preg_keywords = \preg_replace('/[^\w ]/si', '', $this->keywords);
-        $buffer              = \preg_replace_callback('/(\>(((?' . '>[^><]+)|(?R))*)\<)/is', [&$this, 'replace'], $buffer);
+        $this->preg_keywords = \preg_replace('/[^\w ]/i', '', $this->keywords);
+        $buffer              = \preg_replace_callback('/(\>(((?' . '>[^>i', [&$this, 'replace'], $buffer);
         $buffer              = \xoops_substr($buffer, 1, -1);
 
         return $buffer;

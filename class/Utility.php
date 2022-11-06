@@ -132,7 +132,7 @@ class Utility extends Common\SysUtility
         $search = [
             "'<script[^>]*?>.*?</script>'si", // Strip out javascript
             "'<img.*?>'si", // Strip out img tags
-            "'<[\/\!]*?[^<>]*?>'si", // Strip out HTML tags
+            "'<[\/\!]*?[^<>]*?>'i", // Strip out HTML tags
             "'([\r\n])[\s]+'", // Strip out white space
             "'&(quot|#34);'i", // Replace HTML entities
             "'&(amp|#38);'i",
