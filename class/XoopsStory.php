@@ -254,36 +254,7 @@ class XoopsStory
             $this->topicdisplay = 1;
         }
         $expired = !empty($this->expired) ? $this->expired : 0;
-        if (!isset($this->storyid)) {
-            //$newpost = 1;
-            $newstoryid = $this->db->genId($this->table . '_storyid_seq');
-            $created    = \time();
-            $published  = $this->approved ? $this->published : 0;
-
-            $sql = \sprintf(
-                "INSERT INTO `%s` (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u)",
-                $this->table,
-                $newstoryid,
-                $this->uid,
-                $title,
-                $created,
-                $published,
-                $expired,
-                $this->hostname,
-                $this->nohtml,
-                $this->nosmiley,
-                $hometext,
-                $bodytext,
-                0,
-                $this->topicid,
-                $this->ihome,
-                $this->notifypub,
-                $this->type,
-                $this->topicdisplay,
-                $this->topicalign,
-                $this->comments
-            );
-        } else {
+        if (isset($this->storyid)) {
             if ($this->approved) {
                 $sql = \sprintf(
                     "UPDATE `%s` SET title = '%s', published = %u, expired = %u, nohtml = %u, nosmiley = %u, hometext = '%s', bodytext = '%s', topicid = %u, ihome = %u, topicdisplay = %u, topicalign = '%s', comments = %u WHERE storyid = %u",
@@ -321,6 +292,35 @@ class XoopsStory
                 );
             }
             $newstoryid = $this->storyid;
+        } else {
+            //$newpost = 1;
+            $newstoryid = $this->db->genId($this->table . '_storyid_seq');
+            $created    = \time();
+            $published  = $this->approved ? $this->published : 0;
+
+            $sql = \sprintf(
+                "INSERT INTO `%s` (storyid, uid, title, created, published, expired, hostname, nohtml, nosmiley, hometext, bodytext, counter, topicid, ihome, notifypub, story_type, topicdisplay, topicalign, comments) VALUES (%u, %u, '%s', %u, %u, %u, '%s', %u, %u, '%s', '%s', %u, %u, %u, %u, '%s', %u, '%s', %u)",
+                $this->table,
+                $newstoryid,
+                $this->uid,
+                $title,
+                $created,
+                $published,
+                $expired,
+                $this->hostname,
+                $this->nohtml,
+                $this->nosmiley,
+                $hometext,
+                $bodytext,
+                0,
+                $this->topicid,
+                $this->ihome,
+                $this->notifypub,
+                $this->type,
+                $this->topicdisplay,
+                $this->topicalign,
+                $this->comments
+            );
         }
         if (!$result = $this->db->query($sql)) {
             return false;

@@ -39,16 +39,7 @@ xoops_cp_header();
 require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
 
 if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
-    if (!isset($_POST['go'])) {
-        echo '<h1>Welcome to the AMS 2.41 import script</h1>';
-        echo '<br><br>Select the import options you wan to use :';
-        echo "<form method='post' action='amsimport.php'>";
-        echo "<br><input type='checkbox' name='useforum' value='1'> Import forums links inside news (at the bottom of the news)";
-        echo "<br><input type='checkbox' name='useextlinks' value='1'> Import external links inside news (at the bottom of the news)";
-        echo "<br><br><input type='submit' name='go' value='Import'>";
-        echo '</form>';
-        echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
-    } else {
+    if (isset($_POST['go'])) {
         // Launch the import
         /** @var \XoopsModules\Ams\Helper $amsHelper */
         $amsHelper = AmsHelper::getInstance();
@@ -264,6 +255,15 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         }
         unset($notifications);
         echo "<p><a href='" . XOOPS_URL . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
+    } else {
+        echo '<h1>Welcome to the AMS 2.41 import script</h1>';
+        echo '<br><br>Select the import options you wan to use :';
+        echo "<form method='post' action='amsimport.php'>";
+        echo "<br><input type='checkbox' name='useforum' value='1'> Import forums links inside news (at the bottom of the news)";
+        echo "<br><input type='checkbox' name='useextlinks' value='1'> Import external links inside news (at the bottom of the news)";
+        echo "<br><br><input type='submit' name='go' value='Import'>";
+        echo '</form>';
+        echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
     }
 } else {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);

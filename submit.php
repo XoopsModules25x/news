@@ -111,18 +111,18 @@ if (Request::hasVar('preview', 'POST')) {
                 $approveprivilege = 1;
             } else {
                 unset($tmpstory);
-                if (!Utility::isAdminGroup()) {
-                    redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-                } else {
+                if (Utility::isAdminGroup()) {
                     $approveprivilege = 1;
+                } else {
+                    redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
                 }
             }
         }
-    } elseif (!Utility::isAdminGroup()) {
+    } elseif (Utility::isAdminGroup()) {
+        $approveprivilege = 1;
+    } else {
         unset($tmpstory);
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-    } else {
-        $approveprivilege = 1;
     }
 }
 
@@ -174,10 +174,10 @@ switch ($op) {
         $type         = $story->type();
         $topicdisplay = $story->topicdisplay();
         $topicalign   = $story->topicalign(false);
-        if (!Utility::isAdminGroup()) {
-            require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
-        } else {
+        if (Utility::isAdminGroup()) {
             require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
+        } else {
+            require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         }
         echo '</td></tr></table>';
         break;
@@ -550,10 +550,10 @@ switch ($op) {
             echo _ERRORS;
         }
         $returnside = Request::getInt('returnside', 0, 'POST');
-        if (!$returnside) {
-            redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_THANKS);
-        } else {
+        if ($returnside) {
             redirect_header(XOOPS_URL . '/modules/news/admin/index.php?op=newarticle', 2, _NW_THANKS);
+        } else {
+            redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_THANKS);
         }
         break;
     case 'form':

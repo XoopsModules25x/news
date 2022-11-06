@@ -51,10 +51,10 @@ class Registryfile
     public function getfile($fichier = null)
     {
         $fw = '';
-        if (!$fichier) {
-            $fw = $this->filename;
-        } else {
+        if ($fichier) {
             $fw = XOOPS_UPLOAD_PATH . '/' . $fichier;
+        } else {
+            $fw = $this->filename;
         }
         if (\file_exists($fw)) {
             return file_get_contents($fw);
@@ -72,10 +72,10 @@ class Registryfile
     public function savefile($content, $fichier = null)
     {
         $fw = '';
-        if (!$fichier) {
-            $fw = $this->filename;
-        } else {
+        if ($fichier) {
             $fw = XOOPS_UPLOAD_PATH . '/' . $fichier;
+        } else {
+            $fw = $this->filename;
         }
         if (\is_file($fw)) {
             @\unlink($fw);

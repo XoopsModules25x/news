@@ -239,17 +239,7 @@ class NewsStory extends XoopsStory
         $ret  = [];
         $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.published > 0 AND s.published <= ' . \time() . ') AND (s.expired = 0 OR s.expired > ' . \time() . ') AND (s.topicid=t.topic_id) ';
         if (0 != $topic) {
-            if (!\is_array($topic)) {
-                if ($checkRight) {
-                    $topics = Utility::getMyItemIds('news_view');
-                    if (!\in_array($topic, $topics, true)) {
-                        return null;
-                    }
-                    $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
-                } else {
-                    $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
-                }
-            } else {
+            if (\is_array($topic)) {
                 if ($checkRight) {
                     $topics = Utility::getMyItemIds('news_view');
                     $topic  = \array_intersect($topic, $topics);
@@ -258,6 +248,16 @@ class NewsStory extends XoopsStory
                     $sql .= ' AND s.topicid IN (' . \implode(',', $topic) . ')';
                 } else {
                     return null;
+                }
+            } else {
+                if ($checkRight) {
+                    $topics = Utility::getMyItemIds('news_view');
+                    if (!\in_array($topic, $topics, true)) {
+                        return null;
+                    }
+                    $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
+                } else {
+                    $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
                 }
             }
         } else {
@@ -1100,7 +1100,34 @@ class NewsStory extends XoopsStory
             $this->topicdisplay = 1;
         }
         $expired = !empty($this->expired) ? $this->expired : 0;
-        if (!isset($this->storyid)) {
+        if (isset($this->storyid)) {
+            $sql        = \sprintf(
+                "UPDATE `%s` SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s', picture='%s' , pictureinfo='%s' , subtitle='%s' WHERE storyid = %u",
+                $this->table,
+                $title,
+                (int)$this->published(),
+                $expired,
+                $this->nohtml(),
+                $this->nosmiley(),
+                $hometext,
+                $bodytext,
+                (int)$this->topicid(),
+                $this->ihome(),
+                (int)$this->topicdisplay(),
+                $this->topicalign,
+                (int)$this->comments(),
+                $rating,
+                $votes,
+                (int)$this->uid(),
+                $description,
+                $keywords,
+                $picture,
+                $pictureinfo,
+                $subtitle,
+                (int)$this->storyid()
+            );
+            $newstoryid = (int)$this->storyid();
+        } else {
             //$newpost = 1;
             $newstoryid = $this->db->genId($this->table . '_storyid_seq');
             $created    = \time();
@@ -1135,33 +1162,6 @@ class NewsStory extends XoopsStory
                 $pictureinfo,
                 $subtitle
             );
-        } else {
-            $sql        = \sprintf(
-                "UPDATE `%s` SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s', picture='%s' , pictureinfo='%s' , subtitle='%s' WHERE storyid = %u",
-                $this->table,
-                $title,
-                (int)$this->published(),
-                $expired,
-                $this->nohtml(),
-                $this->nosmiley(),
-                $hometext,
-                $bodytext,
-                (int)$this->topicid(),
-                $this->ihome(),
-                (int)$this->topicdisplay(),
-                $this->topicalign,
-                (int)$this->comments(),
-                $rating,
-                $votes,
-                (int)$this->uid(),
-                $description,
-                $keywords,
-                $picture,
-                $pictureinfo,
-                $subtitle,
-                (int)$this->storyid()
-            );
-            $newstoryid = (int)$this->storyid();
         }
         if (!$this->db->queryF($sql)) {
             return false;

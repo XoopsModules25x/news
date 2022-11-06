@@ -1344,12 +1344,7 @@ function modTopicS(): void
 function delTopic(): void
 {
     global $xoopsDB, $xoopsModule;
-    if (!isset($_POST['ok'])) {
-        xoops_cp_header();
-        echo '<h4>' . _AM_CONFIG . '</h4>';
-        $xt = new XoopsTopic($xoopsDB->prefix('news_topics'), Request::getInt('topic_id', 0, 'GET'));
-        xoops_confirm(['op' => 'delTopic', 'topic_id' => Request::getInt('topic_id', 0, 'GET'), 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
-    } else {
+    if (isset($_POST['ok'])) {
         xoops_cp_header();
         $xt = new \XoopsTopic($xoopsDB->prefix('news_topics'), Request::getInt('topic_id', 0, 'POST'));
         if (Request::hasVar('items_count', 'SESSION')) {
@@ -1377,6 +1372,11 @@ function delTopic(): void
         }
         Utility::updateCache();
         redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
+    } else {
+        xoops_cp_header();
+        echo '<h4>' . _AM_CONFIG . '</h4>';
+        $xt = new XoopsTopic($xoopsDB->prefix('news_topics'), Request::getInt('topic_id', 0, 'GET'));
+        xoops_confirm(['op' => 'delTopic', 'topic_id' => Request::getInt('topic_id', 0, 'GET'), 'ok' => 1], 'index.php', _AM_WAYSYWTDTTAL . '<br>' . $xt->topic_title('S'));
     }
 }
 
@@ -1388,7 +1388,9 @@ function addTopic(): void
 
     $topicpid = Request::getInt('topic_pid', 0, 'POST');
     $xt       = new NewsTopic();
-    if (!$xt->topicExists($topicpid, Request::getString('topic_title', '', 'POST'))) {
+    if ($xt->topicExists($topicpid, Request::getString('topic_title', '', 'POST'))) {
+        redirect_header('index.php?op=topicsmanager', 2, _AM_ADD_TOPIC_ERROR);
+    } else {
         $xt->setTopicPid($topicpid);
         if (empty(Request::getString('topic_title', '', 'POST')) || '' == xoops_trim(Request::getString('topic_title', '', 'POST'))) {
             redirect_header('index.php?op=topicsmanager', 2, _AM_ERRORTOPICNAME);
@@ -1458,8 +1460,6 @@ function addTopic(): void
         $tags['TOPIC_NAME']  = Request::getString('topic_title', '', 'POST');
         $notificationHandler->triggerEvent('global', 0, 'new_category', $tags);
         redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
-    } else {
-        redirect_header('index.php?op=topicsmanager', 2, _AM_ADD_TOPIC_ERROR);
     }
 }
 

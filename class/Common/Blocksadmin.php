@@ -125,12 +125,12 @@ final class Blocksadmin
             $groupsPermissions = $grouppermHandler->getGroupIds('block_read', $i->getVar('bid'));
             $sql               = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $i->getVar('bid');
             $result            = $this->db->query($sql);
-            if (!$this->db->isResultSet($result)) {
-                \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-            } else {
+            if ($this->db->isResultSet($result)) {
                 while (false !== ($row = $this->db->fetchArray($result))) {
                     $modules[] = (int)$row['module_id'];
                 }
+            } else {
+                \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
             }
             $cachetimeOptions = '';
             foreach ($cachetimes as $cachetime => $cachetimeName) {
@@ -284,12 +284,12 @@ final class Blocksadmin
         $myblock = new \XoopsBlock($bid);
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
-        if (!$this->db->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-        } else {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($row = $this->db->fetchArray($result))) {
                 $modules[] = (int)$row['module_id'];
             }
+        } else {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
         }
 
         $isCustom = \in_array($myblock->getVar('block_type'), ['C', 'E']);
@@ -434,12 +434,12 @@ final class Blocksadmin
         $modules = [];
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
-        if (!$this->db->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-        } else {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($row = $this->db->fetchArray($result))) {
                 $modules[] = (int)$row['module_id'];
             }
+        } else {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
         }
 
         $isCustom = \in_array($myblock->getVar('block_type'), ['C', 'E']);

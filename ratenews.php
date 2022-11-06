@@ -114,10 +114,10 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
 
 if (!empty($_POST['submit'])) { // The form was submited
     $eh = new ErrorHandler(); //ErrorHandler object
-    if (!is_object($xoopsUser)) {
-        $ratinguser = 0;
-    } else {
+    if (is_object($xoopsUser)) {
         $ratinguser = $xoopsUser->getVar('uid');
+    } else {
+        $ratinguser = 0;
     }
 
     //Make sure only 1 anonymous from an IP in a single day.
