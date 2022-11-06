@@ -16,6 +16,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Utility;
 
 /**
  * @param $queryarray
@@ -29,9 +30,9 @@ use XoopsModules\News;
 function news_search($queryarray, $andor, $limit, $offset, $userid)
 {
     global $xoopsDB, $xoopsUser;
-    $restricted = News\Utility::getModuleOption('restrictindex');
+    $restricted = Utility::getModuleOption('restrictindex');
     $highlight  = false;
-    $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
+    $highlight  = Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');

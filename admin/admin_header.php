@@ -21,7 +21,7 @@ use XoopsModules\News;
 use XoopsModules\News\Helper;
 
 require \dirname(__DIR__, 3) . '/include/cp_header.php';
-require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
+require \dirname(__DIR__, 3) . '/class/xoopsformloader.php';
 // require_once  \dirname(__DIR__) . '/class/Utility.php';
 require_once \dirname(__DIR__) . '/include/common.php';
 

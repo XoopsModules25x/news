@@ -36,9 +36,9 @@ $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 class DirectoryChecker
 {
     /**
-     * @param     $path
-     * @param int $mode
-     * @param     $redirectFile
+     * @param string      $path
+     * @param int         $mode
+     * @param string|null $redirectFile
      *
      * @return bool|string
      */

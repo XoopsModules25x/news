@@ -69,6 +69,7 @@
 use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
+use XoopsModules\News\Utility;
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
@@ -101,9 +102,9 @@ $pgtitle = '';
 if ($fromyear && $frommonth) {
     $pgtitle = sprintf(' - %d - %d', $fromyear, $frommonth);
 }
-$infotips   = News\Utility::getModuleOption('infotips');
-$restricted = News\Utility::getModuleOption('restrictindex');
-$dateformat = News\Utility::getModuleOption('dateformat');
+$infotips   = Utility::getModuleOption('infotips');
+$restricted = Utility::getModuleOption('restrictindex');
+$dateformat = Utility::getModuleOption('dateformat');
 if ('' === $dateformat) {
     $dateformat = 'm';
 }
@@ -183,7 +184,7 @@ if (0 != $fromyear && 0 != $frommonth) {
             $story     = [];
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = News\Utility::makeInfotips($article->hometext());
+                $story['infotips'] = Utility::makeInfotips($article->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
             $story['title']      = "<a href='"
@@ -220,6 +221,6 @@ $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 /**
  * Create the meta datas
  */
-News\Utility::createMetaDatas();
+Utility::createMetaDatas();
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

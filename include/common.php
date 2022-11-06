@@ -16,6 +16,7 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 use XoopsModules\News\Utility;
 
 require_once \dirname(__DIR__) . '/preloads/autoloader.php';
@@ -24,10 +25,10 @@ $moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 /** @var \XoopsDatabase $db */
-/** @var News\Helper $helper */
-/** @var News\Utility $utility */
+/** @var Helper $helper */
+/** @var Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
-$helper  = News\Helper::getInstance();
+$helper  = Helper::getInstance();
 $utility = new Utility();
 //$configurator = new \XoopsModules\News\Common\Configurator();
 

@@ -34,6 +34,7 @@ use XoopsModules\News;
 use XoopsModules\News\Blacklist;
 use XoopsModules\News\NewsTopic;
 use XoopsModules\News\Registryfile;
+use XoopsModules\News\Utility;
 
 /**
  * @param             $option
@@ -371,11 +372,11 @@ function news_CreateMetaDatas($story = null): void
         /** @var \XoopsConfigHandler $configHandler */
         $configHandler         = xoops_getHandler('config');
         $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
-        $content               .= '<meta name="DC.Title" content="' . News\Utility::getDublinQuotes($story->title()) . "\">\n";
-        $content               .= '<meta name="DC.Creator" content="' . News\Utility::getDublinQuotes($story->uname()) . "\">\n";
-        $content               .= '<meta name="DC.Subject" content="' . News\Utility::getDublinQuotes($meta_keywords) . "\">\n";
-        $content               .= '<meta name="DC.Description" content="' . News\Utility::getDublinQuotes($story->title()) . "\">\n";
-        $content               .= '<meta name="DC.Publisher" content="' . News\Utility::getDublinQuotes($xoopsConfig['sitename']) . "\">\n";
+        $content               .= '<meta name="DC.Title" content="' . Utility::getDublinQuotes($story->title()) . "\">\n";
+        $content               .= '<meta name="DC.Creator" content="' . Utility::getDublinQuotes($story->uname()) . "\">\n";
+        $content               .= '<meta name="DC.Subject" content="' . Utility::getDublinQuotes($meta_keywords) . "\">\n";
+        $content               .= '<meta name="DC.Description" content="' . Utility::getDublinQuotes($story->title()) . "\">\n";
+        $content               .= '<meta name="DC.Publisher" content="' . Utility::getDublinQuotes($xoopsConfig['sitename']) . "\">\n";
         $content               .= '<meta name="DC.Date.created" scheme="W3CDTF" content="' . date('Y-m-d', $story->created) . "\">\n";
         $content               .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . date('Y-m-d', $story->published) . "\">\n";
         $content               .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\">\n";
@@ -383,7 +384,7 @@ function news_CreateMetaDatas($story = null): void
         $content               .= '<meta name="DC.Language" content="' . _LANGCODE . "\">\n";
         $content               .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\">\n";
         if (isset($xoopsConfigMetaFooter['meta_copyright'])) {
-            $content .= '<meta name="DC.Rights" content="' . News\Utility::getDublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\">\n";
+            $content .= '<meta name="DC.Rights" content="' . Utility::getDublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\">\n";
         }
     }
 

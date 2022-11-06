@@ -237,7 +237,7 @@ $xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
  *
  * @return string
  */
-function my_highlighter($matches)
+function my_highlighter($matches): string
 {
     $color = Utility::getModuleOption('highlightcolor');
     if (0 !== mb_strpos($color, '#')) {

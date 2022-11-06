@@ -18,6 +18,7 @@
 use XoopsModules\News;
 use XoopsModules\News\Helper;
 use XoopsModules\News\NewsStory;
+use XoopsModules\News\Utility;
 
 /**
  * @return array|null|false
@@ -34,9 +35,9 @@ function b_news_bigstory_show()
     $helper = Helper::getInstance();
 
     $myts       = \MyTextSanitizer::getInstance();
-    $restricted = News\Utility::getModuleOption('restrictindex');
-    $dateformat = News\Utility::getModuleOption('dateformat');
-    $infotips   = News\Utility::getModuleOption('infotips');
+    $restricted = Utility::getModuleOption('restrictindex');
+    $dateformat = Utility::getModuleOption('dateformat');
+    $infotips   = Utility::getModuleOption('infotips');
 
     $block    = [];
     $onestory = new NewsStory();
@@ -47,7 +48,7 @@ function b_news_bigstory_show()
         foreach ($stories as $key => $story) {
             $htmltitle = '';
             if ($infotips > 0) {
-                $block['infotips'] = News\Utility::makeInfotips($story->hometext());
+                $block['infotips'] = Utility::makeInfotips($story->hometext());
                 $htmltitle         = ' title="' . $block['infotips'] . '"';
             } else {
                 $htmltitle = ' title="' . $story->title('Show') . '"';

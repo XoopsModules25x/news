@@ -31,6 +31,7 @@ use Xmf\Request;
 use XoopsModules\News;
 use XoopsModules\News\NewsStory;
 use XoopsModules\News\NewsTopic;
+use XoopsModules\News\Utility;
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
@@ -40,7 +41,7 @@ require_once XOOPS_ROOT_PATH . '/class/template.php';
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
-if (!News\Utility::getModuleOption('topicsrss')) {
+if (!Utility::getModuleOption('topicsrss')) {
     exit();
 }
 
@@ -53,8 +54,8 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 
-$restricted = News\Utility::getModuleOption('restrictindex');
-$newsnumber = News\Utility::getModuleOption('storyhome');
+$restricted = Utility::getModuleOption('restrictindex');
+$newsnumber = Utility::getModuleOption('storyhome');
 
 $charset = 'utf-8';
 

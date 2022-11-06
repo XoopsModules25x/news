@@ -16,10 +16,12 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Tag\FormTag;
 use XoopsModules\News;
 use XoopsModules\News\Files;
 use XoopsModules\News\NewsTopic;
-use XoopsModules\Tag\FormTag;
+use XoopsModules\News\Utility;
+
 
 $moduleDirName = \basename(\dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
@@ -49,7 +51,7 @@ require_once XOOPS_ROOT_PATH . '/class/tree.php';
 $allTopics  = $xt->getAllTopics($helper->getConfig('restrictindex'), 'news_submit');
 $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-if (News\Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
+if (Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
     $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', _NW_TOPIC);
     $sform->addElement($topic_select);
 } else {
@@ -89,26 +91,26 @@ if ($approveprivilege && is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModu
     }
 }
 
-$editor = News\Utility::getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
+$editor = Utility::getWysiwygForm(_NW_THESCOOP, 'hometext', $hometext, 15, 60, 'hometext_hidden');
 $sform->addElement($editor, true);
 
 //Extra info
 //If admin -> if submit privilege
 
 if ($approveprivilege) {
-    $editor2 = News\Utility::getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
+    $editor2 = Utility::getWysiwygForm(_AM_EXTEXT, 'bodytext', $bodytext, 15, 60, 'bodytext_hidden');
     $sform->addElement($editor2, false);
 
-    if (News\Utility::getModuleOption('tags') && \class_exists(\XoopsModules\Tag\FormTag::class) && xoops_isActiveModule('tag')) {
+    if (Utility::getModuleOption('tags') && \class_exists(\XoopsModules\Tag\FormTag::class) && xoops_isActiveModule('tag')) {
         $itemIdForTag = $storyid ?? 0;
         $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
     }
 
-    if (News\Utility::getModuleOption('metadata')) {
+    if (Utility::getModuleOption('metadata')) {
         $sform->addElement(new xoopsFormText(_NW_META_DESCRIPTION, 'description', 50, 255, $description), false);
         $sform->addElement(new xoopsFormText(_NW_META_KEYWORDS, 'keywords', 50, 255, $keywords), false);
     }
-} elseif (News\Utility::getModuleOption('tags') && \class_exists(\XoopsModules\Tag\FormTag::class) && xoops_isActiveModule('tag')) {
+} elseif (Utility::getModuleOption('tags') && \class_exists(\XoopsModules\Tag\FormTag::class) && xoops_isActiveModule('tag')) {
     $itemIdForTag = $storyid ?? 0;
     $sform->addElement(new \XoopsModules\Tag\FormTag('item_tag', 60, 255, $itemIdForTag, 0));
 }
@@ -240,8 +242,8 @@ $type_hidden = new \XoopsFormHidden('type', $type);
 $sform->addElement($type_hidden);
 
 echo '<h1>' . _NW_SUBMITNEWS . '</h1>';
-if ('' !== xoops_trim(News\Utility::getModuleOption('submitintromsg'))) {
-    echo "<div class='infotext'><br><br>" . nl2br(News\Utility::getModuleOption('submitintromsg')) . '<br><br></div>';
+if ('' !== xoops_trim(Utility::getModuleOption('submitintromsg'))) {
+    echo "<div class='infotext'><br><br>" . nl2br(Utility::getModuleOption('submitintromsg')) . '<br><br></div>';
 }
 
 $sform->display();

@@ -16,11 +16,13 @@
  */
 
 use XoopsModules\News;
+use XoopsModules\News\Helper;
 use XoopsModules\News\NewsTopic;
+use XoopsModules\News\Utility;
 
 require_once __DIR__ . '/preloads/autoloader.php';
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 $helper->loadLanguage('common');
 
 $moduleDirName = basename(__DIR__);
@@ -244,7 +246,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         $xt         = new NewsTopic();
-        $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
+        $allTopics  = $xt->getAllTopics(Utility::getModuleOption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
@@ -271,7 +273,7 @@ if ($cansubmit) {
 unset($cansubmit);
 
 //;
-if (News\Utility::getModuleOption('newsbythisauthor')) {
+if (Utility::getModuleOption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;
     $modversion['sub'][$i]['url']  = 'whoswho.php';

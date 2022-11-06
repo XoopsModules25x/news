@@ -27,6 +27,7 @@
 
 use XoopsModules\News;
 use XoopsModules\News\NewsTopic;
+use XoopsModules\News\Utility;
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -40,7 +41,7 @@ $myts = \MyTextSanitizer::getInstance();
 $newscountbytopic = $tbl_topics = [];
 $perms            = '';
 $xt               = new NewsTopic();
-$restricted       = News\Utility::getModuleOption('restrictindex');
+$restricted       = Utility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
     /** @var \XoopsModuleHandler $moduleHandler */
@@ -82,12 +83,12 @@ if (is_array($topics_arr) && count($topics_arr)) {
 }
 $xoopsTpl->assign('topics', $tbl_topics);
 
-$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
+$xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
  * Manage all the meta datas
  */
-News\Utility::createMetaDatas();
+Utility::createMetaDatas();
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_TOPICS_DIRECTORY);
 $meta_description = _AM_NEWS_TOPICS_DIRECTORY . ' - ' . $xoopsModule->name('s');
