@@ -40,7 +40,7 @@ class FileChecker
      * @param string|null $redirectFile
      * @return bool|string
      */
-    public static function getFileStatus($file_path, $original_file_path = null, $redirectFile = null)
+    public static function getFileStatus(string $file_path, string $original_file_path = null, string $redirectFile = null)
     {
         global $pathIcon16;
 
@@ -132,7 +132,7 @@ class FileChecker
      *
      * @return bool
      */
-    public static function setFilePermissions($target, $mode = 0777): bool
+    public static function setFilePermissions($target, int $mode = 0777): bool
     {
         $target = \str_replace('..', '', $target);
 

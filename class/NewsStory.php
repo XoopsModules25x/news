@@ -151,9 +151,9 @@ class NewsStory extends XoopsStory
     }
 
     /**
-     * @param      $storyid
-     * @param bool $next
-     * @param bool $checkRight
+     * @param int|string $storyid
+     * @param bool       $next
+     * @param bool       $checkRight
      *
      * @return array
      */
@@ -409,7 +409,6 @@ class NewsStory extends XoopsStory
      *
      * @param int  $uid        author's id
      * @param bool $checkRight whether to check the user's rights to topics
-     *
      * @param bool $asobject
      *
      * @return array
@@ -562,7 +561,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public static function getAllSubmitted($limit = 0, $asobject = true, $checkRight = false, $start = 0): array
+    public static function getAllSubmitted(int $limit = 0, $asobject = true, bool $checkRight = false, $start = 0): array
     {
         /** @var \XoopsMySQLDatabase $db */
         $db       = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -606,7 +605,7 @@ class NewsStory extends XoopsStory
      *
      * @return int
      */
-    public static function getAllStoriesCount($storytype = 1, $checkRight = false): int
+    public static function getAllStoriesCount(int $storytype = 1, bool $checkRight = false): int
     {
         /** @var \XoopsMySQLDatabase $db */
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -648,7 +647,7 @@ class NewsStory extends XoopsStory
      * @param int    $limit
      * @return array
      */
-    public static function getByTopic($topicid, $limit = 0): array
+    public static function getByTopic($topicid, int $limit = 0): array
     {
         $ret = [];
         /** @var \XoopsMySQLDatabase $db */
@@ -670,7 +669,7 @@ class NewsStory extends XoopsStory
      * @param bool $checkRight
      * @return int
      */
-    public static function countPublishedByTopic($topicid = 0, $checkRight = false): int
+    public static function countPublishedByTopic(int $topicid = 0, bool $checkRight = false): int
     {
         $count = 0;
         /** @var \XoopsMySQLDatabase $db */
@@ -1313,12 +1312,12 @@ class NewsStory extends XoopsStory
      */
     public function getRandomNews(
         $limit = 0,
-        $start = 0,
-        $checkRight = false,
+        int $start = 0,
+        bool $checkRight = false,
         $topic = 0,
-        $ihome = 0,
-        $order = 'published',
-        $topic_frontpage = false
+        int $ihome = 0,
+        string $order = 'published',
+        bool $topic_frontpage = false
     ): ?array {
         $ret       = [];
         $rand_keys = [];
@@ -1556,7 +1555,7 @@ class NewsStory extends XoopsStory
      *
      * @return array|null
      */
-    public function getWhosWho($checkRight = false, $limit = 0, $start = 0): ?array
+    public function getWhosWho($checkRight = false, $limit = 0, int $start = 0): ?array
     {
         $ret = [];
         $sql = 'SELECT DISTINCT(uid) AS uid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
@@ -1705,10 +1704,10 @@ class NewsStory extends XoopsStory
      */
     public function getStoriesByIds(
         $ids,
-        $checkRight = true,
-        $asobject = true,
-        $order = 'published',
-        $onlyOnline = true
+        bool $checkRight = true,
+        bool $asobject = true,
+        string $order = 'published',
+        bool $onlyOnline = true
     ): ?array {
         $limit = $start = 0;
         $myts = \MyTextSanitizer::getInstance();

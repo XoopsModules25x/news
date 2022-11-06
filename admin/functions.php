@@ -30,7 +30,7 @@
  * @copyright::  (c) Hervé Thouzard (https://www.herve-thouzard.com)
  * @author   ::     Hervé Thouzard (https://www.herve-thouzard.com) & Dojo Javscript Toolkit
  */
-function news_collapsableBar($tablename = '', $iconname = ''): void
+function news_collapsableBar(string $tablename = '', string $iconname = ''): void
 {
     ?>
     <script type="text/javascript">

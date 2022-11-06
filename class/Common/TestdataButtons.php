@@ -20,6 +20,7 @@ namespace XoopsModules\News\Common;
  */
 
 use Xmf\Yaml;
+use Xmf\Module\Admin;
 use XoopsModules\News\Helper;
 
 /** @var Helper $helper */
@@ -36,11 +37,11 @@ class TestdataButtons
     /**
      * Load the test button configuration
      *
-     * @param \Xmf\Module\Admin $adminObject
+     * @param Admin $adminObject
      *
      * @return void
      */
-    public static function loadButtonConfig($adminObject): void
+    public static function loadButtonConfig(Admin $adminObject): void
     {
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);

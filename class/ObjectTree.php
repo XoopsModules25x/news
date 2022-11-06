@@ -37,12 +37,12 @@ class ObjectTree
     /**
      * Constructor
      *
-     * @param array  $objectArr Array of {@link XoopsObject}s
-     * @param string $myId      field name of object ID
-     * @param string $parentId  field name of parent object ID
-     * @param string $rootId    field name of root object ID
+     * @param array       $objectArr Array of {@link XoopsObject}s
+     * @param string      $myId      field name of object ID
+     * @param string      $parentId  field name of parent object ID
+     * @param string|null $rootId    field name of root object ID
      */
-    public function __construct($objectArr, $myId, $parentId, $rootId = null)
+    public function __construct(array $objectArr, string $myId, string $parentId, string $rootId = null)
     {
         $this->objects  = $objectArr;
         $this->myId     = $myId;
@@ -88,7 +88,7 @@ class ObjectTree
      * @param string $key ID of the object to retrieve
      * @return object Object within the tree
      */
-    public function &getByKey($key)
+    public function &getByKey(string $key)
     {
         return $this->tree[$key]['obj'];
     }
@@ -99,7 +99,7 @@ class ObjectTree
      * @param string $key ID of the parent object
      * @return array  Array of children of the parent
      */
-    public function getFirstChild($key): array
+    public function getFirstChild(string $key): array
     {
         $ret = [];
         if (isset($this->tree[$key]['child'])) {
@@ -118,7 +118,7 @@ class ObjectTree
      * @param array  $ret (Empty when called from client) Array of children from previous recursions.
      * @return array  Array of child nodes.
      */
-    public function getAllChild($key, $ret = []): array
+    public function getAllChild(string $key, array $ret = []): array
     {
         if (isset($this->tree[$key]['child'])) {
             foreach ($this->tree[$key]['child'] as $childKey) {
@@ -142,7 +142,7 @@ class ObjectTree
      * @param int    $upLevel (empty when called from outside) level of recursion
      * @return array  Array of parent nodes.
      */
-    public function getAllParent($key, $ret = [], $upLevel = 1): array
+    public function getAllParent(string $key, array $ret = [], int $upLevel = 1): array
     {
         if (isset($this->tree[$key]['parent']) && isset($this->tree[$this->tree[$key]['parent']]['obj'])) {
             $ret[$upLevel] = $this->tree[$this->tree[$key]['parent']]['obj'];
@@ -168,7 +168,7 @@ class ObjectTree
      *
      * @deprecated since 2.5.9, please use makeSelectElement() functionality
      */
-    protected function makeSelBoxOptions($fieldName, $selected, $key, &$ret, $prefix_orig, $prefix_curr = ''): void
+    protected function makeSelBoxOptions(string $fieldName, string $selected, int $key, string &$ret, string $prefix_orig, string $prefix_curr = ''): void
     {
         if ($key > 0) {
             $value = $this->tree[$key]['obj']->getVar($this->myId);
@@ -202,13 +202,13 @@ class ObjectTree
      * @deprecated since 2.5.9, please use makeSelectElement()
      */
     public function makeSelBox(
-        $name,
-        $fieldName,
-        $prefix = '-',
-        $selected = '',
-        $addEmptyOption = false,
-        $key = 0,
-        $extra = ''
+        string $name,
+        string $fieldName,
+        string $prefix = '-',
+        string $selected = '',
+        bool   $addEmptyOption = false,
+        int    $key = 0,
+        string $extra = ''
     ): string {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
@@ -237,14 +237,14 @@ class ObjectTree
      * @return \XoopsFormSelect form element
      */
     public function makeSelectElement(
-        $name,
-        $fieldName,
-        $prefix = '-',
-        $selected = '',
-        $addEmptyOption = false,
-        $key = 0,
-        $extra = '',
-        $caption = ''
+        string $name,
+        string $fieldName,
+        string $prefix = '-',
+        string $selected = '',
+        bool   $addEmptyOption = false,
+        int    $key = 0,
+        string $extra = '',
+        string $caption = ''
     ): \XoopsFormSelect {
         \xoops_load('xoopsformselect');
         $element = new \XoopsFormSelect($caption, $name, $selected);
@@ -270,7 +270,7 @@ class ObjectTree
      *
      * @access private
      */
-    protected function addSelectOptions($element, $fieldName, $key, $prefix_orig, $prefix_curr = ''): void
+    protected function addSelectOptions(\XoopsFormSelect $element, string $fieldName, int $key, string $prefix_orig, string $prefix_curr = ''): void
     {
         if ($key > 0) {
             $value = $this->tree[$key]['obj']->getVar($this->myId);
@@ -296,7 +296,7 @@ class ObjectTree
      *
      * @return mixed value
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         if ('_tree' === $name) {

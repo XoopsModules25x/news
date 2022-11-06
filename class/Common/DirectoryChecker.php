@@ -42,7 +42,7 @@ class DirectoryChecker
      *
      * @return bool|string
      */
-    public static function getDirectoryStatus($path, $mode = 0777, $redirectFile = null)
+    public static function getDirectoryStatus(string $path, int $mode = 0777, string $redirectFile = null)
     {
         $pathIcon16 = Admin::iconUrl('', '16');
 
@@ -95,12 +95,12 @@ class DirectoryChecker
     }
 
     /**
-     * @param     $target
-     * @param int $mode
+     * @param string $target
+     * @param int    $mode
      *
      * @return bool
      */
-    public static function createDirectory($target, $mode = 0777): bool
+    public static function createDirectory($target, int $mode = 0777): bool
     {
         $target = \str_replace('..', '', $target);
 
@@ -109,12 +109,12 @@ class DirectoryChecker
     }
 
     /**
-     * @param     $target
-     * @param int $mode
+     * @param string $target
+     * @param int    $mode
      *
      * @return bool
      */
-    public static function setDirectoryPermissions($target, $mode = 0777): bool
+    public static function setDirectoryPermissions($target, int $mode = 0777): bool
     {
         $target = \str_replace('..', '', $target);
 

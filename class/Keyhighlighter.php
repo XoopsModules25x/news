@@ -59,7 +59,7 @@ class Keyhighlighter
      * </code>
      */
     // public function __construct ()
-    public function __construct($keywords, $singlewords = false, $replace_callback = null)
+    public function __construct(string $keywords, bool $singlewords = false, $replace_callback = null)
     {
         $this->keywords         = $keywords;
         $this->singlewords      = $singlewords;

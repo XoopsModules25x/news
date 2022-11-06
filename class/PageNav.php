@@ -49,7 +49,7 @@ class PageNav
      * @param string $start_name    Name for "start" or "offset"
      * @param string $extra_arg     Additional arguments to pass in the URL
      **/
-    public function __construct($total_items, $items_perpage, $current_start, $start_name = 'start', $extra_arg = '')
+    public function __construct(int $total_items, int $items_perpage, int $current_start, string $start_name = 'start', string $extra_arg = '')
     {
         $this->total   = (int)$total_items;
         $this->perpage = (int)$items_perpage;
@@ -67,7 +67,7 @@ class PageNav
      *
      * @return string
      **/
-    public function renderNav($offset = 4): string
+    public function renderNav(int $offset = 4): string
     {
         $ret = '';
         if ($this->total <= $this->perpage) {
@@ -112,7 +112,7 @@ class PageNav
      *
      * @return string
      **/
-    public function renderSelect($showbutton = false): ?string
+    public function renderSelect(bool $showbutton = false): ?string
     {
         if ($this->total < $this->perpage) {
             return null;
@@ -150,7 +150,7 @@ class PageNav
      *
      * @return string
      */
-    public function renderEnhancedSelect($showbutton = false, $titles = null): ?string
+    public function renderEnhancedSelect(bool $showbutton = false, $titles = null): ?string
     {
         if ($this->total < $this->perpage) {
             return null;
@@ -188,7 +188,7 @@ class PageNav
      *
      * @return string
      **/
-    public function renderImageNav($offset = 4): ?string
+    public function renderImageNav(int $offset = 4): ?string
     {
         if ($this->total < $this->perpage) {
             return null;

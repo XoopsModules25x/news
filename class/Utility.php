@@ -22,8 +22,8 @@ class Utility extends Common\SysUtility
 {
     //--------------- Custom module methods -----------------------------
     /**
-     * @param             $option
-     * @param string      $repmodule
+     * @param string $option
+     * @param string $repmodule
      * @return bool|mixed
      */
     public static function getModuleOption($option, $repmodule = 'news')
@@ -97,7 +97,7 @@ class Utility extends Common\SysUtility
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function getMyItemIds($permtype = 'news_view'): array
+    public static function getMyItemIds(string $permtype = 'news_view'): array
     {
         global $xoopsUser;
         static $tblperms = [];
@@ -193,13 +193,13 @@ class Utility extends Common\SysUtility
     /**
      * Retrieve an editor according to the module's option "form_options"
      *
-     * @param                                                                                                                                 $caption
-     * @param                                                                                                                                 $name
-     * @param string                                                                                                                          $value
-     * @param string                                                                                                                          $width
-     * @param string                                                                                                                          $height
-     * @param string                                                                                                                          $supplemental
-     * @return bool|\XoopsFormDhtmlTextArea|\XoopsFormEditor|\XoopsFormFckeditor|\XoopsFormHtmlarea|\XoopsFormTextArea|\XoopsFormTinyeditorTextArea
+     * @param string $caption
+     * @param string $name
+     * @param string $value
+     * @param string $width
+     * @param string $height
+     * @param string $supplemental
+     * @return bool|\XoopsFormEditor|\XoopsFormTextArea
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */

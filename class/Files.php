@@ -57,9 +57,9 @@ class Files
     }
 
     /**
-     * @param      $folder
-     * @param      $filename
-     * @param bool $trimname
+     * @param string $folder
+     * @param string $filename
+     * @param bool   $trimname
      *
      * @return string
      */
@@ -98,7 +98,7 @@ class Files
      *
      * @return string
      */
-    public function giveMimetype($filename = ''): string
+    public function giveMimetype(string $filename = ''): string
     {
         $cmimetype   = new Mimetype();
         $workingfile = $this->downloadname;
@@ -186,7 +186,7 @@ class Files
      *
      * @return bool
      */
-    public function delete($workdir = XOOPS_UPLOAD_PATH): bool
+    public function delete(string $workdir = XOOPS_UPLOAD_PATH): bool
     {
         $sql = 'DELETE FROM ' . $this->table . ' WHERE fileid=' . $this->getFileid();
         if (!$result = $this->db->query($sql)) {
@@ -289,7 +289,7 @@ class Files
      *
      * @return string
      */
-    public function getFileRealName($format = 'S'): string
+    public function getFileRealName(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -319,7 +319,7 @@ class Files
      *
      * @return string
      */
-    public function getMimetype($format = 'S'): string
+    public function getMimetype(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -349,7 +349,7 @@ class Files
      *
      * @return string
      */
-    public function getDownloadname($format = 'S'): string
+    public function getDownloadname(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {

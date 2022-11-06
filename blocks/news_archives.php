@@ -34,7 +34,7 @@ use XoopsModules\News\NewsStory;
  *
  * @return array|string
  */
-function b_news_archives_show($options)
+function b_news_archives_show(array $options)
 {
     global $xoopsDB, $xoopsConfig;
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
