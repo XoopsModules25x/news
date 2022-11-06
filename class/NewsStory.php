@@ -1075,16 +1075,16 @@ class NewsStory extends XoopsStory
     {
         $myts        = \MyTextSanitizer::getInstance();
         $counter     = $this->counter ?? 0;
-        $title       = $GLOBALS['xoopsDB']->escape($myts->censorString($this->title));
-        $subtitle    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->subtitle));
+        $title       = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->title));
+        $subtitle    = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->subtitle));
         $hostname    = $GLOBALS['xoopsDB']->escape($this->hostname);
         $type        = $GLOBALS['xoopsDB']->escape($this->type);
-        $hometext    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->hometext));
-        $bodytext    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->bodytext));
-        $description = $GLOBALS['xoopsDB']->escape($myts->censorString($this->description));
-        $keywords    = $GLOBALS['xoopsDB']->escape($myts->censorString($this->keywords));
+        $hometext    = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->hometext));
+        $bodytext    = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->bodytext));
+        $description = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->description));
+        $keywords    = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->keywords));
         $picture     = $GLOBALS['xoopsDB']->escape($this->picture);
-        $pictureinfo = $GLOBALS['xoopsDB']->escape($myts->censorString($this->pictureinfo));
+        $pictureinfo = $GLOBALS['xoopsDB']->escape($myts->executeExtension('censor', $this->pictureinfo));
         $votes       = (int)$this->votes;
         $rating      = (float)$this->rating;
         if (!isset($this->nohtml) || 1 != $this->nohtml) {

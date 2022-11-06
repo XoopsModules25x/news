@@ -349,7 +349,7 @@ class NewsTopic extends XoopsTopic
         $myts              = \MyTextSanitizer::getInstance();
         $title             = '';
         $imgurl            = '';
-        $topic_description = $myts->censorString($this->topic_description);
+        $topic_description = $myts->executeExtension('censor', $this->topic_description);
         $topic_description = $GLOBALS['xoopsDB']->escape($topic_description);
         $topic_rssurl      = $GLOBALS['xoopsDB']->escape($this->topic_rssurl);
         $topic_color       = $GLOBALS['xoopsDB']->escape($this->topic_color);
