@@ -26,9 +26,9 @@ $helper->loadLanguage('common');
 $moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
-$modversion['version']       = '1.72.0';
-$modversion['module_status'] = 'Beta 6';
-$modversion['release_date']  = '2022/10/24';
+$modversion['version']       = '1.73.0';
+$modversion['module_status'] = 'Beta 1';
+$modversion['release_date']  = '2022/11/05';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -44,7 +44,8 @@ $modversion['dirname']       = $moduleDirName;
 //$modversion['icons16']             = '../../Frameworks/moduleclasses/icons/16';
 //$modversion['icons32']             = '../../Frameworks/moduleclasses/icons/32';
 $modversion['onInstall']           = 'include/install_function.php';
-$modversion['onUpdate']            = 'include/update_function.php';
+//$modversion['onUpdate']            = 'include/update_function.php';
+$modversion['onUpdate']            = 'include/onupdate.php';
 $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
@@ -230,7 +231,10 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || -1 == $_SESSION['items_count']) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
-        $result = $xoopsDB->query($sql);
+        $result  = $xoopsDB->query($sql);
+        if (!$xoopsDB->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+        }
         [$count] = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
     } else {

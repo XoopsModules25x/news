@@ -255,9 +255,15 @@ final class Blocksadmin
         $myblock = new \XoopsBlock($bid);
 
         $sql = \sprintf('DELETE FROM %s WHERE bid = %u', $this->db->prefix('newblocks'), $bid);
-        $this->db->queryF($sql) || \trigger_error($GLOBALS['xoopsDB']->error());
+        $result = $this->db->queryF($sql);
+        if (!$result) {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
         $sql = \sprintf('DELETE FROM %s WHERE block_id = %u', $this->db->prefix('block_module_link'), $bid);
-        $this->db->queryF($sql) || \trigger_error($GLOBALS['xoopsDB']->error());
+        $result = $this->db->queryF($sql);
+        if (!$result) {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
 
         $this->helper->redirect('admin/blocksadmin.php?op=list', 1, _AM_DBUPDATED);
     }

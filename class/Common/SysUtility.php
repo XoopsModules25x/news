@@ -194,7 +194,11 @@ class SysUtility
     public static function fieldExists(string $fieldname, string $table): bool
     {
         global $xoopsDB;
-        $result = $xoopsDB->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
+        $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
+        $result = $xoopsDB->queryF($sql);
+        if (!$xoopsDB->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+        }
 
         return ($xoopsDB->getRowsNum($result) > 0);
     }
@@ -217,7 +221,7 @@ class SysUtility
             $tempTable = $GLOBALS['xoopsDB']->fetchArray($result, \MYSQLI_ASSOC);
         }
         if (!$tempTable) {
-            \trigger_error($GLOBALS['xoopsDB']->error());
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $GLOBALS['xoopsDB']->error(), E_USER_ERROR);
         }
         // set the auto-incremented id's value to blank.
         unset($tempTable[$id_field]);
@@ -247,7 +251,11 @@ class SysUtility
         $GLOBALS['xoopsLogger']->addDeprecated(
             \basename(\dirname(__DIR__, 2)) . ' Module: ' . __FUNCTION__ . ' function is deprecated, please use Xmf\Database\Tables method(s) instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}"
         );
-        $result = $GLOBALS['xoopsDB']->queryF("SHOW TABLES LIKE '$tablename'");
+        $sql = "SHOW TABLES LIKE '$tablename'";
+        $result = $GLOBALS['xoopsDB']->queryF($sql);
+        if (!$GLOBALS['xoopsDB']->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $GLOBALS['xoopsDB']->error(), E_USER_ERROR);
+        }
 
         if ($GLOBALS['xoopsDB']->isResultSet($result)) {
             $ret = $GLOBALS['xoopsDB']->getRowsNum($result) > 0;

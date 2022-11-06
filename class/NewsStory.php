@@ -72,18 +72,18 @@ class NewsStory extends XoopsStory
      */
     public function getCountStoriesPublishedBefore($timestamp, $expired, $topicslist = '')
     {
-        /** @var \XoopsMySQLDatabase $db */
-        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
-        $sql = 'SELECT count(*) AS cpt FROM ' . $db->prefix('news_stories') . ' WHERE published <=' . $timestamp;
+        $count = 0;
+        $sql = 'SELECT count(*) AS cpt FROM ' . $this->db->prefix('news_stories') . ' WHERE published <=' . $timestamp;
         if ($expired) {
             $sql .= ' AND (expired>0 AND expired<=' . \time() . ')';
         }
         if ('' !== \trim($topicslist)) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
-        $result = $db->query($sql);
-        [$count] = $db->fetchRow($result);
-
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            [$count] = $this->db->fetchRow($result);
+        }
         return $count;
     }
 
@@ -93,10 +93,12 @@ class NewsStory extends XoopsStory
      */
     public function getStory($storyid): void
     {
-        /** @var \XoopsMySQLDatabase $db */
-        $db    = \XoopsDatabaseFactory::getDatabaseConnection();
-        $sql   = 'SELECT s.*, t.* FROM ' . $this->table . ' s, ' . $db->prefix('news_topics') . ' t WHERE (storyid=' . (int)$storyid . ') AND (s.topicid=t.topic_id)';
-        $array = $db->fetchArray($db->query($sql));
+        $sql   = 'SELECT s.*, t.* FROM ' . $this->table . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (storyid=' . (int)$storyid . ') AND (s.topicid=t.topic_id)';
+        $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)){
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
+        $array = $this->db->fetchArray($result);
         $this->makeStory($array);
     }
 
@@ -110,12 +112,10 @@ class NewsStory extends XoopsStory
     public function deleteBeforeDate($timestamp, $expired, $topicslist = '')
     {
         global $xoopsModule;
-        /** @var \XoopsMySQLDatabase $db */
-        $db           = \XoopsDatabaseFactory::getDatabaseConnection();
         $mid          = $xoopsModule->getVar('mid');
-        $prefix       = $db->prefix('news_stories');
-        $vote_prefix  = $db->prefix('news_stories_votedata');
-        $files_prefix = $db->prefix('news_stories_files');
+        $prefix       = $this->db->prefix('news_stories');
+        $vote_prefix  = $this->db->prefix('news_stories_votedata');
+        $files_prefix = $this->db->prefix('news_stories_files');
         $sql          = 'SELECT storyid FROM  ' . $prefix . ' WHERE published <=' . $timestamp;
         if ($expired) {
             $sql .= ' (AND expired>0 AND expired<=' . \time() . ')';
@@ -123,21 +123,28 @@ class NewsStory extends XoopsStory
         if ('' !== \trim($topicslist)) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
+        $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
+        }
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             \xoops_comment_delete($mid, $myrow['storyid']); // Delete comments
             \xoops_notification_deletebyitem($mid, 'story', $myrow['storyid']); // Delete notifications
-            $db->queryF('DELETE FROM ' . $vote_prefix . ' WHERE storyid=' . $myrow['storyid']); // Delete votes
+            $sql     = 'DELETE FROM ' . $vote_prefix . ' WHERE storyid=' . $myrow['storyid'];
+            $result1 = $this->db->queryF($sql); // Delete votes
             // Remove files and records related to the files
-            $result2 = $db->query('SELECT * FROM ' . $files_prefix . ' WHERE storyid=' . $myrow['storyid']);
-            while (false !== ($myrow2 = $db->fetchArray($result2))) {
+            $sql     = 'SELECT * FROM ' . $files_prefix . ' WHERE storyid=' . $myrow['storyid'];
+            $result2 = $this->db->query($sql);
+            while (false !== ($myrow2 = $this->db->fetchArray($result2))) {
                 $name = XOOPS_ROOT_PATH . '/uploads/' . $myrow2['downloadname'];
                 if (\is_file($name)) {
                     \unlink($name);
                 }
-                $db->query('DELETE FROM ' . $files_prefix . ' WHERE fileid=' . $myrow2['fileid']);
+                $sql     = 'DELETE FROM ' . $files_prefix . ' WHERE fileid=' . $myrow2['fileid'];
+                $result3 = $this->db->query($sql);
             }
-            $db->queryF('DELETE FROM ' . $prefix . ' WHERE storyid=' . $myrow['storyid']); // Delete the story
+            $sql     = 'DELETE FROM ' . $prefix . ' WHERE storyid=' . $myrow['storyid'];
+            $result4 = $this->db->queryF($sql); // Delete the story
         }
 
         return true;
@@ -152,15 +159,13 @@ class NewsStory extends XoopsStory
      */
     public function _searchPreviousOrNextArticle($storyid, $next = true, $checkRight = false)
     {
-        /** @var \XoopsMySQLDatabase $db */
-        $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $ret     = [];
         $storyid = (int)$storyid;
         if ($next) {
-            $sql     = 'SELECT storyid, title FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ') AND storyid > ' . $storyid;
+            $sql     = 'SELECT storyid, title FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ') AND storyid > ' . $storyid;
             $orderBy = ' ORDER BY storyid ASC';
         } else {
-            $sql     = 'SELECT storyid, title FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ') AND storyid < ' . $storyid;
+            $sql     = 'SELECT storyid, title FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ') AND storyid < ' . $storyid;
             $orderBy = ' ORDER BY storyid DESC';
         }
         if ($checkRight) {
@@ -173,10 +178,10 @@ class NewsStory extends XoopsStory
         }
         $sql .= $orderBy;
 
-        $result = $db->query($sql, 1);
-        if ($result) {
+        $result = $this->db->query($sql, 1);
+        if ($this->db->isResultSet($result)) {
             $myts = \MyTextSanitizer::getInstance();
-            while (false !== ($row = $db->fetchArray($result))) {
+            while (false !== ($row = $this->db->fetchArray($result))) {
                 $ret = ['storyid' => $row['storyid'], 'title' => \htmlspecialchars($row['title'], \ENT_QUOTES | \ENT_HTML5)];
             }
         }
@@ -281,7 +286,8 @@ class NewsStory extends XoopsStory
             $helper->redirect('/index.php', 5, $db->error());
         }
 
-            while (false !== ($myrow = $db->fetchArray($result))) {
+        /** @var array $myrow */
+        while (false !== ($myrow = $db->fetchArray($result))) {
                 if ($asobject) {
                     $ret[] = new self($myrow);
                 } else {
@@ -308,11 +314,9 @@ class NewsStory extends XoopsStory
         $asobject = true,
         $order = 'published'
     ) {
-        /** @var \XoopsMySQLDatabase $db */
-        $db   = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts = \MyTextSanitizer::getInstance();
         $ret  = [];
-        $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published > ' . $publish_start . ' AND s.published <= ' . $publish_end . ') AND (expired = 0 OR expired > ' . \time() . ') ';
+        $sql  = 'SELECT s.*, t.* FROM ' . $this->db->prefix('news_stories') . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published > ' . $publish_start . ' AND s.published <= ' . $publish_end . ') AND (expired = 0 OR expired > ' . \time() . ') ';
 
         if ($checkRight) {
             $topics = Utility::getMyItemIds('news_view');
@@ -324,12 +328,14 @@ class NewsStory extends XoopsStory
             }
         }
         $sql    .= " ORDER BY $order DESC";
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
 
@@ -358,12 +364,10 @@ class NewsStory extends XoopsStory
         $asobject = true,
         $order = 'counter'
     ) {
-        /** @var \XoopsMySQLDatabase $db */
-        $db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts  = \MyTextSanitizer::getInstance();
         $ret   = [];
         $tdate = \mktime(0, 0, 0, (int)\date('n'), (int)\date('j'), (int)\date('Y'));
-        $sql   = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (published > ' . $tdate . ' AND published < ' . \time() . ') AND (expired > ' . \time() . ' OR expired = 0) ';
+        $sql   = 'SELECT s.*, t.* FROM ' . $this->db->prefix('news_stories') . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (published > ' . $tdate . ' AND published < ' . \time() . ') AND (expired > ' . \time() . ' OR expired = 0) ';
 
         if (0 != (int)$topic) {
             if (!\is_array($topic)) {
@@ -388,12 +392,14 @@ class NewsStory extends XoopsStory
             }
         }
         $sql    .= " ORDER BY $order DESC";
-        $result = $db->query($sql, (int)$limit, (int)$start);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        $result = $this->db->query($sql, (int)$limit, (int)$start);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
 
@@ -412,12 +418,10 @@ class NewsStory extends XoopsStory
      */
     public function getAllPublishedByAuthor($uid, $checkRight = false, $asobject = true)
     {
-        /** @var \XoopsMySQLDatabase $db */
-        $db        = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts      = \MyTextSanitizer::getInstance();
         $ret       = [];
-        $tblstory  = $db->prefix('news_stories');
-        $tbltopics = $db->prefix('news_topics');
+        $tblstory  = $this->db->prefix('news_stories');
+        $tbltopics = $this->db->prefix('news_topics');
 
         $sql = 'SELECT '
                . $tblstory
@@ -447,34 +451,36 @@ class NewsStory extends XoopsStory
             }
         }
         $sql    .= ' ORDER BY ' . $tbltopics . '.topic_title ASC, ' . $tblstory . '.published DESC';
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                if ($myrow['nohtml']) {
-                    $html = 0;
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
                 } else {
-                    $html = 1;
+                    if ($myrow['nohtml']) {
+                        $html = 0;
+                    } else {
+                        $html = 1;
+                    }
+                    if ($myrow['nosmiley']) {
+                        $smiley = 0;
+                    } else {
+                        $smiley = 1;
+                    }
+                    $ret[$myrow['storyid']] = [
+                        'title'       => $myts->displayTarea($myrow['title'], $html, $smiley, 1),
+                        'topicid'     => (int)$myrow['topicid'],
+                        'storyid'     => (int)$myrow['storyid'],
+                        'hometext'    => $myts->displayTarea($myrow['hometext'], $html, $smiley, 1),
+                        'counter'     => (int)$myrow['counter'],
+                        'created'     => (int)$myrow['created'],
+                        'topic_title' => $myts->displayTarea($myrow['topic_title'], $html, $smiley, 1),
+                        'topic_color' => $myts->displayTarea($myrow['topic_color']),
+                        'published'   => (int)$myrow['published'],
+                        'rating'      => (float)$myrow['rating'],
+                        'votes'       => (int)$myrow['votes'],
+                    ];
                 }
-                if ($myrow['nosmiley']) {
-                    $smiley = 0;
-                } else {
-                    $smiley = 1;
-                }
-                $ret[$myrow['storyid']] = [
-                    'title'       => $myts->displayTarea($myrow['title'], $html, $smiley, 1),
-                    'topicid'     => (int)$myrow['topicid'],
-                    'storyid'     => (int)$myrow['storyid'],
-                    'hometext'    => $myts->displayTarea($myrow['hometext'], $html, $smiley, 1),
-                    'counter'     => (int)$myrow['counter'],
-                    'created'     => (int)$myrow['created'],
-                    'topic_title' => $myts->displayTarea($myrow['topic_title'], $html, $smiley, 1),
-                    'topic_color' => $myts->displayTarea($myrow['topic_color']),
-                    'published'   => (int)$myrow['published'],
-                    'rating'      => (float)$myrow['rating'],
-                    'votes'       => (int)$myrow['votes'],
-                ];
             }
         }
 
@@ -505,11 +511,13 @@ class NewsStory extends XoopsStory
 
         $sql    .= ' ORDER BY expired DESC';
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        if ($db->isResultSet($result)) {
+            while (false !== ($myrow = $db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
 
@@ -531,11 +539,14 @@ class NewsStory extends XoopsStory
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE published > ' . \time() . ' ORDER BY published ASC';
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        if ($db->isResultSet($result)) {
+            /** @var array $myrow */
+            while (false !== ($myrow = $db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
 
@@ -575,11 +586,14 @@ class NewsStory extends XoopsStory
         $sql    = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t ';
         $sql    .= ' ' . $criteria->renderWhere() . ' AND (s.topicid=t.topic_id) ORDER BY created DESC';
         $result = $db->query($sql, (int)$limit, (int)$start);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        if ($db->isResultSet($result)) {
+            /** @var array $myrow */
+            while (false !== ($myrow = $db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
 
@@ -623,9 +637,11 @@ class NewsStory extends XoopsStory
             }
         }
         $result = $db->query($sql);
-        $myrow  = $db->fetchArray($result);
-
-        return $myrow['cpt'];
+        if ($db->isResultSet($result)) {
+            $myrow = $db->fetchArray($result);
+            return $myrow['cpt'];
+        }
+        return 0;
     }
 
     /**
@@ -641,8 +657,10 @@ class NewsStory extends XoopsStory
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql    = 'SELECT * FROM ' . $db->prefix('news_stories') . ' WHERE topicid=' . (int)$topicid . ' ORDER BY published DESC';
         $result = $db->query($sql, (int)$limit, 0);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret[] = new self($myrow);
+        if ($db->isResultSet($result)) {
+            while (false !== ($myrow = $db->fetchArray($result))) {
+                $ret[] = new self($myrow);
+            }
         }
 
         return $ret;
@@ -652,10 +670,11 @@ class NewsStory extends XoopsStory
      * Count the number of news published for a specific topic
      * @param int  $topicid
      * @param bool $checkRight
-     * @return mixed|null
+     * @return int
      */
     public static function countPublishedByTopic($topicid = 0, $checkRight = false)
     {
+        $count = 0;
         /** @var \XoopsMySQLDatabase $db */
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SELECT COUNT(*) FROM ' . $db->prefix('news_stories') . ' WHERE published > 0 AND published <= ' . \time() . ' AND (expired = 0 OR expired > ' . \time() . ')';
@@ -669,12 +688,14 @@ class NewsStory extends XoopsStory
                     $topics = \implode(',', $topics);
                     $sql    .= ' AND topicid IN (' . $topics . ')';
                 } else {
-                    return null;
+                    return $count;
                 }
             }
         }
         $result = $db->query($sql);
-        [$count] = $db->fetchRow($result);
+        if ($db->isResultSet($result)) {
+            [$count] = $db->fetchRow($result);
+        }
 
         return $count;
     }
@@ -1010,33 +1031,35 @@ class NewsStory extends XoopsStory
         $order = 'published'
     ) {
         $ret = [];
-        /** @var \XoopsMySQLDatabase $db */
-        $db   = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts = \MyTextSanitizer::getInstance();
         if ($usetopicsdef) { // We firt begin by exporting topics definitions
             // Before all we must know wich topics to export
-            $sql = 'SELECT DISTINCT topicid FROM ' . $db->prefix('news_stories') . ' WHERE (published >=' . $fromdate . ' AND published <= ' . $todate . ')';
+            $sql = 'SELECT DISTINCT topicid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published >=' . $fromdate . ' AND published <= ' . $todate . ')';
             if ('' !== \trim($topicslist)) {
                 $sql .= ' AND topicid IN (' . $topicslist . ')';
             }
-            $result = $db->query($sql);
-            while (false !== ($myrow = $db->fetchArray($result))) {
-                $tbltopics[] = $myrow['topicid'];
+            $result = $this->db->query($sql);
+            if ($this->db->isResultSet($result)) {
+                while (false !== ($myrow = $this->db->fetchArray($result))) {
+                    $tbltopics[] = $myrow['topicid'];
+                }
             }
         }
 
         // Now we can search for the stories
-        $sql = 'SELECT s.*, t.* FROM ' . $this->table . ' s, ' . $db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published >=' . $fromdate . ' AND s.published <= ' . $todate . ')';
+        $sql = 'SELECT s.*, t.* FROM ' . $this->table . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published >=' . $fromdate . ' AND s.published <= ' . $todate . ')';
         if ('' !== \trim($topicslist)) {
             $sql .= ' AND topicid IN (' . $topicslist . ')';
         }
         $sql    .= " ORDER BY $order DESC";
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
 
@@ -1299,10 +1322,10 @@ class NewsStory extends XoopsStory
         $order = 'published',
         $topic_frontpage = false
     ) {
-        /** @var \XoopsMySQLDatabase $db */
-        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
-        $ret = $rand_keys = $ret3 = [];
-        $sql = 'SELECT storyid FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
+        $ret       = [];
+        $rand_keys = [];
+        $ret3      = [];
+        $sql = 'SELECT storyid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
         if (0 != $topic) {
             if (!\is_array($topic)) {
                 if ($checkRight) {
@@ -1337,10 +1360,11 @@ class NewsStory extends XoopsStory
             $sql .= ' AND t.topic_frontpage=1';
         }
         $sql    .= " ORDER BY $order DESC";
-        $result = $db->query($sql);
-
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret[] = $myrow['storyid'];
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[] = $myrow['storyid'];
+            }
         }
         $cnt = \count($ret);
         if ($cnt) {
@@ -1369,17 +1393,17 @@ class NewsStory extends XoopsStory
     public function getStats($limit)
     {
         $ret = [];
-        /** @var \XoopsMySQLDatabase $db */
-        $db   = \XoopsDatabaseFactory::getDatabaseConnection();
-        $tbls = $db->prefix('news_stories');
-        $tblt = $db->prefix('news_topics');
-        $tblf = $db->prefix('news_stories_files');
+        $tbls = $this->db->prefix('news_stories');
+        $tblt = $this->db->prefix('news_topics');
+        $tblf = $this->db->prefix('news_stories_files');
         // Number of stories per topic, including expired and non published stories
         $ret2   = [];
         $sql    = "SELECT count(s.storyid) as cpt, s.topicid, t.topic_title FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id GROUP BY s.topicid ORDER BY t.topic_title";
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['topicid']] = $myrow;
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['topicid']] = $myrow;
+            }
         }
         $ret['storiespertopic'] = $ret2;
         unset($ret2);
@@ -1387,9 +1411,11 @@ class NewsStory extends XoopsStory
         // Total of reads per topic
         $ret2   = [];
         $sql    = "SELECT Sum(counter) as cpt, topicid FROM $tbls GROUP BY topicid ORDER BY topicid";
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['topicid']] = $myrow['cpt'];
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['topicid']] = $myrow['cpt'];
+            }
         }
         $ret['readspertopic'] = $ret2;
         unset($ret2);
@@ -1397,9 +1423,11 @@ class NewsStory extends XoopsStory
         // Attached files per topic
         $ret2   = [];
         $sql    = "SELECT Count(*) as cpt, s.topicid FROM $tblf f, $tbls s WHERE f.storyid=s.storyid GROUP BY s.topicid ORDER BY s.topicid";
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['topicid']] = $myrow['cpt'];
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['topicid']] = $myrow['cpt'];
+            }
         }
         $ret['filespertopic'] = $ret2;
         unset($ret2);
@@ -1407,9 +1435,11 @@ class NewsStory extends XoopsStory
         // Expired articles per topic
         $ret2   = [];
         $sql    = "SELECT Count(storyid) as cpt, topicid FROM $tbls WHERE expired>0 AND expired<=" . \time() . ' GROUP BY topicid ORDER BY topicid';
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['topicid']] = $myrow['cpt'];
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['topicid']] = $myrow['cpt'];
+            }
         }
         $ret['expiredpertopic'] = $ret2;
         unset($ret2);
@@ -1417,9 +1447,11 @@ class NewsStory extends XoopsStory
         // Number of unique authors per topic
         $ret2   = [];
         $sql    = "SELECT Count(Distinct(uid)) as cpt, topicid FROM $tbls GROUP BY topicid ORDER BY topicid";
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['topicid']] = $myrow['cpt'];
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['topicid']] = $myrow['cpt'];
+            }
         }
         $ret['authorspertopic'] = $ret2;
         unset($ret2);
@@ -1427,9 +1459,11 @@ class NewsStory extends XoopsStory
         // Most readed articles
         $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.counter, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.counter DESC";
-        $result = $db->query($sql, (int)$limit);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['storyid']] = $myrow;
+        $result = $this->db->query($sql, (int)$limit);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['storyid']] = $myrow;
+            }
         }
         $ret['mostreadednews'] = $ret2;
         unset($ret2);
@@ -1437,9 +1471,11 @@ class NewsStory extends XoopsStory
         // Less readed articles
         $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.counter, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.counter";
-        $result = $db->query($sql, (int)$limit);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['storyid']] = $myrow;
+        $result = $this->db->query($sql, (int)$limit);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['storyid']] = $myrow;
+            }
         }
         $ret['lessreadednews'] = $ret2;
         unset($ret2);
@@ -1447,9 +1483,11 @@ class NewsStory extends XoopsStory
         // Best rated articles
         $ret2   = [];
         $sql    = "SELECT s.storyid, s.uid, s.title, s.rating, s.topicid, t.topic_title  FROM $tbls s, $tblt t WHERE s.topicid=t.topic_id ORDER BY s.rating DESC";
-        $result = $db->query($sql, (int)$limit);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['storyid']] = $myrow;
+        $result = $this->db->query($sql, (int)$limit);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['storyid']] = $myrow;
+            }
         }
         $ret['besratednews'] = $ret2;
         unset($ret2);
@@ -1457,9 +1495,11 @@ class NewsStory extends XoopsStory
         // Most readed authors
         $ret2   = [];
         $sql    = "SELECT Sum(counter) as cpt, uid FROM $tbls GROUP BY uid ORDER BY cpt DESC";
-        $result = $db->query($sql, (int)$limit);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['uid']] = $myrow['cpt'];
+        $result = $this->db->query($sql, (int)$limit);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['uid']] = $myrow['cpt'];
+            }
         }
         $ret['mostreadedauthors'] = $ret2;
         unset($ret2);
@@ -1467,9 +1507,11 @@ class NewsStory extends XoopsStory
         // Best rated authors
         $ret2   = [];
         $sql    = "SELECT Avg(rating) as cpt, uid FROM $tbls WHERE votes > 0 GROUP BY uid ORDER BY cpt DESC";
-        $result = $db->query($sql, (int)$limit);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['uid']] = $myrow['cpt'];
+        $result = $this->db->query($sql, (int)$limit);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['uid']] = $myrow['cpt'];
+            }
         }
         $ret['bestratedauthors'] = $ret2;
         unset($ret2);
@@ -1477,9 +1519,11 @@ class NewsStory extends XoopsStory
         // Biggest contributors
         $ret2   = [];
         $sql    = "SELECT Count(*) as cpt, uid FROM $tbls GROUP BY uid ORDER BY cpt DESC";
-        $result = $db->query($sql, (int)$limit);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret2[$myrow['uid']] = $myrow['cpt'];
+        $result = $this->db->query($sql, (int)$limit);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret2[$myrow['uid']] = $myrow['cpt'];
+            }
         }
         $ret['biggestcontributors'] = $ret2;
         unset($ret2);
@@ -1494,14 +1538,12 @@ class NewsStory extends XoopsStory
      */
     public function getOlderRecentNews(&$older, &$recent): void
     {
-        /** @var \XoopsMySQLDatabase $db */
-        $db     = \XoopsDatabaseFactory::getDatabaseConnection();
-        $sql    = 'SELECT min(published) AS minpublish, max(published) AS maxpublish FROM ' . $db->prefix('news_stories');
-        $result = $db->query($sql);
-        if (!$result) {
-            $older = $recent = 0;
+        $sql    = 'SELECT min(published) AS minpublish, max(published) AS maxpublish FROM ' . $this->db->prefix('news_stories');
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            [$older, $recent] = $this->db->fetchRow($result);
         } else {
-            [$older, $recent] = $db->fetchRow($result);
+            $older = $recent = 0;
         }
     }
 
@@ -1518,10 +1560,8 @@ class NewsStory extends XoopsStory
      */
     public function getWhosWho($checkRight = false, $limit = 0, $start = 0)
     {
-        /** @var \XoopsMySQLDatabase $db */
-        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $ret = [];
-        $sql = 'SELECT DISTINCT(uid) AS uid FROM ' . $db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
+        $sql = 'SELECT DISTINCT(uid) AS uid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
         if ($checkRight) {
             $topics = Utility::getMyItemIds('news_view');
             if (\count($topics) > 0) {
@@ -1532,9 +1572,11 @@ class NewsStory extends XoopsStory
             }
         }
         $sql    .= ' ORDER BY uid';
-        $result = $db->query($sql);
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            $ret[] = $myrow['uid'];
+        $result = $this->db->query($sql);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $ret[] = $myrow['uid'];
+            }
         }
 
         return $ret;
@@ -1656,11 +1698,11 @@ class NewsStory extends XoopsStory
 
     /**
      * Returns stories by Ids
-     * @param             $ids
-     * @param bool        $checkRight
-     * @param bool        $asobject
-     * @param string      $order
-     * @param bool        $onlyOnline
+     * @param array|string $ids
+     * @param bool         $checkRight
+     * @param bool         $asobject
+     * @param string       $order
+     * @param bool         $onlyOnline
      * @return array|null
      */
     public function getStoriesByIds(
@@ -1671,11 +1713,9 @@ class NewsStory extends XoopsStory
         $onlyOnline = true
     ) {
         $limit = $start = 0;
-        /** @var \XoopsMySQLDatabase $db */
-        $db   = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts = \MyTextSanitizer::getInstance();
         $ret  = [];
-        $sql  = 'SELECT s.*, t.* FROM ' . $db->prefix('news_stories') . ' s, ' . $db->prefix('news_topics') . ' t WHERE ';
+        $sql  = 'SELECT s.*, t.* FROM ' . $this->db->prefix('news_stories') . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE ';
         if ($ids && \is_array($ids)) {
             \array_walk($ids, '\intval');
         }
@@ -1695,16 +1735,16 @@ class NewsStory extends XoopsStory
             }
         }
         $sql    .= " ORDER BY s.$order DESC";
-        $result = $db->query($sql, $limit, $start);
-
-        while (false !== ($myrow = $db->fetchArray($result))) {
-            if ($asobject) {
-                $ret[$myrow['storyid']] = new self($myrow);
-            } else {
-                $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+        $result = $this->db->query($sql, $limit, $start);
+        if ($this->db->isResultSet($result)) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                if ($asobject) {
+                    $ret[$myrow['storyid']] = new self($myrow);
+                } else {
+                    $ret[$myrow['storyid']] = \htmlspecialchars($myrow['title'], \ENT_QUOTES | \ENT_HTML5);
+                }
             }
         }
-
         return $ret;
     }
 }

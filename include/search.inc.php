@@ -69,6 +69,9 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
 
     $sql    .= 'ORDER BY created DESC';
     $result = $xoopsDB->query($sql, $limit, $offset);
+    if (!$xoopsDB->isResultSet($result)) {
+        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+    }
     $ret    = [];
     $i      = 0;
     while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
@@ -111,6 +114,9 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         $i      = $ind;
         $sql    .= 'ORDER BY com_created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
+        if (!$xoopsDB->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+        }
         while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
             $display = true;
             if ($modid && $grouppermHandler) {

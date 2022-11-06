@@ -83,11 +83,14 @@ function news_getmoduleoption($option, $repmodule = 'news')
 function news_updaterating($storyid): void
 {
     global $xoopsDB;
-    $query       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
-    $voteresult  = $xoopsDB->query($query);
-    $votesDB     = $xoopsDB->getRowsNum($voteresult);
+    $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
+    $result  = $xoopsDB->query($sql);
+    if (!$xoopsDB->isResultSet($result)) {
+        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+    }
+    $votesDB     = $xoopsDB->getRowsNum($result);
     $totalrating = 0;
-    while ([$rating] = $xoopsDB->fetchRow($voteresult)) {
+    while ([$rating] = $xoopsDB->fetchRow($result)) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
@@ -581,7 +584,12 @@ function news_updateCache(): void
 function news_TableExists($tablename)
 {
     global $xoopsDB;
-    $result = $xoopsDB->queryF("SHOW TABLES LIKE '$tablename'");
+
+    $sql = "SHOW TABLES LIKE '$tablename'";
+    $result = $xoopsDB->queryF($sql);
+    if (!$xoopsDB->isResultSet($result)) {
+        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+    }
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }
@@ -598,7 +606,11 @@ function news_TableExists($tablename)
 function news_FieldExists($fieldname, $table)
 {
     global $xoopsDB;
-    $result = $xoopsDB->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
+    $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
+    $result = $xoopsDB->queryF($sql);
+    if (!$xoopsDB->isResultSet($result)) {
+        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+    }
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }

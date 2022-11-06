@@ -413,8 +413,11 @@ class XoopsTopic
     public function topicExists($pid, $title)
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . \trim($title) . "'";
-        $rs  = $this->db->query($sql);
-        [$count] = $this->db->fetchRow($rs);
+        $result  = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
+        }
+        [$count] = $this->db->fetchRow($result);
         if ($count > 0) {
             return true;
         }

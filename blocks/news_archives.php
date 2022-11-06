@@ -73,7 +73,8 @@ function b_news_archives_show($options)
     }
     $sql    = "SELECT DISTINCT(FROM_UNIXTIME(published,'%Y-%m')) AS published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date . ' ORDER BY published ' . $sort_order;
     $result = $xoopsDB->query($sql);
-    if (!$result) {
+    if (!$db->isResultSet($result)) {
+//        \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
         return '';
     }
     while (false !== ($myrow = $xoopsDB->fetchArray($result))) {

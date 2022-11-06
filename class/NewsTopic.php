@@ -131,6 +131,9 @@ class NewsTopic extends XoopsTopic
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
+        }
         if ($none) {
             $outbuffer .= "<option value='0'>----</option>\n";
         }
@@ -175,8 +178,11 @@ class NewsTopic extends XoopsTopic
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
+        }
         $count  = $this->db->getRowsNum($result);
-        if (0 == $count) {
+        if ($count == 0) {
             return $parray;
         }
         while (false !== ($row = $this->db->fetchArray($result))) {

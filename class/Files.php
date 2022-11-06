@@ -136,7 +136,11 @@ class Files
     public function getFile($id): void
     {
         $sql   = 'SELECT * FROM ' . $this->table . ' WHERE fileid=' . (int)$id;
-        $array = $this->db->fetchArray($this->db->query($sql));
+        $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)){
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
+        $array = $this->db->fetchArray($result);
         $this->makeFile($array);
     }
 
@@ -381,6 +385,9 @@ class Files
     {
         $sql    = 'SELECT count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)){
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
         $myrow  = $this->db->fetchArray($result);
 
         return $myrow['cnt'];
