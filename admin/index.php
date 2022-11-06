@@ -32,6 +32,7 @@ use XoopsModules\News\{
     Blacklist,
     Common,
     Common\TestdataButtons,
+    Common\DirectoryChecker,
     Files,
     Helper,
     NewsStory,
@@ -446,7 +447,7 @@ function confirmBeforePrune(): void
     xoops_cp_header();
     $topiclist = '';
     if (Request::hasVar('pruned_topics', 'POST')) {
-        $topiclist = implode(',', $_POST['pruned_topics']);
+        $topiclist = implode(',', Request::getString('pruned_topics', '', 'POST'));
     }
     echo '<h4>' . _AM_NEWS_PRUNENEWS . '</h4>';
     $expired = 0;
@@ -488,7 +489,7 @@ function pruneNews(): void
     }
 
     if (1 == Request::getInt('ok', 0, 'POST')) {
-        $story = new NewsStory();
+//        $story = new NewsStory();
         xoops_cp_header();
         $count = $story->getCountStoriesPublishedBefore($timestamp, $expired, $topiclist);
         $msg   = sprintf(_AM_NEWS_PRUNE_DELETED, $count);
@@ -574,7 +575,7 @@ function launchNewsletter(): void
     $timestamp1      = mktime(0, 0, 0, (int)mb_substr($date1, 5, 2), (int)mb_substr($date1, 8, 2), (int)mb_substr($date1, 0, 4));
     $timestamp2      = mktime(23, 59, 59, (int)mb_substr($date2, 5, 2), (int)mb_substr($date2, 8, 2), (int)mb_substr($date2, 0, 4));
     if (Request::hasVar('export_topics', 'POST')) {
-        $topiclist = implode(',', $_POST['export_topics']);
+        $topiclist = implode(',', Request::getString('export_topics', '', 'POST'));
     }
     $tbltopics       = [];
     $exportedstories = $story->exportNews($timestamp1, $timestamp2, $topiclist, 0, $tbltopics);
@@ -720,7 +721,7 @@ function launchExport(): void
     $timestamp2      = mktime(23, 59, 59, (int)mb_substr($date2, 5, 2), (int)mb_substr($date2, 8, 2), (int)mb_substr($date2, 0, 4));
     $topiclist       = '';
     if (Request::hasVar('export_topics', 'POST')) {
-        $topiclist = implode(',', $_POST['export_topics']);
+        $topiclist = implode(',', Request::getString('export_topics', '', 'POST'));
     }
     $topicsexport    = Request::getInt('includetopics', 0, 'POST');
     $tbltopics       = [];
@@ -1253,20 +1254,20 @@ function modTopicS(): void
         redirect_header('index.php?op=topicsmanager', 2, _AM_ADD_TOPIC_ERROR1);
     }
     $xt->setTopicPid(Request::getInt('topic_pid', 0, 'POST'));
-    if (empty($_POST['topic_title'])) {
+    if (empty(Request::getString('topic_title', '', 'POST'))) {
         redirect_header('index.php?op=topicsmanager', 2, _AM_ERRORTOPICNAME);
     }
     if (Request::hasVar('items_count', 'SESSION')) {
         $_SESSION['items_count'] = -1;
     }
-    $xt->setTopicTitle($_POST['topic_title']);
-    if (Request::hasVar('topic_imgurl', 'POST') && '' !== $_POST['topic_imgurl']) {
-        $xt->setTopicImgurl($_POST['topic_imgurl']);
+    $xt->setTopicTitle(Request::getString('topic_title', '', 'POST'));
+    if (Request::hasVar('topic_imgurl', 'POST') && '' !== Request::getString('topic_imgurl', '', 'POST')) {
+        $xt->setTopicImgurl(Request::getString('topic_imgurl', '', 'POST'));
     }
     $xt->setMenu(Request::getInt('submenu', 0, 'POST'));
     $xt->setTopicFrontpage(Request::getInt('topic_frontpage', 0, 'POST'));
     if (Request::hasVar('topic_description', 'POST')) {
-        $xt->setTopicDescription($_POST['topic_description']);
+        $xt->setTopicDescription(Request::getString('topic_description', '', 'POST'));
     } else {
         $xt->setTopicDescription('');
     }
@@ -1387,16 +1388,16 @@ function addTopic(): void
 
     $topicpid = Request::getInt('topic_pid', 0, 'POST');
     $xt       = new NewsTopic();
-    if (!$xt->topicExists($topicpid, $_POST['topic_title'])) {
+    if (!$xt->topicExists($topicpid, Request::getString('topic_title', '', 'POST'))) {
         $xt->setTopicPid($topicpid);
-        if (empty($_POST['topic_title']) || '' == xoops_trim($_POST['topic_title'])) {
+        if (empty(Request::getString('topic_title', '', 'POST')) || '' == xoops_trim(Request::getString('topic_title', '', 'POST'))) {
             redirect_header('index.php?op=topicsmanager', 2, _AM_ERRORTOPICNAME);
         }
-        $xt->setTopicTitle($_POST['topic_title']);
+        $xt->setTopicTitle(Request::getString('topic_title', '', 'POST'));
         //$xt->setTopicRssUrl($_POST['topic_rssfeed']);
         $xt->setTopic_color($_POST['topic_color']);
-        if (Request::hasVar('topic_imgurl', 'POST') && '' !== $_POST['topic_imgurl']) {
-            $xt->setTopicImgurl($_POST['topic_imgurl']);
+        if (Request::hasVar('topic_imgurl', 'POST') && '' !== Request::getString('topic_imgurl', '', 'POST')) {
+            $xt->setTopicImgurl(Request::getString('topic_imgurl', '', 'POST'));
         }
         $xt->setMenu(Request::getInt('submenu', 0, 'POST'));
         $xt->setTopicFrontpage(Request::getInt('topic_frontpage', 0, 'POST'));
@@ -1425,7 +1426,7 @@ function addTopic(): void
             }
         }
         if (Request::hasVar('topic_description', 'POST')) {
-            $xt->setTopicDescription($_POST['topic_description']);
+            $xt->setTopicDescription(Request::getString('topic_description', '', 'POST'));
         } else {
             $xt->setTopicDescription('');
         }
@@ -1454,7 +1455,7 @@ function addTopic(): void
         /** @var \XoopsNotificationHandler $notificationHandler */
         $notificationHandler = xoops_getHandler('notification');
         $tags                = [];
-        $tags['TOPIC_NAME']  = $_POST['topic_title'];
+        $tags['TOPIC_NAME']  = Request::getString('topic_title', '', 'POST');
         $notificationHandler->triggerEvent('global', 0, 'new_category', $tags);
         redirect_header('index.php?op=topicsmanager', 1, _AM_DBUPDATED);
     } else {
@@ -1749,12 +1750,12 @@ function saveMetagenBlackList(): void
     $blacklist = new Blacklist();
     $words     = $blacklist->getAllKeywords();
 
-    if (Request::hasVar('go', 'POST') && _AM_DELETE == $_POST['go']) {
+    if (Request::hasVar('go', 'POST') && _AM_DELETE == Request::getString('go', '', 'POST')) {
         foreach ($_POST['blacklist'] as $black_id) {
             $blacklist->delete($black_id);
         }
         $blacklist->store();
-    } elseif (Request::hasVar('go', 'POST') && _AM_ADD == $_POST['go']) {
+    } elseif (Request::hasVar('go', 'POST') && _AM_ADD == Request::getString('go', '', 'POST')) {
         $p_keywords = $_POST['keywords'];
         $keywords   = explode("\n", $p_keywords);
         foreach ($keywords as $keyword) {
@@ -1785,14 +1786,14 @@ $adminObject = Admin::getInstance();
 switch ($op) {
     case 'deletefile':
         xoops_cp_header();
-        if ('newsletter' === $_GET['type']) {
+        if ('newsletter' === Request::getString('type', '', 'GET')) {
             $newsfile = XOOPS_ROOT_PATH . '/uploads/news/newsletter.txt';
             if (unlink($newsfile)) {
                 redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
             } else {
                 redirect_header('index.php', 2, _AM_NEWS_DELETED_PB);
             }
-        } elseif ('xml' === $_GET['type']) {
+        } elseif ('xml' === Request::getString('type', '', 'GET')) {
             $xmlfile = XOOPS_ROOT_PATH . '/uploads/news/stories.xml';
             if (unlink($xmlfile)) {
                 redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
@@ -2001,6 +2002,39 @@ switch ($op) {
             $adminObject->addConfigBoxLine($folder[$i], 'folder');
             $adminObject->addConfigBoxLine([$folder[$i], '777'], 'chmod');
         }
+
+    //------ check directories ---------------
+
+    $adminObject->addConfigBoxLine('');
+    $redirectFile = Request::getString('SCRIPT_NAME', '', 'SERVER');
+
+    //check directories
+    $adminObject->addConfigBoxLine('');
+    //$path = $helper->getConfig('uploaddir') . '/';
+    $path = $helper->getConfig('uploaddir');
+    //$path0 = $helper->getModule()->getInfo('uploaddir');
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+
+    $path = $helper->getConfig('batchdir') . '/';
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+
+    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('mainimagedir') . '/';
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+
+    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('screenshots') . '/';
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path . 'thumbs' . '/', 0777, $redirectFile));
+    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'thumbs' . '/' . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+
+    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('catimage') . '/';
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path . 'thumbs' . '/', 0777, $redirectFile));
+    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'thumbs' . '/' . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+
+    //---------------------------
 
         $adminObject->displayNavigation(basename(__FILE__));
 
