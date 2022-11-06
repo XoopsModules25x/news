@@ -13,13 +13,12 @@
  * @copyright      {@link https://xoops.org/ XOOPS Project}
  * @license        {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @author         XOOPS Development Team
- * @param mixed $category
- * @param mixed $item_id
  */
 
 /**
- * @param $category
- * @param $item_id
+ * @param mixed $category
+ * @param mixed $item_id
+ * @return array|null
  */
 function news_notify_iteminfo($category, $item_id)
 {

@@ -119,7 +119,7 @@ class Utility extends Common\SysUtility
     /**
      * @param $document
      *
-     * @return mixed
+     * @return array|string|string[]|null
      */
     public static function html2text($document)
     {
@@ -312,7 +312,7 @@ class Utility extends Common\SysUtility
      * Internal function
      *
      * @param $text
-     * @return mixed
+     * @return array|string|string[]
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */

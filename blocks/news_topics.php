@@ -23,7 +23,7 @@ use XoopsModules\News\{
 };
 
 /**
- * @return mixed
+ * @return array|false
  */
 function b_news_topics_show()
 {

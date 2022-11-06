@@ -240,7 +240,7 @@ class XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_title($format = 'S')
     {
@@ -262,7 +262,7 @@ class XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_imgurl($format = 'S')
     {
@@ -363,7 +363,7 @@ class XoopsTopic
     /**
      * @param $funcURL
      *
-     * @return mixed
+     * @return string
      */
     public function getNiceTopicPathFromId($funcURL)
     {
@@ -374,7 +374,7 @@ class XoopsTopic
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getAllChildTopicsId()
     {

@@ -770,7 +770,7 @@ class NewsStory extends XoopsStory
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_title($format = 'S')
     {
@@ -1257,7 +1257,7 @@ class NewsStory extends XoopsStory
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function description($format = 'S')
     {
@@ -1281,7 +1281,7 @@ class NewsStory extends XoopsStory
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function keywords($format = 'S')
     {
@@ -1624,7 +1624,7 @@ class NewsStory extends XoopsStory
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return array|string|string[]
      */
     public function hometext($format = 'Show')
     {
@@ -1661,7 +1661,7 @@ class NewsStory extends XoopsStory
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return array|string|string[]
      */
     public function bodytext($format = 'Show')
     {

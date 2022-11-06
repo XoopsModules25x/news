@@ -134,7 +134,7 @@ function news_MygetItemIds($permtype = 'news_view')
 /**
  * @param $document
  *
- * @return mixed
+ * @return array|string|string[]|null
  */
 function news_html2text($document)
 {
@@ -288,7 +288,7 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
  * Internal function
  *
  * @param $text
- * @return mixed
+ * @return array|string|string[]
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */

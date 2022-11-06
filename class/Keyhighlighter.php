@@ -99,7 +99,7 @@ class Keyhighlighter
     /**
      * @access private
      * @param $buffer
-     * @return mixed|string
+     * @return string
      */
     public function highlight($buffer)
     {

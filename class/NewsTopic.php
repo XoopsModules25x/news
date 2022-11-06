@@ -484,7 +484,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_rssurl($format = 'S')
     {
@@ -508,7 +508,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_color($format = 'S')
     {
@@ -540,7 +540,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_description($format = 'S')
     {
@@ -564,7 +564,7 @@ class NewsTopic extends XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function topic_imgurl($format = 'S')
     {

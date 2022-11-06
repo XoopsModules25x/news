@@ -32,6 +32,11 @@ $helper->loadLanguage('main');
  */
 class NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
+    /**
+     * Constructor
+     *
+     * @param null|XoopsDatabase $db             database connection
+     */
     public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_stories', NewsStory::class, 'storieid', 'title');

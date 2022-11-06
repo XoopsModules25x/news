@@ -287,7 +287,7 @@ class Files
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function getFileRealName($format = 'S')
     {
@@ -317,7 +317,7 @@ class Files
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function getMimetype($format = 'S')
     {
@@ -347,7 +347,7 @@ class Files
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
     public function getDownloadname($format = 'S')
     {
