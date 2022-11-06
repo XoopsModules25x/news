@@ -249,8 +249,7 @@ class NewsStory extends XoopsStory
                 } else {
                     return null;
                 }
-            } else {
-                if ($checkRight) {
+            } elseif ($checkRight) {
                     $topics = Utility::getMyItemIds('news_view');
                     if (!\in_array($topic, $topics, true)) {
                         return null;
@@ -258,7 +257,6 @@ class NewsStory extends XoopsStory
                     $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
                 } else {
                     $sql .= ' AND s.topicid=' . (int)$topic . ' AND (s.ihome=1 OR s.ihome=0)';
-                }
             }
         } else {
             if ($checkRight) {
@@ -826,7 +824,7 @@ class NewsStory extends XoopsStory
     public function prepare2show($filescount)
     {
         global $xoopsUser, $xoopsConfig, $xoopsModule;
-        /** @var News\Helper $helper */
+        /** @var Helper $helper */
         $helper = Helper::getInstance();
 
         $dirname = \basename(\dirname(__DIR__));
