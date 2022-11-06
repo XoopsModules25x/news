@@ -101,7 +101,7 @@ class Keyhighlighter
      * @param $buffer
      * @return string
      */
-    public function highlight($buffer)
+    public function highlight($buffer): string
     {
         $buffer              = '>' . $buffer . '<';
         $this->preg_keywords = \preg_replace('/[^\w ]/si', '', $this->keywords);

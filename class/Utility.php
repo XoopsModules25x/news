@@ -97,7 +97,7 @@ class Utility extends Common\SysUtility
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function getMyItemIds($permtype = 'news_view')
+    public static function getMyItemIds($permtype = 'news_view'): array
     {
         global $xoopsUser;
         static $tblperms = [];
@@ -179,7 +179,7 @@ class Utility extends Common\SysUtility
      *
      * @return bool need to say it ?
      */
-    public static function isX23()
+    public static function isX23(): bool
     {
         $x23 = false;
         $xv  = \str_replace('XOOPS ', '', \XOOPS_VERSION);
@@ -431,7 +431,7 @@ class Utility extends Common\SysUtility
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function createMetaKeywords($content)
+    public static function createMetaKeywords($content): string
     {
         global $cfg;
         require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
@@ -605,7 +605,7 @@ class Utility extends Common\SysUtility
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function existTable($tablename)
+    public static function existTable($tablename): bool
     {
         global $xoopsDB;
         $sql = "SHOW TABLES LIKE '$tablename'";
@@ -627,7 +627,7 @@ class Utility extends Common\SysUtility
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function existField($fieldname, $table)
+    public static function existField($fieldname, $table): bool
     {
         global $xoopsDB;
         $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
@@ -659,7 +659,7 @@ class Utility extends Common\SysUtility
     /**
      * Verify that the current user is a member of the Admin group
      */
-    public static function isAdminGroup()
+    public static function isAdminGroup(): bool
     {
         global $xoopsUser, $xoopsModule;
         if (\is_object($xoopsUser)) {
@@ -717,7 +717,7 @@ class Utility extends Common\SysUtility
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function makeInfotips($text)
+    public static function makeInfotips($text): ?string
     {
         $infotips = static::getModuleOption('infotips');
         if ($infotips > 0) {
@@ -735,7 +735,7 @@ class Utility extends Common\SysUtility
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>
      */
-    public static function closeTags($string)
+    public static function closeTags($string): string
     {
         // match opened tags
         if (\preg_match_all('/<([a-z\:\-]+)[^\/]>/', $string, $start_tags)) {
@@ -786,7 +786,7 @@ class Utility extends Common\SysUtility
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>
      */
-    public static function truncateTagSafe($string, $length = 80, $etc = '...', $break_words = false)
+    public static function truncateTagSafe($string, $length = 80, $etc = '...', $break_words = false): string
     {
         if (0 == $length) {
             return '';
@@ -824,7 +824,7 @@ class Utility extends Common\SysUtility
         $param_height,
         $keep_original = false,
         $fit = 'inside'
-    ) {
+    ): bool {
         //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
         $resize            = true;
         $pictureDimensions = \getimagesize($src_path);

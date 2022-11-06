@@ -357,7 +357,7 @@ class XoopsStory
     /**
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $sql = \sprintf('DELETE FROM `%s` WHERE storyid = %u', $this->table, $this->storyid);
         if (!$result = $this->db->query($sql)) {
@@ -370,7 +370,7 @@ class XoopsStory
     /**
      * @return bool
      */
-    public function updateCounter()
+    public function updateCounter(): bool
     {
         $sql = \sprintf('UPDATE `%s` SET counter = counter+1 WHERE storyid = %u', $this->table, $this->storyid);
         if (!$result = $this->db->queryF($sql)) {
@@ -385,7 +385,7 @@ class XoopsStory
      *
      * @return bool
      */
-    public function updateComments($total)
+    public function updateComments($total): bool
     {
         $sql = \sprintf('UPDATE `%s` SET comments = %u WHERE storyid = %u', $this->table, $total, $this->storyid);
         if (!$result = $this->db->queryF($sql)) {
@@ -403,7 +403,7 @@ class XoopsStory
     /**
      * @return \XoopsModules\News\XoopsTopic
      */
-    public function topic()
+    public function topic(): XoopsTopic
     {
         return new XoopsTopic($this->topicstable, $this->topicid);
     }
@@ -426,7 +426,7 @@ class XoopsStory
      *
      * @return string
      */
-    public function title($format = 'Show')
+    public function title($format = 'Show'): string
     {
         $myts   = MyTextSanitizer::getInstance();
         $smiley = 1;
@@ -550,7 +550,7 @@ class XoopsStory
     /**
      * @return int
      */
-    public function nohtml()
+    public function nohtml(): int
     {
         return $this->nohtml;
     }
@@ -558,7 +558,7 @@ class XoopsStory
     /**
      * @return int
      */
-    public function nosmiley()
+    public function nosmiley(): int
     {
         return $this->nosmiley;
     }
@@ -566,7 +566,7 @@ class XoopsStory
     /**
      * @return int
      */
-    public function notifypub()
+    public function notifypub(): int
     {
         return $this->notifypub;
     }
@@ -579,7 +579,7 @@ class XoopsStory
     /**
      * @return int
      */
-    public function ihome()
+    public function ihome(): int
     {
         return $this->ihome;
     }
@@ -594,7 +594,7 @@ class XoopsStory
      *
      * @return string
      */
-    public function topicalign($astext = true)
+    public function topicalign($astext = true): string
     {
         if ($astext) {
             if ('R' === $this->topicalign) {

@@ -60,7 +60,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getFirstChild($sel_id, $order = '')
+    public function getFirstChild($sel_id, $order = ''): array
     {
         $sel_id = (int)$sel_id;
         $arr    = [];
@@ -85,7 +85,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getFirstChildId($sel_id)
+    public function getFirstChildId($sel_id): array
     {
         $sel_id  = (int)$sel_id;
         $idarray = [];
@@ -114,7 +114,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getAllChildId($sel_id, $order = '', $idarray = [])
+    public function getAllChildId($sel_id, $order = '', $idarray = []): array
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
@@ -146,7 +146,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getAllParentId($sel_id, $order = '', $idarray = [])
+    public function getAllParentId($sel_id, $order = '', $idarray = []): array
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id;
@@ -177,7 +177,7 @@ class XoopsTree
      *
      * @return string
      */
-    public function getPathFromId($sel_id, $title, $path = '')
+    public function getPathFromId($sel_id, $title, $path = ''): string
     {
         $sel_id = (int)$sel_id;
         $sql= 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
@@ -265,7 +265,7 @@ class XoopsTree
      *
      * @return string
      */
-    public function getNicePathFromId($sel_id, $title, $funcURL, $path = '')
+    public function getNicePathFromId($sel_id, $title, $funcURL, $path = ''): string
     {
         $path   = !empty($path) ? '&nbsp;:&nbsp;' . $path : $path;
         $sel_id = (int)$sel_id;
@@ -298,7 +298,7 @@ class XoopsTree
      *
      * @return string
      */
-    public function getIdPathFromId($sel_id, $path = '')
+    public function getIdPathFromId($sel_id, $path = ''): string
     {
         $sel_id = (int)$sel_id;
         $sql = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";

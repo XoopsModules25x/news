@@ -63,7 +63,7 @@ class Files
      *
      * @return string
      */
-    public function createUploadName($folder, $filename, $trimname = false)
+    public function createUploadName($folder, $filename, $trimname = false): string
     {
         $workingfolder = $folder;
         if ('/' !== \xoops_substr($workingfolder, mb_strlen($workingfolder) - 1, 1)) {
@@ -98,7 +98,7 @@ class Files
      *
      * @return string
      */
-    public function giveMimetype($filename = '')
+    public function giveMimetype($filename = ''): string
     {
         $cmimetype   = new Mimetype();
         $workingfile = $this->downloadname;
@@ -116,7 +116,7 @@ class Files
      *
      * @return array
      */
-    public function getAllbyStory($storyid)
+    public function getAllbyStory($storyid): array
     {
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
@@ -157,7 +157,7 @@ class Files
     /**
      * @return bool
      */
-    public function store()
+    public function store(): bool
     {
         $myts         = \MyTextSanitizer::getInstance();
         $fileRealName = $GLOBALS['xoopsDB']->escape($this->filerealname);
@@ -186,7 +186,7 @@ class Files
      *
      * @return bool
      */
-    public function delete($workdir = XOOPS_UPLOAD_PATH)
+    public function delete($workdir = XOOPS_UPLOAD_PATH): bool
     {
         $sql = 'DELETE FROM ' . $this->table . ' WHERE fileid=' . $this->getFileid();
         if (!$result = $this->db->query($sql)) {
@@ -202,7 +202,7 @@ class Files
     /**
      * @return bool
      */
-    public function updateCounter()
+    public function updateCounter(): bool
     {
         $sql = 'UPDATE ' . $this->table . ' SET counter=counter+1 WHERE fileid=' . $this->getFileid();
         if (!$result = $this->db->queryF($sql)) {
@@ -255,7 +255,7 @@ class Files
     /**
      * @return int
      */
-    public function getFileid()
+    public function getFileid(): int
     {
         return (int)$this->fileid;
     }
@@ -263,7 +263,7 @@ class Files
     /**
      * @return int
      */
-    public function getStoryid()
+    public function getStoryid(): int
     {
         return $this->storyid;
     }
@@ -271,7 +271,7 @@ class Files
     /**
      * @return int
      */
-    public function getCounter()
+    public function getCounter(): int
     {
         return $this->counter;
     }
@@ -279,7 +279,7 @@ class Files
     /**
      * @return int
      */
-    public function getDate()
+    public function getDate(): int
     {
         return $this->date;
     }
@@ -289,7 +289,7 @@ class Files
      *
      * @return string
      */
-    public function getFileRealName($format = 'S')
+    public function getFileRealName($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -319,7 +319,7 @@ class Files
      *
      * @return string
      */
-    public function getMimetype($format = 'S')
+    public function getMimetype($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -349,7 +349,7 @@ class Files
      *
      * @return string
      */
-    public function getDownloadname($format = 'S')
+    public function getDownloadname($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -398,7 +398,7 @@ class Files
      *
      * @return array
      */
-    public function getCountbyStories($stories)
+    public function getCountbyStories($stories): array
     {
         $ret = [];
         if (\count($stories) > 0) {

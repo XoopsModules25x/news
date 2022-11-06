@@ -69,7 +69,7 @@ class Registryfile
      *
      * @return bool
      */
-    public function savefile($content, $fichier = null)
+    public function savefile($content, $fichier = null): bool
     {
         $fw = '';
         if ($fichier) {

@@ -109,7 +109,7 @@ class NewsStory extends XoopsStory
      * @param string  $topicslist
      * @return bool
      */
-    public function deleteBeforeDate($timestamp, $expired, $topicslist = '')
+    public function deleteBeforeDate($timestamp, $expired, $topicslist = ''): bool
     {
         global $xoopsModule;
         $mid          = $xoopsModule->getVar('mid');
@@ -157,7 +157,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public function _searchPreviousOrNextArticle($storyid, $next = true, $checkRight = false)
+    public function _searchPreviousOrNextArticle($storyid, $next = true, $checkRight = false): ?array
     {
         $ret     = [];
         $storyid = (int)$storyid;
@@ -195,7 +195,7 @@ class NewsStory extends XoopsStory
      *
      * @return null|array
      */
-    public function getNextArticle($storyid, $checkRight = false)
+    public function getNextArticle($storyid, $checkRight = false): ?array
     {
         return $this->_searchPreviousOrNextArticle($storyid, true, $checkRight);
     }
@@ -206,7 +206,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public function getPreviousArticle($storyid, $checkRight = false)
+    public function getPreviousArticle($storyid, $checkRight = false): ?array
     {
         return $this->_searchPreviousOrNextArticle($storyid, false, $checkRight);
     }
@@ -232,7 +232,7 @@ class NewsStory extends XoopsStory
         $asobject = true,
         $order = 'published',
         $topic_frontpage = false
-    ) {
+    ): ?array {
         /** @var \XoopsMySQLDatabase $db */
         $db   = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts = \MyTextSanitizer::getInstance();
@@ -311,7 +311,7 @@ class NewsStory extends XoopsStory
         $checkRight = false,
         $asobject = true,
         $order = 'published'
-    ) {
+    ): ?array {
         $myts = \MyTextSanitizer::getInstance();
         $ret  = [];
         $sql  = 'SELECT s.*, t.* FROM ' . $this->db->prefix('news_stories') . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE (s.topicid=t.topic_id) AND (s.published > ' . $publish_start . ' AND s.published <= ' . $publish_end . ') AND (expired = 0 OR expired > ' . \time() . ') ';
@@ -361,7 +361,7 @@ class NewsStory extends XoopsStory
         $ihome = 0,
         $asobject = true,
         $order = 'counter'
-    ) {
+    ): ?array {
         $myts  = \MyTextSanitizer::getInstance();
         $ret   = [];
         $tdate = \mktime(0, 0, 0, (int)\date('n'), (int)\date('j'), (int)\date('Y'));
@@ -414,7 +414,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public function getAllPublishedByAuthor($uid, $checkRight = false, $asobject = true)
+    public function getAllPublishedByAuthor($uid, $checkRight = false, $asobject = true): array
     {
         $myts      = \MyTextSanitizer::getInstance();
         $ret       = [];
@@ -494,7 +494,7 @@ class NewsStory extends XoopsStory
      * @param bool $asobject
      * @return array
      */
-    public static function getAllExpired($limit = 0, $start = 0, $topic = 0, $ihome = 0, $asobject = true)
+    public static function getAllExpired($limit = 0, $start = 0, $topic = 0, $ihome = 0, $asobject = true): array
     {
         /** @var \XoopsMySQLDatabase $db */
         $db   = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -529,7 +529,7 @@ class NewsStory extends XoopsStory
      * @param int  $start
      * @return array
      */
-    public static function getAllAutoStory($limit = 0, $asobject = true, $start = 0)
+    public static function getAllAutoStory($limit = 0, $asobject = true, $start = 0): array
     {
         /** @var \XoopsMySQLDatabase $db */
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -562,7 +562,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public static function getAllSubmitted($limit = 0, $asobject = true, $checkRight = false, $start = 0)
+    public static function getAllSubmitted($limit = 0, $asobject = true, $checkRight = false, $start = 0): array
     {
         /** @var \XoopsMySQLDatabase $db */
         $db       = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -606,7 +606,7 @@ class NewsStory extends XoopsStory
      *
      * @return int
      */
-    public static function getAllStoriesCount($storytype = 1, $checkRight = false)
+    public static function getAllStoriesCount($storytype = 1, $checkRight = false): int
     {
         /** @var \XoopsMySQLDatabase $db */
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -648,7 +648,7 @@ class NewsStory extends XoopsStory
      * @param int    $limit
      * @return array
      */
-    public static function getByTopic($topicid, $limit = 0)
+    public static function getByTopic($topicid, $limit = 0): array
     {
         $ret = [];
         /** @var \XoopsMySQLDatabase $db */
@@ -670,7 +670,7 @@ class NewsStory extends XoopsStory
      * @param bool $checkRight
      * @return int
      */
-    public static function countPublishedByTopic($topicid = 0, $checkRight = false)
+    public static function countPublishedByTopic($topicid = 0, $checkRight = false): int
     {
         $count = 0;
         /** @var \XoopsMySQLDatabase $db */
@@ -701,7 +701,7 @@ class NewsStory extends XoopsStory
     /**
      * Internal function
      */
-    public function adminlink()
+    public function adminlink(): string
     {
         global $xoopsModule;
         $dirname = \basename(\dirname(__DIR__));
@@ -741,7 +741,7 @@ class NewsStory extends XoopsStory
      * @param string $format
      * @return string
      */
-    public function topic_imgurl($format = 'S')
+    public function topic_imgurl($format = 'S'): string
     {
         if ('' === \trim($this->topic_imgurl)) {
             $this->topic_imgurl = 'blank.png';
@@ -770,7 +770,7 @@ class NewsStory extends XoopsStory
      *
      * @return string
      */
-    public function topic_title($format = 'S')
+    public function topic_title($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -796,7 +796,7 @@ class NewsStory extends XoopsStory
     /**
      * @return string
      */
-    public function imglink()
+    public function imglink(): string
     {
         $ret = '';
         if ('' !== $this->topic_imgurl()
@@ -810,7 +810,7 @@ class NewsStory extends XoopsStory
     /**
      * @return string
      */
-    public function textlink()
+    public function textlink(): string
     {
         $ret = '<a title="' . $this->topic_title() . '" href="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $this->topicid() . '">' . $this->topic_title() . '</a>';
         return $ret;
@@ -821,7 +821,7 @@ class NewsStory extends XoopsStory
      * @param $filescount
      * @return array
      */
-    public function prepare2show($filescount)
+    public function prepare2show($filescount): array
     {
         global $xoopsUser, $xoopsConfig, $xoopsModule;
         /** @var Helper $helper */
@@ -1027,7 +1027,7 @@ class NewsStory extends XoopsStory
         &$tbltopics,
         $asobject = true,
         $order = 'published'
-    ) {
+    ): array {
         $ret = [];
         $myts = \MyTextSanitizer::getInstance();
         if ($usetopicsdef) { // We firt begin by exporting topics definitions
@@ -1257,7 +1257,7 @@ class NewsStory extends XoopsStory
      *
      * @return string
      */
-    public function description($format = 'S')
+    public function description($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
@@ -1281,7 +1281,7 @@ class NewsStory extends XoopsStory
      *
      * @return string
      */
-    public function keywords($format = 'S')
+    public function keywords($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
@@ -1319,7 +1319,7 @@ class NewsStory extends XoopsStory
         $ihome = 0,
         $order = 'published',
         $topic_frontpage = false
-    ) {
+    ): ?array {
         $ret       = [];
         $rand_keys = [];
         $ret3      = [];
@@ -1388,7 +1388,7 @@ class NewsStory extends XoopsStory
      * @param $limit
      * @return array
      */
-    public function getStats($limit)
+    public function getStats($limit): array
     {
         $ret = [];
         $tbls = $this->db->prefix('news_stories');
@@ -1556,7 +1556,7 @@ class NewsStory extends XoopsStory
      *
      * @return array|null
      */
-    public function getWhosWho($checkRight = false, $limit = 0, $start = 0)
+    public function getWhosWho($checkRight = false, $limit = 0, $start = 0): ?array
     {
         $ret = [];
         $sql = 'SELECT DISTINCT(uid) AS uid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
@@ -1586,7 +1586,7 @@ class NewsStory extends XoopsStory
      * @param $titles
      * @return string
      */
-    public function auto_summary($text, &$titles)
+    public function auto_summary($text, &$titles): string
     {
         $auto_summary = '';
         if (Utility::getModuleOption('enhanced_pagenav')) {
@@ -1709,7 +1709,7 @@ class NewsStory extends XoopsStory
         $asobject = true,
         $order = 'published',
         $onlyOnline = true
-    ) {
+    ): ?array {
         $limit = $start = 0;
         $myts = \MyTextSanitizer::getInstance();
         $ret  = [];

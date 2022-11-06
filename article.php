@@ -39,7 +39,7 @@
  *   of the article, "Edit & Delete"
  *
  * @param int $matches storyid    Id of the story we want to see
- * @param int page        page's number (in the case where there are more than one page)
+ * @param int $page        page's number (in the case where there are more than one page)
  *
  * @page_title                      Article's title - Topic's title - Module's name
  *

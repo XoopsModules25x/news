@@ -53,7 +53,7 @@ class Helper extends \Xmf\Module\Helper
     /**
      * @return string
      */
-    public function getDirname()
+    public function getDirname(): string
     {
         return $this->dirname;
     }

@@ -67,7 +67,7 @@ class PageNav
      *
      * @return string
      **/
-    public function renderNav($offset = 4)
+    public function renderNav($offset = 4): string
     {
         $ret = '';
         if ($this->total <= $this->perpage) {
@@ -112,7 +112,7 @@ class PageNav
      *
      * @return string
      **/
-    public function renderSelect($showbutton = false)
+    public function renderSelect($showbutton = false): ?string
     {
         if ($this->total < $this->perpage) {
             return null;
@@ -150,7 +150,7 @@ class PageNav
      *
      * @return string
      */
-    public function renderEnhancedSelect($showbutton = false, $titles = null)
+    public function renderEnhancedSelect($showbutton = false, $titles = null): ?string
     {
         if ($this->total < $this->perpage) {
             return null;
@@ -188,7 +188,7 @@ class PageNav
      *
      * @return string
      **/
-    public function renderImageNav($offset = 4)
+    public function renderImageNav($offset = 4): ?string
     {
         if ($this->total < $this->perpage) {
             return null;

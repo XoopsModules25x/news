@@ -85,7 +85,7 @@ class FileChecker
      *
      * @return bool
      */
-    public static function copyFile($source_path, $destination_path)
+    public static function copyFile($source_path, $destination_path): bool
     {
         $source_path      = \str_replace('..', '', $source_path);
         $destination_path = \str_replace('..', '', $destination_path);
@@ -99,7 +99,7 @@ class FileChecker
      *
      * @return bool
      */
-    public static function compareFiles($file1_path, $file2_path)
+    public static function compareFiles($file1_path, $file2_path): bool
     {
         if (!self::fileExists($file1_path) || !self::fileExists($file2_path)) {
             return false;
@@ -121,7 +121,7 @@ class FileChecker
      *
      * @return bool
      */
-    public static function fileExists($file_path)
+    public static function fileExists($file_path): bool
     {
         return \is_file($file_path);
     }
@@ -132,7 +132,7 @@ class FileChecker
      *
      * @return bool
      */
-    public static function setFilePermissions($target, $mode = 0777)
+    public static function setFilePermissions($target, $mode = 0777): bool
     {
         $target = \str_replace('..', '', $target);
 

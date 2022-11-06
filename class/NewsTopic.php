@@ -67,7 +67,7 @@ class NewsTopic extends XoopsTopic
         $onchange = '',
         $checkRight = false,
         $perm_type = 'news_view'
-    ) {
+    ): ?string {
         $perms = '';
         if ($checkRight) {
             global $xoopsUser;
@@ -118,7 +118,7 @@ class NewsTopic extends XoopsTopic
         $sel_name,
         $onchange,
         $perms
-    ) {
+    ): string {
         $myts      = \MyTextSanitizer::getInstance();
         $outbuffer = '';
         $outbuffer = "<select name='" . $sel_name . "'";
@@ -171,7 +171,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return array
      */
-    public function getChildTreeArray($sel_id = 0, $order = '', $perms = '', $parray = [], $r_prefix = '')
+    public function getChildTreeArray($sel_id = 0, $order = '', $perms = '', $parray = [], $r_prefix = ''): array
     {
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE (topic_pid=' . $sel_id . ')' . $perms;
         if ('' !== $order) {
@@ -244,7 +244,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return array
      */
-    public function getAllTopics($checkRight = true, $permission = 'news_view')
+    public function getAllTopics($checkRight = true, $permission = 'news_view'): array
     {
         $topics_arr = [];
         /** @var \XoopsMySQLDatabase $db */
@@ -274,7 +274,7 @@ class NewsTopic extends XoopsTopic
     /**
      * Returns the number of published news per topic
      */
-    public function getNewsCountByTopic()
+    public function getNewsCountByTopic(): array
     {
         $ret    = [];
         $sql    = 'SELECT count(storyid) AS cpt, topicid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ') GROUP BY topicid';
@@ -291,7 +291,7 @@ class NewsTopic extends XoopsTopic
      * @param $topicid
      * @return array
      */
-    public function getTopicMiniStats($topicid)
+    public function getTopicMiniStats($topicid): array
     {
         $ret          = [];
         $sql          = 'SELECT count(storyid) AS cpt1, sum(counter) AS cpt2 FROM ' . $this->db->prefix('news_stories') . ' WHERE (topicid=' . $topicid . ') AND (published>0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
@@ -486,7 +486,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return string
      */
-    public function topic_rssurl($format = 'S')
+    public function topic_rssurl($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -510,7 +510,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return string
      */
-    public function topic_color($format = 'S')
+    public function topic_color($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -542,7 +542,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return string
      */
-    public function topic_description($format = 'S')
+    public function topic_description($format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {

@@ -80,7 +80,7 @@ class Mimetype
      *
      * @return string
      */
-    public function getType($filename)
+    public function getType($filename): string
     {
         // get base name of the filename provided by user
         $filename = \basename($filename);
@@ -100,7 +100,7 @@ class Mimetype
      *
      * @return string
      */
-    public function privFindType($ext)
+    public function privFindType($ext): string
     {
         // create mimetypes array
         $mimetypes = $this->privBuildMimeArray();
@@ -112,7 +112,7 @@ class Mimetype
     /**
      * @return array
      */
-    public function privBuildMimeArray()
+    public function privBuildMimeArray(): array
     {
         return [
             'ez'      => 'application/andrew-inset',

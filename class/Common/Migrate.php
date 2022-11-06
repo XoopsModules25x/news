@@ -54,7 +54,7 @@ class Migrate extends \Xmf\Database\Migrate
      * @param string $columnName column to convert
      * @param string $attribute new attribute
      */
-    private function changeColumnSize($tableName, $columnName, $attribute)
+    private function changeColumnSize($tableName, $columnName, $attribute): void
     {
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);

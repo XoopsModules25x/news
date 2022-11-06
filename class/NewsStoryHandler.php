@@ -35,7 +35,7 @@ class NewsStoryHandler extends \XoopsPersistableObjectHandler
     /**
      * Constructor
      *
-     * @param null|XoopsDatabase $db             database connection
+     * @param \XoopsDatabase|null $db database connection
      */
     public function __construct(\XoopsDatabase $db = null)
     {

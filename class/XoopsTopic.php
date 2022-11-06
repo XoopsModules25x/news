@@ -242,7 +242,7 @@ class XoopsTopic
      *
      * @return string
      */
-    public function topic_title($format = 'S')
+    public function topic_title($format = 'S'): string
     {
         $myts = MyTextSanitizer::getInstance();
         switch ($format) {
@@ -292,7 +292,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getFirstChildTopics()
+    public function getFirstChildTopics(): array
     {
         $ret       = [];
         $xt        = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
@@ -309,7 +309,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getAllChildTopics()
+    public function getAllChildTopics(): array
     {
         $ret       = [];
         $xt        = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
@@ -326,7 +326,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getChildTopicsTreeArray()
+    public function getChildTopicsTreeArray(): array
     {
         $ret       = [];
         $xt        = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
@@ -365,7 +365,7 @@ class XoopsTopic
      *
      * @return string
      */
-    public function getNiceTopicPathFromId($funcURL)
+    public function getNiceTopicPathFromId($funcURL): string
     {
         $xt  = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getNicePathFromId($this->topic_id, 'topic_title', $funcURL);
@@ -376,7 +376,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getAllChildTopicsId()
+    public function getAllChildTopicsId(): array
     {
         $xt  = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getAllChildId($this->topic_id, 'topic_title');
@@ -410,7 +410,7 @@ class XoopsTopic
      *
      * @return bool
      */
-    public function topicExists($pid, $title)
+    public function topicExists($pid, $title): bool
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . \trim($title) . "'";
         $result  = $this->db->query($sql);

@@ -77,7 +77,7 @@ class ObjectTree
      *
      * @return array Associative array comprising the tree
      */
-    public function &getTree()
+    public function &getTree(): array
     {
         return $this->tree;
     }
@@ -99,7 +99,7 @@ class ObjectTree
      * @param string $key ID of the parent object
      * @return array  Array of children of the parent
      */
-    public function getFirstChild($key)
+    public function getFirstChild($key): array
     {
         $ret = [];
         if (isset($this->tree[$key]['child'])) {
@@ -118,7 +118,7 @@ class ObjectTree
      * @param array  $ret (Empty when called from client) Array of children from previous recursions.
      * @return array  Array of child nodes.
      */
-    public function getAllChild($key, $ret = [])
+    public function getAllChild($key, $ret = []): array
     {
         if (isset($this->tree[$key]['child'])) {
             foreach ($this->tree[$key]['child'] as $childKey) {
@@ -142,7 +142,7 @@ class ObjectTree
      * @param int    $upLevel (empty when called from outside) level of recursion
      * @return array  Array of parent nodes.
      */
-    public function getAllParent($key, $ret = [], $upLevel = 1)
+    public function getAllParent($key, $ret = [], $upLevel = 1): array
     {
         if (isset($this->tree[$key]['parent']) && isset($this->tree[$this->tree[$key]['parent']]['obj'])) {
             $ret[$upLevel] = $this->tree[$this->tree[$key]['parent']]['obj'];
@@ -209,7 +209,7 @@ class ObjectTree
         $addEmptyOption = false,
         $key = 0,
         $extra = ''
-    ) {
+    ): string {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
         $ret = '<select name="' . $name . '" id="' . $name . '" ' . $extra . '>';
@@ -245,7 +245,7 @@ class ObjectTree
         $key = 0,
         $extra = '',
         $caption = ''
-    ) {
+    ): \XoopsFormSelect {
         \xoops_load('xoopsformselect');
         $element = new \XoopsFormSelect($caption, $name, $selected);
         $element->setExtra($extra);
