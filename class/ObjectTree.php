@@ -213,7 +213,7 @@ class ObjectTree
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
         $ret = '<select name="' . $name . '" id="' . $name . '" ' . $extra . '>';
-        if ((bool)$addEmptyOption) {
+        if ($addEmptyOption) {
             $ret .= '<option value="0"></option>';
         }
         $this->makeSelBoxOptions($fieldName, $selected, $key, $ret, $prefix);
@@ -250,7 +250,7 @@ class ObjectTree
         $element = new \XoopsFormSelect($caption, $name, $selected);
         $element->setExtra($extra);
 
-        if ((bool)$addEmptyOption) {
+        if ($addEmptyOption) {
             $element->addOption('0', ' ');
         }
         $this->addSelectOptions($element, $fieldName, $key, $prefix);
