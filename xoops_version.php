@@ -309,7 +309,7 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'default'     => 5,
-    'options'     => ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30],
+    'options'     => [5 => 5, 10 => 10, 15 => 15, 20 => 20, 25 => 25, 30 => 30],
 ];
 /**
  * Format of the date to use in the module, if you don't specify anything then the default date's format will be used
@@ -423,14 +423,14 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 10,
     'options'     => [
-    '5'  => 5,
-    '10' => 10,
-    '15' => 15,
-    '20' => 20,
-    '25' => 25,
-    '30' => 30,
-    '35' => 35,
-        '40' => 40,
+    5  => 5,
+    10 => 10,
+    15 => 15,
+    20 => 20,
+    25 => 25,
+    30 => 30,
+    35 => 35,
+        40 => 40,
     ],
 ];
 
