@@ -93,7 +93,7 @@ if (is_object($helper->getModule())) {
 xoops_loadLanguage('admin', $moduleDirName);
 xoops_loadLanguage('main', $moduleDirName);
 if (class_exists('D3LanguageManager')) {
-    require_once XOOPS_TRUST_PATH . "/libs/altsys/class/D3LanguageManager.class.php";
+    require_once XOOPS_TRUST_PATH . '/libs/altsys/class/D3LanguageManager.class.php';
     $langman = D3LanguageManager::getInstance();
     $langman->read('admin.php', $moduleDirName);
     $langman->read('main.php', $moduleDirName);
