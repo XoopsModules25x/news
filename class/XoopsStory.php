@@ -548,17 +548,17 @@ class XoopsStory
     }
 
     /**
-     * @return int
+     * @return string|int
      */
-    public function nohtml(): int
+    public function nohtml()
     {
         return $this->nohtml;
     }
 
     /**
-     * @return int
+     * @return string|int
      */
-    public function nosmiley(): int
+    public function nosmiley()
     {
         return $this->nosmiley;
     }

@@ -224,15 +224,15 @@ class ObjectTree
     /**
      * Make a select box with options from the tree
      *
-     * @param string $name             Name of the select box
-     * @param string $fieldName        Name of the member variable from the
-     *                                 node objects that should be used as the title for the options.
-     * @param string $prefix           String to indent deeper levels
-     * @param string $selected         Value to display as selected
-     * @param bool   $addEmptyOption   Set TRUE to add an empty option with value "0" at the top of the hierarchy
-     * @param int    $key              ID of the object to display as the root of select options
-     * @param string $extra            extra content to add to the element
-     * @param string $caption          optional caption for form element
+     * @param string     $name           Name of the select box
+     * @param string     $fieldName      Name of the member variable from the
+     *                                   node objects that should be used as the title for the options.
+     * @param string     $prefix         String to indent deeper levels
+     * @param string|int $selected       Value to display as selected
+     * @param bool       $addEmptyOption Set TRUE to add an empty option with value "0" at the top of the hierarchy
+     * @param int        $key            ID of the object to display as the root of select options
+     * @param string     $extra          extra content to add to the element
+     * @param string     $caption        optional caption for form element
      *
      * @return \XoopsFormSelect form element
      */
@@ -240,7 +240,7 @@ class ObjectTree
         string $name,
         string $fieldName,
         string $prefix = '-',
-        string $selected = '',
+        $selected = '',
         bool   $addEmptyOption = false,
         int    $key = 0,
         string $extra = '',
@@ -264,13 +264,13 @@ class ObjectTree
      * @param \XoopsFormSelect $element     form element to receive tree values as options
      * @param string           $fieldName   Name of the member variable from the node objects that
      *                                      should be used as the title for the options.
-     * @param int              $key         ID of the object to display as the root of select options
+     * @param string|int              $key         ID of the object to display as the root of select options
      * @param string           $prefix_orig String to indent items at deeper levels
      * @param string           $prefix_curr String to indent the current item
      *
      * @access private
      */
-    protected function addSelectOptions(\XoopsFormSelect $element, string $fieldName, int $key, string $prefix_orig, string $prefix_curr = ''): void
+    protected function addSelectOptions(\XoopsFormSelect $element, string $fieldName, $key, string $prefix_orig, string $prefix_curr = ''): void
     {
         if ($key > 0) {
             $value = $this->tree[$key]['obj']->getVar($this->myId);

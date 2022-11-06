@@ -666,10 +666,10 @@ class NewsStory extends XoopsStory
     /**
      * Count the number of news published for a specific topic
      * @param int  $topicid
-     * @param bool $checkRight
-     * @return int
+     * @param bool|int $checkRight
+     * @return int|string
      */
-    public static function countPublishedByTopic(int $topicid = 0, bool $checkRight = false): int
+    public static function countPublishedByTopic(int $topicid = 0, $checkRight = false)
     {
         $count = 0;
         /** @var \XoopsMySQLDatabase $db */
