@@ -31,7 +31,7 @@ namespace XoopsModules\News;
  */
 class Blacklist
 {
-    public $keywords; // Holds keywords
+    public array $keywords; // Holds keywords
 
     /**
      * Get all the keywords

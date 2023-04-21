@@ -64,7 +64,7 @@ header('Content-Type:text/xml; charset=' . $charset);
 $story        = new NewsStory();
 $tpl          = new \XoopsTpl();
 $tpl->caching = 2;
-$tpl->xoops_setCacheTime(3600); // Change this to the value you want
+$tpl->cache_lifetime=3600; // Change this to the value you want
 if (!$tpl->isCached('db:news_rss.tpl', $topicid)) {
     $xt     = new NewsTopic($topicid);
     $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);

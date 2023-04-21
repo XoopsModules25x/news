@@ -33,7 +33,7 @@ if ((!defined('XOOPS_ROOT_PATH')) || !($GLOBALS['xoopsUser'] instanceof \XoopsUs
  *
  * @return bool true if ready to install, false if not
  */
-function xoops_module_pre_update_news(\XoopsModule $module)
+function xoops_module_pre_update_news(\XoopsModule $module): bool
 {
     $moduleDirName = \basename(\dirname(__DIR__));
     /** @var Helper $helper */
@@ -54,7 +54,7 @@ function xoops_module_pre_update_news(\XoopsModule $module)
  *
  * @return bool true if update successful, false if not
  */
-function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
+function xoops_module_update_news(\XoopsModule $module, $previousVersion = null): bool
 {
     $moduleDirName      = \basename(\dirname(__DIR__));
     $moduleDirNameUpper = \mb_strtoupper($moduleDirName);

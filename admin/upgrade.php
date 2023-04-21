@@ -15,8 +15,9 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Utility
+};
 
 require \dirname(__DIR__, 3) . '/include/cp_header.php';
 xoops_cp_header();

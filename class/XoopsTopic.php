@@ -33,26 +33,26 @@ use XoopsPerms;
  */
 class XoopsTopic
 {
-    public $db;
-    public $menu;
+    public \XoopsDatabase $db;
+    public                $menu;
     public $mid; // module id used for setting permission
     public $prefix; // only used in topic tree
-    public $table;
-    public $topic_color;
+    public string         $table;
+    public                $topic_color;
     public $topic_description;
     public $topic_frontpage;
     public $topic_id;
     public $topic_imgurl;
     public $topic_pid;
     public $topic_rssurl;
-    public $topic_title;
-    public $use_permission = false;
+    public                $topic_title;
+    public bool           $use_permission = false;
 
     /**
      * @param string    $table
      * @param array|int $topicid
      */
-    public function __construct($table, $topicid = 0)
+    public function __construct(string $table, $topicid = 0)
     {
         /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -123,7 +123,7 @@ class XoopsTopic
     /**
      * @return bool
      */
-    public function store()
+    public function store(): bool
     {
         $myts   = \MyTextSanitizer::getInstance();
         $title  = '';
@@ -242,7 +242,7 @@ class XoopsTopic
      *
      * @return string
      */
-    public function topic_title($format = 'S'): string
+    public function topic_title(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -264,7 +264,7 @@ class XoopsTopic
      *
      * @return string
      */
-    public function topic_imgurl($format = 'S')
+    public function topic_imgurl(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -342,11 +342,11 @@ class XoopsTopic
 
     /**
      * @param int    $none
-     * @param        $seltopic
+     * @param int    $seltopic
      * @param string $selname
      * @param string $onchange
      */
-    public function makeTopicSelBox($none = 0, $seltopic = -1, $selname = '', $onchange = ''): void
+    public function makeTopicSelBox(int $none = 0, int $seltopic = -1, string $selname = '', string $onchange = ''): void
     {
         $xt = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         if (-1 != $seltopic) {
@@ -387,7 +387,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getTopicsList()
+    public function getTopicsList(): array
     {
         $ret    = [];
         $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);

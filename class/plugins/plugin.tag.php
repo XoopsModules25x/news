@@ -31,7 +31,7 @@ use XoopsModules\News;
  * @param $items
  * @return bool|null
  */
-function news_tag_iteminfo(&$items)
+function news_tag_iteminfo(&$items): ?bool
 {
     if (empty($items) || !\is_array($items)) {
         return false;

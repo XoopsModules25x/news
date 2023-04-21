@@ -67,9 +67,10 @@
 ######################################################################
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';

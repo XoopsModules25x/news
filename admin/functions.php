@@ -25,14 +25,14 @@
  *
  * NOTE : Please give credits if you copy this code !
  *
- * @param string $tablename
+ * @param string|null $tablename
  * @param string $iconname
  * @copyright::  (c) Hervé Thouzard (https://www.herve-thouzard.com)
  * @author   ::     Hervé Thouzard (https://www.herve-thouzard.com) & Dojo Javscript Toolkit
  */
-function news_collapsableBar(string $tablename = '', string $iconname = ''): void
+function news_collapsableBar(?string $tablename = null, string $iconname = ''): void
 {
-    ?>
+    ?>$tablename ??= '';
     <script type="text/javascript">
         //        function goto_URL(object) {
         //            window.location.href = object.options[object.selectedIndex].value;

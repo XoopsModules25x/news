@@ -16,8 +16,10 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News\Files;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Files,
+    NewsStory
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';

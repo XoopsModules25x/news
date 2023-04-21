@@ -23,7 +23,9 @@ namespace XoopsModules\News\Common;
  */
 
 use XoopsFormEditor;
-use XoopsModules\News\Helper;
+use XoopsModules\News\{
+    Helper
+};
 
 /**
  * Class SysUtility
@@ -47,7 +49,7 @@ class SysUtility
      *
      * @return string Trimmed string.
      */
-    public static function truncateHtml(string $text, $length = 100, $ending = '...', $exact = false, $considerHtml = true): string
+    public static function truncateHtml(string $text, int $length = 100, string $ending = '...', bool $exact = false, bool $considerHtml = true): string
     {
         if ($considerHtml) {
             // if the plain text is shorter than the maximum length, return the whole text
@@ -139,11 +141,11 @@ class SysUtility
     }
 
     /**
-     * @param \Xmf\Module\Helper $helper
-     * @param array|null         $options
+     * @param \Xmf\Module\Helper|null $helper
+     * @param array|null              $options
      * @return \XoopsFormDhtmlTextArea|\XoopsFormEditor
      */
-    public static function getEditor($helper = null, $options = null)
+    public static function getEditor(\Xmf\Module\Helper $helper = null, array $options = null)
     {
         /** @var Helper $helper */
         if (null === $options) {
@@ -196,13 +198,13 @@ class SysUtility
     }
 
     /**
-     * @param array|string $tableName
+     * @param string $tableName
      * @param string       $id_field
      * @param int          $id
      *
      * @return mixed
      */
-    public static function cloneRecord($tableName, string $id_field, int $id)
+    public static function cloneRecord(string $tableName, string $id_field, int $id)
     {
         $new_id = false;
         $table  = $GLOBALS['xoopsDB']->prefix($tableName);

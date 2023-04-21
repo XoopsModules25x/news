@@ -15,10 +15,11 @@
  * @author       XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Common\Configurator;
-use XoopsModules\News\Helper;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Common\Configurator,
+    Helper,
+    Utility
+};
 
 /**
  * Prepares system prior to attempting to install module
@@ -26,7 +27,7 @@ use XoopsModules\News\Utility;
  *
  * @return bool true if ready to install, false if not
  */
-function xoops_module_pre_install_news(\XoopsModule $module)
+function xoops_module_pre_install_news(\XoopsModule $module): bool
 {
     require_once \dirname(__DIR__) . '/preloads/autoloader.php';
     /** @var Utility $utility */
@@ -50,7 +51,7 @@ function xoops_module_pre_install_news(\XoopsModule $module)
  *
  * @return bool true if installation successful, false if not
  */
-function xoops_module_install_news(\XoopsModule $module)
+function xoops_module_install_news(\XoopsModule $module): bool
 {
     require_once \dirname(__DIR__, 3) . '/mainfile.php';
 

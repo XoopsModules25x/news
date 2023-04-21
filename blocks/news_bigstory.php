@@ -15,10 +15,11 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 /**
  * @return array|null|false

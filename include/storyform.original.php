@@ -16,11 +16,12 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Files;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Files,
+    Helper,
+    NewsTopic,
+    Utility
+};
 use XoopsModules\Tag\FormTag;
 
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -57,14 +58,9 @@ $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
 $moduleDirName = \basename(\dirname(__DIR__));
 xoops_load('utility', $moduleDirName);
 
-if (Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
-    //    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
-    $topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', _NW_TOPIC);
-    $sform->addElement($topic_select);
-} else {
-    $topic_select = $topic_tree->makeSelBox('topic_id', 'topic_title', '-- ', $topicid, false);
-    $sform->addElement(new \XoopsFormLabel(_NW_TOPIC, $topic_select));
-}
+$topic_select = $topic_tree->makeSelectElement('topic_id', 'topic_title', '--', $topicid, false, 0, '', _NW_TOPIC);
+$sform->addElement($topic_select);
+
 
 //If admin - show admin form
 //TODO: Change to "If submit privilege"

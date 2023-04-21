@@ -42,7 +42,7 @@ use XoopsModules\News\{
  * @param string $repmodule
  * @return bool|mixed
  */
-function news_getmoduleoption($option, string $repmodule = 'news')
+function news_getmoduleoption(string $option, string $repmodule = 'news')
 {
     global $xoopsModuleConfig, $xoopsModule;
     static $tbloptions = [];
@@ -113,7 +113,7 @@ function news_updaterating($storyid): void
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_MygetItemIds($permtype = 'news_view')
+function news_MygetItemIds(string $permtype = 'news_view'): array
 {
     global $xoopsUser;
     static $tblperms = [];
@@ -196,7 +196,7 @@ function news_html2text($document)
  *
  * @return bool need to say it ?
  */
-function news_isX23()
+function news_isX23(): bool
 {
     $x23 = false;
     $xv  = str_replace('XOOPS ', '', XOOPS_VERSION);
@@ -220,7 +220,7 @@ function news_isX23()
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
+function news_getWysiwygForm(string $caption, string $name, string $value = '', string $width = '100%', string $height = '400px', string $supplemental = '')
 {
     $editor_option            = \mb_strtolower(news_getmoduleoption('form_options'));
     $editor                   = false;
@@ -241,18 +241,6 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
 
     // Only for Xoops 2.0.x
     switch ($editor_option) {
-        case 'fckeditor':
-            if (is_readable(XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php')) {
-                require_once XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php';
-                $editor = new \XoopsFormFckeditor($caption, $name, $value);
-            }
-            break;
-        case 'htmlarea':
-            if (is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
-                require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
-                $editor = new \XoopsFormHtmlarea($caption, $name, $value);
-            }
-            break;
         case 'dhtmltextarea':
         case 'dhtml':
             $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
@@ -273,12 +261,6 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
                         'height'  => '400px',
                     ]
                 );
-            }
-            break;
-        case 'koivi':
-            if (is_readable(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php')) {
-                require_once XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php';
-                $editor = new \XoopsFormWysiwygTextArea($caption, $name, $value, $width, $height, '');
             }
             break;
     }
@@ -409,7 +391,7 @@ function news_CreateMetaDatas($story = null): void
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
-function news_createmeta_keywords($content)
+function news_createmeta_keywords($content): string
 {
     require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
@@ -583,7 +565,7 @@ function news_updateCache(): void
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
-function news_TableExists($tablename)
+function news_TableExists($tablename): bool
 {
     global $xoopsDB;
 
@@ -605,7 +587,7 @@ function news_TableExists($tablename)
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_FieldExists($fieldname, $table)
+function news_FieldExists($fieldname, $table): bool
 {
     global $xoopsDB;
     $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
@@ -637,7 +619,7 @@ function news_AddField($field, $table)
 /**
  * Verify that the current user is a member of the Admin group
  */
-function news_is_admin_group()
+function news_is_admin_group(): bool
 {
     global $xoopsUser, $xoopsModule;
     if (is_object($xoopsUser)) {
@@ -695,7 +677,7 @@ function news_isbot()
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
-function news_make_infotips($text)
+function news_make_infotips($text): ?string
 {
     $infotips = news_getmoduleoption('infotips');
     if ($infotips > 0) {
@@ -713,7 +695,7 @@ function news_make_infotips($text)
  * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
  *           <amos dot robinson at gmail dot com>
  */
-function news_close_tags($string)
+function news_close_tags(string $string): string
 {
     // match opened tags
     if (preg_match_all('/<([a-z\:\-]+)[^\/]>/', $string, $start_tags)) {
@@ -764,7 +746,7 @@ function news_close_tags($string)
  * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
  *           <amos dot robinson at gmail dot com>
  */
-function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false)
+function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false): string
 {
     if (0 == $length) {
         return '';
@@ -796,13 +778,13 @@ function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words
  * @return bool
  */
 function news_resizePicture(
-    $src_path,
-    $dst_path,
-    $param_width,
-    $param_height,
-    $keep_original = false,
-    $fit = 'inside'
-) {
+    string $src_path,
+    string $dst_path,
+    int    $param_width,
+    int    $param_height,
+    bool   $keep_original = false,
+    string $fit = 'inside'
+): bool {
     //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
     $resize            = true;
     $pictureDimensions = getimagesize($src_path);

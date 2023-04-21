@@ -17,8 +17,9 @@
  **/
 
 use Xmf\Module\Admin;
-use XoopsModules\News;
-use XoopsModules\News\Helper;
+use XoopsModules\News\{
+    Helper
+};
 
 require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 

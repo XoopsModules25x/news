@@ -65,12 +65,12 @@ class NewsStory extends XoopsStory
 
     /**
      * Returns the number of stories published before a date
-     * @param         $timestamp
-     * @param         $expired
-     * @param string  $topicslist
+     * @param int    $timestamp
+     * @param int    $expired
+     * @param string $topicslist
      * @return mixed
      */
-    public function getCountStoriesPublishedBefore($timestamp, $expired, $topicslist = '')
+    public function getCountStoriesPublishedBefore(int $timestamp, int $expired, string $topicslist = '')
     {
         $count = 0;
         $sql = 'SELECT count(*) AS cpt FROM ' . $this->db->prefix('news_stories') . ' WHERE published <=' . $timestamp;
@@ -109,7 +109,7 @@ class NewsStory extends XoopsStory
      * @param string  $topicslist
      * @return bool
      */
-    public function deleteBeforeDate($timestamp, $expired, $topicslist = ''): bool
+    public function deleteBeforeDate($timestamp, $expired, string $topicslist = ''): bool
     {
         global $xoopsModule;
         $mid          = $xoopsModule->getVar('mid');
@@ -157,7 +157,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public function _searchPreviousOrNextArticle($storyid, $next = true, $checkRight = false): ?array
+    public function _searchPreviousOrNextArticle($storyid, bool $next = true, bool $checkRight = false): ?array
     {
         $ret     = [];
         $storyid = (int)$storyid;
@@ -195,7 +195,7 @@ class NewsStory extends XoopsStory
      *
      * @return null|array
      */
-    public function getNextArticle($storyid, $checkRight = false): ?array
+    public function getNextArticle(int $storyid, bool $checkRight = false): ?array
     {
         return $this->_searchPreviousOrNextArticle($storyid, true, $checkRight);
     }
@@ -206,7 +206,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public function getPreviousArticle($storyid, $checkRight = false): ?array
+    public function getPreviousArticle($storyid, bool $checkRight = false): ?array
     {
         return $this->_searchPreviousOrNextArticle($storyid, false, $checkRight);
     }
@@ -224,14 +224,14 @@ class NewsStory extends XoopsStory
      * @return array|null
      */
     public static function getAllPublished(
-        $limit = 0,
-        $start = 0,
-        $checkRight = false,
-        $topic = 0,
-        $ihome = 0,
-        $asobject = true,
-        $order = 'published',
-        $topic_frontpage = false
+        int    $limit = 0,
+        int    $start = 0,
+        bool   $checkRight = false,
+               $topic = 0,
+        int    $ihome = 0,
+        bool   $asobject = true,
+        string $order = 'published',
+        bool   $topic_frontpage = false
     ): ?array {
         /** @var \XoopsMySQLDatabase $db */
         $db   = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -308,9 +308,9 @@ class NewsStory extends XoopsStory
     public function getArchive(
         $publish_start,
         $publish_end,
-        $checkRight = false,
-        $asobject = true,
-        $order = 'published'
+        bool $checkRight = false,
+        bool $asobject = true,
+        string $order = 'published'
     ): ?array {
         $myts = \MyTextSanitizer::getInstance();
         $ret  = [];
@@ -354,13 +354,13 @@ class NewsStory extends XoopsStory
      * @return array
      */
     public function getBigStory(
-        $limit = 0,
-        $start = 0,
-        $checkRight = false,
-        $topic = 0,
-        $ihome = 0,
-        $asobject = true,
-        $order = 'counter'
+        int    $limit = 0,
+        int    $start = 0,
+        bool   $checkRight = false,
+               $topic = 0,
+        int    $ihome = 0,
+        bool   $asobject = true,
+        string $order = 'counter'
     ): ?array {
         $myts  = \MyTextSanitizer::getInstance();
         $ret   = [];
@@ -413,7 +413,7 @@ class NewsStory extends XoopsStory
      *
      * @return array
      */
-    public function getAllPublishedByAuthor($uid, $checkRight = false, $asobject = true): array
+    public function getAllPublishedByAuthor(int $uid, bool $checkRight = false, bool $asobject = true): array
     {
         $myts      = \MyTextSanitizer::getInstance();
         $ret       = [];
@@ -493,7 +493,7 @@ class NewsStory extends XoopsStory
      * @param bool $asobject
      * @return array
      */
-    public static function getAllExpired($limit = 0, $start = 0, $topic = 0, $ihome = 0, $asobject = true): array
+    public static function getAllExpired(int $limit = 0, int $start = 0, int $topic = 0, int $ihome = 0, bool $asobject = true): array
     {
         /** @var \XoopsMySQLDatabase $db */
         $db   = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -528,7 +528,7 @@ class NewsStory extends XoopsStory
      * @param int  $start
      * @return array
      */
-    public static function getAllAutoStory($limit = 0, $asobject = true, $start = 0): array
+    public static function getAllAutoStory(int $limit = 0, bool $asobject = true, int $start = 0): array
     {
         /** @var \XoopsMySQLDatabase $db */
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -553,16 +553,18 @@ class NewsStory extends XoopsStory
     /**
      * Get all submitted stories awaiting approval
      *
-     * @param int  $limit      Denotes where to start the query
+     * @param int|null  $limit      Denotes where to start the query
      * @param bool $asobject   true will return the stories as an array of objects, false will return storyid => title
-     * @param bool $checkRight whether to check the user's rights to topics
+     * @param bool|null $checkRight whether to check the user's rights to topics
      *
      * @param int  $start
      *
      * @return array
      */
-    public static function getAllSubmitted(int $limit = 0, $asobject = true, bool $checkRight = false, $start = 0): array
+    public static function getAllSubmitted(?int $limit = null, bool $asobject = true, ?bool $checkRight = null, int $start = 0): array
     {
+        $checkRight ??= false;
+        $limit      ??= 0;
         /** @var \XoopsMySQLDatabase $db */
         $db       = \XoopsDatabaseFactory::getDatabaseConnection();
         $myts     = \MyTextSanitizer::getInstance();
@@ -600,13 +602,14 @@ class NewsStory extends XoopsStory
     /**
      * Used in the module's admin to know the number of expired, automated or pubilshed news
      *
-     * @param int  $storytype  1=Expired, 2=Automated, 3=New submissions, 4=Last published stories
+     * @param int|null  $storytype  1=Expired, 2=Automated, 3=New submissions, 4=Last published stories
      * @param bool $checkRight verify permissions or not ?
      *
      * @return int
      */
-    public static function getAllStoriesCount(int $storytype = 1, bool $checkRight = false): int
+    public static function getAllStoriesCount(?int $storytype = null, bool $checkRight = false): int
     {
+        $storytype ??= 1;
         /** @var \XoopsMySQLDatabase $db */
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SELECT count(*) AS cpt FROM ' . $db->prefix('news_stories') . ' WHERE ';
@@ -665,13 +668,14 @@ class NewsStory extends XoopsStory
 
     /**
      * Count the number of news published for a specific topic
-     * @param int  $topicid
+     * @param int|null  $topicid
      * @param bool|int $checkRight
      * @return int|string
      */
-    public static function countPublishedByTopic(int $topicid = 0, $checkRight = false)
+    public static function countPublishedByTopic(?int $topicid = null, $checkRight = false)
     {
-        $count = 0;
+        $topicid ??= 0;
+        $count   = 0;
         /** @var \XoopsMySQLDatabase $db */
         $db  = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SELECT COUNT(*) FROM ' . $db->prefix('news_stories') . ' WHERE published > 0 AND published <= ' . \time() . ' AND (expired = 0 OR expired > ' . \time() . ')';
@@ -740,7 +744,7 @@ class NewsStory extends XoopsStory
      * @param string $format
      * @return string
      */
-    public function topic_imgurl($format = 'S'): string
+    public function topic_imgurl(string $format = 'S'): string
     {
         if ('' === \trim($this->topic_imgurl)) {
             $this->topic_imgurl = 'blank.png';
@@ -769,7 +773,7 @@ class NewsStory extends XoopsStory
      *
      * @return string
      */
-    public function topic_title($format = 'S'): string
+    public function topic_title(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -954,7 +958,7 @@ class NewsStory extends XoopsStory
      * @param int $uid
      * @return null|string
      */
-    public function uname($uid = 0)
+    public function uname(int $uid = 0): ?string
     {
         global $xoopsConfig;
         static $tblusers = [];
@@ -1019,13 +1023,13 @@ class NewsStory extends XoopsStory
      * @internal param string $topiclist If not empty, a list of topics to limit to
      */
     public function exportNews(
-        $fromdate,
-        $todate,
-        $topicslist,
-        $usetopicsdef,
-        &$tbltopics,
-        $asobject = true,
-        $order = 'published'
+        int    $fromdate,
+        int    $todate,
+        string $topicslist,
+               $usetopicsdef,
+               &$tbltopics,
+        bool   $asobject = true,
+        string $order = 'published'
     ): array {
         $ret = [];
         $myts = \MyTextSanitizer::getInstance();
@@ -1068,7 +1072,7 @@ class NewsStory extends XoopsStory
      * @param bool $approved
      * @return bool|int
      */
-    public function store($approved = false)
+    public function store(bool $approved = false)
     {
         $myts        = \MyTextSanitizer::getInstance();
         $counter     = $this->counter ?? 0;
@@ -1256,7 +1260,7 @@ class NewsStory extends XoopsStory
      *
      * @return string
      */
-    public function description($format = 'S'): string
+    public function description(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
@@ -1280,7 +1284,7 @@ class NewsStory extends XoopsStory
      *
      * @return string
      */
-    public function keywords($format = 'S'): string
+    public function keywords(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch (mb_strtoupper($format)) {
@@ -1302,27 +1306,31 @@ class NewsStory extends XoopsStory
     /**
      * Returns a random number of news
      * @param int       $limit
-     * @param int       $start
-     * @param bool      $checkRight
+     * @param int|null       $start
+     * @param bool|null      $checkRight
      * @param array|int $topic
-     * @param int       $ihome
-     * @param string    $order
+     * @param int|null       $ihome
+     * @param string|null    $order
      * @param bool      $topic_frontpage
      * @return array
      */
     public function getRandomNews(
-        $limit = 0,
-        int $start = 0,
-        bool $checkRight = false,
-        $topic = 0,
-        int $ihome = 0,
-        string $order = 'published',
-        bool $topic_frontpage = false
+        int         $limit = 0,
+        ?int        $start = null,
+        ?bool       $checkRight = null,
+                    $topic = 0,
+        ?int        $ihome = null,
+        ?string $order = null,
+        bool        $topic_frontpage = false
     ): ?array {
-        $ret       = [];
-        $rand_keys = [];
-        $ret3      = [];
-        $sql = 'SELECT storyid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
+        $order      ??= 'published';
+        $checkRight ??= false;
+        $ihome      ??= 0;
+        $start      ??= 0;
+        $ret        = [];
+        $rand_keys  = [];
+        $ret3       = [];
+        $sql        = 'SELECT storyid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
         if (0 != $topic) {
             if (!\is_array($topic)) {
                 if ($checkRight) {
@@ -1555,7 +1563,7 @@ class NewsStory extends XoopsStory
      *
      * @return array|null
      */
-    public function getWhosWho($checkRight = false, $limit = 0, int $start = 0): ?array
+    public function getWhosWho(bool $checkRight = false, int $limit = 0, int $start = 0): ?array
     {
         $ret = [];
         $sql = 'SELECT DISTINCT(uid) AS uid FROM ' . $this->db->prefix('news_stories') . ' WHERE (published > 0 AND published <= ' . \time() . ') AND (expired = 0 OR expired > ' . \time() . ')';
@@ -1623,7 +1631,7 @@ class NewsStory extends XoopsStory
      *
      * @return array|string|string[]
      */
-    public function hometext($format = 'Show')
+    public function hometext(string $format = 'Show')
     {
         $hometext = '';
         $myts     = \MyTextSanitizer::getInstance();
@@ -1660,7 +1668,7 @@ class NewsStory extends XoopsStory
      *
      * @return array|string|string[]
      */
-    public function bodytext($format = 'Show')
+    public function bodytext(string $format = 'Show')
     {
         $myts   = \MyTextSanitizer::getInstance();
         $html   = 1;
@@ -1696,23 +1704,26 @@ class NewsStory extends XoopsStory
     /**
      * Returns stories by Ids
      * @param array|string $ids
-     * @param bool         $checkRight
-     * @param bool         $asobject
-     * @param string       $order
+     * @param bool|null    $checkRight
+     * @param bool|null    $asobject
+     * @param string|null  $order
      * @param bool         $onlyOnline
      * @return array|null
      */
     public function getStoriesByIds(
         $ids,
-        bool $checkRight = true,
-        bool $asobject = true,
-        string $order = 'published',
+        ?bool $checkRight = null,
+        ?bool $asobject = null,
+        ?string $order = null,
         bool $onlyOnline = true
     ): ?array {
-        $limit = $start = 0;
-        $myts = \MyTextSanitizer::getInstance();
-        $ret  = [];
-        $sql  = 'SELECT s.*, t.* FROM ' . $this->db->prefix('news_stories') . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE ';
+        $order      ??= 'published';
+        $asobject   ??= true;
+        $checkRight ??= true;
+        $limit      = $start = 0;
+        $myts       = \MyTextSanitizer::getInstance();
+        $ret        = [];
+        $sql        = 'SELECT s.*, t.* FROM ' . $this->db->prefix('news_stories') . ' s, ' . $this->db->prefix('news_topics') . ' t WHERE ';
         if ($ids && \is_array($ids)) {
             \array_walk($ids, '\intval');
         }

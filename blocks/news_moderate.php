@@ -15,15 +15,16 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 /**
  * Display a block where news moderators can show news that needs to be moderated.
  */
-function b_news_topics_moderate()
+function b_news_topics_moderate(): array
 {
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 

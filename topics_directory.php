@@ -25,9 +25,11 @@
  * @copyright (c) Hervé Thouzard - https://www.herve-thouzard.com
  */
 
-use XoopsModules\News;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsTopic,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';

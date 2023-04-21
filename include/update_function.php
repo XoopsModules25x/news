@@ -22,7 +22,7 @@ use XoopsModules\News\{
 /**
  * @return bool
  */
-function xoops_module_update_news()
+function xoops_module_update_news(): bool
 {
     global $xoopsDB;
     $errors = 0;

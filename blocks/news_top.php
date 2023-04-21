@@ -96,7 +96,8 @@ function b_news_top_show($options)
             }
         }
         $before  = array_slice($options, 0, 14);
-        $options = array_merge($before, $topics2);
+//        $options = array_merge($before, $topics2);
+        $options = [...$before, ...$topics2];
     }
 
     if (2 == $options[8]) { // Tabbed view ********************************************************************************************
@@ -582,7 +583,7 @@ function b_news_top_show($options)
  * @param $options
  * @return string
  */
-function b_news_top_edit($options)
+function b_news_top_edit($options): string
 {
     global $xoopsDB;
     $tmpstory = new NewsStory();

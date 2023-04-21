@@ -88,7 +88,7 @@ function b_news_topicsnav_show($options)
  *
  * @return string
  */
-function b_news_topicsnav_edit($options)
+function b_news_topicsnav_edit($options): string
 {
     $form = _MB_NEWS_SHOW_NEWS_COUNT . " <input type='radio' name='options[]' value='1'";
     if (1 == $options[0]) {

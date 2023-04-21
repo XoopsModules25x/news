@@ -15,9 +15,10 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory
+};
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -92,7 +93,7 @@ function b_news_archives_show(array $options)
  *
  * @return string
  */
-function b_news_archives_edit($options)
+function b_news_archives_edit($options): string
 {
     global $xoopsDB;
     $syear    = $smonth = $eyear = $emonth = $older = $recent = 0;

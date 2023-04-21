@@ -700,7 +700,7 @@ function exportNews(): void
  *
  * @return string
  */
-function news_utf8_encode($text)
+function news_utf8_encode($text): string
 {
     return xoops_utf8_encode($text);
 }

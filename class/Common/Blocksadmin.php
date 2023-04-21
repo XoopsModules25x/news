@@ -349,7 +349,7 @@ final class Blocksadmin
         //$clone->setVar('content', $_POST['bcontent']);
         $clone->setVar('title', Request::getString('btitle', '', 'POST'));
         $clone->setVar('bcachetime', $bcachetime);
-        if (\is_array($options) && ($options !== [])) {
+        if (\is_array($options) && ([] !== $options)) {
             $optionsImploded = \implode('|', $options);
             $clone->setVar('options', $optionsImploded);
         }
@@ -502,7 +502,7 @@ final class Blocksadmin
         //        $blockHandler = \xoops_getHandler('block');
         //        $blockHandler->insert($myblock);
 
-        if (!empty($bmodule) && $bmodule !== []) {
+        if (!empty($bmodule) && [] !== $bmodule) {
             $sql = \sprintf('DELETE FROM `%s` WHERE block_id = %u', $this->db->prefix('block_module_link'), $bid);
             $this->db->query($sql);
             if (\in_array(0, $bmodule)) {

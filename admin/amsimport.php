@@ -24,11 +24,12 @@
  * @copyright 2005, 2006 - Hervé Thouzard
  */
 
-use XoopsModules\Ams;
 use XoopsModules\Ams\Helper as AmsHelper;
-use XoopsModules\News\Files;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    Files,
+    NewsStory,
+    NewsTopic
+};
 
 require \dirname(__DIR__, 3) . '/include/cp_header.php';
 xoops_cp_header();

@@ -21,7 +21,9 @@ namespace XoopsModules\News\Common;
 
 use Xmf\Yaml;
 use Xmf\Module\Admin;
-use XoopsModules\News\Helper;
+use XoopsModules\News\{
+    Helper
+};
 
 /** @var Helper $helper */
 

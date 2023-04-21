@@ -566,7 +566,7 @@ class NewsTopic extends XoopsTopic
      *
      * @return string
      */
-    public function topic_imgurl($format = 'S')
+    public function topic_imgurl(string $format = 'S')
     {
         if ('' === \trim($this->topic_imgurl)) {
             $this->topic_imgurl = 'blank.png';

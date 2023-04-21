@@ -25,20 +25,20 @@ namespace XoopsModules\News;
  */
 class Files
 {
-    public $db;
-    public $table;
-    public $fileid;
-    public $filerealname;
-    public $storyid;
-    public $date;
-    public $mimetype;
-    public $downloadname;
-    public $counter;
+    public \XoopsDatabase $db;
+    public string         $table;
+    public int            $fileid;
+    public string         $filerealname;
+    public int            $storyid;
+    public int            $date;
+    public string         $mimetype;
+    public string         $downloadname;
+    public int            $counter;
 
     /**
      * @param array|int $fileid
      */
-    public function __construct($fileid = -1)
+    public function __construct(int $fileid = -1)
     {
         /** @var \XoopsMySQLDatabase $db */
         $this->db           = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -63,7 +63,7 @@ class Files
      *
      * @return string
      */
-    public function createUploadName($folder, $filename, $trimname = false): string
+    public function createUploadName(string $folder, string $filename, bool $trimname = false): string
     {
         $workingfolder = $folder;
         if ('/' !== \xoops_substr($workingfolder, mb_strlen($workingfolder) - 1, 1)) {
@@ -112,7 +112,7 @@ class Files
     }
 
     /**
-     * @param $storyid
+     * @param string|int $storyid
      *
      * @return array
      */
@@ -131,7 +131,7 @@ class Files
     }
 
     /**
-     * @param $id
+     * @param string|int $id
      */
     public function getFile($id): void
     {
@@ -145,9 +145,9 @@ class Files
     }
 
     /**
-     * @param $array
+     * @param array $array
      */
-    public function makeFile($array): void
+    public function makeFile(array $array): void
     {
         foreach ($array as $key => $value) {
             $this->$key = $value;
@@ -217,15 +217,15 @@ class Files
     // ****************************************************************************************************************
 
     /**
-     * @param $filename
+     * @param string $filename
      */
-    public function setFileRealName($filename): void
+    public function setFileRealName(string $filename): void
     {
         $this->filerealname = $filename;
     }
 
     /**
-     * @param $id
+     * @param string|int $id
      */
     public function setStoryid($id): void
     {
@@ -233,17 +233,17 @@ class Files
     }
 
     /**
-     * @param $value
+     * @param string $value
      */
-    public function setMimetype($value): void
+    public function setMimetype(string $value): void
     {
         $this->mimetype = $value;
     }
 
     /**
-     * @param $value
+     * @param string $value
      */
-    public function setDownloadname($value): void
+    public function setDownloadname(string $value): void
     {
         $this->downloadname = $value;
     }
@@ -377,7 +377,7 @@ class Files
     // Deprecated
 
     /**
-     * @param $storyid
+     * @param string|int $storyid
      *
      * @return mixed
      */
@@ -394,11 +394,11 @@ class Files
     }
 
     /**
-     * @param $stories
+     * @param array $stories
      *
      * @return array
      */
-    public function getCountbyStories($stories): array
+    public function getCountbyStories(array $stories): array
     {
         $ret = [];
         if (\count($stories) > 0) {

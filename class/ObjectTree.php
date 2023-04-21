@@ -28,11 +28,11 @@ class ObjectTree
     /**
      * @access private
      */
-    protected $parentId;
-    protected $myId;
-    protected $rootId;
-    protected $tree = [];
-    protected $objects;
+    private string $parentId;
+    private string $myId;
+    private string $rootId;
+    private array  $tree = [];
+    private array  $objects;
 
     /**
      * Constructor
@@ -88,7 +88,7 @@ class ObjectTree
      * @param string $key ID of the object to retrieve
      * @return object Object within the tree
      */
-    public function &getByKey(string $key)
+    public function &getByKey(string $key): object
     {
         return $this->tree[$key]['obj'];
     }

@@ -15,10 +15,11 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -99,7 +100,7 @@ function b_news_randomnews_show($options)
  *
  * @return string
  */
-function b_news_randomnews_edit($options)
+function b_news_randomnews_edit($options): string
 {
     global $xoopsDB;
     $form = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";

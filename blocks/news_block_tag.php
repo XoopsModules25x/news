@@ -20,7 +20,7 @@ if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
      *
      * @return array
      */
-    function news_tag_block_cloud_show($options)
+    function news_tag_block_cloud_show($options): array
     {
         require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
 
@@ -34,7 +34,7 @@ if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
      *
      * @return string
      */
-    function news_tag_block_cloud_edit($options)
+    function news_tag_block_cloud_edit($options): string
     {
         require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
 
@@ -46,7 +46,7 @@ if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
      *
      * @return array|null
      */
-    function news_tag_block_top_show($options): ?array
+    function news_tag_block_top_show(array $options): ?array
     {
         require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
 
@@ -59,7 +59,7 @@ if (file_exists(XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php')) {
      * @param array $options
      * @return string|null
      */
-    function news_tag_block_top_edit($options): ?string
+    function news_tag_block_top_edit(array $options): ?string
     {
         require_once XOOPS_ROOT_PATH . '/modules/tag/blocks/block.php';
 

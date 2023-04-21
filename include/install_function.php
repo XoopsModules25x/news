@@ -15,7 +15,7 @@
  * @author      Voltan
  * @return bool
  */
-function xoops_module_pre_install_news(\XoopsModule $module)
+function xoops_module_pre_install_news(\XoopsModule $module): bool
 {
     // Check if this XOOPS version is supported
     $minSupportedVersion = explode('.', '2.5.0');
@@ -48,7 +48,7 @@ function xoops_module_pre_install_news(\XoopsModule $module)
  * @param \XoopsModule $module
  * @return bool
  */
-function xoops_module_install_news(\XoopsModule $module)
+function xoops_module_install_news(\XoopsModule $module): bool
 {
     $module_id = $module->getVar('mid');
     /** @var \XoopsGroupPermHandler $grouppermHandler */

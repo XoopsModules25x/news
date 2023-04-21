@@ -24,7 +24,7 @@ require_once \dirname(__DIR__, 2) . '/mainfile.php';
 $helper = Helper::getInstance();
 
 // We verify that the user can post comments **********************************
-if (null === $helper->getModule()) {
+if (!is_object($helper->getModule())) {
     exit();
 }
 

@@ -15,8 +15,9 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Utility
+};
 
 /**
  * @param $queryarray
@@ -27,7 +28,7 @@ use XoopsModules\News\Utility;
  *
  * @return array
  */
-function news_search($queryarray, $andor, $limit, $offset, $userid)
+function news_search($queryarray, $andor, $limit, $offset, $userid): array
 {
     global $xoopsDB, $xoopsUser;
     $restricted = Utility::getModuleOption('restrictindex');

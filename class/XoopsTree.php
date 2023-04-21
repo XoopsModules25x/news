@@ -32,7 +32,7 @@ class XoopsTree
     public $pid; // name of parent id used in table $table
     public $order; //specifies the order of query results
     public $title; // name of a field in table $table which will be used when  selection box and paths are generated
-    public $db;
+    public \XoopsDatabase $db;
     //constructor of class XoopsTree
     //sets the names of table, unique id, and parend id
 
@@ -60,7 +60,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getFirstChild($sel_id, $order = ''): array
+    public function getFirstChild($sel_id, string $order = ''): array
     {
         $sel_id = (int)$sel_id;
         $arr    = [];
@@ -114,7 +114,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getAllChildId($sel_id, $order = '', $idarray = []): array
+    public function getAllChildId($sel_id, string $order = '', array $idarray = []): array
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
@@ -146,7 +146,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getAllParentId($sel_id, $order = '', $idarray = []): array
+    public function getAllParentId($sel_id, string $order = '', array $idarray = []): array
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id;
@@ -177,7 +177,7 @@ class XoopsTree
      *
      * @return string
      */
-    public function getPathFromId($sel_id, $title, $path = ''): string
+    public function getPathFromId($sel_id, string $title, string $path = ''): string
     {
         $sel_id = (int)$sel_id;
         $sql= 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
@@ -212,7 +212,7 @@ class XoopsTree
      * @param string $sel_name
      * @param string $onchange
      */
-    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = ''): void
+    public function makeMySelBox($title, string $order = '', int $preset_id = 0, int $none = 0, string $sel_name = '', string $onchange = ''): void
     {
         if ('' == $sel_name) {
             $sel_name = $this->id;
@@ -265,7 +265,7 @@ class XoopsTree
      *
      * @return string
      */
-    public function getNicePathFromId($sel_id, $title, $funcURL, $path = ''): string
+    public function getNicePathFromId($sel_id, string $title, string $funcURL, string $path = ''): string
     {
         $path   = !empty($path) ? '&nbsp;:&nbsp;' . $path : $path;
         $sel_id = (int)$sel_id;
@@ -298,7 +298,7 @@ class XoopsTree
      *
      * @return string
      */
-    public function getIdPathFromId($sel_id, $path = ''): string
+    public function getIdPathFromId($sel_id, string $path = ''): string
     {
         $sel_id = (int)$sel_id;
         $sql = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
@@ -340,7 +340,7 @@ class XoopsTree
             \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
         }
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $parray;
         }
         while (false !== ($row = $this->db->fetchArray($result))) {
@@ -373,7 +373,7 @@ class XoopsTree
             \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
         }
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $parray;
         }
         while (false !== ($row = $this->db->fetchArray($result))) {

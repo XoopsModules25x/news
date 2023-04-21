@@ -20,7 +20,7 @@
  * @param mixed $item_id
  * @return array|null
  */
-function news_notify_iteminfo($category, $item_id)
+function news_notify_iteminfo($category, $item_id): ?array
 {
     if ('global' === $category) {
         $item['name'] = '';

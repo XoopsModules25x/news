@@ -37,18 +37,18 @@ class XoopsStory
     public $topicid;
     public $uid;
     public $title;
-    public $hometext;
-    public $bodytext  = '';
-    public $counter;
+    public        $hometext;
+    public string $bodytext  = '';
+    public        $counter;
     public $created;
     public $published;
     public $expired;
-    public $hostname;
-    public $nohtml    = 0;
-    public $nosmiley  = 0;
-    public $ihome     = 0;
-    public $notifypub = 0;
-    public $type;
+    public        $hostname;
+    public int    $nohtml    = 0;
+    public int    $nosmiley  = 0;
+    public int    $ihome     = 0;
+    public int    $notifypub = 0;
+    public        $type;
     public $approved;
     public $topicdisplay;
     public $topicalign;
@@ -158,7 +158,7 @@ class XoopsStory
     /**
      * @param int $value
      */
-    public function setNohtml($value = 0): void
+    public function setNohtml(int $value = 0): void
     {
         $this->nohtml = $value;
     }
@@ -166,7 +166,7 @@ class XoopsStory
     /**
      * @param int $value
      */
-    public function setNosmiley($value = 0): void
+    public function setNosmiley(int $value = 0): void
     {
         $this->nosmiley = $value;
     }
@@ -232,7 +232,7 @@ class XoopsStory
      *
      * @return bool
      */
-    public function store($approved = false)
+    public function store(bool $approved = false): bool
     {
         //$newpost = 0;
         $myts     = \MyTextSanitizer::getInstance();
@@ -417,7 +417,7 @@ class XoopsStory
     /**
      * @return string
      */
-    public function uname()
+    public function uname(): string
     {
         return XoopsUser::getUnameFromId($this->uid);
     }
@@ -427,7 +427,7 @@ class XoopsStory
      *
      * @return string
      */
-    public function title($format = 'Show'): string
+    public function title(string $format = 'Show'): string
     {
         $myts   = \MyTextSanitizer::getInstance();
         $smiley = 1;
@@ -453,7 +453,7 @@ class XoopsStory
      *
      * @return string
      */
-    public function hometext($format = 'Show')
+    public function hometext(string $format = 'Show'): string
     {
         $myts   = \MyTextSanitizer::getInstance();
         $html   = 1;
@@ -488,7 +488,7 @@ class XoopsStory
      *
      * @return string
      */
-    public function bodytext($format = 'Show')
+    public function bodytext(string $format = 'Show'): string
     {
         $myts   = \MyTextSanitizer::getInstance();
         $html   = 1;
@@ -595,7 +595,7 @@ class XoopsStory
      *
      * @return string
      */
-    public function topicalign($astext = true): string
+    public function topicalign(bool $astext = true): string
     {
         if ($astext) {
             if ('R' === $this->topicalign) {

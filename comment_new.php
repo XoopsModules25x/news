@@ -16,10 +16,11 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
@@ -29,7 +30,7 @@ $helper = Helper::getInstance();
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 // We verify that the user can post comments **********************************
-if (null === $helper->getModule()) {
+if (!is_object($helper->getModule())) {
     exit();
 }
 

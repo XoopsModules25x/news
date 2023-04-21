@@ -55,9 +55,10 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';

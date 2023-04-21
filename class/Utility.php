@@ -26,7 +26,7 @@ class Utility extends Common\SysUtility
      * @param string $repmodule
      * @return bool|mixed
      */
-    public static function getModuleOption($option, $repmodule = 'news')
+    public static function getModuleOption(string $option, string $repmodule = 'news')
     {
         global $xoopsModuleConfig, $xoopsModule;
         static $tbloptions = [];
@@ -62,11 +62,11 @@ class Utility extends Common\SysUtility
     /**
      * Updates rating data in item table for a given item
      *
-     * @param $storyid
+     * @param int $storyid
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function updateRating($storyid): void
+    public static function updateRating(int $storyid): void
     {
         global $xoopsDB;
         $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
@@ -203,7 +203,7 @@ class Utility extends Common\SysUtility
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
+    public static function getWysiwygForm(string $caption, string $name, string $value = '', string $width = '100%', string $height = '400px', string $supplemental = '')
     {
         $editor_option            = \mb_strtolower(static::getModuleOption('form_options'));
         $editor                   = false;
@@ -224,18 +224,6 @@ class Utility extends Common\SysUtility
 
         // Only for Xoops 2.0.x
         switch ($editor_option) {
-            case 'fckeditor':
-                if (\is_readable(XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php')) {
-                    require_once XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php';
-                    $editor = new XoopsFormFckeditor($caption, $name, $value);
-                }
-                break;
-            case 'htmlarea':
-                if (\is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
-                    require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
-                    $editor = new XoopsFormHtmlarea($caption, $name, $value);
-                }
-                break;
             case 'dhtmltextarea':
             case 'dhtml':
                 $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
@@ -258,23 +246,17 @@ class Utility extends Common\SysUtility
                     );
                 }
                 break;
-            case 'koivi':
-                if (\is_readable(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php')) {
-                    require_once XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php';
-                    $editor = new XoopsFormWysiwygTextArea($caption, $name, $value, $width, $height, '');
-                }
-                break;
         }
 
         return $editor;
     }
 
     /**
-     * @param \Xmf\Module\Helper $helper
-     * @param array|null         $options
+     * @param \Xmf\Module\Helper|null $helper
+     * @param array|null              $options
      * @return \XoopsFormDhtmlTextArea|\XoopsFormEditor
      */
-    public static function getEditor($helper = null, $options = null)
+    public static function getEditor(\Xmf\Module\Helper $helper = null, array $options = null)
     {
         /** @var Helper $helper */
         if (null === $options) {
@@ -311,12 +293,12 @@ class Utility extends Common\SysUtility
     /**
      * Internal function
      *
-     * @param $text
+     * @param string $text
      * @return array|string|string[]
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function getDublinQuotes($text)
+    public static function getDublinQuotes(string $text)
     {
         return \str_replace('"', ' ', $text);
     }
@@ -329,7 +311,7 @@ class Utility extends Common\SysUtility
      * - The meta keywords
      * - The meta description
      *
-     * @param null $story
+     * @param object|null $story
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
@@ -426,12 +408,12 @@ class Utility extends Common\SysUtility
     /**
      * Create the meta keywords based on the content
      *
-     * @param $content
+     * @param string $content
      * @return string
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function createMetaKeywords($content): string
+    public static function createMetaKeywords(string $content): string
     {
         global $cfg;
         require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
@@ -600,12 +582,12 @@ class Utility extends Common\SysUtility
     /**
      * Verify that a mysql table exists
      *
-     * @param $tablename
+     * @param string $tablename
      * @return bool
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function existTable($tablename): bool
+    public static function existTable(string $tablename): bool
     {
         global $xoopsDB;
         $sql = "SHOW TABLES LIKE '$tablename'";
@@ -621,13 +603,13 @@ class Utility extends Common\SysUtility
     /**
      * Verify that a field exists inside a mysql table
      *
-     * @param $fieldname
-     * @param $table
+     * @param string $fieldname
+     * @param string $table
      * @return bool
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function existField($fieldname, $table): bool
+    public static function existField(string $fieldname, string $table): bool
     {
         global $xoopsDB;
         $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
@@ -642,13 +624,13 @@ class Utility extends Common\SysUtility
     /**
      * Add a field to a mysql table
      *
-     * @param $field
-     * @param $table
+     * @param string $field
+     * @param string $table
      * @return bool|\mysqli_result
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function addField($field, $table)
+    public static function addField(string $field, string $table)
     {
         global $xoopsDB;
         $result = $xoopsDB->queryF('ALTER TABLE ' . $table . " ADD $field;");
@@ -712,12 +694,12 @@ class Utility extends Common\SysUtility
     /**
      * Create an infotip
      *
-     * @param $text
+     * @param string $text
      * @return string|null
      * @copyright (c) Hervé Thouzard
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      */
-    public static function makeInfotips($text): ?string
+    public static function makeInfotips(string $text): ?string
     {
         $infotips = static::getModuleOption('infotips');
         if ($infotips > 0) {
@@ -735,7 +717,7 @@ class Utility extends Common\SysUtility
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>
      */
-    public static function closeTags($string): string
+    public static function closeTags(string $string): string
     {
         // match opened tags
         if (\preg_match_all('/<([a-z\:\-]+)[^\/]>/', $string, $start_tags)) {
@@ -777,16 +759,16 @@ class Utility extends Common\SysUtility
      *           Makes sure no tags are left half-open or half-closed
      *           (e.g. "Banana in a <a...")
      *
-     * @param mixed $string
-     * @param mixed $length
-     * @param mixed $etc
-     * @param mixed $break_words
+     * @param string $string
+     * @param int    $length
+     * @param string $etc
+     * @param bool   $break_words
      *
      * @return string
      * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
      *           <amos dot robinson at gmail dot com>
      */
-    public static function truncateTagSafe($string, $length = 80, $etc = '...', $break_words = false): string
+    public static function truncateTagSafe(string $string, int $length = 80, string $etc = '...', bool $break_words = false): string
     {
         if (0 == $length) {
             return '';
@@ -818,12 +800,12 @@ class Utility extends Common\SysUtility
      * @return bool
      */
     public static function resizePicture(
-        $src_path,
-        $dst_path,
-        $param_width,
-        $param_height,
-        $keep_original = false,
-        $fit = 'inside'
+        string $src_path,
+        string $dst_path,
+        int    $param_width,
+        int    $param_height,
+        bool   $keep_original = false,
+        string $fit = 'inside'
     ): bool {
         //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
         $resize            = true;
