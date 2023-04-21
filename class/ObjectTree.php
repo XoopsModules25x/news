@@ -114,11 +114,11 @@ class ObjectTree
     /**
      * returns an array of all child objects of an object specified by its id
      *
-     * @param string $key ID of the parent
-     * @param array  $ret (Empty when called from client) Array of children from previous recursions.
+     * @param string|int $key ID of the parent
+     * @param array      $ret (Empty when called from client) Array of children from previous recursions.
      * @return array  Array of child nodes.
      */
-    public function getAllChild(string $key, array $ret = []): array
+    public function getAllChild($key, array $ret = []): array
     {
         if (isset($this->tree[$key]['child'])) {
             foreach ($this->tree[$key]['child'] as $childKey) {
