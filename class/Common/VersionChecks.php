@@ -17,6 +17,9 @@ namespace XoopsModules\News\Common;
  * @license     GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author      mamba <mambax7@gmail.com>
  */
+
+use Xmf\Module\Helper;
+
 trait VersionChecks
 {
     /**
@@ -92,7 +95,7 @@ trait VersionChecks
      * @return string|array|null info about the latest module version, if newer
      */
     public static function checkVerModule(
-        \Xmf\Module\Helper $helper,
+        Helper $helper,
         ?string            $source = null,
         ?string            $default = null
     ): ?array {
