@@ -31,7 +31,7 @@ function b_news_randomnews_show($options)
 {
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -41,7 +41,7 @@ function b_news_randomnews_show($options)
     $block['sort'] = $options[0];
 
     $tmpstory   = new NewsStory();
-    $restricted = Utility::getModuleOption('restrictindex');
+    $restricted = (bool)Utility::getModuleOption('restrictindex');
     $dateformat = Utility::getModuleOption('dateformat');
     $infotips   = Utility::getModuleOption('infotips');
     if ('' == $dateformat) {

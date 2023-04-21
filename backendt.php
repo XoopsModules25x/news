@@ -28,10 +28,11 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    NewsStory,
+    NewsTopic,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
@@ -64,7 +65,7 @@ $story        = new NewsStory();
 $tpl          = new \XoopsTpl();
 $tpl->caching = 2;
 $tpl->xoops_setCacheTime(3600); // Change this to the value you want
-if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
+if (!$tpl->isCached('db:news_rss.tpl', $topicid)) {
     $xt     = new NewsTopic($topicid);
     $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
     if ($sarray && is_array($sarray)) {

@@ -171,9 +171,9 @@ class XoopsTree
     // the path is delimetered with "/"
 
     /**
-     * @param        $sel_id
-     * @param        $title
-     * @param string $path
+     * @param string|int $sel_id
+     * @param string     $title
+     * @param string     $path
      *
      * @return string
      */
@@ -258,10 +258,10 @@ class XoopsTree
     //generates nicely formatted linked path from the root id to a given id
 
     /**
-     * @param        $sel_id
-     * @param        $title
-     * @param        $funcURL
-     * @param string $path
+     * @param string|int $sel_id
+     * @param string     $title
+     * @param string     $funcURL
+     * @param string     $path
      *
      * @return string
      */

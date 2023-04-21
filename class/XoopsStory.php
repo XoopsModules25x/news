@@ -60,6 +60,7 @@ class XoopsStory
     public $menu;
     public $story_type;
     public $topic_color;
+    public $topic_description;
     public $topic_frontpage;
     public $topic_id;
     public $topic_pid;
@@ -234,7 +235,7 @@ class XoopsStory
     public function store($approved = false)
     {
         //$newpost = 0;
-        $myts     = MyTextSanitizer::getInstance();
+        $myts     = \MyTextSanitizer::getInstance();
         $title    = $myts->executeExtension('censor', $this->title);
         $hometext = $myts->executeExtension('censor', $this->hometext);
         $bodytext = $myts->executeExtension('censor', $this->bodytext);
@@ -428,7 +429,7 @@ class XoopsStory
      */
     public function title($format = 'Show'): string
     {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         $smiley = 1;
         if ($this->nosmiley()) {
             $smiley = 0;
@@ -454,7 +455,7 @@ class XoopsStory
      */
     public function hometext($format = 'Show')
     {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         $html   = 1;
         $smiley = 1;
         $xcodes = 1;
@@ -489,7 +490,7 @@ class XoopsStory
      */
     public function bodytext($format = 'Show')
     {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         $html   = 1;
         $smiley = 1;
         $xcodes = 1;
@@ -568,7 +569,7 @@ class XoopsStory
      */
     public function notifypub(): int
     {
-        return $this->notifypub;
+        return (int)$this->notifypub;
     }
 
     public function type()
@@ -581,7 +582,7 @@ class XoopsStory
      */
     public function ihome(): int
     {
-        return $this->ihome;
+        return (int)$this->ihome;
     }
 
     public function topicdisplay()

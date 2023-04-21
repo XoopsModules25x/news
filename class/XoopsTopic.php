@@ -23,8 +23,9 @@ namespace XoopsModules\News;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
 
-use MyTextSanitizer;
-use XoopsDatabaseFactory;
+use XoopsModules\News\{
+    XoopsTree    
+};
 use XoopsPerms;
 
 /**
@@ -33,20 +34,19 @@ use XoopsPerms;
 class XoopsTopic
 {
     public $db;
-    public $table;
-    public $topic_id;
-    public $topic_pid;
-    public $topic_title;
-    public $topic_imgurl;
-    public $prefix; // only used in topic tree
-    public $use_permission = false;
-    public $mid; // module id used for setting permission
-
     public $menu;
+    public $mid; // module id used for setting permission
+    public $prefix; // only used in topic tree
+    public $table;
     public $topic_color;
     public $topic_description;
     public $topic_frontpage;
+    public $topic_id;
+    public $topic_imgurl;
+    public $topic_pid;
     public $topic_rssurl;
+    public $topic_title;
+    public $use_permission = false;
 
     /**
      * @param string    $table
@@ -55,7 +55,7 @@ class XoopsTopic
     public function __construct($table, $topicid = 0)
     {
         /** @var \XoopsMySQLDatabase $db */
-        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table;
         if (\is_array($topicid)) {
             $this->makeTopic($topicid);
@@ -125,7 +125,7 @@ class XoopsTopic
      */
     public function store()
     {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
         if (isset($this->topic_title) && '' !== $this->topic_title) {
@@ -174,7 +174,7 @@ class XoopsTopic
                 }
             }
             if (!empty($this->s_groups) && \is_array($this->s_groups)) {
-                foreach ($this->s_groups as $s_g) {
+                foreach ($s_groups as $s_g) {
                     $submit_topics = XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
@@ -194,7 +194,7 @@ class XoopsTopic
                 }
             }
             if (!empty($this->r_groups) && \is_array($this->r_groups)) {
-                foreach ($this->r_groups as $r_g) {
+                foreach ($r_groups as $r_g) {
                     $read_topics = XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
@@ -244,7 +244,7 @@ class XoopsTopic
      */
     public function topic_title($format = 'S'): string
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
@@ -266,7 +266,7 @@ class XoopsTopic
      */
     public function topic_imgurl($format = 'S')
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
@@ -392,7 +392,7 @@ class XoopsTopic
         $ret    = [];
         $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
         if ($result) {
-            $myts = MyTextSanitizer::getInstance();
+            $myts = \MyTextSanitizer::getInstance();
             while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $ret[$myrow['topic_id']] = [
                     'title' => \htmlspecialchars($myrow['topic_title'], \ENT_QUOTES | \ENT_HTML5),

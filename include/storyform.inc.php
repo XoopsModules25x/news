@@ -17,10 +17,11 @@
 
 use Xmf\Request;
 use XoopsModules\Tag\FormTag;
-use XoopsModules\News;
-use XoopsModules\News\Files;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Files,
+    NewsTopic,
+    Utility
+};
 
 
 $moduleDirName = \basename(\dirname(__DIR__));

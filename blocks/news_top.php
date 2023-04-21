@@ -47,7 +47,7 @@ function b_news_top_show($options)
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();

@@ -159,7 +159,7 @@ function exportSchema(): void
 /**
  * loadTableFromArrayWithReplace
  *
- * @param string $table  value with should be used insead of original value of $search
+ * @param string $table  value which should be used instead of original value of $search
  *
  * @param array  $data   array of rows to insert
  *                       Each element of the outer array represents a single table row.

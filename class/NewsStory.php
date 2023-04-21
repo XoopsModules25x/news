@@ -554,7 +554,7 @@ class NewsStory extends XoopsStory
      * Get all submitted stories awaiting approval
      *
      * @param int  $limit      Denotes where to start the query
-     * @param bool $asobject   true will returns the stories as an array of objects, false will return storyid => title
+     * @param bool $asobject   true will return the stories as an array of objects, false will return storyid => title
      * @param bool $checkRight whether to check the user's rights to topics
      *
      * @param int  $start
@@ -636,7 +636,7 @@ class NewsStory extends XoopsStory
         $result = $db->query($sql);
         if ($db->isResultSet($result)) {
             $myrow = $db->fetchArray($result);
-            return $myrow['cpt'];
+            return (int)$myrow['cpt'];
         }
         return 0;
     }

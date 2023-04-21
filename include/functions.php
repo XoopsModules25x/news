@@ -30,11 +30,12 @@
 
 use WideImage\WideImage;
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Blacklist;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Registryfile;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Blacklist,
+    NewsTopic,
+    Registryfile,
+    Utility
+};
 
 /**
  * @param string $option

@@ -4,7 +4,7 @@
         <{foreach item=onedate from=$block.archives}>
             <li>
                 <a title="<{$onedate.formated_month}> <{$onedate.year}>"
-                   href="<{$xoops_url}>/modules/news/archive.php?year=<{$onedate.year}>&amp;month=<{$onedate.month}>"><{$onedate.formated_month}> <{$onedate.year}></a>
+                   href="<{$xoops_url}>/modules/<{$xoops_dirname}>/archive.php?year=<{$onedate.year}>&amp;month=<{$onedate.month}>"><{$onedate.formated_month}> <{$onedate.year}></a>
             </li>
         <{/foreach}>
     </ul>

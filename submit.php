@@ -158,9 +158,7 @@ switch ($op) {
         $pictureinfo = $story->pictureinfo;
         $approve     = 0;
         $published   = $story->published();
-        if (isset($published) && $published > 0) {
-            $approve = 1;
-        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if ((isset($published) && $published > 0) || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         if (0 != $story->published()) {
@@ -478,7 +476,7 @@ switch ($op) {
             if (1 == $helper->getConfig('tags') && \class_exists(\XoopsModules\Tag\TagHandler::class) && xoops_isActiveModule('tag')) {
                 /** @var \XoopsModules\Tag\TagHandler $tagHandler */
                 $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag');
-                $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $helper->getDirname(), 0);
+                $tagHandler->updateByItem($_POST['item_tag'], (int)$story->storyid(), $helper->getDirname(), 0);
             }
 
             if (!$editmode) {
@@ -578,9 +576,7 @@ switch ($op) {
             $expired      = 0;
             $published    = 0;
         }
-        if (1 == $helper->getConfig('autoapprove')) {
-            $approve = 1;
-        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if (1 == $helper->getConfig('autoapprove') || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';

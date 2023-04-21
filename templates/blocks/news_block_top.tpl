@@ -952,7 +952,7 @@
     </div>
 <{else}>    <{* ************************************** Classical view ************************************** *}>
     <table>
-        <{if $block.spotlight}>
+        <{if $block.spotlight|default:''}>
             <tr>
                 <td>
                     <table>
@@ -984,7 +984,7 @@
                                 <{if $block.spotlight.read_more}>
                                     <hr width='98%'>
                                     <div align='right'><a
-                                                href="<{$xoops_url}>/modules/news/article.php?storyid=<{$block.spotlight.id}>"><{$block.lang_read_more}></a>
+                                                href="<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$block.spotlight.id}>"><{$block.lang_read_more}></a>
                                         &nbsp;&nbsp;&nbsp;</div>
                                     <hr width='98%'>
                                 <{/if}>
@@ -998,7 +998,7 @@
             <td>
 
                 <{foreach item=news from=$block.stories}>
-                    <{if $news.id != $block.spotlight.id}>
+                    <{if $news.id != $block.spotlight.id|default:''}>
                         <h2>
                            <span>
                             <{if $block.sort=='counter'}>
@@ -1009,7 +1009,7 @@
                                 [<{$news.rating}>]
                             <{/if}>
                             </span>
-                            <a href="<{$xoops_url}>/modules/news/article.php?storyid=<{$news.id}>" <{$news.infotips}> ><{$news.title}></a>
+                            <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$news.id}>" <{$news.infotips}> ><{$news.title}></a>
                         </h2>
                         <{if $news.teaser}><p><{$news.teaser}></p><{/if}>
 

@@ -15,10 +15,11 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsTopic,
+    Utility
+};
 
 require_once __DIR__ . '/preloads/autoloader.php';
 /** @var Helper $helper */
@@ -30,7 +31,7 @@ $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 $modversion['version']       = '1.73.0';
 $modversion['module_status'] = 'Beta 1';
-$modversion['release_date']  = '2022/11/05';
+$modversion['release_date']  = '2023/04/20';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';

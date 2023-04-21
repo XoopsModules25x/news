@@ -58,9 +58,9 @@ $configurator = new Configurator();
 $migrator = new Migrate($configurator);
 
 $op = Request::getCmd('op', 'show');
-$opShow = Request::getCmd('show', null, 'POST');
-$opMigrate = Request::getCmd('migrate', null, 'POST');
-$opSchema = Request::getCmd('schema', null, 'POST');
+$opShow = Request::getCmd('show', '', 'POST');
+$opMigrate = Request::getCmd('migrate', '', 'POST');
+$opSchema = Request::getCmd('schema', '', 'POST');
 $op = !empty($opShow) ? 'show' : $op;
 $op = !empty($opMigrate) ? 'migrate' : $op;
 $op = !empty($opSchema) ? 'schema' : $op;

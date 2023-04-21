@@ -87,7 +87,7 @@ function newSubmissions(): void
     global $dateformat, $pathIcon16;
     $start       = Request::getInt('startnew', 0, 'GET');
     $newsubcount = NewsStory::getAllStoriesCount(3, false);
-    $storyarray  = NewsStory::getAllSubmitted(Utility::getModuleOption('storycountadmin'), true, Utility::getModuleOption('restrictindex'), $start);
+    $storyarray  = NewsStory::getAllSubmitted(Utility::getModuleOption('storycountadmin'), true, (bool)Utility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
         $pagenav = new PageNav($newsubcount, Utility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
         news_collapsableBar('newsub', 'topnewsubicon');

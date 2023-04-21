@@ -337,7 +337,7 @@ class Utility extends Common\SysUtility
     {
         global $xoopsConfig, $xoTheme, $xoopsTpl;
         $content = '';
-        $myts    = MyTextSanitizer::getInstance();
+        $myts    = \MyTextSanitizer::getInstance();
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 
         /**
@@ -462,7 +462,7 @@ class Utility extends Common\SysUtility
             $limit                           = $xoopsConfigSearch['keyword_min'];
             $_SESSION['news_keywords_limit'] = $limit;
         }
-        $myts            = MyTextSanitizer::getInstance();
+        $myts            = \MyTextSanitizer::getInstance();
         $content         = \str_replace('<br>', ' ', $content);
         $content         = $myts->undoHtmlSpecialChars($content);
         $content         = \strip_tags($content);
@@ -721,7 +721,7 @@ class Utility extends Common\SysUtility
     {
         $infotips = static::getModuleOption('infotips');
         if ($infotips > 0) {
-            $myts = MyTextSanitizer::getInstance();
+            $myts = \MyTextSanitizer::getInstance();
 
             return \htmlspecialchars(\xoops_substr(\strip_tags($text), 0, $infotips), \ENT_QUOTES | \ENT_HTML5);
         }

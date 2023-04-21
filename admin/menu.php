@@ -16,10 +16,14 @@
  */
 
 use Xmf\Module\Admin;
-use XoopsModules\News;
-use XoopsModules\News\Helper;
+use XoopsModules\News\{
+    Helper
+};
 
 /** @var Helper $helper */
+
+include \dirname(__DIR__) . '/preloads/autoloader.php';
+
 $moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 

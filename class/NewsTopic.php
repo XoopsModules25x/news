@@ -449,7 +449,7 @@ class NewsTopic extends XoopsTopic
                 }
             }
             if (!empty($this->r_groups) && \is_array($this->r_groups)) {
-                foreach ($this->s_groups as $r_g) {
+                foreach ($this->r_groups as $r_g) {
                     $read_topics = \XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {

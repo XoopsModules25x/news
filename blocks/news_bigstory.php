@@ -29,7 +29,7 @@ function b_news_bigstory_show()
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();

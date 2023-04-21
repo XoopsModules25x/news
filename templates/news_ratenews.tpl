@@ -10,7 +10,7 @@
         </ul>
     </div>
     <div class="news-rate-form">
-        <form method="post" action="<{$xoops_url}>/modules/news/ratenews.php">
+        <form method="post" action="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratenews.php">
             <{securityToken}><{*//mb*}>
             <input type="hidden" name="storyid" value="<{$news.storyid}>">
             <select name="rating">
@@ -28,7 +28,7 @@
             </select>&nbsp;&nbsp;
             <input type="submit" name="submit" value="<{$lang_rateit}>">
             <input type='button' value="<{$lang_cancel}>"
-                   onclick="location='<{$xoops_url}>/modules/news/article.php?storyid=<{$news.storyid}>'">
+                   onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$news.storyid}>'">
         </form>
     </div>
 </div>

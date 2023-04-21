@@ -67,9 +67,6 @@ final class Blocksadmin
         \xoops_loadLanguage('blocksadmin', $this->moduleDirName);
     }
 
-    /**
-     * @return void
-     */
     public function listBlocks(): void
     {
         global $xoopsModule, $pathIcon16;
@@ -338,6 +335,7 @@ final class Blocksadmin
         \xoops_loadLanguage('admin/groups', 'system');
 
         $block = new \XoopsBlock($bid);
+        /** @var \XoopsBlock $clone */
         $clone = $block->xoopsClone();
         if (empty($bmodule)) {
             //            \xoops_cp_header();

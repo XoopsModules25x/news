@@ -43,7 +43,7 @@ function b_news_archives_show(array $options)
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
         //            throw new \RuntimeException('Unable to create the $helper directory');
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -73,7 +73,7 @@ function b_news_archives_show(array $options)
     }
     $sql    = "SELECT DISTINCT(FROM_UNIXTIME(published,'%Y-%m')) AS published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date . ' ORDER BY published ' . $sort_order;
     $result = $xoopsDB->query($sql);
-    if (!$db->isResultSet($result)) {
+    if (!$xoopsDB->isResultSet($result)) {
 //        \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
         return '';
     }

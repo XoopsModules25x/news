@@ -9,9 +9,10 @@
  * @link            https://xoops.org XOOPS
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    Utility
+};
 
 /**
  * Prepares system prior to attempting to uninstall module
@@ -53,7 +54,7 @@ function xoops_module_uninstall_news(\XoopsModule $module)
         // The directory exists so rename it
         $date = date('Y-m-d');
         if (!rename($uploadDirectory, $uploadDirectory . "_bak_$date")) {
-            $module->setErrors(sprintf(constant('CO_' . $moduleDirNameUpper . '_ERROR_BAD_DEL_PATH'), $uploadDirectory));
+            $module->setErrors(sprintf(constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_BAD_DEL_PATH'), $uploadDirectory));
             $success = false;
         }
     }

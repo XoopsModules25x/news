@@ -26,7 +26,7 @@
     <div class="itemFoot">
         <span class="itemAdminLink"><{$story.adminlink}></span>
         <{if $rates}><b><{$lang_ratingc}></b> <{$story.rating}> (<{$story.votes}>) -
-            <a title="<{$lang_ratethisnews}>" href="<{$xoops_url}>/modules/news/ratenews.php?storyid=<{$story.id}>"
+            <a title="<{$lang_ratethisnews}>" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratenews.php?storyid=<{$story.id}>"
                rel="nofollow"><{$lang_ratethisnews}></a>
             - <{/if}>
         <span class="itemPermaLink"><{$story.morelink}></span>

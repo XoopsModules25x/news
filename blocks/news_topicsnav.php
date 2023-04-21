@@ -15,10 +15,11 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    NewsTopic,
+    Utility
+};
 
 /**
  * @param $options
@@ -29,7 +30,7 @@ function b_news_topicsnav_show($options)
 {
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
