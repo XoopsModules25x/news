@@ -668,34 +668,74 @@ class NewsStory extends XoopsStory
      * @param bool|int $checkRight
      * @return int|string
      */
-    public static function countPublishedByTopic(?int $topicid = null, $checkRight = false)
+    public static function countPublishedByTopic(?int $topicid = null, bool $checkRight = false): int
     {
         $topicid ??= 0;
         $count   = 0;
         /** @var \XoopsMySQLDatabase $db */
-        $db  = \XoopsDatabaseFactory::getDatabaseConnection();
-        $sql = 'SELECT COUNT(*) FROM ' . $db->prefix('news_stories') . ' WHERE published > 0 AND published <= ' . \time() . ' AND (expired = 0 OR expired > ' . \time() . ')';
-        if (!empty($topicid)) {
-            $sql .= ' AND topicid=' . (int)$topicid;
-        } else {
-            $sql .= ' AND ihome=0';
-            if ($checkRight) {
-                $topics = Utility::getMyItemIds('news_view');
-                if (\count($topics) > 0) {
-                    $topics = \implode(',', $topics);
-                    $sql    .= ' AND topicid IN (' . $topics . ')';
-                } else {
-                    return $count;
-                }
-            }
-            $result = Utility::queryAndCheck($db, $sql);
-            if ($db->isResultSet($result)) {
-                [$count] = $db->fetchRow($result);
-            }
+        $db = \XoopsDatabaseFactory::getDatabaseConnection();
 
+        // Base SQL query
+        $sql = 'SELECT COUNT(*) FROM ' . $db->prefix('news_stories') . ' WHERE published > 0 AND published <= ? AND (expired = 0 OR expired > ?)';
+        $params = [\time(), \time()];
+        $types = 'ii'; // integer, integer
+
+        // Append topicid condition if provided
+        if ($topicid > 0) {
+            $sql .= ' AND topicid = ?';
+            $params[] = $topicid;
+            $types .= 'i'; // Add another integer type
+        } else {
+            $sql .= ' AND ihome = 0';
+        }
+
+        // Check user's rights if necessary
+        if ($checkRight) {
+            $topics = Utility::getMyItemIds('news_view');
+            if (\count($topics) > 0) {
+                $topicsList = \implode(',', \array_map('intval', $topics));
+                $sql .= ' AND topicid IN (' . $topicsList . ')';
+            } else {
+                return $count;
+            }
+        }
+
+        // Prepare the statement
+        $stmt = $db->prepare($sql);
+        if ($stmt === false) {
+            \XoopsLogger::getInstance()->handleError(E_USER_ERROR, "Error preparing query in countPublishedByTopic: " . $db->error(), __FILE__, __LINE__);
             return $count;
         }
+
+        // Bind parameters
+        if (!$stmt->bind_param($types, ...$params)) {
+            \XoopsLogger::getInstance()->handleError(E_USER_ERROR, "Error binding parameters in countPublishedByTopic: " . $stmt->error, __FILE__, __LINE__);
+            $stmt->close();
+            return $count;
+        }
+
+        // Execute the prepared statement
+        if (!$stmt->execute()) {
+            \XoopsLogger::getInstance()->handleError(E_USER_ERROR, "Error executing query in countPublishedByTopic: " . $stmt->error, __FILE__, __LINE__);
+            $stmt->close();
+            return $count;
+        }
+
+        // Bind the result
+        $stmt->bind_result($count);
+
+        // Fetch the result
+        if (!$stmt->fetch()) {
+            \XoopsLogger::getInstance()->handleError(E_USER_ERROR, "Error fetching result in countPublishedByTopic: " . $stmt->error, __FILE__, __LINE__);
+            $count = 0;
+        }
+
+        // Close the statement
+        $stmt->close();
+
+        return $count;
     }
+
 
     /**
      * Internal function
@@ -980,8 +1020,10 @@ class NewsStory extends XoopsStory
                 $tblusers[$uid] = \XoopsUser::getUnameFromId($uid);
 
                 return $tblusers[$uid];
-            case 2: // Display full name (if it is not empty) /** @var \XoopsMemberHandler $memberHandler */ $memberHandler = xoops_getHandler('member');
-                $thisuser = $memberHandler->getUser($uid);
+            case 2: // Display full name (if it is not empty)
+                /** @var \XoopsMemberHandler $memberHandler */
+                $memberHandler = xoops_getHandler('member');
+                $thisuser      = $memberHandler->getUser($uid);
                 if (\is_object($thisuser)) {
                     $return = $thisuser->getVar('name');
                     if ('' === $return) {
@@ -991,16 +1033,19 @@ class NewsStory extends XoopsStory
                     $return = $xoopsConfig['anonymous'];
                 }
                 $tblusers[$uid] = $return;
-
-                return $return;
+                break;
             case 3: // Nothing
                 $tblusers[$uid] = '';
-
-                return '';
+                break;
+            default:
+                $tblusers[$uid] = \XoopsUser::getUnameFromId($uid); // Default to username
+                break;
         }
 
-        return '';
+        return $tblusers[$uid] ?? ''; // Ensure we always return a string
     }
+
+
 
     /**
      * Function used to export news (in xml) and eventually the topics definitions
