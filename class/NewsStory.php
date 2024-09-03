@@ -671,11 +671,12 @@ class NewsStory extends XoopsStory
     public static function countPublishedByTopic(?int $topicid = null, bool $checkRight = false): int
     {
         $topicid ??= 0;
-        $count   = 0;
+        $count = 0;
+
         /** @var \XoopsMySQLDatabase $db */
         $db = \XoopsDatabaseFactory::getDatabaseConnection();
 
-        // Base SQL query
+        // Base SQL query with placeholders for prepared statement
         $sql = 'SELECT COUNT(*) FROM ' . $db->prefix('news_stories') . ' WHERE published > 0 AND published <= ? AND (expired = 0 OR expired > ?)';
         $params = [\time(), \time()];
         $types = 'ii'; // integer, integer
@@ -700,8 +701,8 @@ class NewsStory extends XoopsStory
             }
         }
 
-        // Prepare the statement
-        $stmt = $db->prepare($sql);
+        // Prepare the statement using the underlying mysqli connection
+        $stmt = $db->conn->prepare($sql);
         if ($stmt === false) {
             \XoopsLogger::getInstance()->handleError(E_USER_ERROR, "Error preparing query in countPublishedByTopic: " . $db->error(), __FILE__, __LINE__);
             return $count;
