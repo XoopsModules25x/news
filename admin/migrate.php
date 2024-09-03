@@ -15,7 +15,7 @@ declare(strict_types=1);
  * Migration for XOOPS modules
  *
  * @copyright      XOOPS Project  (https://xoops.org)
- * @license        GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @license        GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author         Richard Griffith <richard@geekwright.com>
  * @author         Michael Beck <mambax7@gmail.com>
  */

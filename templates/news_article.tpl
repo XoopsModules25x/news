@@ -2,7 +2,7 @@
 
     <div class="marg2 pad2"><{include file="db:news_item.tpl" story=$story}>
 
-        <{if $xoops_isadmin}>
+        <{if isset($xoops_isadmin)}>
             <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/submit.php?op=edit&amp;storyid=<{$story.id}>"><img
                         src="<{xoModuleIcons16 'edit.png'}>" title="<{$smarty.const._EDIT}>"></a>
             <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php?op=delete&amp;storyid=<{$story.id}>"><img
@@ -27,7 +27,7 @@
 
     <{if $attached_files_count>0}>
         <div class="itemInfo"><{$lang_attached_files}>
-            <{foreach item=onefile from=$attached_files}>
+            <{foreach item=onefile from=$attached_files|default:null}>
                 <a href='<{$onefile.visitlink}>' target='_blank'><{$onefile.file_realname}></a>
                 &nbsp;
             <{/foreach}>
@@ -37,16 +37,16 @@
     <{if $pagenav|default:''}>
         <div class="pagenav"><{$smarty.const._NW_PAGE}> <{$pagenav}></div><{/if}>
 
-    <{if $tags}>
+    <{if isset($tags) && $tags == true}>
         <div class="marg10 tagbar"><{include file="db:tag_bar.tpl"}></div>
     <{/if}>
 
     <div class="pad5 marg5">
-        <{if $nav_links}>
-            <{if $previous_story_id != -1}><a
+        <{if isset($nav_links)}>
+            <{if isset($previous_story_id) && $previous_story_id != -1}><a
                 href='<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$previous_story_id}>'
                 title="<{$previous_story_title}>"><{$lang_previous_story}></a> - <{/if}>
-            <{if $next_story_id!= -1}><a href='<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$next_story_id}>'
+            <{if isset($next_story_id) && $next_story_id != -1 }><a href='<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$next_story_id}>'
                                          title="<{$next_story_title}>"><{$lang_next_story}></a><{/if}>
         <{/if}>
 
@@ -58,7 +58,7 @@
                 <tr>
                     <th><{$lang_other_story}></th>
                 </tr>
-                <{foreach item=onesummary from=$summary}>
+                <{foreach item=onesummary from=$summary|default:null}>
                     <tr class="<{cycle values="even,odd"}>">
                         <td align='left'><{$onesummary.story_published}> -
                             <a href='<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$onesummary.story_id}>'<{$onesummary.htmltitle}>><{$onesummary.story_title}></a>

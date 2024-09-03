@@ -11,7 +11,7 @@
     </div>
     <div class="news-rate-form">
         <form method="post" action="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratenews.php">
-            <{securityToken}><{*//mb*}>
+            <{securityToken}>
             <input type="hidden" name="storyid" value="<{$news.storyid}>">
             <select name="rating">
                 <option>--</option>

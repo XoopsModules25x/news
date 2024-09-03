@@ -3,13 +3,13 @@
         <tr>
             <{section name=i loop=$columns}>
                 <td width="<{$columnwidth}>%" valign="top">
-                    <{foreach item=topic from=$columns[i]}>
+                    <{foreach item=topic from=$columns[i]|default:null}>
                         <div class="itemBody">
                             <div class="itemInfo"><span class="itemText"><a title="<{$topic.title}>"
                                                                             href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php?storytopic=<{$topic.id}>"><{$topic.title}></a></span>
                             </div>
                             <{counter start=0 print=false assign=storynum}>
-                            <{foreach item=story from=$topic.stories}>
+                            <{foreach item=story from=$topic.stories|default:null}>
                             <{if $storynum == 0}>
                             <{include file="db:news_item.tpl" story=$story}><br>
                             <{else}>

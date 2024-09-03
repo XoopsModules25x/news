@@ -216,7 +216,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
 
         // 6) Make files and folders
         $dir = XOOPS_ROOT_PATH . '/uploads/news';
-        if (!@mkdir($dir) && !is_dir($dir)) {
+        if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
         }
         if (!is_writable($dir)) {
@@ -224,7 +224,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
         }
 
         $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
-        if (!@mkdir($dir) && !is_dir($dir)) {
+        if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
         }
         if (!is_writable($dir)) {
@@ -232,7 +232,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
         }
 
         $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
-        if (!@mkdir($dir) && !is_dir($dir)) {
+        if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
         }
         if (!is_writable($dir)) {
@@ -246,7 +246,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
         copy($indexFile, XOOPS_ROOT_PATH . '/uploads/news/image/index.php');
     }
 
-        $module = $helper->getModule();
+//        $module = $helper->getModule();
 
 //    if (true === $module->versionCompare($previousVersion, $module->getInfo('version'))) {
         //delete old HTML templates
@@ -258,7 +258,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
                     foreach ($templateList as $k => $v) {
                         $fileInfo = new \SplFileInfo($templateFolder . $v);
                         if ('html' === $fileInfo->getExtension() && 'index.html' !== $fileInfo->getFilename()) {
-                            if (is_file($templateFolder . $v)) {
+                            if (\is_file($templateFolder . $v)) {
                                 unlink($templateFolder . $v);
                             }
                         }
@@ -272,7 +272,7 @@ function xoops_module_update_news(\XoopsModule $module, $previousVersion = null)
             //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
             foreach (array_keys($configurator->oldFiles) as $i) {
                 $tempFile = $GLOBALS['xoops']->path('modules/' . $moduleDirName . $configurator->oldFiles[$i]);
-                if (is_file($tempFile)) {
+                if (\is_file($tempFile)) {
                     unlink($tempFile);
                 }
             }

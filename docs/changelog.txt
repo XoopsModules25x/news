@@ -1,3 +1,8 @@
+<h5>1.73.0 Beta 2        [2024-08-10]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.33, PHP 8.2.5
+<hr>
+- PHP 8 and Smarty 4 updates (mamba)
+- various code cosmetics (mamba)
+
 <h5>1.73.0 Beta 1        [2023-04-20]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.33, PHP 8.2.5
 <hr>
 - PHP 8 and Smarty 3 updates (mamba)
@@ -299,10 +304,10 @@
   tables. This will optimize, check and analyze the tables in the database.
 - I have added a new option to activate Dublin Core Metadata in the article's
   page. For more explanations, see http://dublincore.org/
-  Dublin Core Metadata are, as the name state, a set of meta datas used to
+  Dublin Core Metadata are, as the name state, a set of metadatas used to
   describe your documents.
   If you are a Firefox user, you can use this extension to visualize the Dublin
-  Meta Datas :
+  Metadata :
     https://addons.mozilla.org/firefox/528/
 - You can display a "Bookmark this article at these sites" on the article's page
     To see an example, look at the bottom of this article :
@@ -310,7 +315,7 @@
 - You can use Firefox 2 Micro summaries : http://wiki.mozilla.org/Microsummaries
   If someone bookmarks your page with Firefox 2 they can choose to see the last
   title of your last news instead of the current page's title.
-  The News module modifies the meta datas of all its page to include a line
+  The News module modifies the metadatas of all its page to include a line
   like this one :
   <link rel="microsummary" href="http://www.example.com/modules/news/micro_summary.php" />
   but you can also add it in your theme so that when someone bookmark your site

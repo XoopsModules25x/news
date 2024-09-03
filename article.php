@@ -162,6 +162,7 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
 
+/** @var int $storypage */
 $storypage  = Request::getInt('page', 0, 'GET');
 $dateformat = Utility::getModuleOption('dateformat');
 $hcontent   = '';
@@ -344,7 +345,7 @@ if ($filescount > 0) {
  */
 $complement = '';
 if (Utility::getModuleOption('enhanced_pagenav')
-    && (isset($arr_titles) && is_array($arr_titles)
+    && (isset($arr_titles) && \is_array($arr_titles)
         && isset($arr_titles, $storypage)
         && $storypage > 0)) {
     $complement = ' - ' . $arr_titles[$storypage];
@@ -435,7 +436,7 @@ if (Utility::getModuleOption('showprevnextlink')) {
         $nextTitle = $next['title'];
     }
 
-    $previous = $tmparticle->getPreviousArticle($storyid, $helper->getConfig('restrictindex'));
+    $previous = $tmparticle->getPreviousArticle($storyid, (int)$helper->getConfig('restrictindex'));
     if (count($previous) > 0) {
         $previousId    = $previous['storyid'];
         $previousTitle = $previous['title'];
@@ -460,7 +461,7 @@ if (Utility::getModuleOption('showprevnextlink')) {
 }
 
 /**
- * Manage all the meta datas
+ * Manage all the metadatas
  */
 Utility::createMetaDatas($article);
 
@@ -503,7 +504,7 @@ if (Utility::getModuleOption('ratenews') && $other_test) {
     $xoopsTpl->assign('rates', true);
     $xoopsTpl->assign('lang_ratingc', _NW_RATINGC);
     $xoopsTpl->assign('lang_ratethisnews', _NW_RATETHISNEWS);
-    $story['rating'] = number_format($article->rating(), 2);
+    $story['rating'] =number_format((float)$article->rating(), 2);
     if (1 == $article->votes) {
         $story['votes'] = _NW_ONEVOTE;
     } else {

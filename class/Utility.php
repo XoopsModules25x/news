@@ -2,18 +2,8 @@
 
 namespace XoopsModules\News;
 
-use MyTextSanitizer;
 use WideImage\WideImage;
 use Xmf\Request;
-use XoopsFormDhtmlTextArea;
-use XoopsFormEditor;
-use XoopsFormFckeditor;
-use XoopsFormHtmlarea;
-use XoopsFormTextArea;
-use XoopsFormTinyeditorTextArea;
-use XoopsFormWysiwygTextArea;
-use XoopsObjectTree;
-use XoopsTpl;
 
 /**
  * Class Utility
@@ -24,7 +14,7 @@ class Utility extends Common\SysUtility
     /**
      * @param string $option
      * @param string $repmodule
-     * @return bool|mixed
+     * @return mixed
      */
     public static function getModuleOption(string $option, string $repmodule = 'news')
     {
@@ -69,18 +59,15 @@ class Utility extends Common\SysUtility
     public static function updateRating(int $storyid): void
     {
         global $xoopsDB;
-        $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
-        $result = $xoopsDB->query($sql);
-        if (!$xoopsDB->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-        }
+        $sql         = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
+        $result      = self::queryAndCheck($xoopsDB, $sql);
         $votesDB     = $xoopsDB->getRowsNum($result);
         $totalrating = 0;
         while ([$rating] = $xoopsDB->fetchRow($result)) {
             $totalrating += $rating;
         }
         $finalrating = $totalrating / $votesDB;
-        $finalrating = \number_format($finalrating, 4);
+        $finalrating = \number_format((float)$finalrating, 4);
         $sql         = \sprintf('UPDATE `%s` SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
         $xoopsDB->queryF($sql);
     }
@@ -196,14 +183,14 @@ class Utility extends Common\SysUtility
      * @param string $caption
      * @param string $name
      * @param string $value
-     * @param string $width
-     * @param string $height
+     * @param int $width
+     * @param int $height
      * @param string $supplemental
      * @return bool|\XoopsFormEditor|\XoopsFormTextArea
      * @author        Hervé Thouzard (https://www.herve-thouzard.com)
      * @copyright (c) Hervé Thouzard
      */
-    public static function getWysiwygForm(string $caption, string $name, string $value = '', string $width = '100%', string $height = '400px', string $supplemental = '')
+    public static function getWysiwygForm(string $caption, string $name, string $value = '', int $width = 15, int $height = 60, string $supplemental = '')
     {
         $editor_option            = \mb_strtolower(static::getModuleOption('form_options'));
         $editor                   = false;
@@ -212,12 +199,12 @@ class Utility extends Common\SysUtility
         $editor_configs['value']  = $value;
         $editor_configs['rows']   = 35;
         $editor_configs['cols']   = 60;
-        $editor_configs['width']  = '100%';
-        $editor_configs['height'] = '350px';
+        $editor_configs['width']  = (string)$width;
+        $editor_configs['height'] = (string)$height;
         $editor_configs['editor'] = $editor_option;
 
         if (static::isX23()) {
-            $editor = new XoopsFormEditor($caption, $name, $editor_configs);
+            $editor = new \XoopsFormEditor($caption, $name, $editor_configs);
 
             return $editor;
         }
@@ -226,16 +213,16 @@ class Utility extends Common\SysUtility
         switch ($editor_option) {
             case 'dhtmltextarea':
             case 'dhtml':
-                $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
+                $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
                 break;
             case 'textarea':
-                $editor = new XoopsFormTextArea($caption, $name, $value);
+                $editor = new \XoopsFormTextArea($caption, $name, $value);
                 break;
             case 'tinyeditor':
             case 'tinymce':
                 if (\is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
-                    $editor = new XoopsFormTinyeditorTextArea(
+                    $editor = new \XoopsFormTinyeditorTextArea(
                         [
                             'caption' => $caption,
                             'name'    => $name,
@@ -251,44 +238,44 @@ class Utility extends Common\SysUtility
         return $editor;
     }
 
-    /**
-     * @param \Xmf\Module\Helper|null $helper
-     * @param array|null              $options
-     * @return \XoopsFormDhtmlTextArea|\XoopsFormEditor
-     */
-    public static function getEditor(\Xmf\Module\Helper $helper = null, array $options = null)
-    {
-        /** @var Helper $helper */
-        if (null === $options) {
-            $options           = [];
-            $options['name']   = 'Editor';
-            $options['value']  = 'Editor';
-            $options['rows']   = 10;
-            $options['cols']   = '100%';
-            $options['width']  = '100%';
-            $options['height'] = '400px';
-        }
-
-        if (null === $helper) {
-            $helper = Helper::getInstance();
-        }
-
-        $isAdmin = $helper->isUserAdmin();
-
-        if (\class_exists('XoopsFormEditor')) {
-            if ($isAdmin) {
-                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
-            } else {
-                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
-            }
-        } else {
-            $descEditor = new XoopsFormDhtmlTextArea(\ucfirst($options['name']), $options['name'], $options['value'], '100%', '100%');
-        }
-
-        //        $form->addElement($descEditor);
-
-        return $descEditor;
-    }
+//    /**
+//     * @param \Xmf\Module\Helper|null $helper
+//     * @param array|null              $options
+//     * @return \XoopsFormDhtmlTextArea|\XoopsFormEditor
+//     */
+//    public static function getEditor(\Xmf\Module\Helper $helper = null, ?array $options = null)
+//    {
+//        /** @var Helper $helper */
+//        if (null === $options) {
+//            $options           = [];
+//            $options['name']   = 'Editor';
+//            $options['value']  = 'Editor';
+//            $options['rows']   = 10;
+//            $options['cols']   = '100%';
+//            $options['width']  = '100%';
+//            $options['height'] = '400px';
+//        }
+//
+//        if (null === $helper) {
+//            $helper = Helper::getInstance();
+//        }
+//
+//        $isAdmin = $helper->isUserAdmin();
+//
+//        if (\class_exists('XoopsFormEditor')) {
+//            if ($isAdmin) {
+//                $descEditor = new \XoopsFormEditor(\ucfirst((string) $options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
+//            } else {
+//                $descEditor = new \XoopsFormEditor(\ucfirst((string) $options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+//            }
+//        } else {
+//            $descEditor = new \XoopsFormDhtmlTextArea(\ucfirst((string) $options['name']), $options['name'], $options['value']);
+//        }
+//
+//        //        $form->addElement($descEditor);
+//
+//        return $descEditor;
+//    }
 
     /**
      * Internal function
@@ -304,7 +291,7 @@ class Utility extends Common\SysUtility
     }
 
     /**
-     * Creates all the meta datas :
+     * Creates all the metadatas :
      * - For Mozilla/Netscape and Opera the site navigation's bar
      * - The Dublin's Core Metadata
      * - The link for Firefox 2 micro summaries
@@ -338,7 +325,7 @@ class Utility extends Common\SysUtility
             //            require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
             $xt         = new NewsTopic();
             $allTopics  = $xt->getAllTopics(static::getModuleOption('restrictindex'));
-            $topic_tree = new XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
+            $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
             $topics_arr = $topic_tree->getAllChild(0);
             foreach ($topics_arr as $onetopic) {
                 $content .= \sprintf("<link rel=\"Chapter\" title=\"%s\" href=\"%s\">\n", $onetopic->topic_title(), XOOPS_URL . '/modules/news/index.php?storytopic=' . $onetopic->topic_id());
@@ -371,7 +358,7 @@ class Utility extends Common\SysUtility
         }
 
         /**
-         * Dublin Core's meta datas
+         * Dublin Core's metadatas
          */
         if (static::getModuleOption('dublincore') && isset($story) && \is_object($story)) {
             /** @var XoopsConfigHandler $configHandler */
@@ -386,7 +373,7 @@ class Utility extends Common\SysUtility
             $content               .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . \date('Y-m-d', $story->published) . "\">\n";
             $content               .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\">\n";
             $content               .= '<meta name="DC.Source" content="' . XOOPS_URL . "\">\n";
-            $content               .= '<meta name="DC.Language" content="' . _LANGCODE . "\">\n";
+            $content               .= '<meta name="DC.Language" content="' . \_LANGCODE . "\">\n";
             $content               .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\">\n";
             if (isset($xoopsConfigMetaFooter['meta_copyright'])) {
                 $content .= '<meta name="DC.Rights" content="' . static::getDublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\">\n";
@@ -561,7 +548,7 @@ class Utility extends Common\SysUtility
         require_once XOOPS_ROOT_PATH . '/class/template.php';
         $tplfileHandler = \xoops_getHandler('tplfile');
         $tpllist        = $tplfileHandler->find(null, null, null, $folder);
-        $xoopsTpl       = new XoopsTpl();
+        $xoopsTpl       = new \XoopsTpl();
         \xoops_template_clear_module_cache($xoopsModule->getVar('mid')); // Clear module's blocks cache
 
         // Remove cache for each page.
@@ -591,11 +578,7 @@ class Utility extends Common\SysUtility
     {
         global $xoopsDB;
         $sql = "SHOW TABLES LIKE '$tablename'";
-        $result = $xoopsDB->queryF($sql);
-        if (!$xoopsDB->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-        }
-
+        $result = Utility::queryFAndCheck($xoopsDB, $sql);
 
         return ($xoopsDB->getRowsNum($result) > 0);
     }
@@ -613,10 +596,7 @@ class Utility extends Common\SysUtility
     {
         global $xoopsDB;
         $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
-        $result = $xoopsDB->queryF($sql);
-        if (!$xoopsDB->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-        }
+        $result = Utility::queryFAndCheck($xoopsDB, $sql);
 
         return ($xoopsDB->getRowsNum($result) > 0);
     }
@@ -774,7 +754,7 @@ class Utility extends Common\SysUtility
             return '';
         }
         if (mb_strlen($string) > $length) {
-            $length -= mb_strlen($etc);
+            $length -= \mb_strlen($etc);
             if (!$break_words) {
                 $string = \preg_replace('/\s+?(\S+)?$/', '', mb_substr($string, 0, $length + 1));
                 $string = \preg_replace('/<[^>]*$/', '', $string);

@@ -61,7 +61,7 @@ function b_news_topicsnav_show($options)
     if (1 == $options[0]) {
         $newscountbytopic = $xt->getNewsCountByTopic();
     }
-    if (is_array($topics_arr) && count($topics_arr)) {
+    if ($topics_arr && \is_array($topics_arr)) {
         foreach ($topics_arr as $onetopic) {
             if (1 == $options[0]) {
                 $count = 0;

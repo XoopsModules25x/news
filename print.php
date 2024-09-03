@@ -274,7 +274,7 @@ function PrintPage(): void
     }
     echo '</td></tr></table></td></tr></table>
     <br><br>';
-    printf(_NW_THISCOMESFROM, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES));
+    printf(_NW_THISCOMESFROM, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES | ENT_HTML5));
     echo '<br><a href="' . XOOPS_URL . '/">' . XOOPS_URL . '</a><br><br>
         ' . _NW_URLFORSTORY . ' <!-- Tag below can be used to display Permalink image --><!--img src="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/images/x.gif" /--><br>
         <a class="ignore" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $story->storyid() . '">' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . '</a>

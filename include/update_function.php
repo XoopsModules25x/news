@@ -172,7 +172,7 @@ function xoops_module_update_news(): bool
 
     // 6) Make files and folders
     $dir = XOOPS_ROOT_PATH . '/uploads/news';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     if (!is_writable($dir)) {
@@ -180,7 +180,7 @@ function xoops_module_update_news(): bool
     }
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     if (!is_writable($dir)) {
@@ -188,7 +188,7 @@ function xoops_module_update_news(): bool
     }
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     if (!is_writable($dir)) {

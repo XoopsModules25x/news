@@ -37,7 +37,7 @@ class NewsStoryHandler extends \XoopsPersistableObjectHandler
      *
      * @param \XoopsDatabase|null $db database connection
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public function __construct(?\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_stories', NewsStory::class, 'storieid', 'title');
     }

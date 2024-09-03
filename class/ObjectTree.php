@@ -42,7 +42,7 @@ class ObjectTree
      * @param string      $parentId  field name of parent object ID
      * @param string|null $rootId    field name of root object ID
      */
-    public function __construct(array $objectArr, string $myId, string $parentId, string $rootId = null)
+    public function __construct(array $objectArr, string $myId, string $parentId, ?string $rootId = null)
     {
         $this->objects  = $objectArr;
         $this->myId     = $myId;
@@ -211,7 +211,7 @@ class ObjectTree
         string $extra = ''
     ): string {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},");
+        \trigger_error("makeSelBox() is deprecated since 2.5.9, please use makeSelectElement(), accessed from {$trace[0]['file']} line {$trace[0]['line']},", E_USER_DEPRECATED);
         $ret = '<select name="' . $name . '" id="' . $name . '" ' . $extra . '>';
         if ($addEmptyOption) {
             $ret .= '<option value="0"></option>';
@@ -300,7 +300,7 @@ class ObjectTree
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         if ('_tree' === $name) {
-            \trigger_error("XoopsObjectTree::\$_tree is deprecated, accessed from {$trace[0]['file']} line {$trace[0]['line']},");
+            \trigger_error("XoopsObjectTree::\$_tree is deprecated, accessed from {$trace[0]['file']} line {$trace[0]['line']},", E_USER_DEPRECATED);
 
             return $this->tree;
         }

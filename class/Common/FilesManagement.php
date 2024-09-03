@@ -60,8 +60,12 @@ trait FilesManagement
     {
         $dir = \opendir($src);
         //        @mkdir($dst);
-        if (!@\mkdir($dst) && !\is_dir($dst)) {
-            throw new \RuntimeException('The directory ' . $dst . ' could not be created.');
+        try {
+            if (!\mkdir($dst) && !\is_dir($dst)) {
+                throw new \RuntimeException('The directory ' . $dst . ' could not be created.');
+            }
+        } catch (\RuntimeException $e) {
+            echo 'Caught exception: ', $e->getMessage(), "<br>\n";
         }
         while (false !== ($file = \readdir($dir))) {
             if (('.' !== $file) && ('..' !== $file)) {

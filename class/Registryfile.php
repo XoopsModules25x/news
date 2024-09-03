@@ -81,7 +81,7 @@ class Registryfile
             @\unlink($fw);
         }
         /** @var resource $fp */
-        $fp = \fopen($fw, 'wb') || exit(_ERRORS);
+        $fp = \fopen($fw, 'wb') || exit(\_ERRORS);
         \fwrite($fp, $content);
         \fclose($fp);
 

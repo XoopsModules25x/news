@@ -73,20 +73,20 @@ function xoops_module_install_news(\XoopsModule $module): bool
     //        mkdir($dir, 0777);
     //    }
 
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
 
     chmod($dir, 0777);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     chmod($dir, 0777);
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     chmod($dir, 0777);

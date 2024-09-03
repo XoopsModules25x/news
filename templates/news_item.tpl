@@ -1,7 +1,8 @@
 <div class="item">
     <div class="itemHead">
         <span class="itemTitle">
-           <{if $displaytopictitle === true}> <{$story.topic_title}> - &nbsp; <{/if}> <h2><{$story.news_title}></h2>
+           <{if $displaytopictitle === true}> <{$story.topic_title}> <{/if}>
+            <h2><{$story.news_title}></h2>
         </span>
     </div>
     <h6><i><{$story.subtitle|default:''}></i></h6>
@@ -25,10 +26,10 @@
     </div>
     <div class="itemFoot">
         <span class="itemAdminLink"><{$story.adminlink}></span>
-        <{if $rates}><b><{$lang_ratingc}></b> <{$story.rating}> (<{$story.votes}>) -
-            <a title="<{$lang_ratethisnews}>" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratenews.php?storyid=<{$story.id}>"
-               rel="nofollow"><{$lang_ratethisnews}></a>
-            - <{/if}>
+        <{if isset($rates)}><b><{$lang_ratingc|default:''}></b> <{$story.rating|default:''}> <{$story.votes|default:''}>
+            <a title="<{$lang_ratethisnews|default:''}>" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratenews.php?storyid=<{$story.id}>"
+               rel="nofollow"><{$lang_ratethisnews|default:''}></a>
+            <{/if}>
         <span class="itemPermaLink"><{$story.morelink}></span>
     </div>
 </div>

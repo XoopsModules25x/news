@@ -100,7 +100,7 @@ class Mimetype
      *
      * @return string
      */
-    public function privFindTypestring $ext): string
+    public function privFindTypestring($ext): string
     {
         // create mimetypes array
         $mimetypes = $this->privBuildMimeArray();

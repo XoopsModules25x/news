@@ -879,7 +879,7 @@
     </style>
     <{* ************************************** Tabs creation ************************************** *}>
     <ul id="tabNavigation">
-        <{foreach item=onetab from=$block.tabs}>
+        <{foreach item=onetab from=$block.tabs|default:null}>
             <{if $block.current_tab == $onetab.id}>
                 <li class="selectedTab"><a href='#'><{$onetab.title}></a></li>
             <{else}>
@@ -893,7 +893,7 @@
             , <{$block.spotlight.hits}> <{$block.lang_reads}><br></div>
     <{else}>
         <div style="border-top: 1px solid #000000; background: <{$block.color1}> none repeat scroll 0; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;">
-            <{foreach item=onesummary from=$block.smallheader}>
+            <{foreach item=onesummary from=$block.smallheader|default:null}>
                 <{$onesummary}>&nbsp;
             <{/foreach}>
             <br></div>
@@ -918,7 +918,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><{$block.spotlight.image}>&nbsp;</td>
+                    <td><{$block.spotlight.image|default:''}>&nbsp;</td>
                     <td><p class="note"><{$block.spotlight.text}></p></td>
                 </tr>
             </table>
@@ -927,7 +927,7 @@
                 <hr width='85%'>
             </div>
             <ul>
-                <{foreach item=onenews from=$block.spotlight.news}>
+                <{foreach item=onenews from=$block.spotlight.news|default:null}>
                     <li><{$onenews.date}> - <{$onenews.title_with_link}></li>
                 <{/foreach}>
             </ul>
@@ -938,7 +938,7 @@
                     <td align='left'><{$block.topic_description}></td>
                 </tr>
             </table>
-            <{foreach item=onenews from=$block.news}>
+            <{foreach item=onenews from=$block.news|default:null}>
                 <div class="itemBody">
                     <ul>
                         <li><{$onenews.title}></li>
@@ -976,7 +976,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><{$block.spotlight.image}></td>
+                            <td><{$block.spotlight.image|default:''}></td>
                             <td><{$block.spotlight.text}></td>
                         </tr>
                         <tr>
@@ -997,7 +997,7 @@
         <tr>
             <td>
 
-                <{foreach item=news from=$block.stories}>
+                <{foreach item=news from=$block.stories|default:null}>
                     <{if $news.id != $block.spotlight.id|default:''}>
                         <h2>
                            <span>

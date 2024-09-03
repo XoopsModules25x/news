@@ -214,7 +214,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
 
                 // The comments
                 $comments = $commentHandler->getByItemId($ams_mid, $ams_newsid, 'ASC');
-                if ($comments && is_array($comments)) {
+                if ($comments && \is_array($comments)) {
                     foreach ($comments as $onecomment) {
                         $onecomment->setNew();
                         $onecomment->setVar('com_modid', $news_mid);
@@ -230,7 +230,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $criteria->add(new \Criteria('not_itemid', $ams_newsid));
                 $criteria->setOrder('ASC');
                 $notifications = $notificationHandler->getObjects($criteria);
-                if ($notifications && is_array($notifications)) {
+                if ($notifications && \is_array($notifications)) {
                     foreach ($notifications as $onenotification) {
                         $onenotification->setNew();
                         $onenotification->setVar('not_modid', $news_mid);
@@ -246,7 +246,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $criteria->add(new \Criteria('not_category', 'global'));
         $criteria->setOrder('ASC');
         $notifications = $notificationHandler->getObjects($criteria);
-        if ($notifications && is_array($notifications)) {
+        if ($notifications && \is_array($notifications)) {
             foreach ($notifications as $onenotification) {
                 $onenotification->setNew();
                 $onenotification->setVar('not_modid', $news_mid);

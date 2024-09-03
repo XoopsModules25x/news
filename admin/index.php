@@ -40,7 +40,8 @@ use XoopsModules\News\{
     ObjectTree,
     PageNav,
     Registryfile,
-    Utility
+    Utility,
+    XoopsTopic
 };
 
 /** @var Admin $adminObject */
@@ -86,8 +87,8 @@ function newSubmissions(): void
 {
     global $dateformat, $pathIcon16;
     $start       = Request::getInt('startnew', 0, 'GET');
-    $newsubcount = NewsStory::getAllStoriesCount(3, false);
-    $storyarray  = NewsStory::getAllSubmitted(Utility::getModuleOption('storycountadmin'), true, (bool)Utility::getModuleOption('restrictindex'), $start);
+    $newsubcount = NewsStory::getAllStoriesCount(3, 0);
+    $storyarray  = NewsStory::getAllSubmitted(Utility::getModuleOption('storycountadmin'), true, Utility::getModuleOption('restrictindex'), $start);
     if (count($storyarray) > 0) {
         $pagenav = new PageNav($newsubcount, Utility::getModuleOption('storycountadmin'), $start, 'startnew', 'op=newarticle');
         news_collapsableBar('newsub', 'topnewsubicon');
@@ -165,7 +166,7 @@ function autoStories(): void
     global $dateformat, $pathIcon16;
 
     $start        = Request::getInt('startauto', 0, 'GET');
-    $storiescount = NewsStory::getAllStoriesCount(2, false);
+    $storiescount = NewsStory::getAllStoriesCount(2, 0);
     $storyarray   = NewsStory::getAllAutoStory(Utility::getModuleOption('storycountadmin'), true, $start);
     $class        = '';
     if (count($storyarray) > 0) {
@@ -266,8 +267,8 @@ function lastStories(): void
     echo '<br>';
     echo "<div class='center;'>";
     $start        = Request::getInt('start', 0, 'GET');
-    $storyarray   = NewsStory::getAllPublished(Utility::getModuleOption('storycountadmin'), $start, false, 0, 1);
-    $storiescount = NewsStory::getAllStoriesCount(4, false);
+    $storyarray   = NewsStory::getAllPublished(Utility::getModuleOption('storycountadmin'), $start, 0, 0, 1);
+    $storiescount = NewsStory::getAllStoriesCount(4, 0);
     $pagenav      = new PageNav($storiescount, Utility::getModuleOption('storycountadmin'), $start, 'start', 'op=newarticle');
     $class        = '';
     echo "<table width='100%' cellspacing='1' cellpadding='3' border='0' class='outer'><tr class='bg3'><th align='center'>"
@@ -333,7 +334,7 @@ function expStories(): void
 {
     global $dateformat, $pathIcon16;
     $start        = Request::getInt('startexp', 0, 'GET');
-    $expiredcount = NewsStory::getAllStoriesCount(1, false);
+    $expiredcount = NewsStory::getAllStoriesCount(1, 0);
     $storyarray   = NewsStory::getAllExpired(Utility::getModuleOption('storycountadmin'), $start, 0, 1);
     $pagenav      = new PageNav($expiredcount, Utility::getModuleOption('storycountadmin'), $start, 'startexp', 'op=newarticle');
 
@@ -924,6 +925,7 @@ function topicsmanager(): void
     $sform->setExtra('enctype="multipart/form-data"');
     $sform->addElement(new \XoopsFormText(_AM_TOPICNAME, 'topic_title', 50, 255, $topic_title), true);
     $editor = Utility::getWysiwygForm(_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
+//    $editor = Utility::getEditor($helper,_AM_TOPIC_DESCR, 'topic_description', $topic_description, 15, 60, 'hometext_hidden');
     if ($editor) {
         $sform->addElement($editor, false);
     }
@@ -1574,7 +1576,7 @@ function getStats(): void
             $url2,
             $myts->displayTarea($data['title']),
             $url3,
-            htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
+            htmlspecialchars($news->uname((int)$data['uid']), ENT_QUOTES | ENT_HTML5),
             $data['counter']
         );
     }
@@ -1596,7 +1598,7 @@ function getStats(): void
             $url2,
             $myts->displayTarea($data['title']),
             $url3,
-            htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
+            htmlspecialchars($news->uname((int)$data['uid']), ENT_QUOTES | ENT_HTML5),
             $data['counter']
         );
     }
@@ -1618,7 +1620,7 @@ function getStats(): void
             $url2,
             $myts->displayTarea($data['title']),
             $url3,
-            htmlspecialchars($news->uname($data['uid']), ENT_QUOTES | ENT_HTML5),
+            htmlspecialchars($news->uname((int)$data['uid']), ENT_QUOTES | ENT_HTML5),
             number_format((float)$data['rating'], 2)
         );
     }
@@ -1719,7 +1721,7 @@ function getMetagen(): void
 
     $metablack = new Blacklist();
     $words     = $metablack->getAllKeywords();
-    if ($words && is_array($words)) {
+    if ($words && \is_array($words)) {
         foreach ($words as $key => $value) {
             $blacklist->addOption($key, $value);
         }
@@ -2005,34 +2007,41 @@ switch ($op) {
 
     //------ check directories ---------------
 
-    $adminObject->addConfigBoxLine('');
-    $redirectFile = Request::getString('SCRIPT_NAME', '', 'SERVER');
+    //check for upload folders, create if needed
+    $configurator = new Common\Configurator();
+    foreach (array_keys($configurator->uploadFolders) as $i) {
+        $utility::createFolder($configurator->uploadFolders[$i]);
+        $adminObject->addConfigBoxLine($configurator->uploadFolders[$i], 'folder');
+    }
 
-    //check directories
-    $adminObject->addConfigBoxLine('');
-    //$path = $helper->getConfig('uploaddir') . '/';
-    $path = $helper->getConfig('uploaddir');
-    //$path0 = $helper->getModule()->getInfo('uploaddir');
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
-
-    $path = $helper->getConfig('batchdir') . '/';
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
-
-    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('mainimagedir') . '/';
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
-    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
-
-    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('screenshots') . '/';
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
-    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path . 'thumbs' . '/', 0777, $redirectFile));
-    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'thumbs' . '/' . 'blank.png', BLANK_FILE_PATH, $redirectFile));
-
-    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('catimage') . '/';
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
-    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
-    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path . 'thumbs' . '/', 0777, $redirectFile));
-    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'thumbs' . '/' . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+//    $adminObject->addConfigBoxLine('');
+//    $redirectFile = Request::getString('SCRIPT_NAME', '', 'SERVER');
+//
+//    //check directories
+//    $adminObject->addConfigBoxLine('');
+//    //$path = $helper->getConfig('uploaddir') . '/';
+//    $path = $helper->getConfig('uploaddir');
+//    //$path0 = $helper->getModule()->getInfo('uploaddir');
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+//
+//    $path = $helper->getConfig('batchdir') . '/';
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+//
+//    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('mainimagedir') . '/';
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+//    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+//
+//    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('screenshots') . '/';
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+//    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path . 'thumbs' . '/', 0777, $redirectFile));
+//    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'thumbs' . '/' . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+//
+//    $path = XOOPS_ROOT_PATH . '/' . $helper->getConfig('catimage') . '/';
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $redirectFile));
+//    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'blank.png', BLANK_FILE_PATH, $redirectFile));
+//    $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path . 'thumbs' . '/', 0777, $redirectFile));
+//    //$adminObject->addConfigBoxLine(FileChecker::getFileStatus($path . 'thumbs' . '/' . 'blank.png', BLANK_FILE_PATH, $redirectFile));
 
     //---------------------------
 

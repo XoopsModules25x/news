@@ -65,7 +65,7 @@ function xoops_module_uninstall_news(\XoopsModule $module): bool
     // Remove xsitemap.xml from XOOPS root folder if it exists
     //------------------------------------------------------------------
     $xmlfile = $GLOBALS['xoops']->path('xsitemap.xml');
-    if (is_file($xmlfile)) {
+    if (\is_file($xmlfile)) {
         if (false === ($delOk = unlink($xmlfile))) {
             $module->setErrors(sprintf(_AM_XXXXX_ERROR_BAD_REMOVE, $xmlfile));
         }

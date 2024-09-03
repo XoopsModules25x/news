@@ -20,7 +20,7 @@
     <table width='100%' border='0'>
         <tr>
             <{section name=i loop=$columns}>
-                <td width="<{$columnwidth}>%"><{foreach item=story from=$columns[i]}><{include file="db:news_item.tpl" story=$story}><{/foreach}></td>
+                <td width="<{$columnwidth}>%"><{foreach item=story from=$columns[i]|default:null}><{include file="db:news_item.tpl" story=$story}><{/foreach}></td>
             <{/section}>
         </tr>
     </table>

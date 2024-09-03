@@ -99,7 +99,7 @@ function loadSampleData(): void
     loadTableFromArrayWithReplace($table, $tabledata, 'gperm_modid', $mid);
 
     //  ---  COPY test folder files ---------------
-    if (is_array($configurator->copyTestFolders) && count($configurator->copyTestFolders) > 0) {
+    if ($configurator->copyTestFolders && \is_array($configurator->copyTestFolders)) {
         //        $file =  \dirname(__DIR__) . '/testdata/images/';
         foreach (array_keys($configurator->copyTestFolders) as $i) {
             $src  = $configurator->copyTestFolders[$i][0];
@@ -165,10 +165,10 @@ function exportSchema(): void
  *                       Each element of the outer array represents a single table row.
  *                       Each row is an associative array in 'column' => 'value' format.
  * @param string $search name of column for which the value should be replaced
- * @param string $replace
+ * @param int    $replace
  * @return int number of rows inserted
  */
-function loadTableFromArrayWithReplace(string $table, array $data, string $search, string $replace): int
+function loadTableFromArrayWithReplace(string $table, array $data, string $search, int $replace): int
 {
     /** @var \XoopsMySQLDatabase $db */
     $db = \XoopsDatabaseFactory::getDatabaseConnection();

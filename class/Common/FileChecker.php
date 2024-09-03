@@ -40,7 +40,7 @@ class FileChecker
      * @param string|null $redirectFile
      * @return bool|string
      */
-    public static function getFileStatus(string $file_path, string $original_file_path = null, string $redirectFile = null)
+    public static function getFileStatus(string $file_path, ?string $original_file_path = null, ?string $redirectFile = null)
     {
         global $pathIcon16;
 
@@ -80,12 +80,12 @@ class FileChecker
     }
 
     /**
-     * @param   $source_path
-     * @param   $destination_path
+     * @param   string $source_path
+     * @param   string $destination_path
      *
      * @return bool
      */
-    public static function copyFile($source_path, $destination_path): bool
+    public static function copyFile(string $source_path, string $destination_path): bool
     {
         $source_path      = \str_replace('..', '', $source_path);
         $destination_path = \str_replace('..', '', $destination_path);
@@ -94,12 +94,12 @@ class FileChecker
     }
 
     /**
-     * @param   $file1_path
-     * @param   $file2_path
+     * @param   string $file1_path
+     * @param   string $file2_path
      *
      * @return bool
      */
-    public static function compareFiles($file1_path, $file2_path): bool
+    public static function compareFiles(string $file1_path, string $file2_path): bool
     {
         if (!self::fileExists($file1_path) || !self::fileExists($file2_path)) {
             return false;
@@ -117,22 +117,22 @@ class FileChecker
     }
 
     /**
-     * @param   $file_path
+     * @param string $file_path
      *
      * @return bool
      */
-    public static function fileExists($file_path): bool
+    public static function fileExists(string $file_path): bool
     {
         return \is_file($file_path);
     }
 
     /**
-     * @param     $target
+     * @param string $target
      * @param int $mode
      *
      * @return bool
      */
-    public static function setFilePermissions($target, int $mode = 0777): bool
+    public static function setFilePermissions(string $target, int $mode = 0777): bool
     {
         $target = \str_replace('..', '', $target);
 

@@ -63,7 +63,7 @@ class Migrate extends \Xmf\Database\Migrate
         if ($tables->useTable($tableName)) {
             $tables->alterColumn($tableName, $columnName, $attribute);
             if (!$tables->executeQueue()) {
-                echo '<br>' . constant('CO_' . $moduleDirNameUpper . '_' . 'UPGRADEFAILED4') . ' ' . $tables->getLastError();
+                echo '<br>' . \constant('CO_' . $moduleDirNameUpper . '_' . 'UPGRADEFAILED4') . ' ' . $tables->getLastError();
             }
         }
     }

@@ -309,7 +309,7 @@ if ($showclassic) {
 $xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
- * Create the Meta Datas
+ * Create the Metadata
  */
 Utility::createMetaDatas();
 

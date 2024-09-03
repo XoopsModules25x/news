@@ -62,7 +62,7 @@ if ($restricted) {
 }
 $topics_arr       = $xt->getChildTreeArray(0, 'topic_title', $perms);
 $newscountbytopic = $xt->getNewsCountByTopic();
-if (is_array($topics_arr) && count($topics_arr)) {
+if ($topics_arr && \is_array($topics_arr)) {
     foreach ($topics_arr as $onetopic) {
         $count = 0;
         if (array_key_exists($onetopic['topic_id'], $newscountbytopic)) {
@@ -88,7 +88,7 @@ $xoopsTpl->assign('topics', $tbl_topics);
 $xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
- * Manage all the meta datas
+ * Manage all the metadatas
  */
 Utility::createMetaDatas();
 

@@ -96,7 +96,9 @@ $months_arr = [
     12 => _CAL_DECEMBER,
 ];
 
+/** @var int $fromyear */
 $fromyear  = Request::getInt('year', 0, 'GET');
+/** @var int $frommonth */
 $frommonth = Request::getInt('month', 0, 'GET');
 
 $pgtitle = '';
@@ -122,10 +124,7 @@ if (is_object($xoopsUser)) {
     }
 }
 $sql = 'SELECT published FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired <= ' . time() . ') ORDER BY published DESC';
-$result = $xoopsDB->query($sql);
-if (!$xoopsDB->isResultSet($result)) {
-    \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-}
+$result = Utility::queryAndCheck($xoopsDB, $sql);
 $years  = [];
 $months = [];
 $i      = 0;
@@ -220,7 +219,7 @@ if (0 != $fromyear && 0 != $frommonth) {
 $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 
 /**
- * Create the meta datas
+ * Create the metadatas
  */
 Utility::createMetaDatas();
 

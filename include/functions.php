@@ -86,17 +86,14 @@ function news_updaterating($storyid): void
 {
     global $xoopsDB;
     $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
-    $result  = $xoopsDB->query($sql);
-    if (!$xoopsDB->isResultSet($result)) {
-        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-    }
+    $result = Utility::queryAndCheck($xoopsDB, $sql);
     $votesDB     = $xoopsDB->getRowsNum($result);
     $totalrating = 0;
     while ([$rating] = $xoopsDB->fetchRow($result)) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
-    $finalrating = number_format($finalrating, 4);
+    $finalrating =number_format((float)$finalrating, 4);
     $sql         = sprintf('UPDATE `%s` SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
     $xoopsDB->queryF($sql);
 }
@@ -282,7 +279,7 @@ function DublinQuotes($text)
 }
 
 /**
- * Creates all the meta datas :
+ * Creates all the metadatas :
  * - For Mozilla/Netscape and Opera the site navigation's bar
  * - The Dublin's Core Metadata
  * - The link for Firefox 2 micro summaries
@@ -349,7 +346,7 @@ function news_CreateMetaDatas($story = null): void
     }
 
     /**
-     * Dublin Core's meta datas
+     * Dublin Core's metadatas
      */
     if (news_getmoduleoption('dublincore') && isset($story) && is_object($story)) {
         /** @var \XoopsConfigHandler $configHandler */
@@ -570,10 +567,7 @@ function news_TableExists($tablename): bool
     global $xoopsDB;
 
     $sql = "SHOW TABLES LIKE '$tablename'";
-    $result = $xoopsDB->queryF($sql);
-    if (!$xoopsDB->isResultSet($result)) {
-        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-    }
+    $result = Utility::queryFAndCheck($xoopsDB, $sql);
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }
@@ -591,10 +585,7 @@ function news_FieldExists($fieldname, $table): bool
 {
     global $xoopsDB;
     $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
-    $result = $xoopsDB->queryF($sql);
-    if (!$xoopsDB->isResultSet($result)) {
-        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-    }
+    $result = Utility::queryFAndCheck($xoopsDB, $sql);
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }
@@ -752,7 +743,7 @@ function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words
         return '';
     }
     if (mb_strlen($string) > $length) {
-        $length -= mb_strlen($etc);
+        $length -= \mb_strlen($etc);
         if (!$break_words) {
             $string = preg_replace('/\s+?(\S+)?$/', '', mb_substr($string, 0, $length + 1));
             $string = preg_replace('/<[^>]*$/', '', $string);

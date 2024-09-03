@@ -79,7 +79,7 @@ function news_tag_synchronization($mid): void
     $where               = "($itemHandler_table.published > 0 AND $itemHandler_table.published <= " . \time() . ") AND ($itemHandler_table.expired = 0 OR $itemHandler_table.expired > " . \time() . ')';
 
     /* clear tag-item links */
-    if (version_compare($xoopsDB->getServerVersion(), '4.1.0', 'ge')) :
+    if ($module->versionCompare($xoopsDB->getServerVersion(), '4.1.0', 'ge')) :
         $sql = "    DELETE FROM {$linkHandler->table}"
                . ' WHERE '
                . "     tag_modid = {$mid}"

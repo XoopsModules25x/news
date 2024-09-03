@@ -30,8 +30,8 @@ $moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 $modversion['version']       = '1.73.0';
-$modversion['module_status'] = 'Beta 1';
-$modversion['release_date']  = '2023/04/20';
+$modversion['module_status'] = 'Beta 2';
+$modversion['release_date']  = '2024/08/10';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -54,9 +54,9 @@ $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '7.4';
-$modversion['min_xoops']           = '2.5.10';
+$modversion['min_xoops']           = '2.5.11';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = ['mysql' => '5.5'];
+$modversion['min_db']              = ['mysql' => '5.7'];
 
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
@@ -234,10 +234,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || -1 == $_SESSION['items_count']) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
-        $result  = $xoopsDB->query($sql);
-        if (!$xoopsDB->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
-        }
+        $result = Utility::queryAndCheck($xoopsDB, $sql);
         [$count] = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
     } else {
@@ -572,7 +569,7 @@ $modversion['config'][] = [
 
 /**
  * If you set this option to yes then the approvers can type the keyword
- * and description's meta datas
+ * and description's metadatas
  */
 $modversion['config'][] = [
     'name'        => 'metadata',

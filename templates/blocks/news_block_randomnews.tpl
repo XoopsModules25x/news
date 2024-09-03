@@ -1,5 +1,5 @@
 <div class="news-random">
-    <{foreach item=news from=$block.stories}>
+    <{foreach item=news from=$block.stories|default:null}>
         <div class="item">
             <h3>
            <span>

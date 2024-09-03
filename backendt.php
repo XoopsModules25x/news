@@ -68,9 +68,9 @@ $tpl->cache_lifetime=3600; // Change this to the value you want
 if (!$tpl->isCached('db:news_rss.tpl', $topicid)) {
     $xt     = new NewsTopic($topicid);
     $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
-    if ($sarray && is_array($sarray)) {
-        $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);
-        $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES);
+    if ($sarray && \is_array($sarray)) {
+        $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES | ENT_HTML5);
+        $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES | ENT_HTML5);
         $tpl->assign('channel_title', xoops_utf8_encode($sitename));
         $tpl->assign('channel_link', XOOPS_URL . '/');
         $tpl->assign('channel_desc', xoops_utf8_encode($slogan));

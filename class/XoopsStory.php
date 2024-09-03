@@ -1,10 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+//declare(strict_types=1);
 
 namespace XoopsModules\News;
-
-use MyTextSanitizer;
-use XoopsDatabaseFactory;
-use XoopsUser;
 
 /**
  * XOOPS news story
@@ -32,26 +30,26 @@ require_once XOOPS_ROOT_PATH . '/kernel/user.php';
  */
 class XoopsStory
 {
-    public $table;
-    public $storyid;
-    public $topicid;
-    public $uid;
-    public $title;
-    public        $hometext;
+    public string $table;
+    public int    $storyid;
+    public int    $topicid;
+    public int    $uid;
+    public string $title;
+    public string $hometext;
     public string $bodytext  = '';
-    public        $counter;
-    public $created;
-    public $published;
-    public $expired;
-    public        $hostname;
+    public int    $counter;
+    public int    $created;
+    public int    $published = 0;
+    public int    $expired;
+    public string $hostname;
     public int    $nohtml    = 0;
     public int    $nosmiley  = 0;
     public int    $ihome     = 0;
     public int    $notifypub = 0;
-    public        $type;
-    public $approved;
-    public $topicdisplay;
-    public $topicalign;
+    public string $type;
+    public bool   $approved;
+    public int    $topicdisplay;
+    public string $topicalign;
     public $db;
     public $topicstable;
     public $comments;
@@ -73,7 +71,7 @@ class XoopsStory
     public function Story($storyid = -1): void
     {
         /** @var \XoopsMySQLDatabase $this ->db */
-        $this->db          = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db          = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table       = '';
         $this->topicstable = '';
         if (\is_array($storyid)) {
@@ -230,9 +228,9 @@ class XoopsStory
     /**
      * @param bool $approved
      *
-     * @return bool
+     * @return bool|int
      */
-    public function store(bool $approved = false): bool
+    public function store(bool $approved = false)
     {
         //$newpost = 0;
         $myts     = \MyTextSanitizer::getInstance();
@@ -346,12 +344,16 @@ class XoopsStory
     }
 
     /**
-     * @param $array
+     * @param array $array
      */
-    public function makeStory($array): void
+    public function makeStory(array $array): void
     {
         foreach ($array as $key => $value) {
             $this->$key = $value;
+        }
+
+        if (!array_key_exists('type', $array)) {
+            $this->type = ''; // or some default value
         }
     }
 
@@ -419,7 +421,7 @@ class XoopsStory
      */
     public function uname(): string
     {
-        return XoopsUser::getUnameFromId($this->uid);
+        return \XoopsUser::getUnameFromId($this->uid);
     }
 
     /**
@@ -470,13 +472,13 @@ class XoopsStory
                 $hometext = $myts->displayTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'Edit':
-                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES);
+                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES | ENT_HTML5);
                 break;
             case 'Preview':
                 $hometext = $myts->previewTarea($this->hometext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES);
+                $hometext = \htmlspecialchars($this->hometext, \ENT_QUOTES | ENT_HTML5);
                 break;
         }
 
@@ -505,13 +507,13 @@ class XoopsStory
                 $bodytext = $myts->displayTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'Edit':
-                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES);
+                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES | ENT_HTML5);
                 break;
             case 'Preview':
                 $bodytext = $myts->previewTarea($this->bodytext, $html, $smiley, $xcodes);
                 break;
             case 'InForm':
-                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES);
+                $bodytext = \htmlspecialchars($this->bodytext, \ENT_QUOTES | ENT_HTML5);
                 break;
         }
 

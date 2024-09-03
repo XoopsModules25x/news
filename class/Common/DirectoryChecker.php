@@ -42,7 +42,7 @@ class DirectoryChecker
      *
      * @return bool|string
      */
-    public static function getDirectoryStatus(?string $path, ?int $mode = null, string $redirectFile = null)
+    public static function getDirectoryStatus(?string $path, ?int $mode = null, ?string $redirectFile = null)
     {
         $mode       ??= 0777;
         $pathIcon16 = Admin::iconUrl('', '16');

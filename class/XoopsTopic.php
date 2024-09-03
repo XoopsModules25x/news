@@ -97,7 +97,8 @@ class XoopsTopic
     {
         $topicid = (int)$topicid;
         $sql     = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid;
-        $array   = $this->db->fetchArray($this->db->query($sql));
+        $result = Utility::queryAndCheck($this->db, $sql);
+        $array   = $this->db->fetchArray($result);
         $this->makeTopic($array);
     }
 
@@ -144,7 +145,7 @@ class XoopsTopic
             $sql = \sprintf("UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table, $this->topic_pid, $imgurl, $title, $this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), \E_USER_ERROR);
         }
         if ($this->use_permission) {
             if (empty($this->topic_id)) {
@@ -390,7 +391,7 @@ class XoopsTopic
     public function getTopicsList(): array
     {
         $ret    = [];
-        $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
+        $result = Utility::queryAndCheck($this->db, 'SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
         if ($result) {
             $myts = \MyTextSanitizer::getInstance();
             while (false !== ($myrow = $this->db->fetchArray($result))) {
@@ -413,10 +414,7 @@ class XoopsTopic
     public function topicExists($pid, $title): bool
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . \trim($title) . "'";
-        $result  = $this->db->query($sql);
-        if (!$this->db->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
-        }
+        $result  = Utility::queryAndCheck($this->db, $sql);
         [$count] = $this->db->fetchRow($result);
         if ($count > 0) {
             return true;
