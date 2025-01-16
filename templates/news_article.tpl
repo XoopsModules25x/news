@@ -4,21 +4,21 @@
 
         <{if $xoops_isadmin}>
             <a href="<{$xoops_url}>/modules/news/submit.php?op=edit&amp;storyid=<{$story.id}>"><img
-                        src="<{xoModuleIcons16 edit.png}>" title="<{$smarty.const._EDIT}>"></a>
+                        src="<{xoModuleIcons16 'edit.png'}>" title="<{$smarty.const._EDIT}>"></a>
             <a href="<{$xoops_url}>/modules/news/admin/index.php?op=delete&amp;storyid=<{$story.id}>"><img
-                        src="<{xoModuleIcons16 delete.png}>" title="<{$smarty.const._DELETE}>"></a>
+                        src="<{xoModuleIcons16 'delete.png'}>" title="<{$smarty.const._DELETE}>"></a>
         <{/if}>
 
         <{if $showicons === true}>
             <a href="<{$xoops_url}>/modules/news/print.php?storyid=<{$story.id}>" rel="nofollow"
-               title="<{$lang_printerpage}>"><img src="<{xoModuleIcons16 printer.png}>"
+               title="<{$lang_printerpage}>"><img src="<{xoModuleIcons16 'printer.png'}>"
                                                   alt="<{$lang_printerpage}>"></a>
             <a target="_top" href="<{$mail_link}>" title="<{$lang_sendstory}>" rel="nofollow"><img
-                        src="<{xoModuleIcons16 mail_forward.png}>" alt="<{$lang_sendstory}>"></a>
+                        src="<{xoModuleIcons16 'mail_forward.png'}>" alt="<{$lang_sendstory}>"></a>
         <{/if}>
         <{if $showPdfIcon === true}>
             <a target="_blank" href="<{$xoops_url}>/modules/news/makepdf.php?storyid=<{$story.id}>" rel="nofollow"
-               title="<{$lang_pdfstory}>"><img src="<{xoModuleIcons16 pdf.png}>"
+               title="<{$lang_pdfstory}>"><img src="<{xoModuleIcons16 'pdf.png'}>"
                                                alt="<{$lang_pdfstory}>"></a>
         <{/if}>
 
@@ -76,90 +76,90 @@
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_BLINKLIST}>"
                    href="https://www.blinklist.com/index.php?Action=Blink/addblink.php&Description=&Url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&Title=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_BLINKLIST}>"
-                            src="<{xoModuleIconsBookmarks blinklist.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'blinklist.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_DELICIOUS}>"
                    href="https://del.icio.us/post?url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&title=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_DELICIOUS}>"
-                            src="<{xoModuleIconsBookmarks delicious.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'delicious.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_DIGG}>"
                    href="https://digg.com/submit?phase=2&url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_DIGG}>"
-                            src="<{xoModuleIconsBookmarks diggman.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'diggman.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_FARK}>"
                    href="https://cgi.fark.com/cgi/fark/edit.pl?new_url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&new_comment=<{$story.news_title}>&new_link_other=<{$story.news_title}>&linktype=Misc"><img
-                            alt="<{$smarty.const._NW_BOOKMARK_TO_FARK}>" src="<{xoModuleIconsBookmarks fark.gif}>"></a>
+                            alt="<{$smarty.const._NW_BOOKMARK_TO_FARK}>" src="<{xoModuleIconsBookmarks 'fark.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_FURL}>"
                    href="https://www.furl.net/storeIt.jsp?t=<{$story.news_title}>&u=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_FURL}>"
-                            src="<{xoModuleIconsBookmarks furl.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'furl.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_NEWSVINE}>"
                    href="https://www.nwvine.com/_tools/seed&save?u=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&h=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_NEWSVINE}>"
-                            src="<{xoModuleIconsBookmarks newsvine.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'newsvine.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_REDDIT}>"
                    href="https://reddit.com/submit?url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&title=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_REDDIT}>"
-                            src="<{xoModuleIconsBookmarks reddit.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'reddit.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_SIMPY}>"
                    href="https://www.simpy.com/simpy/LinkAdd.do?href=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&title=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_SIMPY}>"
-                            src="<{xoModuleIconsBookmarks simpy.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'simpy.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_SPURL}>"
                    href="https://www.spurl.net/spurl.php?title=<{$story.news_title}>&url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_SPURL}>"
-                            src="<{xoModuleIconsBookmarks spurl.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'spurl.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_YAHOO}>"
                    href="https://myweb2.search.yahoo.com/myresults/bookmarklet?t=<{$story.news_title}>&u=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_YAHOO}>"
-                            src="<{xoModuleIconsBookmarks yahoomyweb.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'yahoomyweb.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_BALATARIN}>"
                    href="https://balatarin.com/links/submit?phase=2&amp;url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_BALATARIN}>"
-                            src="<{xoModuleIconsBookmarks balatarin.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'balatarin.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_FACEBOOK}>"
                    href="https://www.facebook.com/share.php?u=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_FACEBOOK}>"
-                            src="<{xoModuleIconsBookmarks facebook_share_icon.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'facebook_share_icon.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_TWITTER}>"
                    href="https://twitter.com/home?status=Browsing:%20<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_TWITTER}>"
-                            src="<{xoModuleIconsBookmarks twitter_share_icon.gif}>"></a>
+                            src="<{xoModuleIconsBookmarks 'twitter_share_icon.gif'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_SCRIPSTYLE}>"
                    href="https://scriptandstyle.com/submit?url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_SCRIPSTYLE}>"
-                            src="<{xoModuleIconsBookmarks scriptandstyle.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'scriptandstyle.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_STUMBLE}>"
                    href="https://www.stumbleupon.com/submit?url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_STUMBLE}>"
-                            src="<{xoModuleIconsBookmarks stumbleupon.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'stumbleupon.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_TECHNORATI}>"
                    href="https://technorati.com/faves?add=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_TECHNORATI}>"
-                            src="<{xoModuleIconsBookmarks technorati.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'technorati.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_MIXX}>"
                    href="https://www.mixx.com/submit?page_url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_MIXX}>"
-                            src="<{xoModuleIconsBookmarks mixx.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'mixx.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_MYSPACE}>"
                    href="https://www.myspace.com/Modules/PostTo/Pages/?u=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_MYSPACE}>"
-                            src="<{xoModuleIconsBookmarks myspace.jpg}>"></a>
+                            src="<{xoModuleIconsBookmarks 'myspace.jpg'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_DESIGNFLOAT}>"
                    href="https://www.designfloat.com/submit.php?url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_DESIGNFLOAT}>"
-                            src="<{xoModuleIconsBookmarks designfloat.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'designfloat.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_GOOGLEPLUS}>"
                    href="https://plusone.google.com/_/+1/confirm?hl=en&url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_GOOGLEPLUS}>"
-                            src="<{xoModuleIconsBookmarks google_plus.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'google_plus.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_GOOGLEREADER}>"
                    href="https://www.google.com/reader/link?url=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&amp;title=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_GOOGLEREADER}>"
-                            src="<{xoModuleIconsBookmarks google-reader-icon.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'google-reader-icon.png'}>"></a>
                 <a rel="external nofollow" target="_blank" title="<{$smarty.const._NW_BOOKMARK_TO_GOOGLEBOOKMARKS}>"
                    href="https://www.google.com/bookmarks/mark?op=add&amp;bkmk=<{$xoops_url}>/modules/news/article.php?storyid=<{$story.id}>&amp;title=<{$story.news_title}>"><img
                             alt="<{$smarty.const._NW_BOOKMARK_TO_GOOGLEBOOKMARKS}>"
-                            src="<{xoModuleIconsBookmarks google-icon.png}>"></a>
+                            src="<{xoModuleIconsBookmarks 'google-icon.png'}>"></a>
             </div>
         </div>
     <{/if}>
