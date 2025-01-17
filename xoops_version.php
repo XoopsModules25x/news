@@ -30,7 +30,7 @@ $moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 $modversion['version']       = '1.73.0';
-$modversion['module_status'] = 'Beta 2';
+$modversion['module_status'] = 'Beta 3';
 $modversion['release_date']  = '2025/01/16';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;

@@ -43,8 +43,8 @@ class XoopsTree
      */
     public function __construct($table_name, $id_name, $pid_name)
     {
-        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php" . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+//        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+//        $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php" . ". Called from {$trace[0]['file']} line {$trace[0]['line']}");
         /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table_name;

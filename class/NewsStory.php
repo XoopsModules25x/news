@@ -668,7 +668,7 @@ class NewsStory extends XoopsStory
      * @param bool|int $checkRight
      * @return int|string
      */
-    public static function countPublishedByTopic(?int $topicid = null, bool $checkRight = false): int
+    public static function countPublishedByTopic(?int $topicid = null, int $checkRight = 0): int
     {
         $topicid ??= 0;
         $count = 0;
