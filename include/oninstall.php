@@ -66,7 +66,6 @@ function xoops_module_install_news(\XoopsModule $module): bool
     $helper->loadLanguage('modinfo');
 
     // default Permission Settings ----------------------
-//    global $xoopsModule;
     $moduleId = $module->getVar('mid');
     // $moduleId2        = $helper->getModule()->mid();
     /** @var \XoopsGroupPermHandler $grouppermHandler */
@@ -95,7 +94,7 @@ function xoops_module_install_news(\XoopsModule $module): bool
         }
     }
     //delete .html entries from the tpl table
-    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $xoopsModule->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
+    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $module->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
     $GLOBALS['xoopsDB']->queryF($sql);
 
     return true;

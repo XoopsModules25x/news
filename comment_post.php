@@ -15,8 +15,9 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
+use XoopsModules\News\{
+    Helper
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 

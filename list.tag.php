@@ -25,8 +25,9 @@
  * @copyright (c) Hervé Thouzard (https://www.herve-thouzard.com)
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Utility
+};
 
 require_once __DIR__ . '/header.php';
 

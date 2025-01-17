@@ -20,7 +20,9 @@
 // comment callback functions
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    NewsStory
+};
 
 /**
  * @param $story_id
