@@ -42,7 +42,7 @@ function b_news_randomnews_show($options)
     $block['sort'] = $options[0];
 
     $tmpstory   = new NewsStory();
-    $restricted = (bool)Utility::getModuleOption('restrictindex');
+    $restricted = (int)Utility::getModuleOption('restrictindex');
     $dateformat = Utility::getModuleOption('dateformat');
     $infotips   = Utility::getModuleOption('infotips');
     if ('' == $dateformat) {

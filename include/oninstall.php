@@ -53,7 +53,7 @@ function xoops_module_pre_install_news(\XoopsModule $module): bool
  */
 function xoops_module_install_news(\XoopsModule $module): bool
 {
-    require_once \dirname(__DIR__, 3) . '/mainfile.php';
+    require \dirname(__DIR__, 3) . '/mainfile.php';
 
     $moduleDirName = \basename(\dirname(__DIR__));
 
@@ -66,8 +66,8 @@ function xoops_module_install_news(\XoopsModule $module): bool
     $helper->loadLanguage('modinfo');
 
     // default Permission Settings ----------------------
-    global $xoopsModule;
-    $moduleId = $xoopsModule->getVar('mid');
+//    global $xoopsModule;
+    $moduleId = $module->getVar('mid');
     // $moduleId2        = $helper->getModule()->mid();
     /** @var \XoopsGroupPermHandler $grouppermHandler */
     $grouppermHandler = xoops_getHandler('groupperm');

@@ -1,3 +1,8 @@
+<h5>1.73.0 Beta 3         [2025-01-16]</h5>  Dev: XOOPS 2.5.12, PHP 7.4.33, PHP 8.2.5, PHP 8.4
+<hr>
+- PHP 8.4 and Smarty 4 updates (mamba)
+- Smarty 4 updates (koreus)
+
 <h5>1.73.0 Beta 2        [2024-09-02]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.33, PHP 8.2.5
 <hr>
 - PHP 8 and Smarty 4 updates (mamba)

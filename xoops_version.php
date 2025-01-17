@@ -31,7 +31,7 @@ $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 $modversion['version']       = '1.73.0';
 $modversion['module_status'] = 'Beta 2';
-$modversion['release_date']  = '2024/08/10';
+$modversion['release_date']  = '2025/01/16';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';

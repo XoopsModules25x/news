@@ -296,7 +296,7 @@ class ObjectTree
      *
      * @return mixed value
      */
-    public function __get(string $name)
+    public function __get(?string $name)
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         if ('_tree' === $name) {

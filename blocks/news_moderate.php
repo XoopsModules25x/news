@@ -39,7 +39,7 @@ function b_news_topics_moderate(): array
     $dateformat = Utility::getModuleOption('dateformat');
     $infotips   = Utility::getModuleOption('infotips');
 
-    $storyarray = NewsStory:: getAllSubmitted(0, true, (bool)Utility::getModuleOption('restrictindex'));
+    $storyarray = NewsStory:: getAllSubmitted(0, true, (int)Utility::getModuleOption('restrictindex'));
     if (count($storyarray) > 0) {
         $block['lang_story_title']  = _MB_TITLE;
         $block['lang_story_date']   = _MB_POSTED;

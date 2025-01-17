@@ -520,7 +520,8 @@ class SysUtility
 
         if (!$xoopsDB->isResultSet($result)) {
             throw new \RuntimeException(
-                \sprintf(\_DB_QUERY_ERROR, $sql) . $xoopsDB->error(), \E_USER_ERROR);
+                \sprintf(\_DB_QUERY_ERROR, $sql) . $xoopsDB->error(), \E_USER_ERROR
+            );
         }
 
         return $result;
