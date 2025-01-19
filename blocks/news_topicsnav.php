@@ -15,9 +15,11 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    Helper,
+    NewsTopic,
+    Utility
+};
 
 /**
  * @param $options
@@ -28,7 +30,7 @@ function b_news_topicsnav_show($options)
 {
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -38,7 +40,7 @@ function b_news_topicsnav_show($options)
     $newscountbytopic = [];
     $perms            = '';
     $xt               = new NewsTopic();
-    $restricted       = News\Utility::getModuleOption('restrictindex');
+    $restricted       = Utility::getModuleOption('restrictindex');
     if ($restricted) {
         global $xoopsUser;
         /** @var \XoopsModuleHandler $moduleHandler */
@@ -59,7 +61,7 @@ function b_news_topicsnav_show($options)
     if (1 == $options[0]) {
         $newscountbytopic = $xt->getNewsCountByTopic();
     }
-    if (is_array($topics_arr) && count($topics_arr)) {
+    if ($topics_arr && \is_array($topics_arr)) {
         foreach ($topics_arr as $onetopic) {
             if (1 == $options[0]) {
                 $count = 0;
@@ -86,7 +88,7 @@ function b_news_topicsnav_show($options)
  *
  * @return string
  */
-function b_news_topicsnav_edit($options)
+function b_news_topicsnav_edit($options): string
 {
     $form = _MB_NEWS_SHOW_NEWS_COUNT . " <input type='radio' name='options[]' value='1'";
     if (1 == $options[0]) {

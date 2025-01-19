@@ -12,11 +12,6 @@ namespace XoopsModules\News\Common;
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-use DirectoryIterator;
-use RuntimeException;
-use SplFileInfo;
-use XoopsUser;
-
 /**
  * @copyright   XOOPS Project (https://xoops.org)
  * @license     GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
@@ -28,18 +23,21 @@ trait FilesManagement
      * Function responsible for checking if a directory exists, we can also write in and create an index.html file
      *
      * @param string $folder The full path of the directory to check
+     *
+     * @throws \RuntimeException
+     * @return void
      */
-    public static function createFolder($folder): void
+    public static function createFolder(string $folder): void
     {
         try {
             if (!\is_dir($folder)) {
                 if (!\is_dir($folder) && !\mkdir($folder) && !\is_dir($folder)) {
-                    throw new RuntimeException(\sprintf('Unable to create the %s directory', $folder));
+                    throw new \RuntimeException(\sprintf('Unable to create the %s directory', $folder));
                 }
 
                 file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
             }
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
         }
     }
@@ -55,15 +53,19 @@ trait FilesManagement
     }
 
     /**
-     * @param $src
-     * @param $dst
+     * @param string $src
+     * @param string $dst
      */
-    public static function recurseCopy($src, $dst): void
+    public static function recurseCopy(string $src, string $dst): void
     {
         $dir = \opendir($src);
         //        @mkdir($dst);
-        if (!@\mkdir($dst) && !\is_dir($dst)) {
-            throw new RuntimeException('The directory ' . $dst . ' could not be created.');
+        try {
+            if (!\mkdir($dst) && !\is_dir($dst)) {
+                throw new \RuntimeException('The directory ' . $dst . ' could not be created.');
+            }
+        } catch (\RuntimeException $e) {
+            echo 'Caught exception: ', $e->getMessage(), "<br>\n";
         }
         while (false !== ($file = \readdir($dir))) {
             if (('.' !== $file) && ('..' !== $file)) {
@@ -87,21 +89,21 @@ trait FilesManagement
      *
      * @uses \Xmf\Module\Helper::getHelper()
      */
-    public static function deleteDirectory($src)
+    public static function deleteDirectory(string $src): bool
     {
         // Only continue if user is a 'global' Admin
-        if (!($GLOBALS['xoopsUser'] instanceof XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
+        if (!($GLOBALS['xoopsUser'] instanceof \XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
             return false;
         }
 
         $success = true;
         // remove old files
-        $dirInfo = new SplFileInfo($src);
+        $dirInfo = new \SplFileInfo($src);
         // validate is a directory
         if ($dirInfo->isDir()) {
             $fileList = \array_diff(\scandir($src, \SCANDIR_SORT_NONE), ['..', '.']);
             foreach ($fileList as $k => $v) {
-                $fileInfo = new SplFileInfo("{$src}/{$v}");
+                $fileInfo = new \SplFileInfo("$src/$v");
                 if ($fileInfo->isDir()) {
                     // recursively handle subdirectories
                     if (!$success = self::deleteDirectory($fileInfo->getRealPath())) {
@@ -132,10 +134,10 @@ trait FilesManagement
      *
      * @return bool true on success
      */
-    public static function rrmdir($src)
+    public static function rrmdir(string $src): bool
     {
         // Only continue if user is a 'global' Admin
-        if (!($GLOBALS['xoopsUser'] instanceof XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
+        if (!($GLOBALS['xoopsUser'] instanceof \XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
             return false;
         }
 
@@ -147,7 +149,7 @@ trait FilesManagement
         $success = true;
 
         // Open the source directory to read in files
-        $iterator = new DirectoryIterator($src);
+        $iterator = new \DirectoryIterator($src);
         foreach ($iterator as $fObj) {
             if ($fObj->isFile()) {
                 $filename = $fObj->getPathname();
@@ -173,10 +175,10 @@ trait FilesManagement
      *
      * @return bool true on success
      */
-    public static function rmove($src, $dest)
+    public static function rmove(string $src, string $dest): bool
     {
         // Only continue if user is a 'global' Admin
-        if (!($GLOBALS['xoopsUser'] instanceof XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
+        if (!($GLOBALS['xoopsUser'] instanceof \XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
             return false;
         }
 
@@ -191,13 +193,13 @@ trait FilesManagement
         }
 
         // Open the source directory to read in files
-        $iterator = new DirectoryIterator($src);
+        $iterator = new \DirectoryIterator($src);
         foreach ($iterator as $fObj) {
             if ($fObj->isFile()) {
-                \rename($fObj->getPathname(), "{$dest}/" . $fObj->getFilename());
+                \rename($fObj->getPathname(), "$dest/" . $fObj->getFilename());
             } elseif (!$fObj->isDot() && $fObj->isDir()) {
                 // Try recursively on directory
-                self::rmove($fObj->getPathname(), "{$dest}/" . $fObj->getFilename());
+                self::rmove($fObj->getPathname(), "$dest/" . $fObj->getFilename());
                 //                rmdir($fObj->getPath()); // now delete the directory
             }
         }
@@ -212,15 +214,15 @@ trait FilesManagement
      * @param string $src  - Source of files being moved
      * @param string $dest - Destination of files being moved
      *
-     * @return bool true on success
+     * @uses \Xmf\Module\Helper::getHelper()
      * @uses \Xmf\Module\Helper::isUserAdmin()
      *
-     * @uses \Xmf\Module\Helper::getHelper()
+     * @return bool true on success
      */
-    public static function rcopy($src, $dest)
+    public static function rcopy(string $src, string $dest): bool
     {
         // Only continue if user is a 'global' Admin
-        if (!($GLOBALS['xoopsUser'] instanceof XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
+        if (!($GLOBALS['xoopsUser'] instanceof \XoopsUser) || !$GLOBALS['xoopsUser']->isAdmin()) {
             return false;
         }
 
@@ -235,12 +237,12 @@ trait FilesManagement
         }
 
         // Open the source directory to read in files
-        $iterator = new DirectoryIterator($src);
+        $iterator = new \DirectoryIterator($src);
         foreach ($iterator as $fObj) {
             if ($fObj->isFile()) {
-                \copy($fObj->getPathname(), "{$dest}/" . $fObj->getFilename());
+                \copy($fObj->getPathname(), "$dest/" . $fObj->getFilename());
             } elseif (!$fObj->isDot() && $fObj->isDir()) {
-                self::rcopy($fObj->getPathname(), "{$dest}/" . $fObj->getFilename());
+                self::rcopy($fObj->getPathname(), "$dest/" . $fObj->getFilename());
             }
         }
 

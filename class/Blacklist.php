@@ -31,12 +31,12 @@ namespace XoopsModules\News;
  */
 class Blacklist
 {
-    public $keywords; // Holds keywords
+    public array $keywords; // Holds keywords
 
     /**
      * Get all the keywords
      */
-    public function getAllKeywords()
+    public function getAllKeywords(): array
     {
         $ret      = $tbl_black_list = [];
         $myts     = \MyTextSanitizer::getInstance();
@@ -100,7 +100,7 @@ class Blacklist
      * @param $keywords
      * @return array
      */
-    public function remove_blacklisted($keywords)
+    public function remove_blacklisted($keywords): array
     {
         $ret       = [];
         $tmp_array = \array_values($this->keywords);

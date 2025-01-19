@@ -29,16 +29,18 @@
  *
  */
 
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
-if (!News\Utility::getModuleOption('firefox_microsummaries')) {
+if (!Utility::getModuleOption('firefox_microsummaries')) {
     exit();
 }
 $story      = new NewsStory();
-$restricted = News\Utility::getModuleOption('restrictindex');
+$restricted = Utility::getModuleOption('restrictindex');
 $sarray     = [];
 // Get the last news from all topics according to the module's restrictions
 $sarray = NewsStory::getAllPublished(1, 0, $restricted, 0);

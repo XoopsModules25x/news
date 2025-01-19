@@ -6,7 +6,7 @@
         <th align="center"><{$block.lang_story_author}></th>
         <th align="center"><{$block.lang_story_action}></th>
     </tr>
-    <{foreach item=news from=$block.stories}>
+    <{foreach item=news from=$block.stories|default:null}>
         <tr class="<{cycle values="even,odd"}>">
             <td align="left"><{$news.title}></td>
             <td align="left"><{$news.topic_title}></td>

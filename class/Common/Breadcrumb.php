@@ -31,8 +31,8 @@ namespace XoopsModules\News\Common;
  */
 class Breadcrumb
 {
-    public  $dirname;
-    private $bread = [];
+    public string $dirname;
+    private array $bread = [];
 
     public function __construct()
     {
@@ -42,11 +42,12 @@ class Breadcrumb
     /**
      * Add link to breadcrumb
      *
-     * @param string $title
+     * @param string|null $title
      * @param string $link
      */
-    public function addLink($title = '', $link = ''): void
+    public function addLink(?string $title = null, string $link = ''): void
     {
+        $title         ??= '';
         $this->bread[] = [
             'link'  => $link,
             'title' => $title,

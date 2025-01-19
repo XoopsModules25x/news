@@ -22,9 +22,9 @@ class NewsCorePreload extends \XoopsPreloadItem
 {
     // to add PSR-4 autoloader
     /**
-     * @param $args
+     * @param array $args
      */
-    public static function eventCoreIncludeCommonEnd($args): void
+    public static function eventCoreIncludeCommonEnd(array $args): void
     {
         require_once __DIR__ . '/autoloader.php';
     }

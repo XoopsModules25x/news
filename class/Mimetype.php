@@ -76,11 +76,11 @@ namespace XoopsModules\News;
 class Mimetype
 {
     /**
-     * @param $filename
+     * @param string $filename
      *
      * @return string
      */
-    public function getType($filename)
+    public function getType(string $filename): string
     {
         // get base name of the filename provided by user
         $filename = \basename($filename);
@@ -96,11 +96,11 @@ class Mimetype
     }
 
     /**
-     * @param $ext
+     * @param string $ext
      *
      * @return string
      */
-    public function privFindType($ext)
+    public function privFindType(string $ext): string
     {
         // create mimetypes array
         $mimetypes = $this->privBuildMimeArray();
@@ -112,7 +112,7 @@ class Mimetype
     /**
      * @return array
      */
-    public function privBuildMimeArray()
+    public function privBuildMimeArray(): array
     {
         return [
             'ez'      => 'application/andrew-inset',

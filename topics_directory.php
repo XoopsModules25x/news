@@ -25,8 +25,11 @@
  * @copyright (c) Hervé Thouzard - https://www.herve-thouzard.com
  */
 
-use XoopsModules\News;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    Helper,
+    NewsTopic,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -40,7 +43,7 @@ $myts = \MyTextSanitizer::getInstance();
 $newscountbytopic = $tbl_topics = [];
 $perms            = '';
 $xt               = new NewsTopic();
-$restricted       = News\Utility::getModuleOption('restrictindex');
+$restricted       = Utility::getModuleOption('restrictindex');
 if ($restricted) {
     global $xoopsUser;
     /** @var \XoopsModuleHandler $moduleHandler */
@@ -59,7 +62,7 @@ if ($restricted) {
 }
 $topics_arr       = $xt->getChildTreeArray(0, 'topic_title', $perms);
 $newscountbytopic = $xt->getNewsCountByTopic();
-if (is_array($topics_arr) && count($topics_arr)) {
+if ($topics_arr && \is_array($topics_arr)) {
     foreach ($topics_arr as $onetopic) {
         $count = 0;
         if (array_key_exists($onetopic['topic_id'], $newscountbytopic)) {
@@ -82,12 +85,12 @@ if (is_array($topics_arr) && count($topics_arr)) {
 }
 $xoopsTpl->assign('topics', $tbl_topics);
 
-$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
+$xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
- * Manage all the meta datas
+ * Manage all the metadatas
  */
-News\Utility::createMetaDatas();
+Utility::createMetaDatas();
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_TOPICS_DIRECTORY);
 $meta_description = _AM_NEWS_TOPICS_DIRECTORY . ' - ' . $xoopsModule->name('s');

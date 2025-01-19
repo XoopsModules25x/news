@@ -47,7 +47,7 @@ function b_news_top_show($options)
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -96,7 +96,8 @@ function b_news_top_show($options)
             }
         }
         $before  = array_slice($options, 0, 14);
-        $options = array_merge($before, $topics2);
+//        $options = array_merge($before, $topics2);
+        $options = [...$before, ...$topics2];
     }
 
     if (2 == $options[8]) { // Tabbed view ********************************************************************************************
@@ -222,7 +223,7 @@ function b_news_top_show($options)
             $spotlight['id']     = $tmpstory->storyid();
             $spotlight['date']   = formatTimestamp($tmpstory->published(), $dateformat);
             $spotlight['hits']   = $tmpstory->counter();
-            $spotlight['rating'] = number_format($tmpstory->rating(), 2);
+            $spotlight['rating'] =number_format((float)$tmpstory->rating(), 2);
             $spotlight['votes']  = $tmpstory->votes();
             if ('' !== xoops_trim($tmpstory->bodytext())) {
                 $spotlight['read_more'] = true;
@@ -272,7 +273,7 @@ function b_news_top_show($options)
                     $news['id']          = $story->storyid();
                     $news['date']        = formatTimestamp($story->published(), $dateformat);
                     $news['hits']        = $story->counter();
-                    $news['rating']      = number_format($story->rating(), 2);
+                    $news['rating']      =number_format((float)$story->rating(), 2);
                     $news['votes']       = $story->votes();
                     $news['topicid']     = $story->topicid();
                     $news['topic_title'] = $story->topic_title();
@@ -348,7 +349,7 @@ function b_news_top_show($options)
                     $news['id']          = $story->storyid();
                     $news['date']        = formatTimestamp($story->published(), $dateformat);
                     $news['hits']        = $story->counter();
-                    $news['rating']      = number_format($story->rating(), 2);
+                    $news['rating']      =number_format((float)$story->rating(), 2);
                     $news['votes']       = $story->votes();
                     $news['topicid']     = $story->topicid();
                     $news['topic_title'] = $story->topic_title();
@@ -394,10 +395,10 @@ function b_news_top_show($options)
     } else { // ************************ Classical view **************************************************************************************************************
         $tmpstory = new NewsStory();
         if (isset($options[14]) && 0 == (int)$options[14]) {
-            $stories = NewsStory::getAllPublished($options[1], 0, $restricted, 0, 1, true, $options[0]);
+            $stories = NewsStory::getAllPublished((int)$options[1], 0, $restricted, 0, 1, true, $options[0]);
         } else {
             $topics  = array_slice($options, 14);
-            $stories = NewsStory::getAllPublished($options[1], 0, $restricted, $topics, 1, true, $options[0]);
+            $stories = NewsStory::getAllPublished((int)$options[1], 0, $restricted, $topics, 1, true, $options[0]);
         }
 
         if (!$stories) {
@@ -582,7 +583,7 @@ function b_news_top_show($options)
  * @param $options
  * @return string
  */
-function b_news_top_edit($options)
+function b_news_top_edit($options): string
 {
     global $xoopsDB;
     $tmpstory = new NewsStory();
@@ -634,7 +635,7 @@ function b_news_top_edit($options)
     $form .= '>' . _MB_NEWS_RECENT_SPECIFIC . '</option></select>';
 
     $form     .= '<br><br>' . _MB_NEWS_SPOTLIGHT_ARTICLE . '<br>';
-    $articles = NewsStory::getAllPublished(200, 0, false, 0, 0, false); // I have limited the listbox to the last 200 articles
+    $articles = NewsStory::getAllPublished(200, 0, 0, 0, 0, false); // I have limited the listbox to the last 200 articles
     $form     .= "<select name ='options[]'>";
     $form     .= "<option value='0'>" . _MB_NEWS_FIRST . '</option>';
     foreach ($articles as $storyid => $storytitle) {

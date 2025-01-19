@@ -15,29 +15,31 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 /**
  * Display a block where news moderators can show news that needs to be moderated.
  */
-function b_news_topics_moderate()
+function b_news_topics_moderate(): array
 {
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
 
     $block      = [];
-    $dateformat = News\Utility::getModuleOption('dateformat');
-    $infotips   = News\Utility::getModuleOption('infotips');
+    $dateformat = Utility::getModuleOption('dateformat');
+    $infotips   = Utility::getModuleOption('infotips');
 
-    $storyarray = NewsStory:: getAllSubmitted(0, true, News\Utility::getModuleOption('restrictindex'));
+    $storyarray = NewsStory:: getAllSubmitted(0, true, (int)Utility::getModuleOption('restrictindex'));
     if (count($storyarray) > 0) {
         $block['lang_story_title']  = _MB_TITLE;
         $block['lang_story_date']   = _MB_POSTED;
@@ -49,7 +51,7 @@ function b_news_topics_moderate()
             $title     = $newstory->title();
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = News\Utility::makeInfotips($newstory->hometext());
+                $story['infotips'] = Utility::makeInfotips($newstory->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
 

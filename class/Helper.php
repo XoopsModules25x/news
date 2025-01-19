@@ -53,7 +53,7 @@ class Helper extends \Xmf\Module\Helper
     /**
      * @return string
      */
-    public function getDirname()
+    public function getDirname(): string
     {
         return $this->dirname;
     }
@@ -77,7 +77,7 @@ class Helper extends \Xmf\Module\Helper
         $db     = \XoopsDatabaseFactory::getDatabaseConnection();
         $helper = self::getInstance();
         $ret    = new $class($db, $helper);
-        $this->addLog("Getting handler '{$name}'");
+        $this->addLog("Getting handler '$name'");
 
         return $ret;
     }

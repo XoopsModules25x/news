@@ -55,8 +55,10 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
@@ -66,7 +68,7 @@ $myts = \MyTextSanitizer::getInstance();
 
 // Verify the perms
 // 1) Is the vote activated in the module ?
-$ratenews = News\Utility::getModuleOption('ratenews');
+$ratenews = Utility::getModuleOption('ratenews');
 if (!$ratenews) {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
 }
@@ -114,10 +116,10 @@ if (!$grouppermHandler->checkRight('news_view', $article->topicid(), $groups, $x
 
 if (!empty($_POST['submit'])) { // The form was submited
     $eh = new ErrorHandler(); //ErrorHandler object
-    if (!is_object($xoopsUser)) {
-        $ratinguser = 0;
-    } else {
+    if (is_object($xoopsUser)) {
         $ratinguser = $xoopsUser->getVar('uid');
+    } else {
+        $ratinguser = 0;
     }
 
     //Make sure only 1 anonymous from an IP in a single day.
@@ -137,7 +139,8 @@ if (!empty($_POST['submit'])) { // The form was submited
 
     // Check if News POSTER is voting (UNLESS Anonymous users allowed to post)
     if (0 != $ratinguser) {
-        $result = $xoopsDB->query('SELECT uid FROM ' . $xoopsDB->prefix('news_stories') . " WHERE storyid=$storyid");
+        $sql = 'SELECT uid FROM ' . $xoopsDB->prefix('news_stories') . " WHERE storyid=$storyid";
+        $result = Utility::queryAndCheck($xoopsDB, $sql);
         while ([$ratinguserDB] = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_CANTVOTEOWN);
@@ -145,7 +148,8 @@ if (!empty($_POST['submit'])) { // The form was submited
         }
 
         // Check if REG user is trying to vote twice.
-        $result = $xoopsDB->query('SELECT ratinguser FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid");
+        $sql = 'SELECT ratinguser FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid";
+        $result = Utility::queryAndCheck($xoopsDB, $sql);
         while ([$ratinguserDB] = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
@@ -153,8 +157,15 @@ if (!empty($_POST['submit'])) { // The form was submited
         }
     } else {
         // Check if ANONYMOUS user is trying to vote more than once per day.
-        $yesterday = (time() - (86400 * $anonwaitdays));
-        $result    = $xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday");
+//        $yesterday = (time() - (86400 * $anonwaitdays));
+        $date = new \DateTime();
+        $date->sub(new \DateInterval("P{$anonwaitdays}D"));
+        $yesterday = $date->getTimestamp();
+
+
+
+        $sql    = 'SELECT COUNT(*) FROM ' . $xoopsDB->prefix('news_stories_votedata') . " WHERE storyid=$storyid AND ratinguser=0 AND ratinghostname = '$ip'  AND ratingtimestamp > $yesterday";
+        $result = Utility::queryAndCheck($xoopsDB, $sql);
         [$anonvotecount] = $xoopsDB->fetchRow($result);
         if ($anonvotecount >= 1) {
             redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, _NW_VOTEONCE);
@@ -169,7 +180,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsDB->query($sql) or trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
 
     //All is well.  Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
-    News\Utility::updateRating($storyid);
+    Utility::updateRating($storyid);
     $ratemessage = _NW_VOTEAPPRE . '<br>' . sprintf(_NW_THANKYOU, $xoopsConfig['sitename']);
     redirect_header(XOOPS_URL . '/modules/news/article.php?storyid=' . $storyid, 4, $ratemessage);
 } else { // Display the form to vote
@@ -182,7 +193,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     } else {
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _ERRORS);
     }
-    $xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
+    $xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
     $xoopsTpl->assign('news', ['storyid' => $storyid, 'title' => $title]);
     $xoopsTpl->assign('lang_voteonce', _NW_VOTEONCE);
     $xoopsTpl->assign('lang_ratingscale', _NW_RATINGSCALE);
@@ -191,7 +202,7 @@ if (!empty($_POST['submit'])) { // The form was submited
     $xoopsTpl->assign('lang_rateit', _NW_RATEIT);
     $xoopsTpl->assign('lang_cancel', _CANCEL);
     $xoopsTpl->assign('xoops_pagetitle', $title . ' - ' . _NW_RATETHISNEWS . ' - ' . $xoopsModule->name('s'));
-    News\Utility::createMetaDatas();
+    Utility::createMetaDatas();
     require_once XOOPS_ROOT_PATH . '/footer.php';
 }
 require_once XOOPS_ROOT_PATH . '/footer.php';

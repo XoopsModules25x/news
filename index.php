@@ -174,13 +174,8 @@ if ($showclassic) {
         $allTopics  = $xt->getAllTopics($helper->getConfig('restrictindex'));
         $topic_tree = new ObjectTree($allTopics, 'topic_id', 'topic_pid');
 
-        if (Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
-            $topic_select = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', $xoopsOption['storytopic'], true, 0, '', '');
-            $xoopsTpl->assign('topic_select', $topic_select->render());
-        } else {
-            $topic_select = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', $xoopsOption['storytopic'], true);
-            $xoopsTpl->assign('topic_select', $topic_select);
-        }
+        $topic_select = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', $xoopsOption['storytopic'], true, 0, '', '');
+        $xoopsTpl->assign('topic_select', $topic_select->render());
 
         $storynum_options = '';
         for ($i = 5; $i <= 30; $i += 5) {
@@ -314,7 +309,7 @@ if ($showclassic) {
 $xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
- * Create the Meta Datas
+ * Create the Metadata
  */
 Utility::createMetaDatas();
 

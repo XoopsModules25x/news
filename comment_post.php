@@ -15,15 +15,17 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
+use XoopsModules\News\{
+    Helper
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 
 // We verify that the user can post comments **********************************
-if (null === $helper->getModule()) {
+if (!is_object($helper->getModule())) {
     exit();
 }
 

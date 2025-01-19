@@ -16,13 +16,18 @@
  */
 
 use Xmf\Module\Admin;
-use XoopsModules\News;
+use XoopsModules\News\{
+    Helper
+};
 
-/** @var News\Helper $helper */
+/** @var Helper $helper */
+
+include \dirname(__DIR__) . '/preloads/autoloader.php';
+
 $moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
-$helper = News\Helper::getInstance();
+$helper = Helper::getInstance();
 $helper->loadLanguage('common');
 $helper->loadLanguage('feedback');
 

@@ -22,15 +22,15 @@ class Keyhighlighter
     /**
      * @access private
      */
-    public $preg_keywords = '';
+    public string $preg_keywords = '';
     /**
      * @access private
      */
-    public $keywords = '';
+    public string $keywords = '';
     /**
      * @access private
      */
-    public $singlewords = false;
+    public bool $singlewords = false;
     /**
      * @access private
      */
@@ -42,9 +42,9 @@ class Keyhighlighter
      * This is the main constructor of Keyhighlighter class. <br>
      * It's the only public method of the class.
      *
-     * @param string   $keywords         the keywords you want to highlight
-     * @param bool     $singlewords      specify if it has to highlight also the single words.
-     * @param callback $replace_callback a custom callback for keyword highlight.
+     * @param string        $keywords         the keywords you want to highlight
+     * @param bool|null     $singlewords      specify if it has to highlight also the single words.
+     * @param callback|null $replace_callback a custom callback for keyword highlight.
      *                                   <code>
      *                                   <?php
      *                                   require_once ('Keyhighlighter.class.php');
@@ -59,8 +59,9 @@ class Keyhighlighter
      * </code>
      */
     // public function __construct ()
-    public function __construct($keywords, $singlewords = false, $replace_callback = null)
+    public function __construct(string $keywords, ?bool $singlewords = null, ?callable $replace_callback = null)
     {
+        $singlewords            ??= false;
         $this->keywords         = $keywords;
         $this->singlewords      = $singlewords;
         $this->replace_callback = $replace_callback;
@@ -68,10 +69,10 @@ class Keyhighlighter
 
     /**
      * @access private
-     * @param $replace_matches
+     * @param array $replace_matches
      * @return mixed
      */
-    public function replace($replace_matches)
+    public function replace(array $replace_matches)
     {
         $patterns = [];
         if ($this->singlewords) {
@@ -98,14 +99,14 @@ class Keyhighlighter
 
     /**
      * @access private
-     * @param $buffer
-     * @return mixed|string
+     * @param string $buffer
+     * @return string
      */
-    public function highlight($buffer)
+    public function highlight(string $buffer): string
     {
         $buffer              = '>' . $buffer . '<';
-        $this->preg_keywords = \preg_replace('/[^\w ]/si', '', $this->keywords);
-        $buffer              = \preg_replace_callback('/(\>(((?' . '>[^><]+)|(?R))*)\<)/is', [&$this, 'replace'], $buffer);
+        $this->preg_keywords = \preg_replace('/[^\w ]/i', '', $this->keywords);
+        $buffer              = \preg_replace_callback('/(\>(((?' . '>[^>i', [&$this, 'replace'], $buffer);
         $buffer              = \xoops_substr($buffer, 1, -1);
 
         return $buffer;

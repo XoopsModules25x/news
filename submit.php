@@ -111,18 +111,18 @@ if (Request::hasVar('preview', 'POST')) {
                 $approveprivilege = 1;
             } else {
                 unset($tmpstory);
-                if (!Utility::isAdminGroup()) {
-                    redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-                } else {
+                if (Utility::isAdminGroup()) {
                     $approveprivilege = 1;
+                } else {
+                    redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
                 }
             }
         }
-    } elseif (!Utility::isAdminGroup()) {
+    } elseif (Utility::isAdminGroup()) {
+        $approveprivilege = 1;
+    } else {
         unset($tmpstory);
         redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);
-    } else {
-        $approveprivilege = 1;
     }
 }
 
@@ -158,9 +158,7 @@ switch ($op) {
         $pictureinfo = $story->pictureinfo;
         $approve     = 0;
         $published   = $story->published();
-        if (isset($published) && $published > 0) {
-            $approve = 1;
-        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if ((isset($published) && $published > 0) || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         if (0 != $story->published()) {
@@ -174,10 +172,10 @@ switch ($op) {
         $type         = $story->type();
         $topicdisplay = $story->topicdisplay();
         $topicalign   = $story->topicalign(false);
-        if (!Utility::isAdminGroup()) {
-            require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
-        } else {
+        if (Utility::isAdminGroup()) {
             require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.original.php';
+        } else {
+            require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';
         }
         echo '</td></tr></table>';
         break;
@@ -430,7 +428,7 @@ switch ($op) {
             $currentPicture = $story->picture();
             if ('' !== xoops_trim($currentPicture)) {
                 $currentPicture = XOOPS_ROOT_PATH . '/uploads/news/image/' . xoops_trim($story->picture());
-                if (is_file($currentPicture) && file_exists($currentPicture)) {
+                if (\is_file($currentPicture) && file_exists($currentPicture)) {
                     if (!unlink($currentPicture)) {
                         trigger_error('Error, impossible to delete the picture attached to this article');
                     }
@@ -478,7 +476,7 @@ switch ($op) {
             if (1 == $helper->getConfig('tags') && \class_exists(\XoopsModules\Tag\TagHandler::class) && xoops_isActiveModule('tag')) {
                 /** @var \XoopsModules\Tag\TagHandler $tagHandler */
                 $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Tag');
-                $tagHandler->updateByItem($_POST['item_tag'], $story->storyid(), $helper->getDirname(), 0);
+                $tagHandler->updateByItem($_POST['item_tag'], (int)$story->storyid(), $helper->getDirname(), 0);
             }
 
             if (!$editmode) {
@@ -550,10 +548,10 @@ switch ($op) {
             echo _ERRORS;
         }
         $returnside = Request::getInt('returnside', 0, 'POST');
-        if (!$returnside) {
-            redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_THANKS);
-        } else {
+        if ($returnside) {
             redirect_header(XOOPS_URL . '/modules/news/admin/index.php?op=newarticle', 2, _NW_THANKS);
+        } else {
+            redirect_header(XOOPS_URL . '/modules/news/index.php', 2, _NW_THANKS);
         }
         break;
     case 'form':
@@ -578,9 +576,7 @@ switch ($op) {
             $expired      = 0;
             $published    = 0;
         }
-        if (1 == $helper->getConfig('autoapprove')) {
-            $approve = 1;
-        } elseif (1 == $helper->getConfig('moduleAdminApproveChecked') && (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
+        if (1 == $helper->getConfig('autoapprove') || (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->getVar('mid')))) {
             $approve = 1;
         }
         require_once XOOPS_ROOT_PATH . '/modules/news/include/storyform.inc.php';

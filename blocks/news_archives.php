@@ -15,9 +15,10 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory
+};
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -34,7 +35,7 @@ use XoopsModules\News\NewsStory;
  *
  * @return array|string
  */
-function b_news_archives_show($options)
+function b_news_archives_show(array $options)
 {
     global $xoopsDB, $xoopsConfig;
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -43,7 +44,7 @@ function b_news_archives_show($options)
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
         //            throw new \RuntimeException('Unable to create the $helper directory');
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -73,7 +74,8 @@ function b_news_archives_show($options)
     }
     $sql    = "SELECT DISTINCT(FROM_UNIXTIME(published,'%Y-%m')) AS published FROM " . $xoopsDB->prefix('news_stories') . ' WHERE published>=' . $starting_date . ' AND published<=' . $ending_date . ' ORDER BY published ' . $sort_order;
     $result = $xoopsDB->query($sql);
-    if (!$result) {
+    if (!$xoopsDB->isResultSet($result)) {
+//        \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
         return '';
     }
     while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
@@ -91,7 +93,7 @@ function b_news_archives_show($options)
  *
  * @return string
  */
-function b_news_archives_edit($options)
+function b_news_archives_edit($options): string
 {
     global $xoopsDB;
     $syear    = $smonth = $eyear = $emonth = $older = $recent = 0;

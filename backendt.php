@@ -28,9 +28,11 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    NewsStory,
+    NewsTopic,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
@@ -40,7 +42,7 @@ require_once XOOPS_ROOT_PATH . '/class/template.php';
 error_reporting(0);
 $GLOBALS['xoopsLogger']->activated = false;
 
-if (!News\Utility::getModuleOption('topicsrss')) {
+if (!Utility::getModuleOption('topicsrss')) {
     exit();
 }
 
@@ -53,8 +55,8 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 
-$restricted = News\Utility::getModuleOption('restrictindex');
-$newsnumber = News\Utility::getModuleOption('storyhome');
+$restricted = Utility::getModuleOption('restrictindex');
+$newsnumber = Utility::getModuleOption('storyhome');
 
 $charset = 'utf-8';
 
@@ -62,13 +64,13 @@ header('Content-Type:text/xml; charset=' . $charset);
 $story        = new NewsStory();
 $tpl          = new \XoopsTpl();
 $tpl->caching = 2;
-$tpl->xoops_setCacheTime(3600); // Change this to the value you want
-if (!$tpl->is_cached('db:news_rss.tpl', $topicid)) {
+$tpl->cache_lifetime=3600; // Change this to the value you want
+if (!$tpl->isCached('db:news_rss.tpl', $topicid)) {
     $xt     = new NewsTopic($topicid);
     $sarray = NewsStory::getAllPublished($newsnumber, 0, $restricted, $topicid);
-    if ($sarray && is_array($sarray)) {
-        $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES);
-        $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES);
+    if ($sarray && \is_array($sarray)) {
+        $sitename = htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES | ENT_HTML5);
+        $slogan   = htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES | ENT_HTML5);
         $tpl->assign('channel_title', xoops_utf8_encode($sitename));
         $tpl->assign('channel_link', XOOPS_URL . '/');
         $tpl->assign('channel_desc', xoops_utf8_encode($slogan));

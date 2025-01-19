@@ -15,9 +15,11 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Helper;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
@@ -30,7 +32,7 @@ function b_news_randomnews_show($options)
 {
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -40,9 +42,9 @@ function b_news_randomnews_show($options)
     $block['sort'] = $options[0];
 
     $tmpstory   = new NewsStory();
-    $restricted = News\Utility::getModuleOption('restrictindex');
-    $dateformat = News\Utility::getModuleOption('dateformat');
-    $infotips   = News\Utility::getModuleOption('infotips');
+    $restricted = (int)Utility::getModuleOption('restrictindex');
+    $dateformat = Utility::getModuleOption('dateformat');
+    $infotips   = Utility::getModuleOption('infotips');
     if ('' == $dateformat) {
         $dateformat = 's';
     }
@@ -76,12 +78,12 @@ function b_news_randomnews_show($options)
 
         if ($options[3] > 0) {
             $html             = 1 == $story->nohtml() ? 0 : 1;
-            $news['teaser']   = News\Utility::truncateTagSafe($myts->displayTarea($story->hometext, $html), $options[3] + 3);
+            $news['teaser']   = Utility::truncateTagSafe($myts->displayTarea($story->hometext, $html), $options[3] + 3);
             $news['infotips'] = ' title="' . $story->title() . '"';
         } else {
             $news['teaser'] = '';
             if ($infotips > 0) {
-                $news['infotips'] = ' title="' . News\Utility::makeInfotips($story->hometext()) . '"';
+                $news['infotips'] = ' title="' . Utility::makeInfotips($story->hometext()) . '"';
             } else {
                 $news['infotips'] = ' title="' . $story->title() . '"';
             }
@@ -98,7 +100,7 @@ function b_news_randomnews_show($options)
  *
  * @return string
  */
-function b_news_randomnews_edit($options)
+function b_news_randomnews_edit($options): string
 {
     global $xoopsDB;
     $form = _MB_NEWS_ORDER . "&nbsp;<select name='options[]'>";

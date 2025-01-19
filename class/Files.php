@@ -25,20 +25,20 @@ namespace XoopsModules\News;
  */
 class Files
 {
-    public $db;
-    public $table;
-    public $fileid;
-    public $filerealname;
-    public $storyid;
-    public $date;
-    public $mimetype;
-    public $downloadname;
-    public $counter;
+    public \XoopsDatabase $db;
+    public string         $table;
+    public int            $fileid;
+    public string         $filerealname;
+    public int            $storyid;
+    public int            $date;
+    public string         $mimetype;
+    public string         $downloadname;
+    public int            $counter;
 
     /**
-     * @param $fileid
+     * @param array|int $fileid
      */
-    public function __construct($fileid = -1)
+    public function __construct(int $fileid = -1)
     {
         /** @var \XoopsMySQLDatabase $db */
         $this->db           = \XoopsDatabaseFactory::getDatabaseConnection();
@@ -57,13 +57,13 @@ class Files
     }
 
     /**
-     * @param      $folder
-     * @param      $filename
-     * @param bool $trimname
+     * @param string $folder
+     * @param string $filename
+     * @param bool   $trimname
      *
      * @return string
      */
-    public function createUploadName($folder, $filename, $trimname = false)
+    public function createUploadName(string $folder, string $filename, bool $trimname = false): string
     {
         $workingfolder = $folder;
         if ('/' !== \xoops_substr($workingfolder, mb_strlen($workingfolder) - 1, 1)) {
@@ -98,7 +98,7 @@ class Files
      *
      * @return string
      */
-    public function giveMimetype($filename = '')
+    public function giveMimetype(string $filename = ''): string
     {
         $cmimetype   = new Mimetype();
         $workingfile = $this->downloadname;
@@ -112,11 +112,11 @@ class Files
     }
 
     /**
-     * @param $storyid
+     * @param string|int $storyid
      *
      * @return array
      */
-    public function getAllbyStory($storyid)
+    public function getAllbyStory($storyid): array
     {
         $ret    = [];
         $sql    = 'SELECT * FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
@@ -131,19 +131,23 @@ class Files
     }
 
     /**
-     * @param $id
+     * @param string|int $id
      */
     public function getFile($id): void
     {
         $sql   = 'SELECT * FROM ' . $this->table . ' WHERE fileid=' . (int)$id;
-        $array = $this->db->fetchArray($this->db->query($sql));
+        $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)){
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
+        $array = $this->db->fetchArray($result);
         $this->makeFile($array);
     }
 
     /**
-     * @param $array
+     * @param array $array
      */
-    public function makeFile($array): void
+    public function makeFile(array $array): void
     {
         foreach ($array as $key => $value) {
             $this->$key = $value;
@@ -153,7 +157,7 @@ class Files
     /**
      * @return bool
      */
-    public function store()
+    public function store(): bool
     {
         $myts         = \MyTextSanitizer::getInstance();
         $fileRealName = $GLOBALS['xoopsDB']->escape($this->filerealname);
@@ -163,12 +167,12 @@ class Files
         $counter      = $this->counter;
         $storyid      = $this->storyid;
 
-        if (!isset($this->fileid)) {
+        if (isset($this->fileid)) {
+            $sql = 'UPDATE ' . $this->table . ' SET storyid=' . $storyid . ",filerealname='" . $fileRealName . "',date=" . $date . ",mimetype='" . $mimetype . "',downloadname='" . $downloadname . "',counter=" . $counter . ' WHERE fileid=' . $this->getFileid();
+        } else {
             $newid        = (int)$this->db->genId($this->table . '_fileid_seq');
             $sql          = 'INSERT INTO ' . $this->table . ' (fileid, storyid, filerealname, date, mimetype, downloadname, counter) ' . 'VALUES (' . $newid . ',' . $storyid . ",'" . $fileRealName . "','" . $date . "','" . $mimetype . "','" . $downloadname . "'," . $counter . ')';
             $this->fileid = $newid;
-        } else {
-            $sql = 'UPDATE ' . $this->table . ' SET storyid=' . $storyid . ",filerealname='" . $fileRealName . "',date=" . $date . ",mimetype='" . $mimetype . "',downloadname='" . $downloadname . "',counter=" . $counter . ' WHERE fileid=' . $this->getFileid();
         }
         if (!$result = $this->db->query($sql)) {
             return false;
@@ -182,7 +186,7 @@ class Files
      *
      * @return bool
      */
-    public function delete($workdir = XOOPS_UPLOAD_PATH)
+    public function delete(string $workdir = XOOPS_UPLOAD_PATH): bool
     {
         $sql = 'DELETE FROM ' . $this->table . ' WHERE fileid=' . $this->getFileid();
         if (!$result = $this->db->query($sql)) {
@@ -198,7 +202,7 @@ class Files
     /**
      * @return bool
      */
-    public function updateCounter()
+    public function updateCounter(): bool
     {
         $sql = 'UPDATE ' . $this->table . ' SET counter=counter+1 WHERE fileid=' . $this->getFileid();
         if (!$result = $this->db->queryF($sql)) {
@@ -213,15 +217,15 @@ class Files
     // ****************************************************************************************************************
 
     /**
-     * @param $filename
+     * @param string $filename
      */
-    public function setFileRealName($filename): void
+    public function setFileRealName(string $filename): void
     {
         $this->filerealname = $filename;
     }
 
     /**
-     * @param $id
+     * @param string|int $id
      */
     public function setStoryid($id): void
     {
@@ -229,17 +233,17 @@ class Files
     }
 
     /**
-     * @param $value
+     * @param string $value
      */
-    public function setMimetype($value): void
+    public function setMimetype(string $value): void
     {
         $this->mimetype = $value;
     }
 
     /**
-     * @param $value
+     * @param string $value
      */
-    public function setDownloadname($value): void
+    public function setDownloadname(string $value): void
     {
         $this->downloadname = $value;
     }
@@ -251,7 +255,7 @@ class Files
     /**
      * @return int
      */
-    public function getFileid()
+    public function getFileid(): int
     {
         return (int)$this->fileid;
     }
@@ -259,7 +263,7 @@ class Files
     /**
      * @return int
      */
-    public function getStoryid()
+    public function getStoryid(): int
     {
         return $this->storyid;
     }
@@ -267,7 +271,7 @@ class Files
     /**
      * @return int
      */
-    public function getCounter()
+    public function getCounter(): int
     {
         return $this->counter;
     }
@@ -275,7 +279,7 @@ class Files
     /**
      * @return int
      */
-    public function getDate()
+    public function getDate(): int
     {
         return $this->date;
     }
@@ -283,9 +287,9 @@ class Files
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
-    public function getFileRealName($format = 'S')
+    public function getFileRealName(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -313,9 +317,9 @@ class Files
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
-    public function getMimetype($format = 'S')
+    public function getMimetype(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -343,9 +347,9 @@ class Files
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
-    public function getDownloadname($format = 'S')
+    public function getDownloadname(string $format = 'S'): string
     {
         $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
@@ -373,7 +377,7 @@ class Files
     // Deprecated
 
     /**
-     * @param $storyid
+     * @param string|int $storyid
      *
      * @return mixed
      */
@@ -381,17 +385,20 @@ class Files
     {
         $sql    = 'SELECT count(fileid) AS cnt FROM ' . $this->table . ' WHERE storyid=' . (int)$storyid;
         $result = $this->db->query($sql);
+        if (!$this->db->isResultSet($result)){
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
         $myrow  = $this->db->fetchArray($result);
 
         return $myrow['cnt'];
     }
 
     /**
-     * @param $stories
+     * @param array $stories
      *
      * @return array
      */
-    public function getCountbyStories($stories)
+    public function getCountbyStories(array $stories): array
     {
         $ret = [];
         if (\count($stories) > 0) {

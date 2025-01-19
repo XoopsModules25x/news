@@ -31,7 +31,7 @@ $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 //2.5.8
 $helper = Helper::getInstance();
-if (is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+if (\is_file(XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php')) {
     require_once XOOPS_ROOT_PATH . '/class/libraries/vendor/tecnickcom/tcpdf/tcpdf.php';
 } else {
     redirect_header($helper->url('index.php'), 3, \constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_NO_PDF'));
@@ -98,15 +98,15 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, _CHARSET
 
 //$pdf->setLanguageArray($localLanguageOptions);
 
-$pdf->SetCreator(PDF_CREATOR);
+$pdf->setCreator(PDF_CREATOR);
 
-$pdf->SetTitle($pdf_data['title']);
-$pdf->SetAuthor(PDF_AUTHOR);
-$pdf->SetSubject($pdf_data['author']);
+$pdf->setTitle($pdf_data['title']);
+$pdf->setAuthor(PDF_AUTHOR);
+$pdf->setSubject($pdf_data['author']);
 $out = PDF_AUTHOR . ', ' . $pdf_data['author'] . ', ' . $pdf_data['title'] . ', ' . $pdf_data['subtitle'] . ', ' . $pdf_data['subsubtitle'];
-$pdf->SetKeywords($out);
-$pdf->SetAutoPageBreak(true, 25);
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->setKeywords($out);
+$pdf->setAutoPageBreak(true, 25);
+$pdf->setMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 //$pdf->setHeaderFont(array(PDF_FONT_NAME_SUB, '', PDF_FONT_SIZE_SUB));
 $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
@@ -114,15 +114,15 @@ $pdf->setFooterData($tc = [0, 64, 0], $lc = [0, 64, 128]);
 //$pdf->SetHeaderData('','5',$pdf_config['slogan']);
 $pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $pdf_config['slogan'], [0, 64, 255], [0, 64, 128]);
 //set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->setMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->setHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 
 $pdf->Open();
 //First page
 $pdf->AddPage();
-$pdf->SetXY(24, 25);
-$pdf->SetTextColor(10, 60, 160);
+$pdf->setXY(24, 25);
+$pdf->setTextColor(10, 60, 160);
 //$pdf->SetFont(PDF_FONT_NAME_TITLE, PDF_FONT_STYLE_TITLE, PDF_FONT_SIZE_TITLE);
 $pdf->writeHTML($pdf_data['title'] . ' - ' . $pdf_data['subtitle'], K_TITLE_MAGNIFICATION);
 //$pdf->Line(25,20,190,20);
@@ -137,7 +137,7 @@ $out = NEWS_PDF_AUTHOR . ': ' . $pdf_data['author'] . '<br>';
 $pdf->writeHTML($out, '0.2');
 $out = NEWS_PDF_DATE . ': ' . $pdf_data['date'] . '<br>';
 $pdf->writeHTML($out, '0.2');
-$pdf->SetTextColor(0, 0, 0);
+$pdf->setTextColor(0, 0, 0);
 $pdf->writeHTML($puffer, '1');
 
 //$pdf->SetFont(PDF_FONT_NAME_MAIN, PDF_FONT_STYLE_MAIN, PDF_FONT_SIZE_MAIN);

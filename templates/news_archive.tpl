@@ -3,12 +3,12 @@
         <tr>
             <th><{$lang_newsarchives}></th>
         </tr>
-        <{foreach item=year from=$years}>
-            <{foreach item=month from=$year.months}>
+        <{foreach item=year from=$years|default:null}>
+            <{foreach item=month from=$year.months|default:null}>
                 <tr class="even">
                     <td>
                         <a title="<{$month.string}> <{$year.number}>"
-                           href="<{$xoops_url}>/modules/news/archive.php?year=<{$year.number}>&amp;month=<{$month.number}>"><{$month.string}> <{$year.number}></a>
+                           href="<{$xoops_url}>/modules/<{$xoops_dirname}>/archive.php?year=<{$year.number}>&amp;month=<{$month.number}>"><{$month.string}> <{$year.number}></a>
                     </td>
                 </tr>
             <{/foreach}>
@@ -23,7 +23,7 @@
                 <th align="center"><{$lang_views}></th>
                 <th align="center"><{$lang_date}></th>
             </tr>
-            <{foreach item=story from=$stories}>
+            <{foreach item=story from=$stories|default:null}>
                 <tr class="<{cycle values="even,odd"}>">
                     <td><{$story.title}></td>
                     <td align="center"><a title="<{$lang_printer}>" href="<{$story.print_link}>" rel="nofollow"><img

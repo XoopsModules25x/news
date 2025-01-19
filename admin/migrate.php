@@ -15,7 +15,7 @@ declare(strict_types=1);
  * Migration for XOOPS modules
  *
  * @copyright      XOOPS Project  (https://xoops.org)
- * @license        GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @license        GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author         Richard Griffith <richard@geekwright.com>
  * @author         Michael Beck <mambax7@gmail.com>
  */
@@ -58,9 +58,9 @@ $configurator = new Configurator();
 $migrator = new Migrate($configurator);
 
 $op = Request::getCmd('op', 'show');
-$opShow = Request::getCmd('show', null, 'POST');
-$opMigrate = Request::getCmd('migrate', null, 'POST');
-$opSchema = Request::getCmd('schema', null, 'POST');
+$opShow = Request::getCmd('show', '', 'POST');
+$opMigrate = Request::getCmd('migrate', '', 'POST');
+$opSchema = Request::getCmd('schema', '', 'POST');
 $op = !empty($opShow) ? 'show' : $op;
 $op = !empty($opMigrate) ? 'migrate' : $op;
 $op = !empty($opSchema) ? 'schema' : $op;

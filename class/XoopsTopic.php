@@ -23,8 +23,9 @@ namespace XoopsModules\News;
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopstree.php';
 
-use MyTextSanitizer;
-use XoopsDatabaseFactory;
+use XoopsModules\News\{
+    XoopsTree    
+};
 use XoopsPerms;
 
 /**
@@ -32,30 +33,29 @@ use XoopsPerms;
  */
 class XoopsTopic
 {
-    public $db;
-    public $table;
-    public $topic_id;
-    public $topic_pid;
-    public $topic_title;
-    public $topic_imgurl;
-    public $prefix; // only used in topic tree
-    public $use_permission = false;
+    public \XoopsDatabase $db;
+    public                $menu;
     public $mid; // module id used for setting permission
-
-    public $menu;
-    public $topic_color;
+    public $prefix; // only used in topic tree
+    public string         $table;
+    public                $topic_color;
     public $topic_description;
     public $topic_frontpage;
+    public $topic_id;
+    public $topic_imgurl;
+    public $topic_pid;
     public $topic_rssurl;
+    public                $topic_title;
+    public bool           $use_permission = false;
 
     /**
-     * @param     $table
-     * @param int $topicid
+     * @param string    $table
+     * @param array|int $topicid
      */
-    public function __construct($table, $topicid = 0)
+    public function __construct(string $table, $topicid = 0)
     {
         /** @var \XoopsMySQLDatabase $db */
-        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table;
         if (\is_array($topicid)) {
             $this->makeTopic($topicid);
@@ -97,7 +97,8 @@ class XoopsTopic
     {
         $topicid = (int)$topicid;
         $sql     = 'SELECT * FROM ' . $this->table . ' WHERE topic_id=' . $topicid;
-        $array   = $this->db->fetchArray($this->db->query($sql));
+        $result = Utility::queryAndCheck($this->db, $sql);
+        $array   = $this->db->fetchArray($result);
         $this->makeTopic($array);
     }
 
@@ -123,9 +124,9 @@ class XoopsTopic
     /**
      * @return bool
      */
-    public function store()
+    public function store(): bool
     {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts   = \MyTextSanitizer::getInstance();
         $title  = '';
         $imgurl = '';
         if (isset($this->topic_title) && '' !== $this->topic_title) {
@@ -144,7 +145,7 @@ class XoopsTopic
             $sql = \sprintf("UPDATE `%s` SET topic_pid = %u, topic_imgurl = '%s', topic_title = '%s' WHERE topic_id = %u", $this->table, $this->topic_pid, $imgurl, $title, $this->topic_id);
         }
         if (!$result = $this->db->query($sql)) {
-            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), E_USER_ERROR);
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $this->db->error(), \E_USER_ERROR);
         }
         if ($this->use_permission) {
             if (empty($this->topic_id)) {
@@ -174,7 +175,7 @@ class XoopsTopic
                 }
             }
             if (!empty($this->s_groups) && \is_array($this->s_groups)) {
-                foreach ($this->s_groups as $s_g) {
+                foreach ($s_groups as $s_g) {
                     $submit_topics = XoopsPerms::getPermitted($this->mid, 'SubmitInTopic', $s_g);
                     $add           = true;
                     foreach ($parent_topics as $p_topic) {
@@ -194,7 +195,7 @@ class XoopsTopic
                 }
             }
             if (!empty($this->r_groups) && \is_array($this->r_groups)) {
-                foreach ($this->r_groups as $r_g) {
+                foreach ($r_groups as $r_g) {
                     $read_topics = XoopsPerms::getPermitted($this->mid, 'ReadInTopic', $r_g);
                     $add         = true;
                     foreach ($parent_topics as $p_topic) {
@@ -240,11 +241,11 @@ class XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
-    public function topic_title($format = 'S')
+    public function topic_title(string $format = 'S'): string
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
@@ -262,11 +263,11 @@ class XoopsTopic
     /**
      * @param string $format
      *
-     * @return mixed
+     * @return string
      */
-    public function topic_imgurl($format = 'S')
+    public function topic_imgurl(string $format = 'S'): string
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         switch ($format) {
             case 'S':
             case 'E':
@@ -292,7 +293,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getFirstChildTopics()
+    public function getFirstChildTopics(): array
     {
         $ret       = [];
         $xt        = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
@@ -309,7 +310,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getAllChildTopics()
+    public function getAllChildTopics(): array
     {
         $ret       = [];
         $xt        = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
@@ -326,7 +327,7 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getChildTopicsTreeArray()
+    public function getChildTopicsTreeArray(): array
     {
         $ret       = [];
         $xt        = new \XoopsTree($this->table, 'topic_id', 'topic_pid');
@@ -342,11 +343,11 @@ class XoopsTopic
 
     /**
      * @param int    $none
-     * @param        $seltopic
+     * @param int    $seltopic
      * @param string $selname
      * @param string $onchange
      */
-    public function makeTopicSelBox($none = 0, $seltopic = -1, $selname = '', $onchange = ''): void
+    public function makeTopicSelBox(int $none = 0, int $seltopic = -1, string $selname = '', string $onchange = ''): void
     {
         $xt = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         if (-1 != $seltopic) {
@@ -363,9 +364,9 @@ class XoopsTopic
     /**
      * @param $funcURL
      *
-     * @return mixed
+     * @return string
      */
-    public function getNiceTopicPathFromId($funcURL)
+    public function getNiceTopicPathFromId($funcURL): string
     {
         $xt  = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getNicePathFromId($this->topic_id, 'topic_title', $funcURL);
@@ -374,9 +375,9 @@ class XoopsTopic
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getAllChildTopicsId()
+    public function getAllChildTopicsId(): array
     {
         $xt  = new XoopsTree($this->table, 'topic_id', 'topic_pid');
         $ret = $xt->getAllChildId($this->topic_id, 'topic_title');
@@ -387,12 +388,12 @@ class XoopsTopic
     /**
      * @return array
      */
-    public function getTopicsList()
+    public function getTopicsList(): array
     {
         $ret    = [];
-        $result = $this->db->query('SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
+        $result = Utility::queryAndCheck($this->db, 'SELECT topic_id, topic_pid, topic_title FROM ' . $this->table);
         if ($result) {
-            $myts = MyTextSanitizer::getInstance();
+            $myts = \MyTextSanitizer::getInstance();
             while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $ret[$myrow['topic_id']] = [
                     'title' => \htmlspecialchars($myrow['topic_title'], \ENT_QUOTES | \ENT_HTML5),
@@ -410,11 +411,11 @@ class XoopsTopic
      *
      * @return bool
      */
-    public function topicExists($pid, $title)
+    public function topicExists($pid, $title): bool
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->table . ' WHERE topic_pid = ' . (int)$pid . " AND topic_title = '" . \trim($title) . "'";
-        $rs  = $this->db->query($sql);
-        [$count] = $this->db->fetchRow($rs);
+        $result  = Utility::queryAndCheck($this->db, $sql);
+        [$count] = $this->db->fetchRow($result);
         if ($count > 0) {
             return true;
         }

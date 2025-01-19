@@ -25,25 +25,27 @@
  * @copyright (c) Hervé Thouzard (https://www.herve-thouzard.com)
  */
 
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/class.sfiles.php';
 
-if (!News\Utility::getModuleOption('newsbythisauthor')) {
+if (!Utility::getModuleOption('newsbythisauthor')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'news_whos_who.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-$option  = News\Utility::getModuleOption('displayname');
+$option  = Utility::getModuleOption('displayname');
 $article = new NewsStory();
 $uid_ids = [];
-$uid_ids = $article->getWhosWho(News\Utility::getModuleOption('restrictindex'));
+$uid_ids = $article->getWhosWho(Utility::getModuleOption('restrictindex'));
 if (count($uid_ids) > 0) {
     $lst_uid = implode(',', $uid_ids);
     /** @var \XoopsMemberHandler $memberHandler */
@@ -75,12 +77,12 @@ if (count($uid_ids) > 0) {
     }
 }
 
-$xoopsTpl->assign('advertisement', News\Utility::getModuleOption('advertisement'));
+$xoopsTpl->assign('advertisement', Utility::getModuleOption('advertisement'));
 
 /**
  * Manage all the meta datas
  */
-News\Utility::createMetaDatas($article);
+Utility::createMetaDatas($article);
 
 $xoopsTpl->assign('xoops_pagetitle', _AM_NEWS_WHOS_WHO);
 $myts             = \MyTextSanitizer::getInstance();

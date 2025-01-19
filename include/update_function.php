@@ -15,26 +15,28 @@
  * @author      Voltan
  */
 
-use XoopsModules\News;
+use XoopsModules\News\{
+    Utility
+};
 
 /**
  * @return bool
  */
-function xoops_module_update_news()
+function xoops_module_update_news(): bool
 {
     global $xoopsDB;
     $errors = 0;
 
     //0) Rename all tables
 
-    if (News\Utility::existTable($xoopsDB->prefix('stories_files'))) {
+    if (Utility::existTable($xoopsDB->prefix('stories_files'))) {
         $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
             echo '<br>' . _AM_NEWS_UPGRADEFAILED . ' ' . _AM_NEWS_UPGRADEFAILED2;
             ++$errors;
         }
-    } elseif (!News\Utility::existTable($xoopsDB->prefix('news_stories_files'))) {
+    } elseif (!Utility::existTable($xoopsDB->prefix('news_stories_files'))) {
         // 1) Create, if it does not exists, the stories_files table
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_files') . " (
               fileid INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -53,7 +55,7 @@ function xoops_module_update_news()
         }
     }
 
-    if (News\Utility::existTable($xoopsDB->prefix('stories'))) {
+    if (Utility::existTable($xoopsDB->prefix('stories'))) {
         $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('stories') . ' RENAME ' . $xoopsDB->prefix('news_stories');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
@@ -62,7 +64,7 @@ function xoops_module_update_news()
         }
     }
 
-    if (News\Utility::existTable($xoopsDB->prefix('topics'))) {
+    if (Utility::existTable($xoopsDB->prefix('topics'))) {
         $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('topics') . ' RENAME ' . $xoopsDB->prefix('news_topics');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
@@ -71,7 +73,7 @@ function xoops_module_update_news()
         }
     }
 
-    if (News\Utility::existTable($xoopsDB->prefix('stories_files'))) {
+    if (Utility::existTable($xoopsDB->prefix('stories_files'))) {
         $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('stories_files') . ' RENAME ' . $xoopsDB->prefix('news_stories_files');
         $result = $xoopsDB->queryF($sql);
         if (!$result) {
@@ -106,24 +108,24 @@ function xoops_module_update_news()
 
 
     // 2.1) Add the new fields to the topic table
-    if (!News\Utility::existField('menu', $xoopsDB->prefix('news_topics'))) {
-        News\Utility::addField("menu TINYINT( 1 ) DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_topics'));
+    if (!Utility::existField('menu', $xoopsDB->prefix('news_topics'))) {
+        Utility::addField("menu TINYINT( 1 ) DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_topics'));
     }
-    if (!News\Utility::existField('topic_frontpage', $xoopsDB->prefix('news_topics'))) {
-        News\Utility::addField("topic_frontpage TINYINT( 1 ) DEFAULT '1' NOT NULL", $xoopsDB->prefix('news_topics'));
+    if (!Utility::existField('topic_frontpage', $xoopsDB->prefix('news_topics'))) {
+        Utility::addField("topic_frontpage TINYINT( 1 ) DEFAULT '1' NOT NULL", $xoopsDB->prefix('news_topics'));
     }
-    if (!News\Utility::existField('topic_rssurl', $xoopsDB->prefix('news_topics'))) {
-        News\Utility::addField('topic_rssurl VARCHAR( 255 ) NOT NULL', $xoopsDB->prefix('news_topics'));
+    if (!Utility::existField('topic_rssurl', $xoopsDB->prefix('news_topics'))) {
+        Utility::addField('topic_rssurl VARCHAR( 255 ) NOT NULL', $xoopsDB->prefix('news_topics'));
     }
-    if (!News\Utility::existField('topic_description', $xoopsDB->prefix('news_topics'))) {
-        News\Utility::addField('topic_description TEXT NOT NULL', $xoopsDB->prefix('news_topics'));
+    if (!Utility::existField('topic_description', $xoopsDB->prefix('news_topics'))) {
+        Utility::addField('topic_description TEXT NOT NULL', $xoopsDB->prefix('news_topics'));
     }
-    if (!News\Utility::existField('topic_color', $xoopsDB->prefix('news_topics'))) {
-        News\Utility::addField("topic_color varchar(6) NOT NULL default '000000'", $xoopsDB->prefix('news_topics'));
+    if (!Utility::existField('topic_color', $xoopsDB->prefix('news_topics'))) {
+        Utility::addField("topic_color varchar(6) NOT NULL default '000000'", $xoopsDB->prefix('news_topics'));
     }
 
     // 3) If it does not exists, create the table stories_votedata
-    if (!News\Utility::existTable($xoopsDB->prefix('news_stories_votedata'))) {
+    if (!Utility::existTable($xoopsDB->prefix('news_stories_votedata'))) {
         $sql = 'CREATE TABLE ' . $xoopsDB->prefix('news_stories_votedata') . " (
               ratingid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
               storyid INT(8) UNSIGNED NOT NULL DEFAULT '0',
@@ -143,23 +145,23 @@ function xoops_module_update_news()
     }
 
     // 4) Create the four new fields for the votes in the story table
-    if (!News\Utility::existField('rating', $xoopsDB->prefix('news_stories'))) {
-        News\Utility::addField("rating DOUBLE( 6, 4 ) DEFAULT '0.0000' NOT NULL", $xoopsDB->prefix('news_stories'));
+    if (!Utility::existField('rating', $xoopsDB->prefix('news_stories'))) {
+        Utility::addField("rating DOUBLE( 6, 4 ) DEFAULT '0.0000' NOT NULL", $xoopsDB->prefix('news_stories'));
     }
-    if (!News\Utility::existField('votes', $xoopsDB->prefix('news_stories'))) {
-        News\Utility::addField("votes INT( 11 ) UNSIGNED DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_stories'));
+    if (!Utility::existField('votes', $xoopsDB->prefix('news_stories'))) {
+        Utility::addField("votes INT( 11 ) UNSIGNED DEFAULT '0' NOT NULL", $xoopsDB->prefix('news_stories'));
     }
-    if (!News\Utility::existField('keywords', $xoopsDB->prefix('news_stories'))) {
-        News\Utility::addField('keywords VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!Utility::existField('keywords', $xoopsDB->prefix('news_stories'))) {
+        Utility::addField('keywords VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
-    if (!News\Utility::existField('description', $xoopsDB->prefix('news_stories'))) {
-        News\Utility::addField('description VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!Utility::existField('description', $xoopsDB->prefix('news_stories'))) {
+        Utility::addField('description VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
-    if (!News\Utility::existField('pictureinfo', $xoopsDB->prefix('news_stories'))) {
-        News\Utility::addField('pictureinfo VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!Utility::existField('pictureinfo', $xoopsDB->prefix('news_stories'))) {
+        Utility::addField('pictureinfo VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
-    if (!News\Utility::existField('subtitle', $xoopsDB->prefix('news_stories'))) {
-        News\Utility::addField('subtitle VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
+    if (!Utility::existField('subtitle', $xoopsDB->prefix('news_stories'))) {
+        Utility::addField('subtitle VARCHAR(255) NOT NULL', $xoopsDB->prefix('news_stories'));
     }
 
     // 5) Add some indexes to the topics table
@@ -170,7 +172,7 @@ function xoops_module_update_news()
 
     // 6) Make files and folders
     $dir = XOOPS_ROOT_PATH . '/uploads/news';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     if (!is_writable($dir)) {
@@ -178,7 +180,7 @@ function xoops_module_update_news()
     }
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/file';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     if (!is_writable($dir)) {
@@ -186,7 +188,7 @@ function xoops_module_update_news()
     }
 
     $dir = XOOPS_ROOT_PATH . '/uploads/news/image';
-    if (!@mkdir($dir) && !is_dir($dir)) {
+    if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
         throw new \RuntimeException('The directory ' . $dir . ' could not be created.');
     }
     if (!is_writable($dir)) {

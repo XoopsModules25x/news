@@ -34,30 +34,31 @@ class PageNav
     /**#@+
      * @access    private
      */
-    public $total;
-    public $perpage;
-    public $current;
-    public $url;
+    public int    $total;
+    public int    $perpage;
+    public int    $current;
+    public string $url;
     /**#@-*/
 
     /**
      * Constructor
      *
-     * @param int    $total_items   Total number of items
-     * @param int    $items_perpage Number of items per page
-     * @param int    $current_start First item on the current page
-     * @param string $start_name    Name for "start" or "offset"
-     * @param string $extra_arg     Additional arguments to pass in the URL
+     * @param int|string  $total_items   Total number of items
+     * @param int         $items_perpage Number of items per page
+     * @param int         $current_start First item on the current page
+     * @param string|null $start_name    Name for "start" or "offset"
+     * @param string      $extra_arg     Additional arguments to pass in the URL
      **/
-    public function __construct($total_items, $items_perpage, $current_start, $start_name = 'start', $extra_arg = '')
+    public function __construct($total_items, int $items_perpage, int $current_start, ?string $start_name = null, string $extra_arg = '')
     {
+        $start_name    ??= 'start';
         $this->total   = (int)$total_items;
         $this->perpage = (int)$items_perpage;
         $this->current = (int)$current_start;
         if ('' !== $extra_arg && ('&amp;' !== mb_substr($extra_arg, -5) || '&' !== mb_substr($extra_arg, -1))) {
             $extra_arg .= '&amp;';
         }
-        $this->url = $_SERVER['SCRIPT_NAME'] . '?' . $extra_arg . trim($start_name) . '=';
+        $this->url = $_SERVER['SCRIPT_NAME'] . '?' . $extra_arg . \trim($start_name) . '=';
     }
 
     /**
@@ -67,20 +68,20 @@ class PageNav
      *
      * @return string
      **/
-    public function renderNav($offset = 4)
+    public function renderNav(int $offset = 4): string
     {
         $ret = '';
         if ($this->total <= $this->perpage) {
             return $ret;
         }
-        $total_pages = ceil($this->total / $this->perpage);
+        $total_pages = \ceil($this->total / $this->perpage);
         if ($total_pages > 1) {
             $prev = $this->current - $this->perpage;
             if ($prev >= 0) {
                 $ret .= '<a href="' . $this->url . $prev . '"><u>&laquo;</u></a> ';
             }
             $counter      = 1;
-            $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
+            $current_page = (int)\floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<b>(' . $counter . ')</b> ';
@@ -112,18 +113,18 @@ class PageNav
      *
      * @return string
      **/
-    public function renderSelect($showbutton = false)
+    public function renderSelect(bool $showbutton = false): ?string
     {
         if ($this->total < $this->perpage) {
             return null;
         }
-        $total_pages = ceil($this->total / $this->perpage);
+        $total_pages = \ceil($this->total / $this->perpage);
         $ret         = '';
         if ($total_pages > 1) {
             $ret          = '<form name="pagenavform">';
             $ret          .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
             $counter      = 1;
-            $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
+            $current_page = (int)\floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<option value="' . $this->url . (($counter - 1) * $this->perpage) . '" selected>' . $counter . '</option>';
@@ -134,7 +135,7 @@ class PageNav
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="' . _GO . '">';
+                $ret .= '&nbsp;<input type="submit" value="' . \_GO . '">';
             }
             $ret .= '</form>';
         }
@@ -145,23 +146,24 @@ class PageNav
     /**
      * Create an enhanced navigational dropdown list
      *
-     * @param bool $showbutton Show the "Go" button?
+     * @param bool|null $showbutton Show the "Go" button?
      * @param null $titles
      *
      * @return string
      */
-    public function renderEnhancedSelect($showbutton = false, $titles = null)
+    public function renderEnhancedSelect(?bool $showbutton = null, $titles = null): ?string
     {
+        $showbutton ??= false;
         if ($this->total < $this->perpage) {
             return null;
         }
-        $total_pages = ceil($this->total / $this->perpage);
+        $total_pages = \ceil($this->total / $this->perpage);
         $ret         = '';
         if ($total_pages > 1) {
             $ret          = '<form name="pagenavform">';
             $ret          .= '<select name="pagenavselect" onchange="location=this.options[this.options.selectedIndex].value;">';
             $counter      = 1;
-            $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
+            $current_page = (int)\floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
                 $title = $titles[$counter - 1] ?? $counter;
                 if ($counter == $current_page) {
@@ -173,7 +175,7 @@ class PageNav
             }
             $ret .= '</select>';
             if ($showbutton) {
-                $ret .= '&nbsp;<input type="submit" value="' . _GO . '">';
+                $ret .= '&nbsp;<input type="submit" value="' . \_GO . '">';
             }
             $ret .= '</form>';
         }
@@ -188,12 +190,12 @@ class PageNav
      *
      * @return string
      **/
-    public function renderImageNav($offset = 4)
+    public function renderImageNav(int $offset = 4): ?string
     {
         if ($this->total < $this->perpage) {
             return null;
         }
-        $total_pages = ceil($this->total / $this->perpage);
+        $total_pages = \ceil($this->total / $this->perpage);
         $ret         = '';
         if ($total_pages > 1) {
             $ret  = '<table><tr>';
@@ -202,7 +204,7 @@ class PageNav
                 $ret .= '<td class="pagneutral"><a href="' . $this->url . $prev . '">&lt;</a></td><td><img src="' . XOOPS_URL . '/images/blank.gif" width="6" alt=""></td>';
             }
             $counter      = 1;
-            $current_page = (int)floor(($this->current + $this->perpage) / $this->perpage);
+            $current_page = (int)\floor(($this->current + $this->perpage) / $this->perpage);
             while ($counter <= $total_pages) {
                 if ($counter == $current_page) {
                     $ret .= '<td class="pagact"><b>' . $counter . '</b></td>';

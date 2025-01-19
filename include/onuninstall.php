@@ -9,8 +9,10 @@
  * @link            https://xoops.org XOOPS
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Helper,
+    Utility
+};
 
 /**
  * Prepares system prior to attempting to uninstall module
@@ -18,7 +20,7 @@ use XoopsModules\News\Utility;
  *
  * @return bool true if ready to uninstall, false if not
  */
-function xoops_module_pre_uninstall_news(\XoopsModule $module)
+function xoops_module_pre_uninstall_news(\XoopsModule $module): bool
 {
     // Do some synchronization
     return true;
@@ -30,16 +32,16 @@ function xoops_module_pre_uninstall_news(\XoopsModule $module)
  *
  * @return bool true if uninstallation successful, false if not
  */
-function xoops_module_uninstall_news(\XoopsModule $module)
+function xoops_module_uninstall_news(\XoopsModule $module): bool
 {
     //    return true;
 
     $moduleDirName      = \basename(\dirname(__DIR__));
     $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
-    /** @var News\Helper $helper */
-    $helper = News\Helper::getInstance();
+    /** @var Helper $helper */
+    $helper = Helper::getInstance();
 
-    /** @var News\Utility $utility */
+    /** @var Utility $utility */
     $utility = new Utility();
 
     $success = true;
@@ -52,7 +54,7 @@ function xoops_module_uninstall_news(\XoopsModule $module)
         // The directory exists so rename it
         $date = date('Y-m-d');
         if (!rename($uploadDirectory, $uploadDirectory . "_bak_$date")) {
-            $module->setErrors(sprintf(constant('CO_' . $moduleDirNameUpper . '_ERROR_BAD_DEL_PATH'), $uploadDirectory));
+            $module->setErrors(sprintf(constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_BAD_DEL_PATH'), $uploadDirectory));
             $success = false;
         }
     }
@@ -63,7 +65,7 @@ function xoops_module_uninstall_news(\XoopsModule $module)
     // Remove xsitemap.xml from XOOPS root folder if it exists
     //------------------------------------------------------------------
     $xmlfile = $GLOBALS['xoops']->path('xsitemap.xml');
-    if (is_file($xmlfile)) {
+    if (\is_file($xmlfile)) {
         if (false === ($delOk = unlink($xmlfile))) {
             $module->setErrors(sprintf(_AM_XXXXX_ERROR_BAD_REMOVE, $xmlfile));
         }

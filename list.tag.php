@@ -25,11 +25,13 @@
  * @copyright (c) Hervé Thouzard (https://www.herve-thouzard.com)
  */
 
-use XoopsModules\News;
+use XoopsModules\News\{
+    Utility
+};
 
 require_once __DIR__ . '/header.php';
 
-if (!News\Utility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
+if (!Utility::getModuleOption('tags') || !xoops_isActiveModule('tag')) {
     redirect_header('index.php', 2, _ERRORS);
 }
 require_once XOOPS_ROOT_PATH . '/modules/tag/list.tag.php';

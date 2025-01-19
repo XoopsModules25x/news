@@ -43,7 +43,7 @@ class NewsTopicsHandler extends \XoopsPersistableObjectHandler
     /**
      * @param null|\XoopsDatabase $db
      */
-    public function __construct(\XoopsDatabase $db = null)
+    public function __construct(?\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_topics', NewsTopics::class, 'topic_id', 'topic_pid');
     }

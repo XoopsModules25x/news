@@ -67,8 +67,10 @@
 ######################################################################
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 $GLOBALS['xoopsOption']['template_main'] = 'news_archive.tpl';
@@ -94,16 +96,18 @@ $months_arr = [
     12 => _CAL_DECEMBER,
 ];
 
+/** @var int $fromyear */
 $fromyear  = Request::getInt('year', 0, 'GET');
+/** @var int $frommonth */
 $frommonth = Request::getInt('month', 0, 'GET');
 
 $pgtitle = '';
 if ($fromyear && $frommonth) {
     $pgtitle = sprintf(' - %d - %d', $fromyear, $frommonth);
 }
-$infotips   = News\Utility::getModuleOption('infotips');
-$restricted = News\Utility::getModuleOption('restrictindex');
-$dateformat = News\Utility::getModuleOption('dateformat');
+$infotips   = Utility::getModuleOption('infotips');
+$restricted = Utility::getModuleOption('restrictindex');
+$dateformat = Utility::getModuleOption('dateformat');
 if ('' === $dateformat) {
     $dateformat = 'm';
 }
@@ -119,11 +123,8 @@ if (is_object($xoopsUser)) {
         $useroffset = $xoopsConfig['default_TZ'];
     }
 }
-$result = $xoopsDB->query('SELECT published FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired <= ' . time() . ') ORDER BY published DESC');
-if (!$result) {
-    echo _ERRORS;
-    exit();
-}
+$sql = 'SELECT published FROM ' . $xoopsDB->prefix('news_stories') . ' WHERE (published>0 AND published<=' . time() . ') AND (expired = 0 OR expired <= ' . time() . ') ORDER BY published DESC';
+$result = Utility::queryAndCheck($xoopsDB, $sql);
 $years  = [];
 $months = [];
 $i      = 0;
@@ -183,7 +184,7 @@ if (0 != $fromyear && 0 != $frommonth) {
             $story     = [];
             $htmltitle = '';
             if ($infotips > 0) {
-                $story['infotips'] = News\Utility::makeInfotips($article->hometext());
+                $story['infotips'] = Utility::makeInfotips($article->hometext());
                 $htmltitle         = ' title="' . $story['infotips'] . '"';
             }
             $story['title']      = "<a href='"
@@ -218,8 +219,8 @@ if (0 != $fromyear && 0 != $frommonth) {
 $xoopsTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 
 /**
- * Create the meta datas
+ * Create the metadatas
  */
-News\Utility::createMetaDatas();
+Utility::createMetaDatas();
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

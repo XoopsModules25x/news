@@ -15,9 +15,11 @@
  * @author       XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\Common\Configurator;
-use XoopsModules\News\Utility;
+use XoopsModules\News\{
+    Common\Configurator,
+    Helper,
+    Utility
+};
 
 /**
  * Prepares system prior to attempting to install module
@@ -25,10 +27,10 @@ use XoopsModules\News\Utility;
  *
  * @return bool true if ready to install, false if not
  */
-function xoops_module_pre_install_news(\XoopsModule $module)
+function xoops_module_pre_install_news(\XoopsModule $module): bool
 {
     require_once \dirname(__DIR__) . '/preloads/autoloader.php';
-    /** @var News\Utility $utility */
+    /** @var Utility $utility */
     $utility      = new Utility();
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
@@ -49,14 +51,14 @@ function xoops_module_pre_install_news(\XoopsModule $module)
  *
  * @return bool true if installation successful, false if not
  */
-function xoops_module_install_news(\XoopsModule $module)
+function xoops_module_install_news(\XoopsModule $module): bool
 {
-    require_once \dirname(__DIR__, 3) . '/mainfile.php';
+    require \dirname(__DIR__, 3) . '/mainfile.php';
 
     $moduleDirName = \basename(\dirname(__DIR__));
 
-    /** @var News\Helper $helper */
-    $helper       = News\Helper::getInstance();
+    /** @var Helper $helper */
+    $helper       = Helper::getInstance();
     $utility      = new Utility();
     $configurator = new Configurator();
     // Load language files
@@ -64,8 +66,7 @@ function xoops_module_install_news(\XoopsModule $module)
     $helper->loadLanguage('modinfo');
 
     // default Permission Settings ----------------------
-    global $xoopsModule;
-    $moduleId = $xoopsModule->getVar('mid');
+    $moduleId = $module->getVar('mid');
     // $moduleId2        = $helper->getModule()->mid();
     /** @var \XoopsGroupPermHandler $grouppermHandler */
     $grouppermHandler = xoops_getHandler('groupperm');
@@ -93,7 +94,7 @@ function xoops_module_install_news(\XoopsModule $module)
         }
     }
     //delete .html entries from the tpl table
-    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $xoopsModule->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
+    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('tplfile') . " WHERE `tpl_module` = '" . $module->getVar('dirname', 'n') . "' AND `tpl_file` LIKE '%.html%'";
     $GLOBALS['xoopsDB']->queryF($sql);
 
     return true;

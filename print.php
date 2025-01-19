@@ -33,8 +33,10 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
@@ -73,7 +75,7 @@ $xoops_meta_description = '';
 if ('' !== trim($story->keywords())) {
     $xoops_meta_keywords = $story->keywords();
 } else {
-    $xoops_meta_keywords = News\Utility::createMetaKeywords($story->hometext() . ' ' . $story->bodytext());
+    $xoops_meta_keywords = Utility::createMetaKeywords($story->hometext() . ' ' . $story->bodytext());
 }
 
 if ('' !== trim($story->description())) {
@@ -86,7 +88,7 @@ function PrintPage(): void
 {
     global $xoopsConfig, $xoopsModule, $story, $xoops_meta_keywords, $xoops_meta_description;
     $myts     = \MyTextSanitizer::getInstance();
-    $datetime = formatTimestamp($story->published(), News\Utility::getModuleOption('dateformat')); ?>
+    $datetime = formatTimestamp($story->published(), Utility::getModuleOption('dateformat')); ?>
     <!DOCTYPE html>
 <html xml:lang="<?php echo _LANGCODE; ?>" lang="<?php echo _LANGCODE; ?>">
     <?php
@@ -106,7 +108,7 @@ function PrintPage(): void
     }
     echo '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/news/assets/css/print.css">';
     $supplemental = '';
-    if (News\Utility::getModuleOption('footNoteLinks')) {
+    if (Utility::getModuleOption('footNoteLinks')) {
         $supplemental = "footnoteLinks('content','content'); "; ?>
         <script type="text/javascript">
             // <![CDATA[
@@ -272,7 +274,7 @@ function PrintPage(): void
     }
     echo '</td></tr></table></td></tr></table>
     <br><br>';
-    printf(_NW_THISCOMESFROM, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES));
+    printf(_NW_THISCOMESFROM, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES | ENT_HTML5));
     echo '<br><a href="' . XOOPS_URL . '/">' . XOOPS_URL . '</a><br><br>
         ' . _NW_URLFORSTORY . ' <!-- Tag below can be used to display Permalink image --><!--img src="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/images/x.gif" /--><br>
         <a class="ignore" href="' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/article.php?storyid=' . $story->storyid() . '">' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . '</a>

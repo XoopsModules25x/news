@@ -23,7 +23,7 @@ use XoopsModules\News\{
 };
 
 /**
- * @return mixed
+ * @return array|false
  */
 function b_news_topics_show()
 {
@@ -35,7 +35,7 @@ function b_news_topics_show()
 
     /** @var Helper $helper */
     if (!class_exists(Helper::class)) {
-        return false;
+        return [];
     }
 
     $helper = Helper::getInstance();
@@ -45,17 +45,12 @@ function b_news_topics_show()
     $restricted = Utility::getModuleOption('restrictindex');
 
     $xt         = new NewsTopic();
-    $allTopics  = $xt->getAllTopics($restricted);
+    $allTopics = $xt->getAllTopics($restricted);
     $topic_tree = new ObjectTree($allTopics, 'topic_id', 'topic_pid');
     $additional = " onchange='location=\"" . $jump . "\"+this.options[this.selectedIndex].value'";
 
-    if (Utility::checkVerXoops($GLOBALS['xoopsModule'], '2.5.9')) {
-        //                $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
-        $topicSelect        = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', '', true, 0, $additional);
-        $block['selectbox'] = $topicSelect->render();
-    } else {
-        $block['selectbox'] = $topic_tree->makeSelBox('storytopic', 'topic_title', '-- ', '', true, 0, $additional);
-    }
+    $topicSelect        = $topic_tree->makeSelectElement('storytopic', 'topic_title', '--', '', true, 0, $additional);
+    $block['selectbox'] = $topicSelect->render();
 
     return $block;
 }

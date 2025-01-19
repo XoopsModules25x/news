@@ -15,7 +15,9 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
+use XoopsModules\News\{
+    Utility
+};
 
 /**
  * @param $queryarray
@@ -26,12 +28,12 @@ use XoopsModules\News;
  *
  * @return array
  */
-function news_search($queryarray, $andor, $limit, $offset, $userid)
+function news_search($queryarray, $andor, $limit, $offset, $userid): array
 {
     global $xoopsDB, $xoopsUser;
-    $restricted = News\Utility::getModuleOption('restrictindex');
+    $restricted = Utility::getModuleOption('restrictindex');
     $highlight  = false;
-    $highlight  = News\Utility::getModuleOption('keywordshighlight'); // keywords highlighting
+    $highlight  = Utility::getModuleOption('keywordshighlight'); // keywords highlighting
 
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
@@ -69,6 +71,9 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
 
     $sql    .= 'ORDER BY created DESC';
     $result = $xoopsDB->query($sql, $limit, $offset);
+    if (!$xoopsDB->isResultSet($result)) {
+        \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+    }
     $ret    = [];
     $i      = 0;
     while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
@@ -93,7 +98,7 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
     $searchincomments = $cfg['config_search_comments'];
 
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
-        require XOOPS_ROOT_PATH . '/include/comment_constants.php';
+        require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
         $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status FROM ' . $xoopsDB->prefix('xoopscomments') . " WHERE (com_id>0) AND (com_modid=$modid) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
         if (0 != $userid) {
@@ -111,6 +116,9 @@ function news_search($queryarray, $andor, $limit, $offset, $userid)
         $i      = $ind;
         $sql    .= 'ORDER BY com_created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
+        if (!$xoopsDB->isResultSet($result)) {
+            \trigger_error("Query Failed! SQL: $sql- Error: " . $xoopsDB->error(), E_USER_ERROR);
+        }
         while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
             $display = true;
             if ($modid && $grouppermHandler) {

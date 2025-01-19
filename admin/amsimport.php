@@ -24,11 +24,12 @@
  * @copyright 2005, 2006 - Hervé Thouzard
  */
 
-use XoopsModules\Ams;
 use XoopsModules\Ams\Helper as AmsHelper;
-use XoopsModules\News\Files;
-use XoopsModules\News\NewsStory;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    Files,
+    NewsStory,
+    NewsTopic
+};
 
 require \dirname(__DIR__, 3) . '/include/cp_header.php';
 xoops_cp_header();
@@ -39,16 +40,7 @@ xoops_cp_header();
 require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
 
 if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
-    if (!isset($_POST['go'])) {
-        echo '<h1>Welcome to the AMS 2.41 import script</h1>';
-        echo '<br><br>Select the import options you wan to use :';
-        echo "<form method='post' action='amsimport.php'>";
-        echo "<br><input type='checkbox' name='useforum' value='1'> Import forums links inside news (at the bottom of the news)";
-        echo "<br><input type='checkbox' name='useextlinks' value='1'> Import external links inside news (at the bottom of the news)";
-        echo "<br><br><input type='submit' name='go' value='Import'>";
-        echo '</form>';
-        echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
-    } else {
+    if (isset($_POST['go'])) {
         // Launch the import
         /** @var \XoopsModules\Ams\Helper $amsHelper */
         $amsHelper = AmsHelper::getInstance();
@@ -123,17 +115,29 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $ams_newsid = $article['storyid'];
 
                 // We search for the last version
-                $result2          = $db->query('SELECT * FROM ' . $ams_text . ' WHERE storyid=' . $ams_newsid . ' AND current=1');
+                $sql = 'SELECT * FROM ' . $ams_text . ' WHERE storyid=' . $ams_newsid . ' AND current=1';
+                $result2          = $db->query($sql);
+                if (!$db->isResultSet($result2)) {
+                    \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
+                }
                 $text_lastversion = $db->fetchArray($result2);
 
                 // We search for the number of votes
-                $result3 = $db->query('SELECT count(*) AS cpt FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
+                $sql = 'SELECT count(*) AS cpt FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid;
+                $result3 = $db->query($sql);
+                if (!$db->isResultSet($result3)) {
+                    \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
+                }
                 $votes   = $db->fetchArray($result3);
 
                 // The links
                 $links = '';
                 if ($use_extlinks) {
-                    $result7 = $db->query('SELECT * FROM ' . $ams_links . ' WHERE storyid=' . $ams_newsid . ' ORDER BY linkid');
+                    $sql = 'SELECT * FROM ' . $ams_links . ' WHERE storyid=' . $ams_newsid . ' ORDER BY linkid';
+                    $result7 = $db->query($sql);
+                    if (!$db->isResultSet($result7)) {
+                        \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
+                    }
                     while (false !== ($link = $db->fetchArray($result7))) {
                         if ('' == trim($links)) {
                             $links = "\n\n" . _AMS_NW_RELATEDARTICLES . "\n\n";
@@ -179,7 +183,11 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $news_newsid = $news->storyid(); // ********************
 
                 // The files
-                $result4 = $db->query('SELECT * FROM ' . $ams_files . ' WHERE storyid=' . $ams_newsid);
+                $sql = 'SELECT * FROM ' . $ams_files . ' WHERE storyid=' . $ams_newsid;
+                $result4 = $db->query($sql);
+                if (!$db->isResultSet($result4)) {
+                    \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
+                }
                 while (false !== ($file = $db->fetchArray($result4))) {
                     $sfile = new Files();
                     $sfile->setFileRealName($file['filerealname']);
@@ -194,16 +202,19 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 }
 
                 // The ratings
-                $result5 = $db->query('SELECT * FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid);
+                $sql = 'SELECT * FROM ' . $ams_rating . ' WHERE storyid=' . $ams_newsid;
+                $result5 = $db->query($sql);
+                if (!$db->isResultSet($result5)) {
+                    \trigger_error("Query Failed! SQL: $sql Error: " . $db->error(), \E_USER_ERROR);
+                }
                 while (false !== ($ratings = $db->fetchArray($result5))) {
-                    $result6 = $db->queryF(
-                        'INSERT INTO ' . $news_stories_votedata . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (' . $news_newsid . ',' . $ratings['ratinguser'] . ',' . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')'
-                    );
+                    $sql = ' INSERT INTO ' . $news_stories_votedata . ' (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (' . $news_newsid . ',' . $ratings['ratinguser'] . ',' . $ratings['rating'] . ',' . $ratings['ratinghostname'] . ',' . $ratings['ratingtimestamp'] . ')';
+                    $result6 = $db->queryF($sql);
                 }
 
                 // The comments
                 $comments = $commentHandler->getByItemId($ams_mid, $ams_newsid, 'ASC');
-                if ($comments && is_array($comments)) {
+                if ($comments && \is_array($comments)) {
                     foreach ($comments as $onecomment) {
                         $onecomment->setNew();
                         $onecomment->setVar('com_modid', $news_mid);
@@ -219,7 +230,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
                 $criteria->add(new \Criteria('not_itemid', $ams_newsid));
                 $criteria->setOrder('ASC');
                 $notifications = $notificationHandler->getObjects($criteria);
-                if ($notifications && is_array($notifications)) {
+                if ($notifications && \is_array($notifications)) {
                     foreach ($notifications as $onenotification) {
                         $onenotification->setNew();
                         $onenotification->setVar('not_modid', $news_mid);
@@ -235,7 +246,7 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $criteria->add(new \Criteria('not_category', 'global'));
         $criteria->setOrder('ASC');
         $notifications = $notificationHandler->getObjects($criteria);
-        if ($notifications && is_array($notifications)) {
+        if ($notifications && \is_array($notifications)) {
             foreach ($notifications as $onenotification) {
                 $onenotification->setNew();
                 $onenotification->setVar('not_modid', $news_mid);
@@ -245,6 +256,15 @@ if (is_object($xoopsUser) && $xoopsUser->isAdmin($xoopsModule->mid())) {
         }
         unset($notifications);
         echo "<p><a href='" . XOOPS_URL . "/modules/news/admin/groupperms.php'>The import is finished, don't forget to verify and set the topics permissions !</a></p>";
+    } else {
+        echo '<h1>Welcome to the AMS 2.41 import script</h1>';
+        echo '<br><br>Select the import options you wan to use :';
+        echo "<form method='post' action='amsimport.php'>";
+        echo "<br><input type='checkbox' name='useforum' value='1'> Import forums links inside news (at the bottom of the news)";
+        echo "<br><input type='checkbox' name='useextlinks' value='1'> Import external links inside news (at the bottom of the news)";
+        echo "<br><br><input type='submit' name='go' value='Import'>";
+        echo '</form>';
+        echo "<br><br>If you check the two last options then the forum's link and all the external links will be added at the end of the body text.";
     }
 } else {
     redirect_header(XOOPS_URL . '/modules/news/index.php', 3, _NOPERM);

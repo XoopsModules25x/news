@@ -30,17 +30,19 @@
 
 use WideImage\WideImage;
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\Blacklist;
-use XoopsModules\News\NewsTopic;
-use XoopsModules\News\Registryfile;
+use XoopsModules\News\{
+    Blacklist,
+    NewsTopic,
+    Registryfile,
+    Utility
+};
 
 /**
- * @param             $option
- * @param string      $repmodule
+ * @param string $option
+ * @param string $repmodule
  * @return bool|mixed
  */
-function news_getmoduleoption($option, $repmodule = 'news')
+function news_getmoduleoption(string $option, string $repmodule = 'news')
 {
     global $xoopsModuleConfig, $xoopsModule;
     static $tbloptions = [];
@@ -83,15 +85,15 @@ function news_getmoduleoption($option, $repmodule = 'news')
 function news_updaterating($storyid): void
 {
     global $xoopsDB;
-    $query       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
-    $voteresult  = $xoopsDB->query($query);
-    $votesDB     = $xoopsDB->getRowsNum($voteresult);
+    $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('news_stories_votedata') . ' WHERE storyid = ' . $storyid;
+    $result = Utility::queryAndCheck($xoopsDB, $sql);
+    $votesDB     = $xoopsDB->getRowsNum($result);
     $totalrating = 0;
-    while ([$rating] = $xoopsDB->fetchRow($voteresult)) {
+    while ([$rating] = $xoopsDB->fetchRow($result)) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
-    $finalrating = number_format($finalrating, 4);
+    $finalrating =number_format((float)$finalrating, 4);
     $sql         = sprintf('UPDATE `%s` SET rating = %u, votes = %u WHERE storyid = %u', $xoopsDB->prefix('news_stories'), $finalrating, $votesDB, $storyid);
     $xoopsDB->queryF($sql);
 }
@@ -108,7 +110,7 @@ function news_updaterating($storyid): void
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_MygetItemIds($permtype = 'news_view')
+function news_MygetItemIds(string $permtype = 'news_view'): array
 {
     global $xoopsUser;
     static $tblperms = [];
@@ -131,7 +133,7 @@ function news_MygetItemIds($permtype = 'news_view')
 /**
  * @param $document
  *
- * @return mixed
+ * @return array|string|string[]|null
  */
 function news_html2text($document)
 {
@@ -144,7 +146,7 @@ function news_html2text($document)
     $search = [
         "'<script[^>]*?>.*?</script>'si", // Strip out javascript
         "'<img.*?>'si", // Strip out img tags
-        "'<[\/\!]*?[^<>]*?>'si", // Strip out HTML tags
+        "'<[\/\!]*?[^<>]*?>'i", // Strip out HTML tags
         "'([\r\n])[\s]+'", // Strip out white space
         "'&(quot|#34);'i", // Replace HTML entities
         "'&(amp|#38);'i",
@@ -191,7 +193,7 @@ function news_html2text($document)
  *
  * @return bool need to say it ?
  */
-function news_isX23()
+function news_isX23(): bool
 {
     $x23 = false;
     $xv  = str_replace('XOOPS ', '', XOOPS_VERSION);
@@ -205,17 +207,17 @@ function news_isX23()
 /**
  * Retrieve an editor according to the module's option "form_options"
  *
- * @param                                                                                                                                 $caption
- * @param                                                                                                                                 $name
- * @param string                                                                                                                          $value
- * @param string                                                                                                                          $width
- * @param string                                                                                                                          $height
- * @param string                                                                                                                          $supplemental
- * @return bool|XoopsFormDhtmlTextArea|XoopsFormEditor|\XoopsFormFckeditor|\XoopsFormHtmlarea|\XoopsFormTextArea|\XoopsFormTinyeditorTextArea
+ * @param string $caption
+ * @param string $name
+ * @param string $value
+ * @param string $width
+ * @param string $height
+ * @param string $supplemental
+ * @return bool|XoopsFormEditor|\XoopsFormTextArea
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $height = '400px', $supplemental = '')
+function news_getWysiwygForm(string $caption, string $name, string $value = '', string $width = '100%', string $height = '400px', string $supplemental = '')
 {
     $editor_option            = \mb_strtolower(news_getmoduleoption('form_options'));
     $editor                   = false;
@@ -236,18 +238,6 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
 
     // Only for Xoops 2.0.x
     switch ($editor_option) {
-        case 'fckeditor':
-            if (is_readable(XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php')) {
-                require_once XOOPS_ROOT_PATH . '/class/fckeditor/formfckeditor.php';
-                $editor = new \XoopsFormFckeditor($caption, $name, $value);
-            }
-            break;
-        case 'htmlarea':
-            if (is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
-                require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
-                $editor = new \XoopsFormHtmlarea($caption, $name, $value);
-            }
-            break;
         case 'dhtmltextarea':
         case 'dhtml':
             $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 10, 50, $supplemental);
@@ -270,12 +260,6 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
                 );
             }
             break;
-        case 'koivi':
-            if (is_readable(XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php')) {
-                require_once XOOPS_ROOT_PATH . '/class/wysiwyg/formwysiwygtextarea.php';
-                $editor = new \XoopsFormWysiwygTextArea($caption, $name, $value, $width, $height, '');
-            }
-            break;
     }
 
     return $editor;
@@ -285,7 +269,7 @@ function news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $hei
  * Internal function
  *
  * @param $text
- * @return mixed
+ * @return array|string|string[]
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
@@ -295,7 +279,7 @@ function DublinQuotes($text)
 }
 
 /**
- * Creates all the meta datas :
+ * Creates all the metadatas :
  * - For Mozilla/Netscape and Opera the site navigation's bar
  * - The Dublin's Core Metadata
  * - The link for Firefox 2 micro summaries
@@ -362,17 +346,17 @@ function news_CreateMetaDatas($story = null): void
     }
 
     /**
-     * Dublin Core's meta datas
+     * Dublin Core's metadatas
      */
     if (news_getmoduleoption('dublincore') && isset($story) && is_object($story)) {
         /** @var \XoopsConfigHandler $configHandler */
         $configHandler         = xoops_getHandler('config');
         $xoopsConfigMetaFooter = $configHandler->getConfigsByCat(XOOPS_CONF_METAFOOTER);
-        $content               .= '<meta name="DC.Title" content="' . News\Utility::getDublinQuotes($story->title()) . "\">\n";
-        $content               .= '<meta name="DC.Creator" content="' . News\Utility::getDublinQuotes($story->uname()) . "\">\n";
-        $content               .= '<meta name="DC.Subject" content="' . News\Utility::getDublinQuotes($meta_keywords) . "\">\n";
-        $content               .= '<meta name="DC.Description" content="' . News\Utility::getDublinQuotes($story->title()) . "\">\n";
-        $content               .= '<meta name="DC.Publisher" content="' . News\Utility::getDublinQuotes($xoopsConfig['sitename']) . "\">\n";
+        $content               .= '<meta name="DC.Title" content="' . Utility::getDublinQuotes($story->title()) . "\">\n";
+        $content               .= '<meta name="DC.Creator" content="' . Utility::getDublinQuotes($story->uname()) . "\">\n";
+        $content               .= '<meta name="DC.Subject" content="' . Utility::getDublinQuotes($meta_keywords) . "\">\n";
+        $content               .= '<meta name="DC.Description" content="' . Utility::getDublinQuotes($story->title()) . "\">\n";
+        $content               .= '<meta name="DC.Publisher" content="' . Utility::getDublinQuotes($xoopsConfig['sitename']) . "\">\n";
         $content               .= '<meta name="DC.Date.created" scheme="W3CDTF" content="' . date('Y-m-d', $story->created) . "\">\n";
         $content               .= '<meta name="DC.Date.issued" scheme="W3CDTF" content="' . date('Y-m-d', $story->published) . "\">\n";
         $content               .= '<meta name="DC.Identifier" content="' . XOOPS_URL . '/modules/news/article.php?storyid=' . $story->storyid() . "\">\n";
@@ -380,7 +364,7 @@ function news_CreateMetaDatas($story = null): void
         $content               .= '<meta name="DC.Language" content="' . _LANGCODE . "\">\n";
         $content               .= '<meta name="DC.Relation.isReferencedBy" content="' . XOOPS_URL . '/modules/news/index.php?storytopic=' . $story->topicid() . "\">\n";
         if (isset($xoopsConfigMetaFooter['meta_copyright'])) {
-            $content .= '<meta name="DC.Rights" content="' . News\Utility::getDublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\">\n";
+            $content .= '<meta name="DC.Rights" content="' . Utility::getDublinQuotes($xoopsConfigMetaFooter['meta_copyright']) . "\">\n";
         }
     }
 
@@ -404,7 +388,7 @@ function news_CreateMetaDatas($story = null): void
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
-function news_createmeta_keywords($content)
+function news_createmeta_keywords($content): string
 {
     require_once XOOPS_ROOT_PATH . '/modules/news/config.php';
     // require_once XOOPS_ROOT_PATH . '/modules/news/class/blacklist.php';
@@ -578,10 +562,12 @@ function news_updateCache(): void
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
-function news_TableExists($tablename)
+function news_TableExists($tablename): bool
 {
     global $xoopsDB;
-    $result = $xoopsDB->queryF("SHOW TABLES LIKE '$tablename'");
+
+    $sql = "SHOW TABLES LIKE '$tablename'";
+    $result = Utility::queryFAndCheck($xoopsDB, $sql);
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }
@@ -595,10 +581,11 @@ function news_TableExists($tablename)
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  * @copyright (c) Hervé Thouzard
  */
-function news_FieldExists($fieldname, $table)
+function news_FieldExists($fieldname, $table): bool
 {
     global $xoopsDB;
-    $result = $xoopsDB->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
+    $sql = "SHOW COLUMNS FROM   $table LIKE '$fieldname'";
+    $result = Utility::queryFAndCheck($xoopsDB, $sql);
 
     return ($xoopsDB->getRowsNum($result) > 0);
 }
@@ -623,7 +610,7 @@ function news_AddField($field, $table)
 /**
  * Verify that the current user is a member of the Admin group
  */
-function news_is_admin_group()
+function news_is_admin_group(): bool
 {
     global $xoopsUser, $xoopsModule;
     if (is_object($xoopsUser)) {
@@ -681,7 +668,7 @@ function news_isbot()
  * @copyright (c) Hervé Thouzard
  * @author        Hervé Thouzard (https://www.herve-thouzard.com)
  */
-function news_make_infotips($text)
+function news_make_infotips($text): ?string
 {
     $infotips = news_getmoduleoption('infotips');
     if ($infotips > 0) {
@@ -699,7 +686,7 @@ function news_make_infotips($text)
  * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
  *           <amos dot robinson at gmail dot com>
  */
-function news_close_tags($string)
+function news_close_tags(string $string): string
 {
     // match opened tags
     if (preg_match_all('/<([a-z\:\-]+)[^\/]>/', $string, $start_tags)) {
@@ -750,13 +737,13 @@ function news_close_tags($string)
  * @author   Monte Ohrt <monte at ohrt dot com>, modified by Amos Robinson
  *           <amos dot robinson at gmail dot com>
  */
-function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false)
+function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words = false): string
 {
     if (0 == $length) {
         return '';
     }
     if (mb_strlen($string) > $length) {
-        $length -= mb_strlen($etc);
+        $length -= \mb_strlen($etc);
         if (!$break_words) {
             $string = preg_replace('/\s+?(\S+)?$/', '', mb_substr($string, 0, $length + 1));
             $string = preg_replace('/<[^>]*$/', '', $string);
@@ -782,13 +769,13 @@ function news_truncate_tagsafe($string, $length = 80, $etc = '...', $break_words
  * @return bool
  */
 function news_resizePicture(
-    $src_path,
-    $dst_path,
-    $param_width,
-    $param_height,
-    $keep_original = false,
-    $fit = 'inside'
-) {
+    string $src_path,
+    string $dst_path,
+    int    $param_width,
+    int    $param_height,
+    bool   $keep_original = false,
+    string $fit = 'inside'
+): bool {
     //    require_once XOOPS_PATH . '/vendor/wideimage/WideImage.php';
     $resize            = true;
     $pictureDimensions = getimagesize($src_path);

@@ -25,19 +25,19 @@ namespace XoopsModules\News\Common;
  */
 class Configurator
 {
-    public $name;
-    public $paths           = [];
-    public $uploadFolders   = [];
-    public $copyBlankFiles  = [];
-    public $copyTestFolders = [];
-    public $templateFolders = [];
-    public $oldFiles        = [];
-    public $oldFolders      = [];
-    public $renameTables    = [];
-    public $renameColumns   = [];
-    public $moduleStats     = [];
-    public $modCopyright;
-    public $icons;
+    public string $name;
+    public array $paths           = [];
+    public array $uploadFolders   = [];
+    public array $copyBlankFiles  = [];
+    public array $copyTestFolders = [];
+    public array $templateFolders = [];
+    public array $oldFiles        = [];
+    public array $oldFolders      = [];
+    public array $renameTables    = [];
+    public array $renameColumns   = [];
+    public array $moduleStats     = [];
+    public string $modCopyright;
+    public array $icons;
 
     /**
      * Configurator constructor.

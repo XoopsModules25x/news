@@ -1,5 +1,5 @@
 <div class="news-random">
-    <{foreach item=news from=$block.stories}>
+    <{foreach item=news from=$block.stories|default:null}>
         <div class="item">
             <h3>
            <span>
@@ -12,7 +12,7 @@
             <{/if}>
             </span>
                 <{$news.topic_title}> - <a
-                        href="<{$xoops_url}>/modules/news/article.php?storyid=<{$news.id}>" <{$news.infotips}>><{$news.title}></a>
+                        href="<{$xoops_url}>/modules/<{$xoops_dirname}>/article.php?storyid=<{$news.id}>" <{$news.infotips}>><{$news.title}></a>
             </h3>
             <{if $news.teaser}><p><{$news.teaser}></p><{/if}>
         </div>

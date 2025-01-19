@@ -16,18 +16,21 @@
  */
 
 use Xmf\Request;
-use XoopsModules\News;
-use XoopsModules\News\NewsStory;
+use XoopsModules\News\{
+    Helper,
+    NewsStory,
+    Utility
+};
 
 require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 
 // require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newsstory.php';
 
 // We verify that the user can post comments **********************************
-if (null === $helper->getModule()) {
+if (!is_object($helper->getModule())) {
     exit();
 }
 
@@ -44,7 +47,7 @@ $com_itemid = Request::getInt('com_itemid', 0, 'GET');
 if ($com_itemid > 0) {
     $article = new NewsStory($com_itemid);
     if ($article->storyid > 0) {
-        $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), News\Utility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
+        $com_replytext = _POSTEDBY . '&nbsp;<b>' . $article->uname() . '</b>&nbsp;' . _DATE . '&nbsp;<b>' . formatTimestamp($article->published(), Utility::getModuleOption('dateformat')) . '</b><br><br>' . $article->hometext();
         $bodytext      = $article->bodytext();
         if ('' !== $bodytext) {
             $com_replytext .= '<br><br>' . $bodytext;

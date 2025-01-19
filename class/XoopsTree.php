@@ -27,12 +27,12 @@ namespace XoopsModules\News;
  */
 class XoopsTree
 {
-    public $table; //table with parent-child structure
-    public $id; //name of unique id for records in table $table
-    public $pid; // name of parent id used in table $table
-    public $order; //specifies the order of query results
-    public $title; // name of a field in table $table which will be used when  selection box and paths are generated
-    public $db;
+    public                $table; //table with parent-child structure
+    public                $id; //name of unique id for records in table $table
+    public                $pid; // name of parent id used in table $table
+    public                $order; //specifies the order of query results
+    public                $title; // name of a field in table $table which will be used when  selection box and paths are generated
+    public \XoopsDatabase $db;
     //constructor of class XoopsTree
     //sets the names of table, unique id, and parend id
 
@@ -43,8 +43,8 @@ class XoopsTree
      */
     public function __construct($table_name, $id_name, $pid_name)
     {
-        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php" . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+//        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+//        $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php" . ". Called from {$trace[0]['file']} line {$trace[0]['line']}");
         /** @var \XoopsMySQLDatabase $db */
         $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table_name;
@@ -60,7 +60,7 @@ class XoopsTree
      *
      * @return array
      */
-    public function getFirstChild($sel_id, $order = '')
+    public function getFirstChild($sel_id, string $order = ''): array
     {
         $sel_id = (int)$sel_id;
         $arr    = [];
@@ -68,7 +68,7 @@ class XoopsTree
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        $result = $this->db->query($sql);
+        $result = Utility::queryAndCheck($this->db, $sql);
         if ($this->db->isResultSet($result)) {
             while (false !== ($myrow = $this->db->fetchArray($result))) {
                 $arr[] = $myrow;
@@ -85,11 +85,12 @@ class XoopsTree
      *
      * @return array
      */
-    public function getFirstChildId($sel_id)
+    public function getFirstChildId($sel_id): array
     {
         $sel_id  = (int)$sel_id;
         $idarray = [];
-        $result  = $this->db->query('SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id);
+        $sql     = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
+        $result  = Utility::queryAndCheck($this->db, $sql);
         $count   = $this->db->getRowsNum($result);
         if (0 == $count) {
             return $idarray;
@@ -110,14 +111,14 @@ class XoopsTree
      *
      * @return array
      */
-    public function getAllChildId($sel_id, $order = '', $idarray = [])
+    public function getAllChildId($sel_id, string $order = '', array $idarray = []): array
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        $result = $this->db->query($sql);
+        $result = Utility::queryAndCheck($this->db, $sql);
         $count  = $this->db->getRowsNum($result);
         if (0 == $count) {
             return $idarray;
@@ -139,14 +140,14 @@ class XoopsTree
      *
      * @return array
      */
-    public function getAllParentId($sel_id, $order = '', $idarray = [])
+    public function getAllParentId($sel_id, string $order = '', array $idarray = []): array
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id;
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        $result = $this->db->query($sql);
+        $result = Utility::queryAndCheck($this->db, $sql);
         [$r_id] = $this->db->fetchRow($result);
         if (0 == $r_id) {
             return $idarray;
@@ -161,16 +162,17 @@ class XoopsTree
     // the path is delimetered with "/"
 
     /**
-     * @param        $sel_id
-     * @param        $title
-     * @param string $path
+     * @param string|int $sel_id
+     * @param string     $title
+     * @param string     $path
      *
      * @return string
      */
-    public function getPathFromId($sel_id, $title, $path = '')
+    public function getPathFromId($sel_id, string $title, string $path = ''): string
     {
         $sel_id = (int)$sel_id;
-        $result = $this->db->query('SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id");
+        $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
+        $result = Utility::queryAndCheck($this->db, $sql);
         if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
@@ -198,7 +200,7 @@ class XoopsTree
      * @param string $sel_name
      * @param string $onchange
      */
-    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = ''): void
+    public function makeMySelBox($title, string $order = '', int $preset_id = 0, int $none = 0, string $sel_name = '', string $onchange = ''): void
     {
         if ('' == $sel_name) {
             $sel_name = $this->id;
@@ -213,7 +215,7 @@ class XoopsTree
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        $result = $this->db->query($sql);
+        $result = Utility::queryAndCheck($this->db, $sql);
         if ($none) {
             echo "<option value='0'>----</option>\n";
         }
@@ -241,19 +243,19 @@ class XoopsTree
     //generates nicely formatted linked path from the root id to a given id
 
     /**
-     * @param        $sel_id
-     * @param        $title
-     * @param        $funcURL
-     * @param string $path
+     * @param string|int $sel_id
+     * @param string     $title
+     * @param string     $funcURL
+     * @param string     $path
      *
      * @return string
      */
-    public function getNicePathFromId($sel_id, $title, $funcURL, $path = '')
+    public function getNicePathFromId($sel_id, string $title, string $funcURL, string $path = ''): string
     {
         $path   = !empty($path) ? '&nbsp;:&nbsp;' . $path : $path;
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
-        $result = $this->db->query($sql);
+        $result = Utility::queryAndCheck($this->db, $sql);
         if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
@@ -278,10 +280,11 @@ class XoopsTree
      *
      * @return string
      */
-    public function getIdPathFromId($sel_id, $path = '')
+    public function getIdPathFromId($sel_id, string $path = ''): string
     {
         $sel_id = (int)$sel_id;
-        $result = $this->db->query('SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id");
+        $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
+        $result = Utility::queryAndCheck($this->db, $sql);
         if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
@@ -311,8 +314,8 @@ class XoopsTree
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        $result = $this->db->query($sql);
-        $count  = $this->db->getRowsNum($result);
+        $result = Utility::queryAndCheck($this->db, $sql);
+        $count = $this->db->getRowsNum($result);
         if (0 == $count) {
             return $parray;
         }
@@ -341,8 +344,8 @@ class XoopsTree
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        $result = $this->db->query($sql);
-        $count  = $this->db->getRowsNum($result);
+        $result = Utility::queryAndCheck($this->db, $sql);
+        $count = $this->db->getRowsNum($result);
         if (0 == $count) {
             return $parray;
         }

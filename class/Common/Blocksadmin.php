@@ -23,6 +23,9 @@ use XoopsModules\News\{
 };
 
 //require_once __DIR__ . '/admin_header.php';
+\xoops_loadLanguage('admin', 'system');
+\xoops_loadLanguage('admin/blocksadmin', 'system');
+\xoops_loadLanguage('admin/groups', 'system');
 
 /**
  * class Blocksadmin
@@ -60,25 +63,14 @@ final class Blocksadmin
         $this->helper             = $helper;
         $this->moduleDirName      = \basename(\dirname(__DIR__, 2));
         $this->moduleDirNameUpper = \mb_strtoupper($this->moduleDirName);
-        \xoops_loadLanguage('admin', 'system');
-        \xoops_loadLanguage('admin/blocksadmin', 'system');
-        \xoops_loadLanguage('admin/groups', 'system');
+
         \xoops_loadLanguage('common', $this->moduleDirName);
-        \xoops_loadLanguage('blocksadmin', $this->moduleDirName);
     }
 
-    /**
-     * @return void
-     */
     public function listBlocks(): void
     {
         global $xoopsModule, $pathIcon16;
         require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-        //        xoops_loadLanguage('admin', 'system');
-        //        xoops_loadLanguage('admin/blocksadmin', 'system');
-        //        xoops_loadLanguage('admin/groups', 'system');
-        //        xoops_loadLanguage('common', $moduleDirName);
-        //        xoops_loadLanguage('blocks', $moduleDirName);
 
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = \xoops_getHandler('module');
@@ -125,12 +117,12 @@ final class Blocksadmin
             $groupsPermissions = $grouppermHandler->getGroupIds('block_read', $i->getVar('bid'));
             $sql               = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $i->getVar('bid');
             $result            = $this->db->query($sql);
-            if (!$this->db->isResultSet($result)) {
-                \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-            } else {
+            if ($this->db->isResultSet($result)) {
                 while (false !== ($row = $this->db->fetchArray($result))) {
                     $modules[] = (int)$row['module_id'];
                 }
+            } else {
+                \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
             }
             $cachetimeOptions = '';
             foreach ($cachetimes as $cachetime => $cachetimeName) {
@@ -248,16 +240,20 @@ final class Blocksadmin
     {
         //        \xoops_cp_header();
 
-        \xoops_loadLanguage('admin', 'system');
-        \xoops_loadLanguage('admin/blocksadmin', 'system');
-        \xoops_loadLanguage('admin/groups', 'system');
+
 
         $myblock = new \XoopsBlock($bid);
 
         $sql = \sprintf('DELETE FROM %s WHERE bid = %u', $this->db->prefix('newblocks'), $bid);
-        $this->db->queryF($sql) || \trigger_error($GLOBALS['xoopsDB']->error());
+        $result = $this->db->queryF($sql);
+        if (!$result) {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
         $sql = \sprintf('DELETE FROM %s WHERE block_id = %u', $this->db->prefix('block_module_link'), $bid);
-        $this->db->queryF($sql) || \trigger_error($GLOBALS['xoopsDB']->error());
+        $result = $this->db->queryF($sql);
+        if (!$result) {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
+        }
 
         $this->helper->redirect('admin/blocksadmin.php?op=list', 1, _AM_DBUPDATED);
     }
@@ -270,20 +266,18 @@ final class Blocksadmin
         //require_once __DIR__ . '/admin_header.php';
         //        \xoops_cp_header();
 
-        \xoops_loadLanguage('admin', 'system');
-        \xoops_loadLanguage('admin/blocksadmin', 'system');
-        \xoops_loadLanguage('admin/groups', 'system');
+
 
         $modules = [];
         $myblock = new \XoopsBlock($bid);
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
-        if (!$this->db->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-        } else {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($row = $this->db->fetchArray($result))) {
                 $modules[] = (int)$row['module_id'];
             }
+        } else {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
         }
 
         $isCustom = \in_array($myblock->getVar('block_type'), ['C', 'E']);
@@ -327,15 +321,14 @@ final class Blocksadmin
      */
     public function isBlockCloned(int $bid, string $bside, string $bweight, string $bvisible, string $bcachetime, ?array $bmodule, ?array $options, ?array $groups): void
     {
-        \xoops_loadLanguage('admin', 'system');
-        \xoops_loadLanguage('admin/blocksadmin', 'system');
-        \xoops_loadLanguage('admin/groups', 'system');
+
 
         $block = new \XoopsBlock($bid);
+        /** @var \XoopsBlock $clone */
         $clone = $block->xoopsClone();
         if (empty($bmodule)) {
             //            \xoops_cp_header();
-            \xoops_error(\sprintf(_AM_NOTSELNG, _AM_VISIBLEIN));
+            \xoops_error(\sprintf(\_AM_NOTSELNG, _AM_VISIBLEIN));
             \xoops_cp_footer();
             exit();
         }
@@ -345,7 +338,7 @@ final class Blocksadmin
         //$clone->setVar('content', $_POST['bcontent']);
         $clone->setVar('title', Request::getString('btitle', '', 'POST'));
         $clone->setVar('bcachetime', $bcachetime);
-        if (\is_array($options) && ($options !== [])) {
+        if (\is_array($options) && ([] !== $options)) {
             $optionsImploded = \implode('|', $options);
             $clone->setVar('options', $optionsImploded);
         }
@@ -420,20 +413,18 @@ final class Blocksadmin
     {
         //        require_once \dirname(__DIR__,2) . '/admin/admin_header.php';
         //        \xoops_cp_header();
-        \xoops_loadLanguage('admin', 'system');
-        \xoops_loadLanguage('admin/blocksadmin', 'system');
-        \xoops_loadLanguage('admin/groups', 'system');
+
         //        mpu_adm_menu();
         $myblock = new \XoopsBlock($bid);
         $modules = [];
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
-        if (!$this->db->isResultSet($result)) {
-            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-        } else {
+        if ($this->db->isResultSet($result)) {
             while (false !== ($row = $this->db->fetchArray($result))) {
                 $modules[] = (int)$row['module_id'];
             }
+        } else {
+            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
         }
 
         $isCustom = \in_array($myblock->getVar('block_type'), ['C', 'E']);
@@ -498,7 +489,7 @@ final class Blocksadmin
         //        $blockHandler = \xoops_getHandler('block');
         //        $blockHandler->insert($myblock);
 
-        if (!empty($bmodule) && $bmodule !== []) {
+        if (!empty($bmodule) && [] !== $bmodule) {
             $sql = \sprintf('DELETE FROM `%s` WHERE block_id = %u', $this->db->prefix('block_module_link'), $bid);
             $this->db->query($sql);
             if (\in_array(0, $bmodule)) {

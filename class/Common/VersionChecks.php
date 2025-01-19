@@ -17,6 +17,9 @@ namespace XoopsModules\News\Common;
  * @license     GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author      mamba <mambax7@gmail.com>
  */
+
+use Xmf\Module\Helper;
+
 trait VersionChecks
 {
     /**
@@ -26,7 +29,7 @@ trait VersionChecks
      * @param null|string  $requiredVer
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerXoops(?\XoopsModule $module, string $requiredVer = null): bool
+    public static function checkVerXoops(?\XoopsModule $module = null, ?string $requiredVer = null): bool
     {
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
@@ -43,9 +46,9 @@ trait VersionChecks
         }
         $success = true;
 
-        if (\version_compare($currentVer, $requiredVer, '<')) {
+        if ($module->versionCompare($currentVer, $requiredVer, '<')) {
             $success = false;
-            $module->setErrors(\sprintf(\constant('CO_' . $moduleDirNameUpper . '_ERROR_BAD_XOOPS'), $requiredVer, $currentVer));
+            $module->setErrors(\sprintf(\constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_BAD_XOOPS'), $requiredVer, $currentVer));
         }
 
         return $success;
@@ -58,7 +61,7 @@ trait VersionChecks
      *
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerPhp(\XoopsModule $module = null): bool
+    public static function checkVerPhp(?\XoopsModule $module = null): bool
     {
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
@@ -74,8 +77,8 @@ trait VersionChecks
         $verNum = \PHP_VERSION;
         $reqVer = &$module->getInfo('min_php');
 
-        if (false !== $reqVer && '' !== $reqVer && !is_array($reqVer) && \version_compare($verNum, $reqVer, '<')) {
-            $module->setErrors(\sprintf(\constant('CO_' . $moduleDirNameUpper . '_ERROR_BAD_PHP'), $reqVer, $verNum));
+        if (false !== $reqVer && '' !== $reqVer && !\is_array($reqVer) && $module->versionCompare($verNum, $reqVer, '<')) {
+            $module->setErrors(\sprintf(\constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_BAD_PHP'), $reqVer, $verNum));
             $success = false;
         }
 
@@ -92,7 +95,7 @@ trait VersionChecks
      * @return string|array|null info about the latest module version, if newer
      */
     public static function checkVerModule(
-        \Xmf\Module\Helper $helper,
+        Helper $helper,
         ?string            $source = null,
         ?string            $default = null
     ): ?array {
@@ -100,6 +103,7 @@ trait VersionChecks
         $default            ??= 'master';
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
+        $module             = $helper->getModule();
         $update             = '';
         $repository         = 'XoopsModules25x/' . $moduleDirName;
         //        $repository         = 'XoopsModules25x/publisher'; //for testing only
@@ -112,7 +116,7 @@ trait VersionChecks
             //TODO: how to avoid an error when 'Peer's Certificate issuer is not recognized'
             \curl_setopt($curlHandle, \CURLOPT_HTTPHEADER, ["User-Agent:Publisher\r\n"]);
             $curlReturn = \curl_exec($curlHandle);
-            if (is_bool($curlReturn)) {
+            if (\is_bool($curlReturn)) {
                 \trigger_error(\curl_error($curlHandle));
             } elseif (false !== \mb_strpos($curlReturn, 'Not Found')) {
                 \trigger_error('Repository Not Found: ' . $infoReleasesUrl);
@@ -137,7 +141,7 @@ trait VersionChecks
                 $moduleVersion = \str_replace(' ', '', \mb_strtolower($moduleVersion));
                 //                    $moduleVersion = '1.0'; //for testing only
                 //                    $moduleDirName = 'publisher'; //for testing only
-                if (!$prerelease && \version_compare($moduleVersion, $latestVersion, '<')) {
+                if (!$prerelease && $module->versionCompare($moduleVersion, $latestVersion, '<')) {
                     $ret   = [];
                     $ret[] = $update;
                     $ret[] = $latestVersionLink;

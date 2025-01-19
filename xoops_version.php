@@ -15,20 +15,23 @@
  * @author         XOOPS Development Team
  */
 
-use XoopsModules\News;
-use XoopsModules\News\NewsTopic;
+use XoopsModules\News\{
+    Helper,
+    NewsTopic,
+    Utility
+};
 
 require_once __DIR__ . '/preloads/autoloader.php';
-/** @var News\Helper $helper */
-$helper = News\Helper::getInstance();
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 $helper->loadLanguage('common');
 
 $moduleDirName = basename(__DIR__);
 $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
-$modversion['version']       = '1.72.0';
-$modversion['module_status'] = 'Beta 6';
-$modversion['release_date']  = '2022/10/24';
+$modversion['version']       = '1.73.0';
+$modversion['module_status'] = 'Beta 3';
+$modversion['release_date']  = '2025/01/16';
 $modversion['name']          = _MI_NEWS_NAME;
 $modversion['description']   = _MI_NEWS_DESC;
 $modversion['credits']       = 'XOOPS Project, Christian, Pilou, Marco, <br>ALL the members of the Newbb Team, GIJOE, Zoullou, Mithrandir, <br>Setec Astronomy, Marcan, 5vision, Anne, Trabis, dhsoft, Mamba, Mage, Timgno';
@@ -44,15 +47,16 @@ $modversion['dirname']       = $moduleDirName;
 //$modversion['icons16']             = '../../Frameworks/moduleclasses/icons/16';
 //$modversion['icons32']             = '../../Frameworks/moduleclasses/icons/32';
 $modversion['onInstall']           = 'include/install_function.php';
-$modversion['onUpdate']            = 'include/update_function.php';
+//$modversion['onUpdate']            = 'include/update_function.php';
+$modversion['onUpdate']            = 'include/onupdate.php';
 $modversion['module_website_url']  = 'www.xoops.org/';
 $modversion['module_website_name'] = 'XOOPS';
 $modversion['author_website_url']  = 'https://xoops.org/';
 $modversion['author_website_name'] = 'XOOPS';
 $modversion['min_php']             = '7.4';
-$modversion['min_xoops']           = '2.5.10';
+$modversion['min_xoops']           = '2.5.11';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = ['mysql' => '5.5'];
+$modversion['min_db']              = ['mysql' => '5.7'];
 
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
@@ -230,7 +234,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
     // 2) If there's no topics to display as sub menus we can go on
     if (!isset($_SESSION['items_count']) || -1 == $_SESSION['items_count']) {
         $sql    = 'SELECT COUNT(*) AS cpt FROM ' . $xoopsDB->prefix('news_topics') . ' WHERE menu=1';
-        $result = $xoopsDB->query($sql);
+        $result = Utility::queryAndCheck($xoopsDB, $sql);
         [$count] = $xoopsDB->fetchRow($result);
         $_SESSION['items_count'] = $count;
     } else {
@@ -240,7 +244,7 @@ if (is_object($xoopsModule) && $xoopsModule->getVar('dirname') == $modversion['d
         require_once XOOPS_ROOT_PATH . '/class/tree.php';
         //        require_once XOOPS_ROOT_PATH . '/modules/news/class/class.newstopic.php';
         $xt         = new NewsTopic();
-        $allTopics  = $xt->getAllTopics(News\Utility::getModuleOption('restrictindex'));
+        $allTopics  = $xt->getAllTopics(Utility::getModuleOption('restrictindex'));
         $topic_tree = new \XoopsObjectTree($allTopics, 'topic_id', 'topic_pid');
         $topics_arr = $topic_tree->getAllChild(0);
         if ($module) {
@@ -267,7 +271,7 @@ if ($cansubmit) {
 unset($cansubmit);
 
 //;
-if (News\Utility::getModuleOption('newsbythisauthor')) {
+if (Utility::getModuleOption('newsbythisauthor')) {
     ++$i;
     $modversion['sub'][$i]['name'] = _MI_NEWS_WHOS_WHO;
     $modversion['sub'][$i]['url']  = 'whoswho.php';
@@ -303,7 +307,7 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'default'     => 5,
-    'options'     => ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30],
+    'options'     => [5 => 5, 10 => 10, 15 => 15, 20 => 20, 25 => 25, 30 => 30],
 ];
 /**
  * Format of the date to use in the module, if you don't specify anything then the default date's format will be used
@@ -417,14 +421,14 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 10,
     'options'     => [
-    '5'  => 5,
-    '10' => 10,
-    '15' => 15,
-    '20' => 20,
-    '25' => 25,
-    '30' => 30,
-    '35' => 35,
-        '40' => 40,
+    5  => 5,
+    10 => 10,
+    15 => 15,
+    20 => 20,
+    25 => 25,
+    30 => 30,
+    35 => 35,
+        40 => 40,
     ],
 ];
 
@@ -565,7 +569,7 @@ $modversion['config'][] = [
 
 /**
  * If you set this option to yes then the approvers can type the keyword
- * and description's meta datas
+ * and description's metadatas
  */
 $modversion['config'][] = [
     'name'        => 'metadata',

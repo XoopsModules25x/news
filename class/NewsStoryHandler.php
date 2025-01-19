@@ -19,7 +19,7 @@ namespace XoopsModules\News;
  */
 
 //require_once XOOPS_ROOT_PATH . '/modules/news/class/xoopsstory.php';
-require XOOPS_ROOT_PATH . '/include/comment_constants.php';
+//require XOOPS_ROOT_PATH . '/include/comment_constants.php';
 
 require_once \dirname(__DIR__) . '/preloads/autoloader.php';
 
@@ -32,7 +32,12 @@ $helper->loadLanguage('main');
  */
 class NewsStoryHandler extends \XoopsPersistableObjectHandler
 {
-    public function __construct(\XoopsDatabase $db = null)
+    /**
+     * Constructor
+     *
+     * @param \XoopsDatabase|null $db database connection
+     */
+    public function __construct(?\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'news_stories', NewsStory::class, 'storieid', 'title');
     }

@@ -5,7 +5,7 @@
     <ul>
         <{foreach item=who from=$whoswho}>
             <li><a title="<{$who.name}>"
-                   href="<{$xoops_url}>/modules/news/newsbythisauthor.php?uid=<{$who.uid}>"><{$who.name}></a></li>
+                   href="<{$xoops_url}>/modules/<{$xoops_dirname}>/newsbythisauthor.php?uid=<{$who.uid}>"><{$who.name}></a></li>
         <{/foreach}>
     </ul>
 </div>

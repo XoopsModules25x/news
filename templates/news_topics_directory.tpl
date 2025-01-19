@@ -5,7 +5,7 @@
         <ul>
             <{foreach item=topic from=$topics}>
                 <li><{$topic.prefix}><a title="<{$topic.title}>"
-                                        href="<{$xoops_url}>/modules/news/index.php?storytopic=<{$topic.id}>"><{$topic.title}></a>
+                                        href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php?storytopic=<{$topic.id}>"><{$topic.title}></a>
                     (<{$topic.news_count}>)
                 </li>
             <{/foreach}>
